@@ -8,24 +8,29 @@ La dernière: 0 si c'est un vecteur
 */
 #define SIZE_V 4
 #define MIN_DIFF_EQ 0.000001f
-#include "Matrix4.h"
-#include <assert.h>
-#include <cmath>
 
 #ifndef VECTOR3D_H_
 #define VECTOR3D_H_
+
+class Vector3D;
+
+#include "Matrix4.h"
+#include <assert.h>
+#include <cmath>
+#include <iostream>
 
 class Vector3D
 {
 public:
 	static Vector3D vecZeros() { return Vector3D(0, 0, 0); };
 	inline Vector3D() {};
+	Vector3D(const Vector3D& a);
 	Vector3D(const Vector3D&, const Vector3D&);
 	Vector3D(float, float, float);
-	Vector3D::Vector3D(float, float, float, bool);
+	Vector3D(float, float, float, bool);
 	Vector3D(float const*);
 
-	Vector3D copy();
+	Vector3D copy() const;
 	Vector3D getTransformation(Matrix4);
 
 	inline bool isPoint() { return coor[3] == 0; };
@@ -34,6 +39,7 @@ public:
 	void normalize();
 
 	// Getter
+	float get(int i) const;
 	inline float getX() { return coor[0]; };
 	inline float getY() { return coor[1]; };
 	inline float getZ() { return coor[2]; };
@@ -54,19 +60,22 @@ public:
 
 	// Surchage opérateurs
 
-	Vector3D operator-();
+	Vector3D operator-() const;
+	Vector3D operator-(Vector3D const& v) const;
 	void operator+=(Vector3D const&);
 	Vector3D operator+(Vector3D const&);
 	void operator-=(Vector3D const&);
-	Vector3D operator-(Vector3D const&);
 	float operator*(Vector3D const&);
 	Vector3D operator*(float const&);
 	void operator*=(float const&);
+	Vector3D operator/(float const&);
+	void operator/=(float const&);
 	Vector3D operator%(Vector3D const&);
 	void operator%=(Vector3D const&);
 	bool operator==(Vector3D const&);
-	float operator[](int const&);
+	float& operator[](int const&);
 
+	void display();
 private:
 	float coor[SIZE_V];
 

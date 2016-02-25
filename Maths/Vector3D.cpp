@@ -87,7 +87,7 @@ void Vector3D::set(const Vector3D& a)
 }
 void Vector3D::set(int i, float f)
 {
-	assert(i >= 0 and i < SIZE_V);
+	assert(i >= 0 && i < SIZE_V);
 	coor[i] = f;
 }
 void Vector3D::set(float f)

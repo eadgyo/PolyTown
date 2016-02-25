@@ -61,11 +61,11 @@ Vector3D Vector3D::getTransformation(const Matrix4& m4) const
 	return res;
 }
 
-float Vector3D::getMagnitude()
+float Vector3D::getMagnitude() const
 {
 	return std::sqrt((*this)*(*this));
 }
-float Vector3D::getSqMagnitude()
+float Vector3D::getSqMagnitude() const
 {
 	return (*this)*(*this);
 }

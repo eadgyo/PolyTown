@@ -33,9 +33,9 @@ public:
 	Vector3D copy() const;
 	Vector3D getTransformation(const Matrix4&) const;
 
-	inline bool isPoint() { return coor[3] == 0; };
-	float getMagnitude();
-	float getSqMagnitude();
+	inline bool isPoint() const { return coor[3] == 0; };
+	float getMagnitude() const;
+	float getSqMagnitude() const;
 	void normalize();
 
 	// Getter

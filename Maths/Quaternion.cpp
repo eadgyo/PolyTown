@@ -206,6 +206,8 @@ float& Quaternion::operator[](int a)
 		return j;
 	case 3:
 		return k;
+	default:
+		return r;
 	}
 }
 
@@ -291,7 +293,7 @@ float Quaternion::getVecAndRot(Vector3D& vec) const
 		return theta;
 	}
 	else
-		return NULL;
+		return 0;
 }
 Matrix4 Quaternion::getRotationMatrix() const
 {

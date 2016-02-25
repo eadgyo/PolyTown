@@ -1,4 +1,3 @@
-
 #include "Vector3D.h"
 
 Vector3D::Vector3D(const Vector3D& a)
@@ -76,7 +75,9 @@ void Vector3D::normalize()
 	(*this)/=magn;
 }
 
+//====================================================
 // Setter
+//====================================================
 void Vector3D::set(const Vector3D& a)
 {
 	for(int i=0; i<SIZE_V; i++)
@@ -112,8 +113,10 @@ void Vector3D::set(float a, float b, float c, float w)
 	coor[3] = w;
 }
 
-// Surchage opérateurs
 
+//====================================================
+// Surchage opérateurs
+//====================================================
 Vector3D Vector3D::operator-() const
 {
 	Vector3D vec;

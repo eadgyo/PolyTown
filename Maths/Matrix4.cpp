@@ -34,7 +34,9 @@ Matrix4 Matrix4::copy()
 	return m4;
 }
 
+//====================================================
 // Surchage opérateurs
+//====================================================
 Matrix4 Matrix4::operator+(const Matrix4& m4) const
 {
 	Matrix4 res;
@@ -117,7 +119,9 @@ float& Matrix4::operator[](int i)
 	return m[i];
 }
 
+//====================================================
 // Getter
+//====================================================
 float Matrix4::getDeterminant() const
 {
 	return	m[0]*(m[5]*(m[10]*m[15] - m[14]*m[11]) - m[9]*(m[6]*m[15] - m[7]*m[14]) + m[13]*(m[6]*m[11] - m[10]*m[7])) -
@@ -160,7 +164,9 @@ Matrix4 Matrix4::getTranspose() const
 	return res;
 }
 
+//====================================================
 // Setter
+//====================================================
 void Matrix4::setInverse(const Matrix4& m4)
 {
 	Matrix4 res = m4.getInverse();
@@ -211,7 +217,9 @@ void Matrix4::setIdentity()
 	setIdentity(1.0f);
 }
 
+//====================================================
 // Transformations
+//====================================================
 Vector3D Matrix4::transform(const Vector3D& v) const
 {
 	Vector3D res;
@@ -244,7 +252,9 @@ void Matrix4::changeBasis(const Matrix4& m4)
 	(*this) *= (m4*inv);
 }
 
+//====================================================
 // Create
+//====================================================
 Matrix4 Matrix4::createIdentity()
 {
 	Matrix4 res;

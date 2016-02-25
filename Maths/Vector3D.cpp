@@ -48,9 +48,18 @@ float Vector3D::get(int i) const
 	return coor[i];
 }
 
-Vector3D Vector3D::getTransformation(Matrix4 m4)
+Vector3D Vector3D::getTransformation(const Matrix4& m4) const
 {
-	return 0;
+	Vector3D res;
+	for(int i=0; i<LINE; i++)
+	{
+		res[i] = 0;
+		for(int j=0; j<COL; j++)
+		{
+			res[i] += m4.get(i + j*COL)*coor[j];
+		}
+	}
+	return res;
 }
 
 float Vector3D::getMagnitude()
@@ -119,7 +128,7 @@ void Vector3D::operator+=(Vector3D const& v)
 		coor[i] += v.get(i);
 	}
 }
-Vector3D Vector3D::operator+(Vector3D const& v)
+Vector3D Vector3D::operator+(Vector3D const& v) const
 {
 	Vector3D vec;
 	for(int i=0; i<SIZE_V; i++)
@@ -144,7 +153,7 @@ Vector3D Vector3D::operator-(Vector3D const& v) const
 	}
 	return vec;
 }
-float Vector3D::operator*(Vector3D const& v)
+float Vector3D::operator*(Vector3D const& v) const
 {
 	float scalar = 0;
 	for(int i=0; i<3; i++)
@@ -153,7 +162,7 @@ float Vector3D::operator*(Vector3D const& v)
 	}
 	return scalar;
 }
-Vector3D Vector3D::operator*(float const& f)
+Vector3D Vector3D::operator*(float const& f) const
 {
 	Vector3D vec;
 	for(int i=0; i<3; i++)
@@ -162,6 +171,10 @@ Vector3D Vector3D::operator*(float const& f)
 	}
 	return vec;
 }
+Vector3D Vector3D::operator*(Matrix4 const& m4) const
+{
+	return getTransformation(m4);
+}
 void Vector3D::operator*=(float const& f)
 {
 	for(int i=0; i<3; i++)
@@ -169,7 +182,12 @@ void Vector3D::operator*=(float const& f)
 		coor[i] *= f;
 	}
 }
-Vector3D Vector3D::operator/(float const& f)
+void Vector3D::operator*=(Matrix4 const& m4)
+{
+	Vector3D vec = getTransformation(m4);
+	set(vec);
+}
+Vector3D Vector3D::operator/(float const& f) const
 {
 	Vector3D vec;
 	for(int i=0; i<3; i++)
@@ -185,7 +203,7 @@ void Vector3D::operator/=(float const& f)
 		coor[i] /= f;
 	}
 }
-Vector3D Vector3D::operator%(Vector3D const& v)
+Vector3D Vector3D::operator%(Vector3D const& v) const
 {
 	// cross Product
 	Vector3D vec;

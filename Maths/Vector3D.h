@@ -31,7 +31,7 @@ public:
 	Vector3D(float const*);
 
 	Vector3D copy() const;
-	Vector3D getTransformation(Matrix4);
+	Vector3D getTransformation(const Matrix4&) const;
 
 	inline bool isPoint() { return coor[3] == 0; };
 	float getMagnitude();
@@ -40,10 +40,10 @@ public:
 
 	// Getter
 	float get(int i) const;
-	inline float getX() { return coor[0]; };
-	inline float getY() { return coor[1]; };
-	inline float getZ() { return coor[2]; };
-	inline float getW() { return coor[3]; };
+	inline float getX() const { return coor[0]; };
+	inline float getY() const { return coor[1]; };
+	inline float getZ() const { return coor[2]; };
+	inline float getW() const { return coor[3]; };
 	inline const float* getCoor() const { return coor; };
 
 	// Setter
@@ -63,14 +63,16 @@ public:
 	Vector3D operator-() const;
 	Vector3D operator-(Vector3D const& v) const;
 	void operator+=(Vector3D const&);
-	Vector3D operator+(Vector3D const&);
+	Vector3D operator+(Vector3D const&) const;
 	void operator-=(Vector3D const&);
-	float operator*(Vector3D const&);
-	Vector3D operator*(float const&);
+	float operator*(Vector3D const&) const;
+	Vector3D operator*(float const&) const;
+	Vector3D operator*(Matrix4 const&) const;
 	void operator*=(float const&);
-	Vector3D operator/(float const&);
+	void operator*=(Matrix4 const&);
+	Vector3D operator/(float const&) const;
 	void operator/=(float const&);
-	Vector3D operator%(Vector3D const&);
+	Vector3D operator%(Vector3D const&) const;
 	void operator%=(Vector3D const&);
 	bool operator==(Vector3D const&);
 	float& operator[](int const&);

@@ -35,7 +35,7 @@ Matrix4 Matrix4::copy()
 }
 
 // Surchage opérateurs
-Matrix4 Matrix4::operator+(const Matrix4& m4)
+Matrix4 Matrix4::operator+(const Matrix4& m4) const
 {
 	Matrix4 res;
 	for(int i=0; i<SIZE_M; i++)
@@ -51,7 +51,7 @@ void Matrix4::operator+=(const Matrix4& m4)
 		m[i] += m4.get(i);
 	}
 }
-Matrix4 Matrix4::operator-(const Matrix4& m4)
+Matrix4 Matrix4::operator-(const Matrix4& m4) const
 {
 	Matrix4 res;
 	for(int i=0; i<SIZE_M; i++)
@@ -67,7 +67,7 @@ void Matrix4::operator-=(const Matrix4& m4)
 		m[i] -= m4.get(i);
 	}
 }
-Matrix4 Matrix4::operator*(const float& f)
+Matrix4 Matrix4::operator*(const float& f) const
 {
 	Matrix4 res;
 	for(int i=0; i<SIZE_M; i++)
@@ -83,7 +83,7 @@ void Matrix4::operator*=(const float& f)
 		 m[i] *= f;
 	}
 }
-Matrix4 Matrix4::operator*(const Matrix4& m4)
+Matrix4 Matrix4::operator*(const Matrix4& m4) const
 {
 	Matrix4 res;
 	for(int i=0; i<LINE; i++)
@@ -101,6 +101,10 @@ Matrix4 Matrix4::operator*(const Matrix4& m4)
 		}
 	}
 	return res;
+}
+Vector3D Matrix4::operator*(const Vector3D vec) const
+{
+	return transform(vec);
 }
 void Matrix4::operator*=(const Matrix4& m4)
 {
@@ -208,9 +212,21 @@ void Matrix4::setIdentity()
 }
 
 // Transformations
-Vector3D Matrix4::transform(const Vector3D& v)
+Vector3D Matrix4::transform(const Vector3D& v) const
 {
-	return 0;
+	Vector3D res;
+	for(int i=0; i<LINE; i++)
+	{
+		res[i] = 0;
+		std::cout << "res[" << i << "] = ";
+		for(int j=0; j<COL; j++)
+		{
+			std::cout << " + m[" << (i*COL + j) << "]*" << "v(" << j << ")";
+			res[i] += m[i*COL + j]*v.get(j);
+		}
+		std::cout << "\n";
+	}
+	return res;
 }
 void Matrix4::invert()
 {
@@ -224,7 +240,8 @@ void Matrix4::transpose()
 }
 void Matrix4::changeBasis(const Matrix4& m4)
 {
-
+	Matrix4 inv = getInverse();
+	(*this) *= (m4*inv);
 }
 
 // Create
@@ -236,19 +253,41 @@ Matrix4 Matrix4::createIdentity()
 }
 Matrix4 Matrix4::createRotateX(float theta)
 {
-	return Matrix4();
+	float tab[] = {1.0f, 0, 0, 0,
+				0, (float) cos(theta), (float) -sin(theta), 0,
+				0, (float) sin(theta), (float) cos(theta), 0,
+				0, 0, 0, 1.0f};
+	return Matrix4(tab);
 }
 Matrix4 Matrix4::createRotateY(float theta)
 {
-	return 0;
+	float tab[] = {(float) cos(theta), 0, (float) sin(theta), 0,
+					0, 1.0f, 0, 0,
+					(float) -sin(theta), 0, (float) cos(theta), 0,
+					0, 0, 0, 1.0f};
+	return Matrix4(tab);
 }
 Matrix4 Matrix4::createRotateZ(float theta)
 {
-	return 0;
+	float tab[] = { (float) cos(theta), (float) -sin(theta), 0, 0,
+					(float)sin(theta), (float) cos(theta), 0, 0,
+					0, 0, 1.0f, 0,
+					0, 0, 0, 1.0f};
+	return Matrix4(tab);
 }
 Matrix4 Matrix4::createRotate(const Vector3D& v, float theta)
 {
-	return 0;
+	float c = cos(theta);
+	float s = sin(theta);
+	float Ax = v.getX();
+	float Ay = v.getY();
+	float Az = v.getZ();
+
+	float tab[] = {c+(1-c)*Ax*Ax, (1-c)*Ax*Ay - s*Az, (1-c)*Ax*Az + s*Ay, 0,
+					(1-c)*Ax*Ay + s*Az, c+(1-c)*Ay*Ay, (1-c)*Ay*Az - s*Ax, 0,
+					(1-c)*Ax*Az - s*Ay, (1-c)*Ay*Az + s*Ax, c+(1-c)*Az*Az, 0,
+					0,0,0,1.0f};
+	return Matrix4(tab);
 }
 
 void Matrix4::display()

@@ -25,14 +25,15 @@ public:
 	Matrix4 copy();
 
 	// Surchage opérateurs
-	Matrix4 operator+(const Matrix4& m4);
+	Matrix4 operator+(const Matrix4& m4) const;
 	void operator+=(const Matrix4& m4);
-	Matrix4 operator-(const Matrix4& m4);
+	Matrix4 operator-(const Matrix4& m4) const;
 	void operator-=(const Matrix4& m4);
-	Matrix4 operator*(const float& f);
+	Matrix4 operator*(const float& f) const;
 	void operator*=(const float& f);
-	Matrix4 operator*(const Matrix4& m4);
+	Matrix4 operator*(const Matrix4& m4) const;
 	void operator*=(const Matrix4& m4);
+	Vector3D operator*(const Vector3D vec) const;
 	float& operator[](int i);
 
 
@@ -54,7 +55,7 @@ public:
 	void setIdentity();
 
 	// Transformations
-	Vector3D transform(const Vector3D& v);
+	Vector3D transform(const Vector3D& v) const;
 	void invert();
 	void transpose();
 	void changeBasis(const Matrix4& m4);

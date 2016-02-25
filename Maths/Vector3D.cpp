@@ -64,7 +64,7 @@ float Vector3D::getSqMagnitude()
 void Vector3D::normalize()
 {
 	float magn = getMagnitude();
-	(*this)/magn;
+	(*this)/=magn;
 }
 
 // Setter

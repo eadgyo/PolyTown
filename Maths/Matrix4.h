@@ -60,7 +60,7 @@ public:
 	void changeBasis(const Matrix4& m4);
 
 	// Create
-	static Matrix4 createIentity();
+	static Matrix4 createIdentity();
 	static Matrix4 createRotateX(float theta);
 	static Matrix4 createRotateY(float theta);
 	static Matrix4 createRotateZ(float theta);

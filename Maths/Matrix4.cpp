@@ -123,7 +123,6 @@ float Matrix4::getDeterminant() const
 }
 Matrix4 Matrix4::getInverse() const
 {
-	// A vérifier
 	Matrix4 res;
 	res[0] = m[6]*m[11]*m[13] - m[7]*m[10]*m[13] + m[7]*m[9]*m[14] - m[5]*m[11]*m[14] - m[6]*m[9]*m[15] + m[5]*m[10]*m[15];
 	res[1] = m[3]*m[10]*m[13] - m[2]*m[11]*m[13] - m[3]*m[9]*m[14] + m[1]*m[11]*m[14] + m[2]*m[9]*m[15] - m[1]*m[10]*m[15];
@@ -141,19 +140,19 @@ Matrix4 Matrix4::getInverse() const
 	res[13]= m[1]*m[10]*m[12] - m[2]*m[9]*m[12] + m[2]*m[8]*m[13] - m[0]*m[10]*m[13] - m[1]*m[8]*m[14] + m[0]*m[9]*m[14];
 	res[14]= m[2]*m[5]*m[12] - m[1]*m[6]*m[12] - m[2]*m[4]*m[13] + m[0]*m[6]*m[13] + m[1]*m[4]*m[14] - m[0]*m[5]*m[14];
 	res[15]= m[1]*m[6]*m[8] - m[2]*m[5]*m[8] + m[2]*m[4]*m[9] - m[0]*m[6]*m[9] - m[1]*m[4]*m[10] + m[0]*m[5]*m[10];
-	return res;
+	float det = getDeterminant();
+	if(det != 0)
+	{
+		res *= 1.0f/det;
+		return res;
+	}
+	else
+		return NULL;
 }
 Matrix4 Matrix4::getTranspose() const
 {
-	// A verifier
 	Matrix4 res;
-	for(int i=0; i<COL; i++)
-	{
-		for(int j=0; j<LINE; i++)
-		{
-			res[(COL - i)*i + j] = m[(i*LINE + j)];
-		}
-	}
+	res.setTranspose((*this));
 	return res;
 }
 
@@ -165,11 +164,11 @@ void Matrix4::setInverse(const Matrix4& m4)
 }
 void Matrix4::setTranspose(const Matrix4& m4)
 {
-	for(int i=0; i<COL; i++)
+	for(int j=0; j<LINE; j++)
 	{
-		for(int j=0; j<LINE; i++)
+		for(int i=0; i<COL; i++)
 		{
-			m[(COL - i)*i + j] = m4.get(i*LINE + j);
+			m[(COL - i - 1)*COL + j] = m4.get(i + j*COL);
 		}
 	}
 }
@@ -229,7 +228,7 @@ void Matrix4::changeBasis(const Matrix4& m4)
 }
 
 // Create
-Matrix4 Matrix4::createIentity()
+Matrix4 Matrix4::createIdentity()
 {
 	Matrix4 res;
 	res.setIdentity();

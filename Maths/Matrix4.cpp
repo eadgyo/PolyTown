@@ -226,13 +226,13 @@ Vector3D Matrix4::transform(const Vector3D& v) const
 	for(int i=0; i<LINE; i++)
 	{
 		res[i] = 0;
-		std::cout << "res[" << i << "] = ";
+		//std::cout << "res[" << i << "] = ";
 		for(int j=0; j<COL; j++)
 		{
-			std::cout << " + m[" << (i*COL + j) << "]*" << "v(" << j << ")";
+			//std::cout << " + m[" << (i*COL + j) << "]*" << "v(" << j << ")";
 			res[i] += m[i*COL + j]*v.get(j);
 		}
-		std::cout << "\n";
+		//std::cout << "\n";
 	}
 	return res;
 }

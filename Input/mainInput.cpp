@@ -1,7 +1,6 @@
 #include <iostream>
 #include <time.h>
-#include <Windows.h>
-#include <SDL\SDL.h>
+#include "SDL2/SDL.h"
 
 #include "Input.h"
 

@@ -1,5 +1,6 @@
 #include "Quaternion.h"
 
+
 Quaternion::Quaternion(float r)
 {
 	this->r = r;

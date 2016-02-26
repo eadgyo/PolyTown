@@ -1,15 +1,15 @@
 #include "Input.h"
 
 #include <iostream>
-#include <SDL\SDL.h>
+#include <SDL/SDL.h>
 
 using namespace std;
 
-Input& Input::instance = Input();
+Input Input::instance = Input();
 
 Input::Input() {}
 
-Input& Input::getInstance()
+Input Input::getInstance()
 {
     return instance;
 }

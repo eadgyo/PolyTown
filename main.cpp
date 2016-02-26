@@ -1,19 +1,26 @@
-#include "SDL/SDL.h"
+#include <SDL2/SDL.h>
 #include "Maths/Vector3D.h"
 #include <iostream>
 
 int main(int argc, char* args[])
 {
-	float tab[] = { 0, 6, 3, 4, 7, 6, 7, 8, 9, 10, 101, 12, 13, 14, 15, 16 };
-	Vector3D vec(1, 2, 4, 2);
-	Matrix4 m1(tab);
-	std::cout << m1.getDeterminant() << "\n";
-	//m.transpose();
-	m1.display();
-	vec.display();
+    SDL_Window *window;
 
-	Vector3D vec1 = vec * m1;
-	vec1.display();
+    window = SDL_CreateWindow(
+        "An SDL2 window",                  // window title
+        SDL_WINDOWPOS_UNDEFINED,           // initial x position
+        SDL_WINDOWPOS_UNDEFINED,           // initial y position
+        640,                               // width, in pixels
+        480,                               // height, in pixels
+        SDL_WINDOW_OPENGL                  // flags - see below
+        );
 
+    // Check that the window was successfully created
+    if (window == NULL) {
+        // In the case that the window could not be made...
+        printf("Could not create window: %s\n", SDL_GetError());
+        return 1;
+    }
+    SDL_Delay(3000);
     return 0;
 }

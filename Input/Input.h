@@ -4,11 +4,11 @@
 class Input
 {
     public:
-        static Input& getInstance();
+        static Input getInstance();
         void update();
 
     private:
-        static Input &instance;
+        static Input instance;
 
         /*
         bool keysDown[1];

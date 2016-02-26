@@ -1,5 +1,6 @@
 #include "Vector3D.h"
 
+
 Vector3D::Vector3D(const Vector3D& a)
 {
 	 for(int i=0; i<SIZE_V; i++)

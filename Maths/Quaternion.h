@@ -5,6 +5,7 @@
  *      Author: ronan-h
  */
 
+
 #ifndef QUATERNION_H_
 #define QUATERNION_H_
 class Quaternion;

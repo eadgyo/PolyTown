@@ -12,6 +12,7 @@ La dernière: 0 si c'est un vecteur
 #ifndef VECTOR3D_H_
 #define VECTOR3D_H_
 
+
 class Vector3D;
 
 #include "Matrix4.h"

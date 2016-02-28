@@ -42,6 +42,35 @@ Vector3D Vector3D::copy() const
 {
 	return Vector3D((*this));
 }
+
+//====================================================
+// Getter
+//====================================================
+float Vector3D::getAngle(const Vector3D& vec) const
+{
+	float scalar = (float) getNormalize()*vec.getNormalize();
+	float l_fTheta = 0;
+	if(scalar > 1)
+		l_fTheta = 0;
+	else if(scalar < -1)
+		l_fTheta = (float) PI;
+	else
+		l_fTheta = (float) acos(scalar);
+
+	if((*this) % vec < 0)
+		l_fTheta = - l_fTheta;
+
+
+	return l_fTheta;
+}
+
+Vector3D Vector3D::getNormalize() const
+{
+	Vector3D vec = copy();
+	vec.normalize();
+	return vec;
+}
+
 float Vector3D::get(int i) const
 {
 	assert(i >=0 && i < SIZE_V);

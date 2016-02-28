@@ -39,8 +39,6 @@ public:
 	bool isInsideBorder(const sRectangle& rect) const;
 	bool isInsideBorder(const Vector3D& p) const;
 	bool collision(const sRectangle& rect) const;
-	bool collisionA(const sRectangle& rect) const;
-	bool collisionBorder(const sRectangle& rect) const;
 	bool collisionBorder(const sRectangle& rect) const;
 	inline const Vector3D& getLeft() const { return points.at(0); };
 

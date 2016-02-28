@@ -36,7 +36,7 @@ public:
 	void operator*=(const Matrix4& m4);
 	Vector3D operator*(const Vector3D vec) const;
 	float& operator[](int i);
-
+	float& operator[](int i, int j);
 
 	// Getter
 	const float get(int i) const { assert(i >= 0 && i < SIZE_M); return m[i]; };
@@ -68,6 +68,7 @@ public:
 
 	// Create
 	static Matrix4 createIdentity();
+	static Matrix4 createIdentity(float factor);
 	static Matrix4 createRotateX(float theta);
 	static Matrix4 createRotateY(float theta);
 	static Matrix4 createRotateZ(float theta);

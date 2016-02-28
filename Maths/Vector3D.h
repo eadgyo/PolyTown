@@ -8,6 +8,7 @@ La dernière: 0 si c'est un vecteur
 */
 #define SIZE_V 4
 #define MIN_DIFF_EQ 0.000001f
+#define PI 3.14159265359
 
 #ifndef VECTOR3D_H_
 #define VECTOR3D_H_
@@ -41,6 +42,8 @@ public:
 
 	// Getter
 	float get(int i) const;
+	float getAngle(const Vector3D& vec) const;
+	Vector3D getNormalize() const;
 	inline float x() const { return coor[0]; };
 	inline float y() const { return coor[1]; };
 	inline float z() const { return coor[2]; };

@@ -118,6 +118,11 @@ float& Matrix4::operator[](int i)
 	assert(i >=0 && i < SIZE_M);
 	return m[i];
 }
+float& Matrix4::operator[](int i, int j)
+{
+	assert(i >=0 && i < COL && j>=0 && j < LINE);
+	return m[i*COL + j];
+}
 
 //====================================================
 // Getter
@@ -184,35 +189,69 @@ void Matrix4::setTranspose(const Matrix4& m4)
 }
 void Matrix4::setOrientation(const Quaternion& q5)
 {
+	float n = q5.getMagnitude();
+	if(n < 0.000001f)
+		setIdentity();
+		return;
 
+	Quaternion q = q5*sqrt(1.0/n);
+	Quaternion i2 = q.i*q.i;
+	Quaternion j2 = q.j*q.j;
+	Quaternion k2 = q.k*q.k;
+
+	(*this)[0,0] = 1 - (2*j2 + 2*k2);
+	(*this)[0,1] = 2*q.i*q.j - 2*q.k*q.r;
+	(*this)[0,2] = 2*q.i*q.k + 2*q.j*q.r;
+
+	(*this)[1,0] = 2*q.i*q.j + 2*q.k*q.r;
+	(*this)[1,1] = 1 - (2*i2 + 2*k2);
+	(*this)[1,2] = 2*q.j*q.k - 2*q.i*q.r;
+
+	(*this)[2,0] = 2*q.i*q.k - 2*q.j*q.r;
+	(*this)[2,1] = 2*q.j*q.k + 2*q.i*q.r;
+	(*this)[2,2] = 1 - (2*i2 + 2*j2);
+
+	(*this)[3,3] = 1;
 }
 void Matrix4::setOrientation(const Quaternion& q, const Vector3D& vec)
 {
-
+	setOrientation(q);
+	(*this)[0,3] = vec.getX();
+	(*this)[1,3] = vec.getY();
+	(*this)[2,3] = vec.getZ();
 }
 void Matrix4::setOrientation(const Vector3D& vec)
 {
+	(*this)[0,3] = vec.getX();
+	(*this)[1,3] = vec.getY();
+	(*this)[2,3] = vec.getZ();
 
+	(*this)[3,3] = 1;
 }
 void Matrix4::setOrientation(const Quaternion& q, const Vector3D& vec, float factor)
 {
-
+	setOrientation(q, vec);
+	(*this) *= Matrix4::createIdentity(factor);
 }
 
 void Matrix4::setX(float x)
 {
+	(*this)[0,3] = x;
 }
 
 void Matrix4::setY(float y)
 {
+	(*this)[1,3] = y;
 }
 
 void Matrix4::setZ(float z)
 {
+	(*this)[2,3] = z;
 }
 
 void Matrix4::setW(float w)
 {
+	(*this)[3,3] = w;
 }
 
 
@@ -278,6 +317,12 @@ Matrix4 Matrix4::createIdentity()
 {
 	Matrix4 res;
 	res.setIdentity();
+	return res;
+}
+Matrix4 Matrix4::createIdentity(float factor)
+{
+	Matrix4 res;
+	res.setIdentity(factor);
 	return res;
 }
 Matrix4 Matrix4::createRotateX(float theta)

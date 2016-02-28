@@ -7,12 +7,14 @@
 
 #include "Form.h"
 
-Form::Form() {
+Form::Form()
+{
 	// TODO Auto-generated constructor stub
 
 }
 
-Form::~Form() {
+Form::~Form()
+{
 	// TODO Auto-generated destructor stub
 }
 

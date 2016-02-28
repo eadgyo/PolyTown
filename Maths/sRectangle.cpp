@@ -131,21 +131,13 @@ bool sRectangle::isInsideBorder(const Vector3D& p) const
 
 bool sRectangle::collision(const sRectangle& rect) const
 {
-	assert(false);
-	return collisionA(rect) || rect.collisionA((*this));
+	return ((getX(0) > rect.getX(0) or getX(2) > rect.getX(0)) and (getX(0) < rect.getX(2) or getX(2) < rect.getX(2))) and
+		((getY(0) > rect.getY(0) or getY(2) > rect.getY(0)) and (getY(0) < rect.getY(2) or getY(2) < rect.getY(2)));
 }
 
-bool sRectangle::collisionA(const sRectangle& rect) const
-{
-	return false;
-}
 
 bool sRectangle::collisionBorder(const sRectangle& rect) const
 {
-	return false;
-}
-
-bool sRectangle::collisionBorder(const sRectangle& rect) const
-{
-	return false;
+	return ((getX(0) >= rect.getX(0) or getX(2) >= rect.getX(0)) and (getX(0) <= rect.getX(2) or getX(2) <= rect.getX(2))) and
+			((getY(0) >= rect.getY(0) or getY(2) >= rect.getY(0)) and (getY(0) <= rect.getY(2) or getY(2) <= rect.getY(2)));
 }

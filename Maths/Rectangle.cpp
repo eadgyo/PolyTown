@@ -19,10 +19,10 @@ Rectangle::Rectangle(const Form& form) : Form(form)
 	orientation.setPos(points.at(0) + vec * 0.5f);
 
 	Vector3D side(points.at(0), points.at(1));
-	length.x = side.getMagnitude();
+	length[0] = side.getMagnitude();
 
 	side.set(points.at(0), points.at(1));
-	length.y = side.getMagnitude();
+	length[1] = side.getMagnitude();
 }
 
 Rectangle::Rectangle(const Vector3D& center, const Vector3D& length,
@@ -72,10 +72,10 @@ void Rectangle::set(const Form& form)
 	orientation.setPos(form.getLocal(0) + vec*0.5f);
 
 	Vector3D side = new Vector3D(form.getLocal(0), form.getLocal(1));
-	length.x = side.getMagnitude();
+	length[0] = side.getMagnitude();
 
 	side.set(form.getLocal(0), form.getLocal(3));
-	length.y = side.getMagnitude();
+	length[1] = side.getMagnitude();
 
 	setInit(form);
 }
@@ -101,8 +101,11 @@ float Rectangle::getAngle(const Vector3D& vec) const
 
 float Rectangle::getAngle() const
 {
+	return omega;
 }
 
-void Rectangle::scaleF(float factor, const Vector3D& center) const
+void Rectangle::scaleF(float factor, const Vector3D& center)
 {
+	Form::scaleF(factor, center);
+	length *= factor;
 }

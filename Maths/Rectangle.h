@@ -28,7 +28,7 @@ public:
 
 	float getAngle(const Vector3D& vec) const;
 	float getAngle() const;
-	void scaleF(float factor, const Vector3D& center) const;
+	void scaleF(float factor, const Vector3D& center);
 
 private:
 	Vector3D length;

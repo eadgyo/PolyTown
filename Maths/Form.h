@@ -79,7 +79,7 @@ public:
 	Vector3D transform(const Vector3D& vertex, const Vector3D& p, const Vector3D& v, const Matrix4& orientation, float& t) const;
 	Vector3D handleEdgePoint(const Vector3D& PA, const Vector3D& PB, const Vector3D& PB2) const;
 
-	Vector3D& operator[](int const&);
+	Vector3D& operator[](int i);
 	void updateCenter();
 	void updateOrientation();
 
@@ -166,12 +166,7 @@ protected:
 
 	float surface;
 	std::vector<Vector3D> points;
-
-
-
 	std::vector<Form> convexForms;
-
-
 };
 
 #endif /* FORM_H_ */

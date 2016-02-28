@@ -4,24 +4,22 @@
 class Input
 {
     public:
-        static Input getInstance();
+        Input();
         void update();
+        void display();
+        bool* getKeys();
+
+        bool getQuit();
 
     private:
-        static Input instance;
+        bool quit;
 
-        /*
-        bool keysDown[1];
-        bool keysPressed[1];
+        int mousePos[2];
+        bool mouseDown[2];
+        bool mousePressed[2];
 
-        int mouse[2];
-        int mouseIn;
-        bool mouseDown[3];
-        bool mousePressed[3];
-        int mouse[2];
-        */
-
-        Input();
+        bool keysDown[2];
+        bool keysPressed[2];
 };
 
 #endif // !INPUT_H

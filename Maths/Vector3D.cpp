@@ -79,6 +79,13 @@ void Vector3D::normalize()
 //====================================================
 // Setter
 //====================================================
+void Vector3D::set(const Vector3D& a, const Vector3D& b)
+{
+	for(int i=0; i<SIZE_V; i++)
+	{
+		coor[i] = b.get(i) - a.get(i);
+	}
+}
 void Vector3D::set(const Vector3D& a)
 {
 	for(int i=0; i<SIZE_V; i++)

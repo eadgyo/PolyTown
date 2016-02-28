@@ -41,6 +41,10 @@ public:
 
 	// Getter
 	float get(int i) const;
+	inline float x() const { return coor[0]; };
+	inline float y() const { return coor[1]; };
+	inline float z() const { return coor[2]; };
+	inline float w() const { return coor[3]; };
 	inline float getX() const { return coor[0]; };
 	inline float getY() const { return coor[1]; };
 	inline float getZ() const { return coor[2]; };
@@ -52,6 +56,7 @@ public:
 	inline void setY(float f) { set(1, f); };
 	inline void setZ(float f) { set(2, f); };
 	inline void setW(float f) { set(3, f); };
+	void set(const Vector3D& a, const Vector3D& b);
 	void set(const Vector3D& a);
 	void set(int, float);
 	void set(float);

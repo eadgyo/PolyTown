@@ -54,6 +54,11 @@ public:
 	void setOrientation(const Quaternion& q, const Vector3D& vec, float factor);
 	void setIdentity(float factor);
 	void setIdentity();
+	inline void setPos(const Vector3D& pos) { setOrientation(pos); };
+	void setX(float x);
+	void setY(float y);
+	void setZ(float z);
+	void setW(float w);
 
 	// Transformations
 	Vector3D transform(const Vector3D& v) const;

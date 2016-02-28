@@ -198,6 +198,24 @@ void Matrix4::setOrientation(const Quaternion& q, const Vector3D& vec, float fac
 {
 
 }
+
+void Matrix4::setX(float x)
+{
+}
+
+void Matrix4::setY(float y)
+{
+}
+
+void Matrix4::setZ(float z)
+{
+}
+
+void Matrix4::setW(float w)
+{
+}
+
+
 void Matrix4::setIdentity(float factor)
 {
 	m[0] = factor;
@@ -314,3 +332,4 @@ void Matrix4::display()
 		std::cout << " |\n";
 	}
 }
+

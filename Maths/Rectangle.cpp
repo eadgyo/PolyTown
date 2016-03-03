@@ -2,7 +2,7 @@
 
 Rectangle::Rectangle() : Form(4)
 {
-	set(Vector3D(), Vector3D(), 0);
+	set(Vector3D(true), Vector3D(true), 0);
 }
 
 Rectangle::Rectangle(const Rectangle& rectangle) : Form(rectangle)

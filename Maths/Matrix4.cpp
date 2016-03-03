@@ -233,6 +233,64 @@ void Matrix4::setOrientation(const Quaternion& q, const Vector3D& vec, float fac
 	setOrientation(q, vec);
 	(*this) *= Matrix4::createIdentity(factor);
 }
+void Matrix4::setOrientation(float omega, float scale, bool flipH, bool flipV, const Vector3D& vec)
+{
+	Quaternion qZ(Vector3D(true), omega);
+	setOrientation(qZ, vec, scale);
+	if(flipH)
+		flipX();
+	if(flipV)
+		flipY();
+}
+void Matrix4::setOrientation(float omega, float scale, bool flipH, bool flipV)
+{
+	Quaternion qZ(Vector3D(true), omega);
+	setOrientation(qZ, scale);
+	if(flipH)
+		flipX();
+	if(flipV)
+		flipY();
+}
+void Matrix4::setOrientation(float omega, float scale, bool flipH, bool flipV, bool flipM, const Vector3D& vec)
+{
+	Quaternion qZ(Vector3D(true), omega);
+	setOrientation(qZ, vec, scale);
+	if(flipH)
+		flipX();
+	if(flipV)
+		flipY();
+	if(flipM)
+		flipZ();
+}
+
+void Matrix4::flipX()
+{
+	m[0] *= -1;
+	m[4] *= -1;
+	m[8] *= -1;
+	m[12] *= -1;
+}
+void Matrix4::flipY()
+{
+	m[1] *= -1;
+	m[5] *= -1;
+	m[9] *= -1;
+	m[13] *= -1;
+}
+void Matrix4::flipZ()
+{
+	m[2] *= -1;
+	m[6] *= -1;
+	m[10] *= -1;
+	m[14] *= -1;
+}
+void Matrix4::flipW()
+{
+	m[3] *= -1;
+	m[7] *= -1;
+	m[11] *= -1;
+	m[15] *= -1;
+}
 
 void Matrix4::setX(float x)
 {
@@ -309,6 +367,21 @@ void Matrix4::changeBasis(const Matrix4& m4)
 	Matrix4 inv = getInverse();
 	(*this) *= (m4*inv);
 }
+float Matrix4::multiplyX(const Vector3D& v) const
+{
+	return m[0]*v.getX() + m[1]*v.getY() + m[2]*v.getZ() + m[3]*v.getW();
+}
+
+float Matrix4::multiplyY(const Vector3D& v) const
+{
+	return m[4]*v.getX() + m[5]*v.getY() + m[6]*v.getZ() + m[7]*v.getW();
+}
+
+float Matrix4::multiplyZ(const Vector3D& v) const
+{
+	return m[8]*v.getX() + m[9]*v.getY() + m[10]*v.getZ() + m[11]*v.getW();
+}
+
 
 //====================================================
 // Create
@@ -377,4 +450,3 @@ void Matrix4::display()
 		std::cout << " |\n";
 	}
 }
-

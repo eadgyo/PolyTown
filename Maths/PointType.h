@@ -7,7 +7,7 @@
 class PointType : public Vector3D
 {
 public:
-	PointType() : Vector3D() { init(); };
+	PointType() : Vector3D(true) { init(); };
 	PointType(const Vector3D& point2D) : Vector3D(point2D) { init(); };
 	void init()
 	{

@@ -13,7 +13,6 @@ La dernière: 0 si c'est un vecteur
 #ifndef VECTOR3D_H_
 #define VECTOR3D_H_
 
-
 class Vector3D;
 
 #include "Matrix4.h"
@@ -26,6 +25,7 @@ class Vector3D
 public:
 	static Vector3D vecZeros() { return Vector3D(0, 0, 0); };
 	inline Vector3D() {};
+	Vector3D(bool isPoint);
 	Vector3D(const Vector3D& a);
 	Vector3D(const Vector3D&, const Vector3D&);
 	Vector3D(float, float, float);

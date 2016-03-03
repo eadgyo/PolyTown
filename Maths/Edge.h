@@ -9,15 +9,14 @@
 #define EDGE_H_
 #include "PointType.h"
 
-class Edge
+struct Edge
 {
-public:
 	Edge prev;
 	Edge next;
 	PointType p0;
 	PointType p1;
 
-	float getMinX()
+	inline float getMinX()
 	{
 		if(p0.x() < p1.x())
 			return p0.x();

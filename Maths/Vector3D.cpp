@@ -1,6 +1,9 @@
 #include "Vector3D.h"
 
-
+Vector3D::Vector3D(bool isPoint)
+{
+	Vector3D(0, 0, 0, isPoint);
+}
 Vector3D::Vector3D(const Vector3D& a)
 {
 	 for(int i=0; i<SIZE_V; i++)

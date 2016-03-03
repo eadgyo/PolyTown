@@ -52,8 +52,15 @@ public:
 	void setOrientation(const Quaternion& q, const Vector3D& vec);
 	void setOrientation(const Vector3D& vec);
 	void setOrientation(const Quaternion& q, const Vector3D& vec, float factor);
+	void setOrientation(float omega, float scale, bool flipH, bool flipV);
+	void setOrientation(float omega, float scale, bool flipH, bool flipV, const Vector3D& vec);
+	void setOrientation(float omega, float scale, bool flipH, bool flipV, bool flipM, const Vector3D& vec);
 	void setIdentity(float factor);
 	void setIdentity();
+	void flipX();
+	void flipY();
+	void flipZ();
+	void flipW();
 	inline void setPos(const Vector3D& pos) { setOrientation(pos); };
 	void setX(float x);
 	void setY(float y);
@@ -65,6 +72,9 @@ public:
 	void invert();
 	void transpose();
 	void changeBasis(const Matrix4& m4);
+	float multiplyX(const Vector3D& v) const;
+	float multiplyY(const Vector3D& v) const;
+	float multiplyZ(const Vector3D& v) const;
 
 	// Create
 	static Matrix4 createIdentity();

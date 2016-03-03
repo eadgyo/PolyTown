@@ -1,6 +1,9 @@
 #ifndef _IMAGE_H_
 #define _IMAGE_H_
 #include "string.h"
+#include "Graphics.h"
+#include "Constant.h"
+#include <assert.h>
 
 class Image
 {
@@ -12,7 +15,8 @@ public:
 	void reset();
 
 	// Getter
-	bool getIsRectDisplayin() const;
+	const Vector3D getPos() const { return rec.getCenter(); };
+	bool getIsRectDisplaying() const;
 	const Rectangle& getRectangle() const;
 	int getCols() const;
 	float getVisible() const;
@@ -27,21 +31,23 @@ public:
 	float getRadians() const;
 	float getRadians(const Vector3D& vec) const;
 	float getDegrees() const;
-	float getDegrees(const Vector3D& vec);
-	int getCurrentFrame();
-	const sRectangle& getSpriteDataRect();
-	const Color& getColorFilter();
-	const SpriteData& getSpriteData();
-	const bool getFlipV();
-	const bool getFlipH();
-	Graphics& getGraphics();
-	float getScale();
-	bool isInitialized();
-	std::string getTextureName();
-	float getRecWidth();
-	float getSpriteDataWidth();
+	float getDegrees(const Vector3D& vec) const;
+	int getCurrentFrame() const;
+	const sRectangle* getSpriteDataRect() const;
+	const SDL_Color& getColorFilter() const;
+	const SpriteData* getSpriteData() const;
+	const bool getFlipV() const;
+	const bool getFlipH() const;
+	Graphics* getGraphics() const;
+	float getScale() const;
+	bool getIsInitialized() const;
+	std::string getTextureName() const;
+	float getRecWidth() const;
+	float getSpriteDataWidth() const;
 
 	// Setter
+	void setColorFilter(float r, float g, float b) { colorFilter.r = r; colorFilter.g = g; colorFilter.b = b; };
+	void setColorFilter(float a, float r, float g, float b) { colorFilter.a = a; colorFilter.r = r; colorFilter.g = g; colorFilter.b = b; };
 	void set(const Image& image);
 	void setCols(int cols);
 	void setIsDisplayingRec(bool isDisplayingRec);
@@ -64,12 +70,12 @@ public:
 	void setFlipH(bool b, const Vector3D& center);
 	void setFlipV(bool b, const Vector3D& center);
 	void setVisible(float visible);
-	void setSpriteDataRect(sRectangle& rect);
-	void setColorFilter(Color& colorFilter);
+	void setSpriteDataRect(sRectangle* rect);
+	void setColorFilter(SDL_Color& colorFilter);
 	void setFlipH(bool flipHorizontal);
 	void setFlipV(bool flipVertical);
 	void setScale(float scale);
-	void setGraphics(Graphics& g);
+	void setGraphics(Graphics* g);
 	void setSize(int size);
 	void setSpriteData(const SpriteData& spriteData);
 	void setRec(const Rectangle& rec);
@@ -77,12 +83,12 @@ public:
 	void clearTexture();
 	void loadTexture();
 
-	void initialize(Graphics graphics, int width, int height, int cols, BufferedImage texture, String textureName);
+	void initialize(Graphics* graphics, int width, int height, int cols, const SDL_Surface* texture, std::string textureName);
 	void draw();
-	void draw(Graphics g);
+	void draw(Graphics& g);
 	void draw(const Vector3D& translation);
-	void draw(Graphics g, const Vector3D& translation);
-	void draw(Graphics g, const Vector3D& translation, float scale);
+	void draw(Graphics& g, const Vector3D& translation);
+	void draw(Graphics& g, const Vector3D& translation, float scale);
 	void setCurrentFrame(int current);
 	bool hasAlpha();
 	void setRect();
@@ -95,20 +101,20 @@ public:
 	void flipV(const Vector3D& center);
 	void scale(float factor, const Vector3D& center);
 	void rotateRadians(float radians, const Vector3D& center);
-	void visible(float f);
+	void setVisible(float f);
 
 protected:
-	Graphics graphics;
-	SpriteData spriteData;
-	Color colorFilter;
+	Graphics* graphics;
+	SpriteData* spriteData;
+	SDL_Color colorFilter;
 	int cols;
 	int currentFrame;
-	boolean isDisplayingRec;
+	bool isDisplayingRec;
 
 	Rectangle rec;
 
 	float visible;
-	boolean isInitialized;
+	bool isInitialized;
 	int startFrame;
 	int endFrame;
 

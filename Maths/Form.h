@@ -30,9 +30,10 @@ public:
 	Form(int size);
 	Form();
 	Form(const Form& form);
+	Form(float omega, float scale, bool flipH, bool flipV, float surface, const Vector3D& vec);
 	virtual ~Form();
 
-	Form clone();
+	Form clone() const;
 	void resetTransformations();
 	void clearTransformations();
 	void setInit(Form form);
@@ -152,7 +153,8 @@ public:
 	std::vector<Form> getTriangulation();
 
 	void setConvex(const std::vector<Form>& forms);
-	const std::vector<Form>& getConvexForms();
+	const std::vector<Form>& getConvexForms() const;
+	inline const int getConvexFormsSize() const { return convexForms.size(); };
 	void updateConvexForms();
 
 private:

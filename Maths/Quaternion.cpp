@@ -192,7 +192,7 @@ void Quaternion::operator/=(const float& f)
 }
 Vector3D Quaternion::operator*(const Vector3D& v) const
 {
-	return transform(v, Vector3D());
+	return transform(v, Vector3D(true));
 }
 float& Quaternion::operator[](int a)
 {
@@ -222,7 +222,7 @@ void Quaternion::rotateByVector(const Vector3D& vec, float theta)
 }
 Vector3D Quaternion::transform(const Vector3D& vec) const
 {
-	return transform(vec, Vector3D());
+	return transform(vec, Vector3D(true));
 }
 Vector3D Quaternion::transform(const Vector3D& vec, const Vector3D& center) const
 {

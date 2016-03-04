@@ -8,6 +8,7 @@
 #ifndef FORM_H_
 #define FORM_H_
 
+#include <iterator>
 #include <vector>
 #include "Matrix4.h"
 #include "Vector3D.h"
@@ -15,6 +16,7 @@
 #include "Edge.h"
 #include "PointType.h"
 #include <map>
+
 
 class Form
 {

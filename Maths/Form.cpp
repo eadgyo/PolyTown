@@ -101,28 +101,31 @@ Vector3D Form::getCentroidLocal() const
 		return getLocal();
 	else if(points.size() == 2)
 	{
-		std::vector<Vector3D> points = getPointsLocal();
-		return new Vector3D((points.at(0).x + points.at(1).x)/2,
-							(points.at(0).y + points.at(1).y)/2);
+
+		Vector3D* locals = getPointsLocal();
+		std::vector<Vector3D> points(locals, locals + size());
+		return new Vector3D((points.at(0).x() + points.at(1).x())/2,
+							(points.at(0).y() + points.at(1).y())/2);
 	}
 	Vector3D center(true);
 	float x0 = 0, y0 = 0, x1 = 0, y1 = 0, signedArea = 0, a = 0;
-	std::vector<Vector3D> points = getPointsLocal();
+	Vector3D* locals = getPointsLocal();
+	std::vector<Vector3D> points(locals, locals + size());
 	for(int j=points.size()-1, i=0; i<points.size(); j=i, i++)
 	{
-		x0 = points.at(i).x;
-		y0 = points.at(i).y;
-		x1 = points.at(j).x;
-		y1 = points.at(j).y;
+		x0 = points.at(i).x();
+		y0 = points.at(i).y();
+		x1 = points.at(j).x();
+		y1 = points.at(j).y();
 		a = x0*y1 - x1*y0;
 		signedArea += a;
-		center.x += (x0 + x1)*a;
-		center.y += (y0 + y1)*a;
+		center.setX((x0 + x1)*a + center.getX());
+		center.setY((y0 + y1)*a + center.getY());
 	}
 
 	signedArea *= 0.5;
-	center.x /= (6.0f*signedArea);
-	center.y /= (6.0f*signedArea);
+	center.setX(center.getX() / (6.0f*signedArea));
+	center.setY(center.getY() / (6.0f*signedArea));
 
 	return center;
 }
@@ -143,9 +146,8 @@ float Form::getLocalY() const
 
 const Vector3D& Form::getLocal() const
 {
-	if(size() > 0)
-		return points.at(0);
-	return Vector3D(true);
+	assert(size() > 0);
+	return points.at(0);
 }
 
 float Form::getLocalX(int n) const
@@ -851,22 +853,231 @@ void Form::getPushVector(AxesSat& axesSat, Vector3D& push, float& t)
 
 bool Form::isConvex() const
 {
+	if(size() < 3)
+		return true;
+	Vector3D* locals = getVectorsLocal();
+	int i=0;
+	float crossProductZ = 0;
+
+	while(crossProductZ == 0 && i<size())
+	{
+		crossProductZ = locals[i]%locals[(i+1)%size()];
+		i++;
+	}
+
+	for(; i<size(); i++)
+	{
+		float crossProductZ2 = locals[i]%locals[(i+1)%size()];
+
+		//Si les deux vectoriels z sont de sens différents, alors la forme n'est pas convexe
+		if(crossProductZ * crossProductZ2 < 0)
+			return false;
+	}
+
+	return true;
 }
 
 int Form::getClockwise() const
 {
+	if(size() < 3)
+		return 0;
+	double sum = 0;
+	//float sumInt = 0;
+	for(int i=0; i<size(); i++)
+	{
+		sum = sum + (PI - points.at((i+1)%size()).getAngle(Vector3D(points.at(i), points.at((i+2)%size()))));
+	}
+
+	if(PI*2 - 0.001 < std::abs(sum) && std::abs(sum) < 2*PI + 0.001f)
+	{
+		if(sum < 0)
+			return -1;
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 Edge* Form::getEdgesLocal() const
 {
+	int factor = getClockwise();
+	Edge* edges = (Edge*) malloc(size()*sizeof(Edge));
+	if(points.size() < 2 || factor == 0)
+		return edges;
+
+	PointType* pointsType = (PointType*) malloc(size()*sizeof(PointType));
+
+	if(factor == 1)
+	{
+		for(int i=size()-1, j=0; i>-1; i--, j++)
+		{
+			(pointsType[j]) PointType(points.at(i));
+			pointsType[j].posPoint = i;
+			pointsType[j].posEdge = j;
+			pointsType[j].type = -1;
+		}
+	}
+	else
+	{
+		for(int i=0; i<size(); i++)
+		{
+			(pointsType[i]) PointType(points.at(i));
+			pointsType[i].posPoint = i;
+			pointsType[i].posEdge = i;
+			pointsType[i].type = -1;
+		}
+	}
+
+	for(int i=0; i<size(); i++)
+	{
+		(edges[i]) (Edge());
+
+		edges[i].p0 = pointsType[i];
+		edges[i].p1 = pointsType[(i+1)%size()];
+
+		if(i != 0)
+		{
+			edges[i].prev = edges[i - 1];
+			edges[i - 1].next = edges[i];
+		}
+	}
+	edges[0].prev = edges[size() - 1];
+	edges[size() - 1].next = edges[0];
+
+	return edges;
 }
 
+//--------------------
+//	  Triangulate
+//--------------------
 void Form::triangulate()
 {
+	convexForms.clear();
+
+	std::vector<Form> monotonesForms = makeMonotone();
+	if(monotonesForms.size() != 0)
+	{
+		for(int i=0; i<monotonesForms.size(); i++)
+		{
+			convexForms.insert(convexForms.begin(), monotonesForms.begin(), monotonesForms.end());
+		}
+	}
+	else
+		convexForms.push_back((*this));
 }
 
+//******************
+//  Make Monotone
+//******************
 std::vector<Form> Form::makeMonotone()
 {
+	Edge* edges = getEdgesLocal();
+
+	std::vector<Form> forms();
+	if(size() < 2 || size() == 3)
+		return forms;
+
+	//***************
+	//Initialization
+	//***************
+	int sizeV = size();
+	int* v = (int) malloc(sizeV*sizeof(int));
+
+	//Scanning line l store Edges colliding with l, sorted by x
+	std::map<float, std::vector<Edge>>& l();
+	std::vector<Edge> preBufferL();
+
+	//<Edge, PointType>
+	std::map<Edge, PointType> helpers();
+	std::set<PointType> trash();
+
+	//***************
+	//   Sorting
+	//***************
+	//1) on range par ordre croissant suivant Y les points
+	sortPointsY(edges, size(), v, sizeV);
+
+	//***************
+	//     Loop
+	//***************
+	PointType p0, p1, p2;
+	//2) On applique une méthode pour chaque point
+	int pos = sizeV;
+	while(pos > -1)
+	{
+		Edge edge = edges[pos];
+
+		//On determine le type de point
+		p0 = edge.prev.p0;
+		p1 = edge.p0;
+		p2 = edge.p1;
+
+		trash.insert(p1);
+
+		//On regarde si les 2 segments débutent à partir de ce point
+		//ou finissent à partir de ce point
+		if(trash.find(p0))
+		{
+			float minX = edge.prev.getMinX();
+			ArrayList<Edge> e = l.get(minX);
+			if(e.size() == 1)
+			{
+				e.clear();
+				l.remove(minX);
+			}
+			else
+			{
+				e.remove(edge.prev);
+			}
+		}
+		else
+			preBufferL.add(edge.prev);
+
+		if(trash.contains(p2))
+		{
+			float minX = edge.getMinX();
+			ArrayList<Edge> e = l.get(minX);
+			if(e.size() == 1)
+			{
+				e.clear();
+				l.remove(minX);
+			}
+			else
+			{
+				e.remove(edge);
+			}
+		}
+		else
+			preBufferL.add(edge);
+
+		//***************
+		//     Type
+		//***************
+		determineType(pos, edges, helpers, l);
+
+		//On ajoute les nouveaux segments stockés dans le prébuffer
+		for(int i=0; i<preBufferL.size(); i++)
+		{
+			float minX = preBufferL.get(i).getMinX();
+			if(l.containsKey(minX))
+			{
+				l.get(minX).add(preBufferL.get(i));
+			}
+			else
+			{
+				ArrayList<Edge> e = new ArrayList<Edge>();
+				e.add(preBufferL.get(i));
+				l.put(minX, e);
+			}
+		}
+		preBufferL.clear();
+	}
+
+	free(edges);
+
+	return transformEdges(edges);
 }
 
 void Form::sortPointsY(Edge* edges, int sizeE, int* v, int sizeI)

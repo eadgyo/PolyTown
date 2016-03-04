@@ -39,6 +39,7 @@ public:
 	float getMagnitude() const;
 	float getSqMagnitude() const;
 	void normalize();
+	inline bool isColinear2D(const Vector3D v) const { return std::abs((*this)*(v.getPerpendicular2D())) < 0.000001f; };
 
 	// Getter
 	float get(int i) const;
@@ -53,6 +54,8 @@ public:
 	inline float getZ() const { return coor[2]; };
 	inline float getW() const { return coor[3]; };
 	inline const float* getCoor() const { return coor; };
+	inline Vector3D getPerpendicular2D() const { return Vector3D(y(), x(), 0, true); };
+
 
 	// Setter
 	inline void setX(float f) { set(0, f); };

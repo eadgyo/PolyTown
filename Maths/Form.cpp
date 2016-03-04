@@ -179,13 +179,13 @@ float Form::getY() const
 float Form::getX(int n) const
 {
 	assert(n < size());
-	Vector3D local = points.at(n);
-	float x = orientation.multiplyX(local);
+	return orientation.multiplyX(points.at(n));
 }
 
 float Form::getY(int n) const
 {
 	assert(n < size());
+	return orientation.multiplyY(points.at(n));
 }
 
 Vector3D Form::get() const
@@ -196,76 +196,186 @@ Vector3D Form::get() const
 Vector3D Form::get(int n) const
 {
 	assert(n < size());
+	Vector3D local = points.at(n);
+	Vector3D world = orientation*local;
+	return world;
 }
 
 float Form::getCenterX() const
 {
+	return orientation.getX();
 }
 
 float Form::getCenterY() const
 {
+	return orientation.getY();
 }
 
 Vector3D Form::getCenter() const
 {
+	return orientation.getPos();
 }
 
 int* Form::getXIntArray() const
 {
+	// Penser à free le tableau une fois que c'est plus utilisé
+	int* l_X = (int*) malloc(size()*sizeof(int));
+	for(int i=0; i<points.size(); i++)
+	{
+		l_X[i] = (int) getX(i);
+	}
+	return l_X;
 }
 
 int* Form::getYIntArray() const
 {
+	int* l_Y = (int*) malloc(size()*sizeof(int));
+	for(int i=0; i<points.size(); i++)
+	{
+		l_Y[i] = (int) getY(i);
+	}
+	return l_Y;
 }
 
 float Form::getMinX() const
 {
+	float xMin = getX(0);
+	for(int i=1; i<points.size(); i++)
+	{
+		float x = getX(i);
+		if(x < xMin)
+			xMin = x;
+	}
+	return xMin;
 }
 
 float Form::getMinY() const
 {
+	float yMin = getY(0);
+	for(int i=1; i<points.size(); i++)
+	{
+		float y = getY(i);
+		if(y < yMin)
+			yMin = y;
+	}
+	return yMin;
 }
 
 float Form::getMaxX() const
 {
+	float xMax = getX(0);
+	for(int i=1; i<points.size(); i++)
+	{
+		float x = getX(i);
+		if(x > xMax)
+			xMax = x;
+	}
+	return xMax;
 }
 
 float Form::getMaxY() const
 {
+	float yMax = getY(0);
+	for(int i=1; i<points.size(); i++)
+	{
+		float y = getY(i);
+		if(y > yMax)
+			yMax = y;
+	}
+	return yMax;
 }
 
-Vector3D* Form::getVectorsSatLocal() const
+// Penser à liberer lorsque fin d'utilisation du tableau
+std::vector<Vector3D> Form::getVectorsSatLocal() const
 {
+	std::vector<Vector3D> l_vectors;
+	for(int j=points.size()-1, i=0; i<points.size(); j=i, i++)
+	{
+		Vector3D v(points.at(j), points.at(i));
+		l_vectors.push_back(v.getPerpendicular2D());
+	}
+
+	//On enleve les vectors colinéaires
+	for(int i=0; i<l_vectors.size()-1; i++)
+	{
+		//Si on est en dessous de 2 vecteurs ca sert à rien de continuer,
+		//On sait que ces 2 vecteurs (ou moins) ne sont pas colinéaires
+		if(l_vectors.size() < 3)
+			break;
+
+		for(int j=i+1; j<l_vectors.size(); j++)
+		{
+			if(l_vectors.at(i).isColinear2D(l_vectors.at(j)))
+			{
+				l_vectors.erase(l_vectors.begin() + i);
+				i--;
+				break;
+			}
+		}
+	}
+	return l_vectors;
 }
 
 Vector3D* Form::getVectorsLocal() const
 {
+	Vector3D* l_vectors = (Vector3D*) malloc(size()*sizeof(Vector3D));
+	for(int j=size()-1, i=0; i<size(); j=i, i++)
+	{
+		new (l_vectors[i]) Vector3D(i, Vector3D(points.at(j), points.at(i)));
+	}
+	return l_vectors;
 }
 
 Vector3D* Form::getVectorsWorld() const
 {
+	Vector3D* l_vectors = getVectorsLocal();
+	for(int i=0; i<size(); i++)
+	{
+		l_vectors[i].set(orientation*l_vectors[i]);
+	}
+	return l_vectors;
 }
 
 Vector3D* Form::getPointsLocal() const
 {
+	return points.data();
 }
 
 Vector3D* Form::getPointsWorld() const
 {
+	if(orientation.getX() == 0 && orientation.getY() == 0 && omega == 0 && scale == 1.0f && !flipV && !flipH)
+		return getPointsLocal();
+	Vector3D* l_vectors = (Vector3D*) malloc(size()*sizeof(Vector3D));
+	for(int i=0; i<size(); i++)
+	{
+		new (l_vectors[i]) Vector3D(get(i));
+	}
+	return l_vectors;
 }
 
 Vector3D Form::transform(const Vector3D& vertex, const Vector3D& p,
 		const Vector3D& v, const Matrix4& orientation, float& t) const
 {
+	Vector3D T = p + (orientation*vertex);
+
+	if(t > 0)
+		T += (v*t);
+	return T;
 }
 
-Vector3D Form::handleEdgePoint(const Vector3D& PA, const Vector3D& PB,
+Vector3D Form::handleEdgePoint(const Vector3D& PA, const Vector3D& PB1,
 		const Vector3D& PB2) const
 {
+	Vector3D edgeB(PB1, PB2);
+	Vector3D projection(PB1, PB2);
+	float fProjection = edgeB*projection;
+
+	return edgeB*fProjection;
 }
 
 Vector3D& Form::operator [](int i)
 {
+	return points[i];
 }
 
 void Form::updateCenter()
@@ -311,90 +421,150 @@ void Form::updateOrientation()
 
 void Form::setCenter(const Vector3D& center)
 {
+	Vector3D vec(getCenter(), center);
+	translate(vec);
 }
 
 void Form::setPoint(int n, const Vector3D& p)
 {
+	assert(n < size());
+	points[n].set(orientation.getInverse()*p);
 }
 
 void Form::addPointFree(const Vector3D& p)
 {
+	// Pas d'actualisation du centre
+	if(orientation.getDeterminant() != 0)
+		points.push_back(orientation.getInverse()*p);
+	else
+		points.push_back(Vector3D(getCenter(), p));
+	convexForms.clear();
 }
 
 void Form::addPoint(const Vector3D& p)
 {
+	addPointFree(p);
+	updateCenter();
 }
 
 void Form::removePoint(int i)
 {
+	assert(i < size() && i > 0);
+	Vector3D p = points.erase(points.begin() + i);
+	convexForms.clear();
+	updateCenter();
 }
 
 void Form::removeLast()
 {
+	removePoint(size() - 1);
 }
 
 Vector3D Form::transformLocalToWorld(const Vector3D& point) const
 {
+	return orientation*point;
 }
 
 Vector3D Form::transformWorldToLocal(const Vector3D& point) const
 {
+	Matrix4 inverse = orientation.getInverse();
+	return inverse*point;
 }
 
 void Form::translate(const Vector3D& v)
 {
+	orientation.translate(v);
 }
 
 void Form::translateX(float x)
 {
+	orientation.translateX(x);
 }
 
 void Form::translateY(float y)
 {
+	orientation.translateY(y);
 }
 
 void Form::rotateDegrees(float omega, const Vector3D& center)
 {
+	rotateRadians((float) (omega*PI)/180, center);
 }
 
 void Form::rotateRadians(float omega, const Vector3D& center)
 {
+	this->omega += omega;
+	orientation.rotateRadiansZFree(omega, center);
+	updateOrientation();
 }
 
 void Form::scaleF(float factor, const Vector3D& center)
 {
+	scale *= factor;
+	orientation.scale(factor, center);
 }
 
 void Form::flipHF(const Vector3D& center)
 {
+	flipH = !flipH;
+	orientation.flipH(center);
 }
 
 void Form::flipVF(const Vector3D& center)
 {
+	flipV = !flipV;
+	orientation.flipV(center);
 }
 
 void Form::setPos(const Vector3D& v)
 {
+	assert(v.getW() != 0); // Ce n'est pas un point mais un vecteur
+	orientation.setPos(v);
 }
 
 void Form::setRadians(float omega)
 {
+	float f = omega - this->omega;
+	this->omega = omega;
+	orientation.rotateRadiansZFree(f, Vector3D(true));
+	updateOrientation();
 }
 
 void Form::setScale(float scale)
 {
+	float factor = scale/this->scale;
+	assert(factor == factor); // Pas de cas NaN
+	orientation.scale(factor);
 }
 
 void Form::setFlipH(bool flipH)
 {
+	if(this->flipH != flipH)
+	{
+		this->flipH = flipH;
+		orientation.flipX();
+	}
 }
 
 void Form::setFlipV(bool flipV)
 {
+	if(this->flipV != flipV)
+	{
+		this->flipV = flipV;
+		orientation.flipY();
+	}
 }
 
 void Form::calculateSurface()
 {
+	surface = 0;
+	if(points.size() < 3)
+		return;
+	for(int i=points.size()-2, i1=points.size()-1, i2=0; i2<points.size(); i=i1, i1=i2, i2++)
+	{
+		surface += points.at(i1).x()*(points.at(i2).y()-points.at(i).y()) + points.at(i1).y()*(points.at(i).x()-points.at(i2).x());
+	}
+	surface /= 2;
 }
 
 bool Form::collisionSat(const Form& form) const

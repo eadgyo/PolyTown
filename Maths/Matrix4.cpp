@@ -381,7 +381,58 @@ float Matrix4::multiplyZ(const Vector3D& v) const
 {
 	return m[8]*v.getX() + m[9]*v.getY() + m[10]*v.getZ() + m[11]*v.getW();
 }
-
+void Matrix4::translate(const Vector3D& v)
+{
+	m[3] += v.getX();
+	m[7] += v.getY();
+	m[11] += v.getZ();
+	// W == 0, donc pas de translation suivant la coordonnée W
+}
+void Matrix4::rotateRadiansZFree(float omega, const Vector3D& center)
+{
+	Vector3D pos = getPos();
+	Matrix4 rotation = createRotateZ(omega);
+	rotation.setPos(center);
+	setPos(rotation*pos);
+}
+void Matrix4::scale(float factor, const Vector3D& center)
+{
+	Matrix4 l_scale = createIdentity(factor);
+	l_scale.setPos(center);
+	(*this) *= l_scale;
+}
+void Matrix4::scale(float factor)
+{
+	scale(factor, Vector3D(true));
+}
+void Matrix4::flipX(const Vector3D& center)
+{
+	Matrix4 l_flipH = createIdentity();
+	l_flipH[0, 0] = -1.0f;
+	l_flipH.setPos(center);
+	(*this) *= l_flipH;
+}
+void Matrix4::flipY(const Vector3D& center)
+{
+	Matrix4 l_flipV = createIdentity();
+	l_flipV[1, 1] = -1.0f;
+	l_flipV.setPos(center);
+	(*this) *= l_flipV;
+}
+void Matrix4::flipZ(const Vector3D& center)
+{
+	Matrix4 l_flipZ = createIdentity();
+	l_flipZ[2, 2] = -1.0f;
+	l_flipZ.setPos(center);
+	(*this) *= l_flipZ;
+}
+void Matrix4::flipW(const Vector3D& center)
+{
+	Matrix4 l_flipW = createIdentity();
+	l_flipW[3, 3] = -1.0f;
+	l_flipW.setPos(center);
+	(*this) *= l_flipW;
+}
 
 //====================================================
 // Create

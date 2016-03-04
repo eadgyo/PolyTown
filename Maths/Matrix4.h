@@ -44,6 +44,12 @@ public:
 	Matrix4 getInverse() const;
 	Matrix4 getTranspose() const;
 	inline const float* const getMatrix4() { return m; };
+	inline float getX() const { return m[3]; };
+	inline float getY() const { return m[7]; };
+	inline float getZ() const { return m[11]; };
+	inline float getW() const { return m[15]; };
+	inline Vector3D getPos() const { return Vector3D(m[3], m[7], m[11], m[15]); };
+
 
 	// Setter
 	void setInverse(const Matrix4& m4);
@@ -75,6 +81,17 @@ public:
 	float multiplyX(const Vector3D& v) const;
 	float multiplyY(const Vector3D& v) const;
 	float multiplyZ(const Vector3D& v) const;
+	void translate(const Vector3D& v);
+	inline void translateX(float x) { m[3] += x; };
+	inline void translateY(float y) { m[5] += y; };
+	inline void translateZ(float z) { m[11] += z; };
+	void rotateRadiansZFree(float omega, const Vector3D& center);
+	void scale(float factor, const Vector3D& center);
+	void scale(float factor);
+	void flipX(const Vector3D& center);
+	void flipY(const Vector3D& center);
+	void flipZ(const Vector3D& center);
+	void flipW(const Vector3D& center);
 
 	// Create
 	static Matrix4 createIdentity();

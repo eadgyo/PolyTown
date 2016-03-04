@@ -72,7 +72,7 @@ public:
 	float getMaxY() const;
 	inline float getSurface() const { return surface; };
 
-	Vector3D* getVectorsSatLocal() const;
+	std::vector<Vector3D> getVectorsSatLocal() const;
 	Vector3D* getVectorsLocal() const;
 	Vector3D* getVectorsWorld() const;
 	Vector3D* getPointsLocal() const;

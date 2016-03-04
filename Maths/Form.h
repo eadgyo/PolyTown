@@ -111,19 +111,19 @@ public:
 	void calculateSurface();
 
 	// Collisions detection
-	bool collisionSat(const Form& form) const;
-	bool collisionSat(const Form& form, const Vector3D& VA,
-			const Vector3D& VB, const Vector3D& push, float& t) const;
+	bool collisionSat(Form& form);
+	bool collisionSat(Form& form, const Vector3D& VA,
+			const Vector3D& VB, const Vector3D& push, float& t);
 	bool collisionSatFree(const Form& B, const Vector3D& VA, const Vector3D& VB);
 	bool intervalIntersectionFree(const Vector3D& axis, const Vector3D* pointsA, int sizeA,
-			const Vector3D* pointsB, const Vector3D& relPos, const Vector3D& relVel, const Matrix4& orientI);
+			const Vector3D* pointsB, int sizeB, const Vector3D& relPos, const Vector3D& relVel, const Matrix4& orientI) const;
 
-	bool collisionSatA(const Form& B, const Vector3D& VA, const Vector3D& VB, const Vector3D& push, float& t);
+	bool collisionSatA(const Form& B, const Vector3D& VA, const Vector3D& VB, const Vector3D& push, float& t) const;
 	bool intervalIntersection(const Vector3D& axis, const Vector3D* pointsA, int sizeA,
-			const Vector3D* pointsB, const Vector3D& relPos, const Vector3D& relVel, const Matrix4& orientI,
-			AxesSat& axes, float& t);
+			const Vector3D* pointsB, int sizeB, const Vector3D& relPos, const Vector3D& relVel, const Matrix4& orientI,
+			AxesSat& axes, float& t) const;
 
-	bool getInterval(const Vector3D& axis, const Vector3D* points, int size);
+	bool getInterval(const Vector3D& axis, const Vector3D* points, int size) const;
 	void getPushVector(AxesSat& axesSat, Vector3D& push, float& t);
 
 

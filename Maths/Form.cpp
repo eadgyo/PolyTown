@@ -507,13 +507,13 @@ void Form::scaleF(float factor, const Vector3D& center)
 void Form::flipHF(const Vector3D& center)
 {
 	flipH = !flipH;
-	orientation.flipH(center);
+	orientation.flipX(center);
 }
 
 void Form::flipVF(const Vector3D& center)
 {
 	flipV = !flipV;
-	orientation.flipV(center);
+	orientation.flipY(center);
 }
 
 void Form::setPos(const Vector3D& v)
@@ -567,43 +567,286 @@ void Form::calculateSurface()
 	surface /= 2;
 }
 
-bool Form::collisionSat(const Form& form) const
+bool Form::collisionSat(Form& form)
 {
+	if(convexForms.size() == 0)
+		updateConvexForms();
+	if(form.getConvexForms().size() == 0)
+		form.updateConvexForms();
+
+	for(int i=0; i<convexForms.size(); i++)
+	{
+		Vector3D VA(true);
+		Vector3D VB(true);
+		if(convexForms.at(i).collisionSatFree(form, VA, VB))
+			return true;
+	}
+	return false;
 }
 
-bool Form::collisionSat(const Form& form, const Vector3D& VA,
-		const Vector3D& VB, const Vector3D& push, float& t) const
+bool Form::collisionSat(Form& form, const Vector3D& VA,
+		const Vector3D& VB, const Vector3D& push, float& t)
 {
+	if(convexForms.size() == 0)
+		updateConvexForms();
+	if(form.getConvexForms().size() == 0)
+		form.updateConvexForms();
+
+	for(int i=0; i<convexForms.size(); i++)
+	{
+		Vector3D VA(true);
+		Vector3D VB(true);
+		if(convexForms.at(i).collisionSatA(form, VA, VB, push, t))
+			return true;
+	}
+	return false;
 }
 
 bool Form::collisionSatFree(const Form& B, const Vector3D& VA,
 		const Vector3D& VB)
 {
+	Form& A = (*this);
+
+	//Les vecteurs VA et VB sont exprimés dans le repère world
+	//Les points PA et PB sont exprimés dans le repères world
+
+	Matrix4 OA = A.getOrientation();
+	Matrix4 OB = B.getOrientation();
+	Matrix4 OBi = OB.getInverse();
+	//La matrice orient permet le passage d'un point du repère local de A à B
+	Matrix4 orient = OA*OBi;
+	//La matrice orientI permet le passage d'un point du repère local de B à A
+	Matrix4 orientI = orient.getInverse();
+
+	Vector3D PA = getCenter();
+	Vector3D PB = B.getCenter();
+
+	Vector3D relPos = OBi*(PA-PB);
+	Vector3D relVel = OBi*(VA-VB);
+
+	Vector3D* pointsA = getPointsLocal();
+	Vector3D* pointsB = B.getPointsLocal();
+
+	std::vector<Vector3D> axisA = getVectorsSatLocal();
+	std::vector<Vector3D> axisB = B.getVectorsSatLocal();
+
+	AxesSat axesSat = new AxesSat();
+
+	int sizeA = size();
+	int sizeB = B.size();
+
+	float squaredVel = relVel.getSqMagnitude();
+	if(squaredVel > 0.000001f)
+	{
+		if(!intervalIntersectionFree(relVel.getPerpendicular2D(), pointsA, sizeA, pointsB, sizeB, relPos, relVel, orientI))
+		{
+			free(pointsA); free(pointsB);
+			return false;
+		}
+	}
+
+	for(int i=0; i<axisA.size(); i++)
+	{
+		if(!intervalIntersectionFree(orient*axisA.at(i), pointsA, sizeA, pointsB, sizeB, relPos, relVel, orientI))
+		{
+			free(pointsA); free(pointsB);
+			return false;
+		}
+	}
+
+	for(int i=0; i<axisB.size(); i++)
+	{
+		if(!intervalIntersectionFree(axisB.at(i), pointsA, sizeA, pointsB, sizeB, relPos, relVel, orientI))
+		{
+			free(pointsA); free(pointsB);
+			return false;
+		}
+	}
+	free(pointsA); free(pointsB);
+	return true;
 }
 
 bool Form::intervalIntersectionFree(const Vector3D& axis,
-		const Vector3D* pointsA, int sizeA, const Vector3D* pointsB,
-		const Vector3D& relPos, const Vector3D& relVel, const Matrix4& orientI)
+		const Vector3D* pointsA, int sizeA, const Vector3D* pointsB, int sizeB,
+		const Vector3D& relPos, const Vector3D& relVel, const Matrix4& orientI) const
 {
+	Vector3D minMaxA = getInterval(orientI*axis, pointsA, sizeA);
+	Vector3D minMaxB = getInterval(axis, pointsB, sizeB);
+
+	//On ajoute le décalage entre les deux repères
+	float h = relPos*(axis);
+	minMaxA.x += h;
+	minMaxA.y += h;
+
+	//On calcule les distances pour determiner le chevauchement
+	float d0 = minMaxA.x - minMaxB.y;
+	float d1 = minMaxB.x - minMaxA.y;
+
+	if(d0 > 0 || d1 > 0)//Pas de chevauchement
+		return false;
+	return true;
 }
 
 bool Form::collisionSatA(const Form& B, const Vector3D& VA, const Vector3D& VB,
-		const Vector3D& push, float& t)
+		const Vector3D& push, float& t) const
 {
+	Form& A = (*this);
+
+	// Les vecteurs VA et VB sont exprimés dans le repère world
+	// Les points PA et PB sont exprimés dans le repères world
+
+	Matrix4 OA = A.getOrientation();
+	Matrix4 OB = B.getOrientation();
+	Matrix4 OBi = OB.getInverse();
+	// La matrice orient permet le passage d'un point du repère local de A à B
+	Matrix4 orient = OA*OBi;
+	// La matrice orientI permet le passage d'un point du repère local de B à A
+	Matrix4 orientI = orient.getInverse();
+
+	Vector3D PA = getCenter();
+	Vector3D PB = B.getCenter();
+
+	Vector3D relPos = OBi*(PA-PB);
+	Vector3D relVel = OBi*(VA-VB);
+
+	Vector3D* pointsA = getPointsLocal();
+	Vector3D* pointsB = B.getPointsLocal();
+
+	std::vector<Vector3D> axisA = getVectorsSatLocal();
+	std::vector<Vector3D> axisB = B.getVectorsSatLocal();
+
+	AxesSat axesSat = new AxesSat();
+
+	int sizeA = size();
+	int sizeB = B.size();
+
+	float squaredVel = relVel.getSqMagnitude();
+	if(squaredVel > 0.000001f)
+	{
+		if(!intervalIntersection(relVel.getPerpendicular2D(), pointsA, sizeA, pointsB, sizeB, relPos, relVel, orientI, axesSat, t))
+		{
+			free(pointsA); free(pointsB);
+			return false;
+		}
+	}
+
+	for(int i=0; i<axisA.size(); i++)
+	{
+		if(!intervalIntersection(orient*axisA.at(i), pointsA, sizeA, pointsB, sizeB, relPos, relVel, orientI, axesSat, t))
+		{
+			free(pointsA); free(pointsB);
+			return false;
+		}
+	}
+
+	for(int i=0; i<axisB.size(); i++)
+	{
+		if(!intervalIntersection(axisB.at(i), pointsA, sizeA, pointsB, sizeB, relPos, relVel, orientI, axesSat, t))
+		{
+			free(pointsA); free(pointsB);
+			return false;
+		}
+	}
+	free(pointsA); free(pointsB);
+	return true;
 }
 
 bool Form::intervalIntersection(const Vector3D& axis, const Vector3D* pointsA,
-		int sizeA, const Vector3D* pointsB, const Vector3D& relPos,
-		const Vector3D& relVel, const Matrix4& orientI, AxesSat& axes, float& t)
+		int sizeA, const Vector3D* pointsB, int sizeB, const Vector3D& relPos,
+		const Vector3D& relVel, const Matrix4& orientI, AxesSat& axes, float& t) const
 {
+	Vector3D minMaxA = getInterval(orientI*axis, pointsA, sizeA);
+	Vector3D minMaxB = getInterval(axis, pointsB, sizeB);
+
+	// On ajoute le décalage entre les deux repères
+	float h = relPos*axis;
+	minMaxA.x += h;
+	minMaxA.y += h;
+
+	// On calcule les distances pour determiner le chevauchement
+	float d0 = minMaxA.x - minMaxB.y;
+	float d1 = minMaxB.x - minMaxA.y;
+
+	if(d0 > 0 || d1 > 0) // Pas de chevauchement
+	{
+		float fVel = relVel*axis;
+		if(std::abs(fVel) > 0.00000001f)
+		{
+			float t0 =-d0/fVel;
+			float t1 = d1/fVel;
+
+			if(t0 > t1) {float temp = t0; t0 = t1; t1 = temp;}
+			float l_tAxis = (t0 > 0)? t0:t1;
+
+			if(l_tAxis < 0 || l_tAxis > t)
+				return false;
+
+			axes.axesT += (axis);
+			axes.tAxesT += (l_tAxis);
+			return true;
+		}
+		return false;
+	}
+	else
+	{
+		axes.axes += (axis);
+		axes.tAxes += ((d0 > d1)? d0:d1);
+		return true;
+	}
 }
 
-bool Form::getInterval(const Vector3D& axis, const Vector3D* points, int size)
+bool Form::getInterval(const Vector3D& axis, const Vector3D* points, int size) const
 {
+	Vector3D minMax(points[0].getX(), points[0].getY(), 0, true);
+	for(int i=1; i<size; i++)
+	{
+		float scalar = points[i]*axis;
+		if(scalar < minMax.x)
+		{
+			minMax.x = scalar;
+		}
+		else if(scalar > minMax.y)
+		{
+			minMax.y = scalar;
+		}
+	}
+	return minMax;
 }
 
 void Form::getPushVector(AxesSat& axesSat, Vector3D& push, float& t)
 {
+	t = 0;
+	bool found = false;
+	for(int i=0; axesSat.axesT.size(); i++)
+	{
+		if(axesSat.tAxesT.at(i) > t)
+		{
+			t = axesSat.tAxesT.at(i);
+			push.set(axesSat.axesT.at(i));
+			found = true;
+		}
+	}
+	push.normalize();
+
+	if(!found)
+	{
+		float magnitude1 = axesSat.axes[0].normalize();
+		axesSat.tAxes[0] = axesSat.tAxes.at(0)/magnitude1;
+		t = axesSat.tAxes[0];
+		push.set(axesSat.axes[0]);
+
+		for(int i=1; i<axesSat.axes.size(); i++)
+		{
+			float magnitude = axesSat.axes[i].normalize();
+			axesSat.tAxes[1] = axesSat.tAxes[i]/magnitude;
+			if(axesSat.tAxes[i] > t)
+			{
+				t = axesSat.tAxes[i];
+				push.set(axesSat.axes[i]);
+				found = true;
+			}
+		}
+	}
 }
 
 bool Form::isConvex() const

@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Maths/Rectangle.h"
 #include "Maths/Form.h"
+#include "FileManager.h"
 
 int main(int argc, char* args[])
 {
@@ -26,7 +27,8 @@ int main(int argc, char* args[])
     }
     SDL_Delay(3000);*/
 
-	Form form;
+
+
 
     return 0;
 }

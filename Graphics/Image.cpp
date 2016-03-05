@@ -16,9 +16,9 @@ Image::Image()
 	setColorFilter(0.0f,0.0f,0.0f,0.0f);
 }
 
-Image::Image(const Image& image)
+Image::Image(Image& image)
 {
-	this();
+	Image();
 	set(image);
 }
 
@@ -99,7 +99,7 @@ Vector3D Image::getLeftPos() const
 	return rec.getLeft();
 }
 
-void Image::setFrames(int start, int end) const
+void Image::setFrames(int start, int end)
 {
 	startFrame = start;
 	endFrame = end;
@@ -140,7 +140,7 @@ const SDL_Color& Image::getColorFilter() const
 	return colorFilter;
 }
 
-const SpriteData* Image::getSpriteData() const
+SpriteData* Image::getSpriteData()
 {
 	return spriteData;
 }
@@ -165,7 +165,7 @@ float Image::getScale() const
 	return rec.getScale();
 }
 
-bool Image::isInitialized()
+bool Image::getIsInitialized()
 {
 	return isInitialized;
 }
@@ -189,7 +189,7 @@ float Image::getSpriteDataWidth() const
 ///////////////////
 //		Set      //
 ///////////////////
-void Image::set(const Image& image)
+void Image::set(Image& image)
 {
 	SpriteData* l_spriteData = image.getSpriteData();
 	initialize(image.getGraphics(), (int) l_spriteData->rect->getWidth(), (int) l_spriteData->rect->getHeight(), image.getCols(), l_spriteData->texture, image.getTextureName());
@@ -295,9 +295,6 @@ void Image::setFlipV(bool b, const Vector3D& center)
 {
 }
 
-void Image::setVisible(float visible)
-{
-}
 
 void Image::setSpriteDataRect(sRectangle* rect)
 {
@@ -313,7 +310,7 @@ void Image::setFlipH(bool flipHorizontal)
 {
 	if(spriteData->flipH != flipHorizontal)
 	{
-		rec.flipH(getPos());
+		rec.flipHF(getPos());
 	}
 	spriteData->flipH = flipHorizontal;
 }
@@ -322,7 +319,7 @@ void Image::setFlipV(bool flipVertical)
 {
 	if(spriteData->flipV != flipVertical)
 	{
-		rec.flipV(getPos());
+		rec.flipVF(getPos());
 	}
 	spriteData->flipV = flipVertical;
 }
@@ -330,7 +327,7 @@ void Image::setFlipV(bool flipVertical)
 void Image::setScale(float scale)
 {
 	float factor = scale*(1.0f/getScale());
-	scale(factor, getPos());
+	this->scale(factor, getPos());
 }
 
 void Image::setGraphics(Graphics* g)
@@ -371,11 +368,11 @@ void Image::clearTexture()
 
 void Image::loadTexture()
 {
-	this->spriteData->texture = FileManager::getInstance().getDefTexture(spriteData->textureName);
+	// this->spriteData->texture = FileManager::getInstance().getDefTexture(spriteData->textureName);
 }
 
 void Image::initialize(Graphics* graphics, int width, int height, int cols,
-		const SDL_Surface* texture, std::string textureName)
+		SDL_Surface* texture, std::string textureName)
 {
 	this->graphics = graphics;
 	spriteData->texture = texture;
@@ -394,11 +391,12 @@ void Image::initialize(Graphics* graphics, int width, int height, int cols,
 
 void Image::draw()
 {
-	draw((*graphics));
+	draw(graphics);
 }
 
-void Image::draw(Graphics& g)
+void Image::draw(Graphics* g)
 {
+	// (g) && (spriteData->texture) &&
 	if(g && spriteData->texture && visible >= 0.01f)
 	{
 		/*
@@ -442,10 +440,10 @@ void Image::draw(Graphics& g)
 
 void Image::draw(const Vector3D& translation)
 {
-	draw((*graphics), translation);
+	draw(graphics, translation);
 }
 
-void Image::draw(Graphics& g, const Vector3D& translation)
+void Image::draw(Graphics* g, const Vector3D& translation)
 {
 	if(g && spriteData->texture && visible >= 0.01f)
 	{
@@ -453,7 +451,7 @@ void Image::draw(Graphics& g, const Vector3D& translation)
 	}
 }
 
-void Image::draw(Graphics& g, const Vector3D& translation, float scale)
+void Image::draw(Graphics* g, const Vector3D& translation, float scale)
 {
 	if(g && spriteData->texture && visible >= 0.01f)
 	{
@@ -518,22 +516,22 @@ void Image::translateY(float vecY)
 
 void Image::flipH(const Vector3D& center)
 {
-	rec.flipH(center);
+	rec.flipHF(center);
 	spriteData->flipH = !spriteData->flipH;
 }
 
 void Image::flipV(const Vector3D& center)
 {
-	rec.flipV(center);
+	rec.flipVF(center);
 	spriteData->flipV = !spriteData->flipV;
 }
 
 void Image::scale(float factor, const Vector3D& center)
 {
 	if(factor)
-		rec.scale(factor, center);
+		rec.scaleF(factor, center);
 	else
-		rec.scale(0.0001f, center);
+		rec.scaleF(0.0001f, center);
 }
 
 void Image::rotateRadians(float radians, const Vector3D& center)

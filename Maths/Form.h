@@ -10,6 +10,7 @@
 
 #include <iterator>
 #include <vector>
+#include <deque>
 #include "Matrix4.h"
 #include "Vector3D.h"
 #include <set>
@@ -21,8 +22,6 @@
 
 class Form
 {
-
-
 public:
 	Form(int size);
 	Form();
@@ -49,15 +48,15 @@ public:
 	float getLocalX() const;
 	float getLocalY() const;
 	const Vector3D& getLocal() const;
-	float getLocalX(int n) const;
-	float getLocalY(int n) const;
-	Vector3D getLocal(int n) const;
+	float getLocalX(unsigned n) const;
+	float getLocalY(unsigned n) const;
+	Vector3D getLocal(unsigned n) const;
 	float getX() const;
 	float getY() const;
-	float getX(int n) const;
-	float getY(int n) const;
+	float getX(unsigned n) const;
+	float getY(unsigned n) const;
 	Vector3D get() const;
-	Vector3D get(int n) const;
+	Vector3D get(unsigned n) const;
 	float getCenterX() const;
 	float getCenterY() const;
 	Vector3D getCenter() const;
@@ -83,10 +82,10 @@ public:
 
 	// Setter
 	void setCenter(const Vector3D& center);
-	void setPoint(int n, const Vector3D& p);
+	void setPoint(unsigned n, const Vector3D& p);
 	void addPointFree(const Vector3D& p);
 	void addPoint(const Vector3D& p);
-	void removePoint(int i);
+	void removePoint(unsigned i);
 	void removeLast();
 
 	// Transformations
@@ -124,7 +123,7 @@ public:
 	Vector3D getInterval(const Vector3D& axis, const Vector3D* points, unsigned size) const;
 	void getPushVector(AxesSat& axesSat, Vector3D& push, float& t);
 
-	std::vector<Form> splitUnsecured(const Vector3D& p0, const Vector3D& p1, std::vector<std::set<Vector3D>> bst);
+	std::vector<Form> splitUnsecured(const Vector3D& p0, const Vector3D& p1, std::vector< std::set<Vector3D> > bst);
 
 	// Convex
 	bool isConvex() const;
@@ -136,28 +135,27 @@ public:
 
 	// Make Monotone
 	std::vector<Form> makeMonotone();
-	void sortPointsY(std::vector<Edge> edges, int* v, unsigned sizeI);
-	void determineType(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers, std::map<float, std::vector<Edge>>& I);
-	Edge* getLeftEdge(int pos, std::vector<Edge> edges, std::map<float, std::vector<Edge>>& I);
+	void sortPointsY(std::vector<Edge>& edges, int* v, unsigned sizeI);
+	void sortPointsY(std::vector<Edge>& edges, std::vector<int>& v);
+	void determineType(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers, std::map<float, std::vector<Edge> >& I);
+	Edge* getLeftEdge(int pos, std::vector<Edge> edges, std::map<float, std::vector<Edge> >& I);
 	Edge* getLeftEdge(PointType& p, std::vector<Edge> lEdges);
 	std::vector<Form> transformEdges(std::vector<Edge> edges);
 	void handleStartVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers);
-	void handleSplitVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers, std::map<float, std::vector<Edge>>& I);
-	void handleMergeVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers,  std::map<float, std::vector<Edge>>& I);
+	void handleSplitVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers, std::map<float, std::vector<Edge> >& I);
+	void handleMergeVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers,  std::map<float, std::vector<Edge> >& I);
 	void handleEndVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers);
-	void handleRegularVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers,  std::map<float, std::vector<Edge>>& I);
-	int numberLeftEdges(int pos, std::vector<Edge> edges, std::map<float, std::vector<Edge>>& I);
+	void handleRegularVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers,  std::map<float, std::vector<Edge> >& I);
+	int numberLeftEdges(int pos, std::vector<Edge> edges, std::map<float, std::vector<Edge> >& I);
 	int numberLeftEdges(PointType& p, std::vector<Edge> edges);
 	std::vector<Form> triangulateMonotone();
-	void createChains(int* v, unsigned size, std::vector<Edge> edges, std::set<PointType> lChain);
+	void createChains(int* v, int sizeV, std::vector<Edge> edges, std::set<PointType> lChain);
 	std::vector<Form> getTriangulation();
 
 	void setConvex(const std::vector<Form>& forms);
 	const std::vector<Form>& getConvexForms() const;
 	inline const int getConvexFormsSize() const { return convexForms.size(); };
 	void updateConvexForms();
-
-private:
 
 protected:
 	Matrix4 orientation;

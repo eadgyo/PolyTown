@@ -13,6 +13,7 @@ class Matrix4;
 #include "Quaternion.h"
 #include "Vector3D.h"
 
+
 class Matrix4
 {
 public:
@@ -36,7 +37,7 @@ public:
 	void operator*=(const Matrix4& m4);
 	Vector3D operator*(const Vector3D vec) const;
 	float& operator[](int i);
-	float& operator[](int i, int j);
+	float& get(int i, int j);
 
 	// Getter
 	const float get(int i) const { assert(i >= 0 && i < SIZE_M); return m[i]; };
@@ -48,7 +49,7 @@ public:
 	inline float getY() const { return m[7]; };
 	inline float getZ() const { return m[11]; };
 	inline float getW() const { return m[15]; };
-	inline Vector3D getPos() const { return Vector3D(m[3], m[7], m[11], m[15]); };
+	Vector3D getPos() const;
 
 
 	// Setter

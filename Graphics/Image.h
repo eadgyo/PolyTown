@@ -2,17 +2,23 @@
 #define _IMAGE_H_
 #include "string.h"
 #include "Graphics.h"
-#include "Constant.h"
+#include "../Constant.h"
 #include <assert.h>
+#include "SpriteData.h"
+#include "../Maths/Vector3D.h"
+#include "../Maths/Rectangle.h"
+#include "../Maths/sRectangle.h"
 
 class Image
 {
 public:
 	Image();
-	Image(const Image& image);
+	Image(Image& image);
 	virtual ~Image();
 	Image clone();
 	void reset();
+
+	bool getIsInitialized();
 
 	// Getter
 	const Vector3D getPos() const { return rec.getCenter(); };
@@ -27,7 +33,6 @@ public:
 	float getX() const;
 	float getY() const;
 	Vector3D getLeftPos() const;
-	void setFrames(int start, int end) const;
 	float getRadians() const;
 	float getRadians(const Vector3D& vec) const;
 	float getDegrees() const;
@@ -35,7 +40,7 @@ public:
 	int getCurrentFrame() const;
 	const sRectangle* getSpriteDataRect() const;
 	const SDL_Color& getColorFilter() const;
-	const SpriteData* getSpriteData() const;
+	SpriteData* getSpriteData();
 	const bool getFlipV() const;
 	const bool getFlipH() const;
 	Graphics* getGraphics() const;
@@ -46,9 +51,10 @@ public:
 	float getSpriteDataWidth() const;
 
 	// Setter
+	void setFrames(int start, int end);
 	void setColorFilter(float r, float g, float b) { colorFilter.r = r; colorFilter.g = g; colorFilter.b = b; };
 	void setColorFilter(float a, float r, float g, float b) { colorFilter.a = a; colorFilter.r = r; colorFilter.g = g; colorFilter.b = b; };
-	void set(const Image& image);
+	void set(Image& image);
 	void setCols(int cols);
 	void setIsDisplayingRec(bool isDisplayingRec);
 	void setX(float x);
@@ -83,12 +89,12 @@ public:
 	void clearTexture();
 	void loadTexture();
 
-	void initialize(Graphics* graphics, int width, int height, int cols, const SDL_Surface* texture, std::string textureName);
+	void initialize(Graphics* graphics, int width, int height, int cols, SDL_Surface* texture, std::string textureName);
 	void draw();
-	void draw(Graphics& g);
+	void draw(Graphics* g);
 	void draw(const Vector3D& translation);
-	void draw(Graphics& g, const Vector3D& translation);
-	void draw(Graphics& g, const Vector3D& translation, float scale);
+	void draw(Graphics* g, const Vector3D& translation);
+	void draw(Graphics* g, const Vector3D& translation, float scale);
 	void setCurrentFrame(int current);
 	bool hasAlpha();
 	void setRect();
@@ -101,7 +107,6 @@ public:
 	void flipV(const Vector3D& center);
 	void scale(float factor, const Vector3D& center);
 	void rotateRadians(float radians, const Vector3D& center);
-	void setVisible(float f);
 
 protected:
 	Graphics* graphics;

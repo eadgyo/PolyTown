@@ -8,6 +8,7 @@
 #ifndef EDGE_H_
 #define EDGE_H_
 #include "PointType.h"
+#include <iostream>
 
 struct Edge
 {
@@ -22,7 +23,18 @@ struct Edge
 			return p0->x();
 		else
 			return p1->x();
-	}
+	};
+
+	inline bool operator<(const Edge& e) const
+	{
+		std::cout << "What?";
+		return false;
+	};
+
+	inline bool operator==(const Edge& e) const
+	{
+		return this == &e;
+	};
 };
 
 

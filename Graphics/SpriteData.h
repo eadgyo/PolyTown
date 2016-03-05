@@ -4,6 +4,7 @@
 
 #include <SDL2/SDL.h>
 #include <string.h>
+#include "../Maths/sRectangle.h"
 
 class SpriteData
 {
@@ -16,7 +17,7 @@ public:
 		texture = NULL;
 		textureName = "";
 	};
-	inline SpriteData(sRectangle rect)
+	inline SpriteData(sRectangle* rect)
 	{
 		flipH = false;
 		flipV = false;

@@ -9,6 +9,7 @@
 #ifndef QUATERNION_H_
 #define QUATERNION_H_
 class Quaternion;
+
 #include "Vector3D.h"
 #include "Matrix4.h"
 #include <assert.h>
@@ -46,10 +47,12 @@ public:
 	void set(const Quaternion& q);
 
 	// Surchage opérateurs
+	Quaternion operator-() const;
 	Quaternion operator*(const Quaternion& q) const;
 	Vector3D operator*(const Vector3D& v) const;
 	void operator*=(const Quaternion& q);
-	Quaternion operator*(const float& f) const;
+	Quaternion operator*(int f) const;
+	Quaternion operator*(float f) const;
 	void operator*=(const float& f);
 	Quaternion operator/(const Quaternion& q) const;
 	void operator/=(const Quaternion& q);
@@ -78,8 +81,8 @@ public:
 
 	void display() const;
 
-private:
 	float r, i, j, k;
+
 };
 
 #endif /* QUATERNION_H_ */

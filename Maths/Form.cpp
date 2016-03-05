@@ -33,7 +33,7 @@ Form::Form(const Form& form)
 	}
 
 	points.reserve(form.size());
-	for(int i=0; i<form.size(); i++)
+	for(unsigned i=0; i<form.size(); i++)
 	{
 		points.push_back(form.get(i).copy());
 	}
@@ -111,7 +111,7 @@ Vector3D Form::getCentroidLocal() const
 	float x0 = 0, y0 = 0, x1 = 0, y1 = 0, signedArea = 0, a = 0;
 	const Vector3D* locals = getPointsLocal();
 	std::vector<Vector3D> points(locals, locals + size());
-	for(int j=points.size()-1, i=0; i<points.size(); j=i, i++)
+	for(unsigned j=points.size()-1, i=0; i<points.size(); j=i, i++)
 	{
 		x0 = points.at(i).x();
 		y0 = points.at(i).y();
@@ -150,19 +150,19 @@ const Vector3D& Form::getLocal() const
 	return points.at(0);
 }
 
-float Form::getLocalX(int n) const
+float Form::getLocalX(unsigned n) const
 {
 	assert(n < size());
 	return points.at(n).getX();
 }
 
-float Form::getLocalY(int n) const
+float Form::getLocalY(unsigned n) const
 {
 	assert(n < size());
 	return points.at(n).getY();
 }
 
-Vector3D Form::getLocal(int n) const
+Vector3D Form::getLocal(unsigned n) const
 {
 	assert(n < size());
 	return points.at(n);
@@ -178,13 +178,13 @@ float Form::getY() const
 	return getY(0);
 }
 
-float Form::getX(int n) const
+float Form::getX(unsigned n) const
 {
 	assert(n < size());
 	return orientation.multiplyX(points.at(n));
 }
 
-float Form::getY(int n) const
+float Form::getY(unsigned n) const
 {
 	assert(n < size());
 	return orientation.multiplyY(points.at(n));
@@ -195,7 +195,7 @@ Vector3D Form::get() const
 	return get(0);
 }
 
-Vector3D Form::get(int n) const
+Vector3D Form::get(unsigned n) const
 {
 	assert(n < size());
 	Vector3D local = points.at(n);
@@ -221,8 +221,8 @@ Vector3D Form::getCenter() const
 int* Form::getXIntArray() const
 {
 	// Penser à free le tableau une fois que c'est plus utilisé
-	int* l_X = (int*) malloc(size()*sizeof(int));
-	for(int i=0; i<points.size(); i++)
+	int* l_X = new int[size()];
+	for(unsigned i=0; i<points.size(); i++)
 	{
 		l_X[i] = (int) getX(i);
 	}
@@ -231,8 +231,8 @@ int* Form::getXIntArray() const
 
 int* Form::getYIntArray() const
 {
-	int* l_Y = (int*) malloc(size()*sizeof(int));
-	for(int i=0; i<points.size(); i++)
+	int* l_Y = new int[size()];
+	for(unsigned i=0; i<points.size(); i++)
 	{
 		l_Y[i] = (int) getY(i);
 	}
@@ -242,7 +242,7 @@ int* Form::getYIntArray() const
 float Form::getMinX() const
 {
 	float xMin = getX(0);
-	for(int i=1; i<points.size(); i++)
+	for(unsigned i=1; i<points.size(); i++)
 	{
 		float x = getX(i);
 		if(x < xMin)
@@ -254,7 +254,7 @@ float Form::getMinX() const
 float Form::getMinY() const
 {
 	float yMin = getY(0);
-	for(int i=1; i<points.size(); i++)
+	for(unsigned i=1; i<points.size(); i++)
 	{
 		float y = getY(i);
 		if(y < yMin)
@@ -266,7 +266,7 @@ float Form::getMinY() const
 float Form::getMaxX() const
 {
 	float xMax = getX(0);
-	for(int i=1; i<points.size(); i++)
+	for(unsigned i=1; i<points.size(); i++)
 	{
 		float x = getX(i);
 		if(x > xMax)
@@ -278,7 +278,7 @@ float Form::getMaxX() const
 float Form::getMaxY() const
 {
 	float yMax = getY(0);
-	for(int i=1; i<points.size(); i++)
+	for(unsigned i=1; i<points.size(); i++)
 	{
 		float y = getY(i);
 		if(y > yMax)
@@ -291,21 +291,21 @@ float Form::getMaxY() const
 std::vector<Vector3D> Form::getVectorsSatLocal() const
 {
 	std::vector<Vector3D> l_vectors;
-	for(int j=points.size()-1, i=0; i<points.size(); j=i, i++)
+	for(unsigned j=points.size()-1, i=0; i<points.size(); j=i, i++)
 	{
 		Vector3D v(points.at(j), points.at(i));
 		l_vectors.push_back(v.getPerpendicular2D());
 	}
 
 	//On enleve les vectors colinéaires
-	for(int i=0; i<l_vectors.size()-1; i++)
+	for(unsigned i=0; i<l_vectors.size()-1; i++)
 	{
 		//Si on est en dessous de 2 vecteurs ca sert à rien de continuer,
 		//On sait que ces 2 vecteurs (ou moins) ne sont pas colinéaires
 		if(l_vectors.size() < 3)
 			break;
 
-		for(int j=i+1; j<l_vectors.size(); j++)
+		for(unsigned j=i+1; j<l_vectors.size(); j++)
 		{
 			if(l_vectors.at(i).isColinear2D(l_vectors.at(j)))
 			{
@@ -320,8 +320,8 @@ std::vector<Vector3D> Form::getVectorsSatLocal() const
 
 Vector3D* Form::getVectorsLocal() const
 {
-	Vector3D* l_vectors = (Vector3D*) malloc(size()*sizeof(Vector3D));
-	for(int j=size()-1, i=0; i<size(); j=i, i++)
+	Vector3D* l_vectors = new Vector3D[size()];
+	for(unsigned j=size()-1, i=0; i<size(); j=i, i++)
 	{
 		new (l_vectors + i) Vector3D(i, Vector3D(points.at(j), points.at(i)));
 	}
@@ -331,7 +331,7 @@ Vector3D* Form::getVectorsLocal() const
 Vector3D* Form::getVectorsWorld() const
 {
 	Vector3D* l_vectors = getVectorsLocal();
-	for(int i=0; i<size(); i++)
+	for(unsigned i=0; i<size(); i++)
 	{
 		l_vectors[i].set(orientation*l_vectors[i]);
 	}
@@ -340,8 +340,8 @@ Vector3D* Form::getVectorsWorld() const
 
 Vector3D* Form::getPointsLocal() const
 {
-	Vector3D* l_vectors = (Vector3D*) malloc(size()*sizeof(Vector3D));
-	for(int i=0; i<size(); i++)
+	Vector3D* l_vectors = new Vector3D[size()];
+	for(unsigned i=0; i<size(); i++)
 	{
 		new (l_vectors + i) Vector3D(getLocal(i));
 	}
@@ -352,8 +352,8 @@ Vector3D* Form::getPointsWorld() const
 {
 	if(orientation.getX() == 0 && orientation.getY() == 0 && omega == 0 && scale == 1.0f && !flipV && !flipH)
 		return getPointsLocal();
-	Vector3D* l_vectors = (Vector3D*) malloc(size()*sizeof(Vector3D));
-	for(int i=0; i<size(); i++)
+	Vector3D* l_vectors = new Vector3D[size()];
+	for(unsigned i=0; i<size(); i++)
 	{
 		new (l_vectors + i) Vector3D(get(i));
 	}
@@ -380,9 +380,8 @@ Vector3D Form::handleEdgePoint(const Vector3D& PA, const Vector3D& PB1,
 	return edgeB*fProjection;
 }
 
-std::vector<Form> Form::splitUnsecured(const Vector3D& p0, const Vector3D& p1, std::vector<std::set<Vector3D>> bst)
+std::vector<Form> Form::splitUnsecured(const Vector3D& p0, const Vector3D& p1, std::vector< std::set<Vector3D> > bst)
 {
-	int n = 0;
 	std::vector<Form> forms;
 
 	// On cherche la position des 2 points
@@ -464,7 +463,7 @@ void Form::updateCenter()
 	Matrix4 result = inverse*(lastCoor);
 
 
-	for(int i=0; i<points.size(); i++)
+	for(unsigned i=0; i<points.size(); i++)
 	{
 		/*
 		result équivaut à ces opérations
@@ -474,7 +473,7 @@ void Form::updateCenter()
 		Vector2D pN = inverse.multiply(pW);
 
 		*/
-		Vector3D vec = result*points.at(i);
+		// Vector3D vec = result*points.at(i);
 		points[i].set(result*points.at(i));
 	}
 	orientation.setPos(newCenter);
@@ -494,7 +493,7 @@ void Form::setCenter(const Vector3D& center)
 	translate(vec);
 }
 
-void Form::setPoint(int n, const Vector3D& p)
+void Form::setPoint(unsigned n, const Vector3D& p)
 {
 	assert(n < size());
 	points[n].set(orientation.getInverse()*p);
@@ -516,7 +515,7 @@ void Form::addPoint(const Vector3D& p)
 	updateCenter();
 }
 
-void Form::removePoint(int i)
+void Form::removePoint(unsigned i)
 {
 	assert(i < size() && i > 0);
 	points.erase(points.begin() + i);
@@ -629,7 +628,7 @@ void Form::calculateSurface()
 	surface = 0;
 	if(points.size() < 3)
 		return;
-	for(int i=points.size()-2, i1=points.size()-1, i2=0; i2<points.size(); i=i1, i1=i2, i2++)
+	for(unsigned i=points.size()-2, i1=points.size()-1, i2=0; i2<points.size(); i=i1, i1=i2, i2++)
 	{
 		surface += points.at(i1).x()*(points.at(i2).y()-points.at(i).y()) + points.at(i1).y()*(points.at(i).x()-points.at(i2).x());
 	}
@@ -643,7 +642,7 @@ bool Form::collisionSat(Form& form)
 	if(form.getConvexForms().size() == 0)
 		form.updateConvexForms();
 
-	for(int i=0; i<convexForms.size(); i++)
+	for(unsigned i=0; i<convexForms.size(); i++)
 	{
 		Vector3D VA(true);
 		Vector3D VB(true);
@@ -661,7 +660,7 @@ bool Form::collisionSat(Form& form, const Vector3D& VA,
 	if(form.getConvexForms().size() == 0)
 		form.updateConvexForms();
 
-	for(int i=0; i<convexForms.size(); i++)
+	for(unsigned i=0; i<convexForms.size(); i++)
 	{
 		Vector3D VA(true);
 		Vector3D VB(true);
@@ -709,29 +708,29 @@ bool Form::collisionSatFree(const Form& B, const Vector3D& VA,
 	{
 		if(!intervalIntersectionFree(relVel.getPerpendicular2D(), pointsA, sizeA, pointsB, sizeB, relPos, relVel, orientI))
 		{
-			free(pointsA); free(pointsB);
+			delete[] pointsA; delete[] pointsB;
 			return false;
 		}
 	}
 
-	for(int i=0; i<axisA.size(); i++)
+	for(unsigned i=0; i<axisA.size(); i++)
 	{
 		if(!intervalIntersectionFree(orient*axisA.at(i), pointsA, sizeA, pointsB, sizeB, relPos, relVel, orientI))
 		{
-			free(pointsA); free(pointsB);
+			delete[] pointsA; delete[] pointsB;
 			return false;
 		}
 	}
 
-	for(int i=0; i<axisB.size(); i++)
+	for(unsigned i=0; i<axisB.size(); i++)
 	{
 		if(!intervalIntersectionFree(axisB.at(i), pointsA, sizeA, pointsB, sizeB, relPos, relVel, orientI))
 		{
-			free(pointsA); free(pointsB);
+			delete[] pointsA; delete[] pointsB;
 			return false;
 		}
 	}
-	free(pointsA); free(pointsB);
+	delete[] pointsA; delete[] pointsB;
 	return true;
 }
 
@@ -794,31 +793,31 @@ bool Form::collisionSatA(const Form& B, const Vector3D& VA, const Vector3D& VB,
 		if(!intervalIntersection(relVel.getPerpendicular2D(), pointsA, sizeA,
 				pointsB, sizeB, relPos, relVel, orientI, axesSat, t))
 		{
-			free(pointsA); free(pointsB);
+			delete[] pointsA; delete[] pointsB;
 			return false;
 		}
 	}
 
-	for(int i=0; i<axisA.size(); i++)
+	for(unsigned i=0; i<axisA.size(); i++)
 	{
 		if(!intervalIntersection(orient*axisA.at(i), pointsA, sizeA,
 				pointsB, sizeB, relPos, relVel, orientI, axesSat, t))
 		{
-			free(pointsA); free(pointsB);
+			delete[] pointsA; delete[] pointsB;
 			return false;
 		}
 	}
 
-	for(int i=0; i<axisB.size(); i++)
+	for(unsigned i=0; i<axisB.size(); i++)
 	{
 		if(!intervalIntersection(axisB.at(i), pointsA, sizeA,
 				pointsB, sizeB, relPos, relVel, orientI, axesSat, t))
 		{
-			free(pointsA); free(pointsB);
+			delete[] pointsA; delete[] pointsB;
 			return false;
 		}
 	}
-	free(pointsA); free(pointsB);
+	delete[] pointsA; delete[] pointsB;
 	return true;
 }
 
@@ -869,7 +868,7 @@ bool Form::intervalIntersection(const Vector3D& axis, const Vector3D* pointsA,
 Vector3D Form::getInterval(const Vector3D& axis, const Vector3D* points, unsigned size) const
 {
 	Vector3D minMax(points[0].getX(), points[0].getY(), 0, true);
-	for(int i=1; i<size; i++)
+	for(unsigned i=1; i<size; i++)
 	{
 		float scalar = points[i]*axis;
 		if(scalar < minMax.x())
@@ -906,7 +905,7 @@ void Form::getPushVector(AxesSat& axesSat, Vector3D& push, float& t)
 		t = axesSat.tAxes[0];
 		push.set(axesSat.axes[0]);
 
-		for(int i=1; i<axesSat.axes.size(); i++)
+		for(unsigned i=1; i<axesSat.axes.size(); i++)
 		{
 			float magnitude = axesSat.axes[i].normalize();
 			axesSat.tAxes[1] = axesSat.tAxes[i]/magnitude;
@@ -925,7 +924,7 @@ bool Form::isConvex() const
 	if(size() < 3)
 		return true;
 	Vector3D* locals = getVectorsLocal();
-	int i=0;
+	unsigned i=0;
 	float crossProductZ = 0;
 
 	while(crossProductZ == 0 && i<size())
@@ -952,7 +951,7 @@ int Form::getClockwise() const
 		return 0;
 	double sum = 0;
 	//float sumInt = 0;
-	for(int i=0; i<size(); i++)
+	for(unsigned i=0; i<size(); i++)
 	{
 		sum = sum + (PI - points.at((i+1)%size()).getAngle(Vector3D(points.at(i), points.at((i+2)%size()))));
 	}
@@ -976,11 +975,11 @@ std::vector<Edge> Form::getEdgesLocal() const
 	if(points.size() < 2 || factor == 0)
 		return edges;
 
-	PointType* pointsType = (PointType*) malloc(size()*sizeof(PointType));
+	PointType* pointsType = new PointType[size()];
 
 	if(factor == 1)
 	{
-		for(unsigned i=size()-1, j=0; i>-1; i--, j++)
+		for(int i=size()-1, j=0; i>-1; i--, j++)
 		{
 			new (pointsType + j) PointType(points.at(i));
 			pointsType[j].posPoint = i;
@@ -1028,7 +1027,7 @@ void Form::triangulate()
 	std::vector<Form> monotonesForms = makeMonotone();
 	if(monotonesForms.size() != 0)
 	{
-		for(int i=0; i<monotonesForms.size(); i++)
+		for(unsigned i=0; i<monotonesForms.size(); i++)
 		{
 			convexForms.insert(convexForms.begin(), monotonesForms.begin(), monotonesForms.end());
 		}
@@ -1040,6 +1039,7 @@ void Form::triangulate()
 //******************
 //  Make Monotone
 //******************
+
 std::vector<Form> Form::makeMonotone()
 {
 	std::vector<Edge> edges = getEdgesLocal();
@@ -1051,10 +1051,10 @@ std::vector<Form> Form::makeMonotone()
 	//Initialization
 	//***************
 	int sizeV = size();
-	int* v = (int*) malloc(sizeV*sizeof(int));
+	int* v = new int[sizeV];
 
 	//Scanning line l store Edges colliding with l, sorted by x
-	std::map<float, std::vector<Edge>> l;
+	std::map<float, std::vector<Edge> > l;
 	std::vector<Edge> preBufferL;
 
 	//<Edge, PointType>
@@ -1072,10 +1072,12 @@ std::vector<Form> Form::makeMonotone()
 	//***************
 	PointType *p0, *p1, *p2;
 	//2) On applique une méthode pour chaque point
-	int pos = sizeV;
-	while(pos > -1)
+	int cur = 0;
+	while(cur < sizeV)
 	{
+		int pos = v[cur];
 		Edge edge = edges[pos];
+		cur++;
 
 		//On determine le type de point
 		p0 = edge.prev->p0;
@@ -1133,6 +1135,7 @@ std::vector<Form> Form::makeMonotone()
 					}
 				}
 			}
+
 		}
 		else
 			preBufferL.push_back((*edge.prev));
@@ -1164,7 +1167,7 @@ std::vector<Form> Form::makeMonotone()
 	return transformEdges(edges);
 }
 
-void Form::sortPointsY(std::vector<Edge> edges, int* v, unsigned sizeV)
+void Form::sortPointsY(std::vector<Edge>& edges, int* v, unsigned sizeV)
 {
 	PointType *p0, *p1;
 	for(unsigned i=0; i<points.size(); i++)
@@ -1175,6 +1178,43 @@ void Form::sortPointsY(std::vector<Edge> edges, int* v, unsigned sizeV)
 	// Tri à bulles
 	// Opti dégueu mais bon
 	for(unsigned i=sizeV-1; i != 1; i++)
+	{
+		for(unsigned j=0; j<i-1; j++)
+		{
+			p0 = edges[v[i]].p0;
+			p1 = edges[v[i+1]].p0;
+			if(p0->y() > p1->y())
+			{
+				// Echange
+				int tmp = v[i+1];
+				v[i+1] = v[i];
+				v[i] = tmp;
+			}
+			else if(p0->y() == p1->y())
+			{
+				if(p0->x() < p1->y())
+				{
+					// Echange
+					int tmp = v[i+1];
+					v[i+1] = v[i];
+					v[i] = tmp;
+				}
+			}
+		}
+	}
+}
+
+void Form::sortPointsY(std::vector<Edge>& edges, std::vector<int>& v)
+{
+	PointType *p0, *p1;
+	for(unsigned i=0; i<points.size(); i++)
+	{
+		v.push_back(i);
+	}
+
+	// Tri à bulles
+	// Opti dégueu mais bon
+	for(unsigned i=v.size()-1; i != 1; i++)
 	{
 		for(unsigned j=0; j<i-1; j++)
 		{
@@ -1294,10 +1334,10 @@ void Form::determineType(int pos, std::vector<Edge> edges,
 }
 
 Edge* Form::getLeftEdge(int pos, std::vector<Edge> edges,
-		std::map<float, std::vector<Edge>>& I)
+		std::map<float, std::vector<Edge> >& I)
 {
 	PointType* p = edges[pos].p0;
-	std::map<float, std::vector<Edge>>::iterator low, lastLow;
+	std::map<float, std::vector<Edge> >::iterator low, lastLow;
 	low = I.lower_bound(p->x());
 	Edge* leftEdge = getLeftEdge((*p), low->second);
 
@@ -1328,10 +1368,10 @@ Edge* Form::getLeftEdge(PointType& p, std::vector<Edge> lEdges)
 std::vector<Form> Form::transformEdges(std::vector<Edge> edges)
 {
 	std::vector<Form> forms;
-	std::vector<std::set<Vector3D*>> bst;
+	std::vector<std::set<Vector3D> > bst;
 
 	forms.push_back((*this));
-	bst.push_back(std::set<Vector3D*>());
+	bst.push_back(std::set<Vector3D>());
 	bst[0].insert(points.begin(), points.end());
 
 	for(unsigned i=points.size(); i<edges.size(); i++)
@@ -1340,7 +1380,6 @@ std::vector<Form> Form::transformEdges(std::vector<Edge> edges)
 		Vector3D *p0 = &points[edge.p0->posPoint];
 		Vector3D *p1 = &points[edge.p1->posPoint];
 
-		bool did = false;
 		int n = 0;
 		int max = forms.size();
 		for(int j=0; j<max; j++)
@@ -1349,7 +1388,7 @@ std::vector<Form> Form::transformEdges(std::vector<Edge> edges)
 			bool is_in1 = (bst[j]).find(p1) != bst[j].end();
 			if(is_in && is_in1)
 			{
-				std::vector<std::set<Vector3D>> bst2;
+				std::vector<std::set<Vector3D> > bst2;
 				std::vector<Form> newForm = forms[j].splitUnsecured(p0, p1, bst2);
 				if(newForm.size() == 2)
 				{
@@ -1361,7 +1400,6 @@ std::vector<Form> Form::transformEdges(std::vector<Edge> edges)
 					max--;
 					j--;
 					n++;
-					did = true;
 				}
 			}
 		}
@@ -1536,7 +1574,7 @@ int Form::numberLeftEdges(int pos, std::vector<Edge> edges,
 	int numberLines = 0;
 	PointType* p = edges[pos].p0;
 
-	std::map<float, std::vector<Edge>>::iterator low, lastLow;
+	std::map<float, std::vector<Edge> >::iterator low, lastLow;
 	low = I.lower_bound(p->x());
 
 	if(low != I.end())
@@ -1555,31 +1593,310 @@ int Form::numberLeftEdges(int pos, std::vector<Edge> edges,
 
 int Form::numberLeftEdges(PointType& p, std::vector<Edge> edges)
 {
+	int numberLines = 0;
+	for(unsigned i=0; i<edges.size(); i++)
+	{
+		Vector3D vec(edges[i].p0, edges[i].p1);
+		Vector3D projection = p.getProjection2D(vec, (*edges[i].p0));
+		projection -= p;
+
+		if(projection.x() < 0)
+			numberLines++;
+	}
+	return numberLines;
 }
 
 std::vector<Form> Form::triangulateMonotone()
 {
+	std::vector<Edge> edges = getEdgesLocal();
+
+	std::vector<Form> forms;
+	int sizeV = size();
+	int* v = new int[sizeV];
+	std::deque<int> l;
+
+	if(edges.size() < 3)
+	{
+		return std::vector<Form>();
+	}
+
+	std::set<PointType> lChain;
+	//1) on range par ordre croissant suivant Y les points
+	sortPointsY(edges, v, sizeV);
+	createChains(v, sizeV, edges, lChain);
+
+	//int factorChain = determineFactorChain(edges.get(v.get(v.size() - 1)), edges);
+
+	//2) Initialisation de L, on ajout les 2 premiers points
+	int cur = 0;
+
+	l.push_back(v[cur]);
+	cur++;
+	l.push_back(v[cur]);
+	cur++;
+
+	PointType *p1, *last;
+	while(cur < sizeV)
+	{
+		int pos = v[cur];
+		Edge edge = edges[pos];
+		cur++;
+
+		p1 = edge.p0;
+
+
+		last = edges[l[l.size() - 1]].p0;
+
+		//Si le point appartient à une chaine différente
+		bool is_in  = lChain.find((*last)) != lChain.end();
+		bool is_in2 = lChain.find((*p1)) != lChain.end();
+		if(is_in != is_in2)
+		{
+			while(l.size() > 1)
+			{
+				Vector3D l_p0 = points[edges[l[0]].p0->posPoint];
+				Vector3D l_p1 = points[edges[l[1]].p0->posPoint];
+				Vector3D l_p2 = points[p1->posPoint];
+
+				Form form;
+				form.addPointFree(l_p0);
+				form.addPointFree(l_p1);
+				form.addPointFree(l_p2);
+				forms.push_back(form);
+				l.pop_front();
+			}
+			l.push_back(pos);
+		}
+		else
+		{
+			if(l.size() > 1)
+			{
+				Vector3D q = points[edges[l[l.size() - 1]].p0->posPoint];
+				Vector3D r = points[edges[l[l.size() - 2]].p0->posPoint];
+				Vector3D p = points[p1->posPoint];
+
+				//vec1.crossProductZ(vec2)
+				bool bLChain = lChain.find((*p1)) != lChain.end();
+				float orientation = Vector3D::orientation(p, q, r);
+				while(l.size() > 1 && ((bLChain && orientation > 0) || (!bLChain && orientation < 0)))
+				{
+					Form form;
+					form.addPointFree(q);
+					form.addPointFree(r);
+					form.addPointFree(p);
+					forms.push_back(form);
+
+					l.pop_back();
+					if(l.size() > 1)
+					{
+						q = points[edges[l[l.size() - 1]].p0->posPoint];
+						r = points[edges[l[l.size() - 2]].p0->posPoint];
+
+						orientation = Vector3D::orientation(p1, q, r);
+					}
+				}
+			}
+			l.push_back(pos);
+		}
+	}
+
+	if(l.size() > 2)
+	{
+		//On ajoute les derniers triangles
+		cur--;
+		l.pop_back();
+		for(unsigned i=0; i<l.size()-1; i++)
+		{
+
+			Vector3D l_p0 = points[edges[l[i]].p0->posPoint];
+			Vector3D l_p1 = points[edges[l[i + 1]].p0->posPoint];
+			Vector3D l_p2 = points[edges[v[sizeV - 1]].p0->posPoint];
+
+			Form form;
+			form.addPointFree(l_p0);
+			form.addPointFree(l_p1);
+			form.addPointFree(l_p2);
+			forms.push_back(form);
+		}
+	}
+	return forms;
 }
 
-void Form::createChains(int* v, unsigned size, std::vector<Edge> edges,
+void Form::createChains(int *v, int sizeV, std::vector<Edge> edges,
 		std::set<PointType> lChain)
 {
+	Edge start = edges[v[0]];
+	PointType* last = edges[v[sizeV - 1]].p0;
+
+	Vector3D collisionVec(start.p0, start.next->p0);
+	Vector3D vec(1.0f, 0.0f);
+
+	Vector3D collision;
+	bool result = collision.computeIntersection2D(collisionVec, vec, start.p0, (*start.prev->p0));
+	bool left = false;
+	if(result)
+	{
+		left = (collision.x() < start.prev->p0->x());
+	}
+	else
+	{
+		assert(start.next->p0->y() == start.p0->y());
+		left = (start.next->p0->x() < start.p0->x());
+	}
+
+	if(left)
+	{
+		Edge* current = start.next;
+		while(current->p0 != last)
+		{
+			lChain.insert((*current->p0));
+			current = current->next;
+		}
+	}
+	else
+	{
+		Edge* current = start.prev;
+		while(current->p0 != last)
+		{
+			lChain.insert((*current->p0));
+			current = current->prev;
+		}
+	}
 }
 
 std::vector<Form> Form::getTriangulation()
 {
+	std::vector<Form> forms;
+	if(isConvex())
+	{
+		forms.push_back((*this));
+		return forms;
+	}
+	std::deque<Vector3D> pointsV(points.size());
+	for(unsigned i=0; i<points.size(); i++)
+		pointsV.push_back(points[i]);
+	//ArrayList<Point2D[]> edgesL = new ArrayList<Point2D[]>();
+
+	std::deque<int> pointsVPos(points.size());
+	std::deque<int> pointsPreviousVPos(points.size());
+	std::deque<int> edgesLPos;
+	for(unsigned i=0; i<pointsV.size(); i++)
+		pointsVPos.push_back(i);
+
+	//1) on range par ordre croissant suivant X les points
+	for(unsigned t=1; t<pointsV.size(); t++)
+	{
+		for(unsigned i=0; i<pointsV.size() - 1; i++)
+		{
+			if(pointsV[i].x() > pointsV[i+1].x())
+			{
+				std::iter_swap(pointsV.begin() + i, pointsV.begin() + i + 1);
+			}
+		}
+	}
+
+	Vector3D p[3];
+	int pos[3];
+	//2) Pour chaque point, on cherche les points d'interesections avec le polygon
+	while(pointsV.size() != 0)
+	{
+		//a) insertion des segments
+		p[1] = pointsV[0];
+		pos[1] = pointsVPos[0];
+		pointsV.pop_front();
+		pointsVPos.pop_front();
+
+		//On récupère les deux autres points reliés à ce point
+		//point précédent
+		pos[0] = pos[1] - 1;
+		if(pos[0] < 0)
+			pos[0] = points.size() - 1;
+		p[0] = points[pos[0]];
+
+		//point suivant
+		pos[2] = (pos[1] + 1)%points.size();
+		p[2] = points[pos[2]];
+
+		//On insère un segment si le point est à droite, sinon on l'enleve
+		//+= 2 signifie, on regarde le point précédent puis le point suivant
+		for(int i=0; i<3; i += 2)
+		{
+			//Dans le cas ou le point a le même x, on prend seulement le point s'il est est au dessus (y inférieur)
+			if(p[1].x() < p[i].x())
+			{
+				bool added = false;
+				for(unsigned j=0; j<edgesLPos.size(); j++)
+				{
+					if(p[1].y() < points[edgesLPos[j]].y())
+					{
+						edgesLPos.insert(edgesLPos.begin() + j, pos[0] + i/2);
+						added = true;
+					}
+				}
+				if(!added)
+					edgesLPos.push_back(pos[0] + i/2);
+			}
+			else if(p[1].x() == p[i].x() && p[1].y() <= p[i].y())
+			{
+				assert(p[i].y() != p[1].y());
+
+				bool added = false;
+				for(unsigned j=0; j<edgesLPos.size(); j++)
+				{
+					if(p[1].y() < points[edgesLPos[j]].y())
+					{
+						edgesLPos.insert(edgesLPos.begin() + j, pos[0] + i/2);
+						added = true;
+					}
+				}
+				if(!added)
+					edgesLPos.push_back(pos[0] + i/2);
+			}
+			else
+			{
+				//On enleve le segment
+				bool b = false;
+				for(unsigned j=0; j<edgesLPos.size(); j++)
+				{
+					if(pos[0] + i/2 == edgesLPos[j])
+					{
+						edgesLPos.erase(edgesLPos.begin() + j);
+						b = true;
+						break;
+					}
+				}
+				assert(b);
+			}
+		}
+
+		//Si la ligne L touche plus de 2 segments,
+		//On crée de nouvelles formes
+	}
+	return forms;
 }
 
 void Form::setConvex(const std::vector<Form>& forms)
 {
+	convexForms.clear();
+	convexForms.insert(convexForms.end(), forms.begin(), forms.end());
 }
 
 const std::vector<Form>& Form::getConvexForms() const
 {
+	return convexForms;
 }
 
 
 
 void Form::updateConvexForms()
 {
+	convexForms.clear();
+	if(isConvex())
+	{
+		convexForms.push_back((*this));
+	}
+	else
+	{
+		triangulate();
+	}
 }

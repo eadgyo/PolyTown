@@ -23,8 +23,8 @@ public:
 	Vector3D getVecWorld() const;
 	inline Vector3D getLeft() const { return get(0); };
 	inline Vector3D getLength() const { return length; };
-	inline float getWidth() const { return length.x; };
-	inline float getHeight() const { return length.y; };
+	inline float getWidth() const { return length.x(); };
+	inline float getHeight() const { return length.y(); };
 
 	float getAngle(const Vector3D& vec) const;
 	float getAngle() const;

@@ -6,14 +6,16 @@ La dernière: 0 si c'est un vecteur
              1 si c'est un point
 -> Simplification calcul avec les matrices 4x4
 */
-#define SIZE_V 4
-#define MIN_DIFF_EQ 0.000001f
-#define PI 3.14159265359
+
 
 #ifndef VECTOR3D_H_
 #define VECTOR3D_H_
 
 class Vector3D;
+
+#define SIZE_V 4
+#define MIN_DIFF_EQ 0.000001f
+#define PI 3.14159265359
 
 #include "Matrix4.h"
 #include <assert.h>
@@ -56,6 +58,7 @@ public:
 	inline const float* getCoor() const { return coor; };
 	inline Vector3D getPerpendicular2D() const { return Vector3D(y(), x(), 0, true); };
 	Vector3D getProjection2D(const Vector3D& vec, const Vector3D& p) const;
+	bool computeIntersection2D(const Vector3D& v1, const Vector3D& v2, const Vector3D& p1, const Vector3D& p2);
 
 	// Setter
 	inline void addX(float f) { set(0, getX() + f); };
@@ -75,7 +78,6 @@ public:
 	void set(float, float, float, float);
 
 	// Surchage opérateurs
-
 	Vector3D operator-() const;
 	Vector3D operator-(Vector3D const& v) const;
 	void operator+=(Vector3D const&);
@@ -92,8 +94,11 @@ public:
 	void operator%=(Vector3D const&);
 	bool operator==(Vector3D const&);
 	float& operator[](int const&);
+	bool operator<(const Vector3D&) const;
 
 	void display();
+
+	static float orientation(const Vector3D& v1, const Vector3D& v2, const Vector3D& v3);
 private:
 	float coor[SIZE_V];
 

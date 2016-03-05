@@ -51,7 +51,7 @@ Vector3D Vector3D::copy() const
 //====================================================
 float Vector3D::getAngle(const Vector3D& vec) const
 {
-	float scalar = (float) getNormalize()*vec.getNormalize();
+	float scalar = getNormalize()*vec.getNormalize();
 	float l_fTheta = 0;
 	if(scalar > 1)
 		l_fTheta = 0;
@@ -60,7 +60,7 @@ float Vector3D::getAngle(const Vector3D& vec) const
 	else
 		l_fTheta = (float) acos(scalar);
 
-	if((*this) % vec < 0)
+	if(((*this) % vec).z() < 0)
 		l_fTheta = - l_fTheta;
 
 
@@ -115,6 +115,24 @@ Vector3D Vector3D::getProjection2D(const Vector3D& vec, const Vector3D& p) const
 	float projectScalar = l_vec*vec1;
 	Vector3D projection(p + (l_vec*projectScalar));
 	return projection;
+}
+bool Vector3D::computeIntersection2D(const Vector3D& v1, const Vector3D& v2, const Vector3D& p1, const Vector3D& p2)
+{
+	if(v1.x()*v2.y() -v2.x()*v1.y() != 0)
+	{
+		if(v1.y() != 0)
+		{
+			setY((-(p1.x()*v1.y()-p1.y()*v1.x())*v2.y() + (p2.x()*v2.y()-p2.y()*v2.x())*v1.y())/(v1.x()*v2.y()-v2.x()*v1.y()));
+			setX((p1.x()*v1.y()-p1.y()*v1.x()+v1.x()*y())/v1.y());
+		}
+		else
+		{
+			setY((-(p2.x()*v2.y()-p2.y()*v2.x())*v1.y() + (p1.x()*v1.y()-p1.y()*v1.x())*v2.y())/(v2.x()*v1.y()-v1.x()*v2.y()));
+			setX((p2.x()*v2.y()-p2.y()*v2.x()+v2.x()*y())/v2.y());
+		}
+		return true;
+	}
+	return false;//Parallele
 }
 
 //====================================================
@@ -298,4 +316,15 @@ void Vector3D::display()
 	std::cout << coor[SIZE_V - 1];
 	std::cout << " )\n";
 
+}
+
+float Vector3D::orientation(const Vector3D& p, const Vector3D& q, const Vector3D& r)
+{
+	return (q.x()*r.y() + p.x()*q.y() + r.x()*p.y()) - (p.x()*r.y() + q.x()*p.y() + r.x()*q.y());
+}
+
+bool Vector3D::operator <(const Vector3D& a) const
+{
+	 std::cout << "Vector3D < ??";
+	 return true;
 }

@@ -118,11 +118,7 @@ float& Matrix4::operator[](int i)
 	assert(i >=0 && i < SIZE_M);
 	return m[i];
 }
-float& Matrix4::operator[](int i, int j)
-{
-	assert(i >=0 && i < COL && j>=0 && j < LINE);
-	return m[i*COL + j];
-}
+
 
 //====================================================
 // Getter
@@ -194,39 +190,46 @@ void Matrix4::setOrientation(const Quaternion& q5)
 		setIdentity();
 		return;
 
-	Quaternion q = q5*sqrt(1.0/n);
-	Quaternion i2 = q.i*q.i;
-	Quaternion j2 = q.j*q.j;
-	Quaternion k2 = q.k*q.k;
+	Quaternion q = q5*((float) sqrt(1.0f/n));
+	float i2 = q.i*q.i;
+	float j2 = q.j*q.j;
+	float k2 = q.k*q.k;
 
-	(*this)[0,0] = 1 - (2*j2 + 2*k2);
-	(*this)[0,1] = 2*q.i*q.j - 2*q.k*q.r;
-	(*this)[0,2] = 2*q.i*q.k + 2*q.j*q.r;
+	get(0,0) = 1 - (j2*2 + k2*2);
+	get(0,1) = 2*q.i*q.j - 2*q.k*q.r;
+	get(0,2) = 2*q.i*q.k + 2*q.j*q.r;
 
-	(*this)[1,0] = 2*q.i*q.j + 2*q.k*q.r;
-	(*this)[1,1] = 1 - (2*i2 + 2*k2);
-	(*this)[1,2] = 2*q.j*q.k - 2*q.i*q.r;
+	get(1,0)= 2*q.i*q.j + 2*q.k*q.r;
+	get(1,1) = 1 - (2*i2 + 2*k2);
+	get(1,2) = 2*q.j*q.k - 2*q.i*q.r;
 
-	(*this)[2,0] = 2*q.i*q.k - 2*q.j*q.r;
-	(*this)[2,1] = 2*q.j*q.k + 2*q.i*q.r;
-	(*this)[2,2] = 1 - (2*i2 + 2*j2);
+	get(2,0) = 2*q.i*q.k - 2*q.j*q.r;
+	get(2,1) = 2*q.j*q.k + 2*q.i*q.r;
+	get(2,2) = 1 - (2*i2 + 2*j2);
 
-	(*this)[3,3] = 1;
+	get(3,3) = 1;
 }
+
+float& Matrix4::get(int i, int j)
+{
+	assert(i >=0 && i < COL && j>=0 && j < LINE);
+	return m[i*COL + j];
+}
+
 void Matrix4::setOrientation(const Quaternion& q, const Vector3D& vec)
 {
 	setOrientation(q);
-	(*this)[0,3] = vec.getX();
-	(*this)[1,3] = vec.getY();
-	(*this)[2,3] = vec.getZ();
+	get(0,3)= vec.getX();
+	get(1,3) = vec.getY();
+	get(2,3) = vec.getZ();
 }
 void Matrix4::setOrientation(const Vector3D& vec)
 {
-	(*this)[0,3] = vec.getX();
-	(*this)[1,3] = vec.getY();
-	(*this)[2,3] = vec.getZ();
+	get(0,3) = vec.getX();
+	get(1,3) = vec.getY();
+	get(2,3) = vec.getZ();
 
-	(*this)[3,3] = 1;
+	get(3,3) = 1;
 }
 void Matrix4::setOrientation(const Quaternion& q, const Vector3D& vec, float factor)
 {
@@ -294,22 +297,22 @@ void Matrix4::flipW()
 
 void Matrix4::setX(float x)
 {
-	(*this)[0,3] = x;
+	get(0,3) = x;
 }
 
 void Matrix4::setY(float y)
 {
-	(*this)[1,3] = y;
+	get(1,3) = y;
 }
 
 void Matrix4::setZ(float z)
 {
-	(*this)[2,3] = z;
+	get(2,3) = z;
 }
 
 void Matrix4::setW(float w)
 {
-	(*this)[3,3] = w;
+	get(3,3) = w;
 }
 
 
@@ -408,28 +411,28 @@ void Matrix4::scale(float factor)
 void Matrix4::flipX(const Vector3D& center)
 {
 	Matrix4 l_flipH = createIdentity();
-	l_flipH[0, 0] = -1.0f;
+	l_flipH.get(0, 0) = -1.0f;
 	l_flipH.setPos(center);
 	(*this) *= l_flipH;
 }
 void Matrix4::flipY(const Vector3D& center)
 {
 	Matrix4 l_flipV = createIdentity();
-	l_flipV[1, 1] = -1.0f;
+	l_flipV.get(1, 1) = -1.0f;
 	l_flipV.setPos(center);
 	(*this) *= l_flipV;
 }
 void Matrix4::flipZ(const Vector3D& center)
 {
 	Matrix4 l_flipZ = createIdentity();
-	l_flipZ[2, 2] = -1.0f;
+	l_flipZ.get(2, 2) = -1.0f;
 	l_flipZ.setPos(center);
 	(*this) *= l_flipZ;
 }
 void Matrix4::flipW(const Vector3D& center)
 {
 	Matrix4 l_flipW = createIdentity();
-	l_flipW[3, 3] = -1.0f;
+	l_flipW.get(3, 3) = -1.0f;
 	l_flipW.setPos(center);
 	(*this) *= l_flipW;
 }
@@ -486,6 +489,11 @@ Matrix4 Matrix4::createRotate(const Vector3D& v, float theta)
 					(1-c)*Ax*Az - s*Ay, (1-c)*Ay*Az + s*Ax, c+(1-c)*Az*Az, 0,
 					0,0,0,1.0f};
 	return Matrix4(tab);
+}
+
+Vector3D Matrix4::getPos() const
+{
+	return Vector3D(m[3], m[7], m[11], m[15]);
 }
 
 void Matrix4::display()

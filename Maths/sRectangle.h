@@ -18,7 +18,7 @@ public:
 	sRectangle(const Vector3D& left, const Vector3D& length);
 	sRectangle(float x, float y, float width, float height);
 	sRectangle(const Form& form);
-	virtual ~sRectangle();
+	~sRectangle();
 
 	static sRectangle createSRectangleCenter(const Vector3D& center, const Vector3D& length);
 
@@ -33,7 +33,7 @@ public:
 	// Getter
 	inline float getWidth() const { return length.getX(); };
 	inline float getHeight() const { return length.getY(); };
-	const Vector3D& getLength() const { return length; };
+	inline const Vector3D& getLength() const { return length; };
 	bool isInside(const sRectangle& rect) const;
 	bool isInside(const Vector3D& p) const;
 	bool isInsideBorder(const sRectangle& rect) const;

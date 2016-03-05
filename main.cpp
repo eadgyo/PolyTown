@@ -1,9 +1,12 @@
 #include <SDL2/SDL.h>
 #include "Maths/Vector3D.h"
 #include <iostream>
+#include "Maths/Rectangle.h"
+#include "Maths/Form.h"
 
 int main(int argc, char* args[])
 {
+	/*
     SDL_Window *window;
 
     window = SDL_CreateWindow(
@@ -21,6 +24,9 @@ int main(int argc, char* args[])
         printf("Could not create window: %s\n", SDL_GetError());
         return 1;
     }
-    SDL_Delay(3000);
+    SDL_Delay(3000);*/
+
+	Form form;
+
     return 0;
 }

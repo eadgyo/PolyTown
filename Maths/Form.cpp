@@ -8,6 +8,7 @@ Form::Form()
 	this->flipH = false;
 	this->flipV = false;
 	this->surface = 0;
+	this->orientation.setOrientation(omega, scale, flipH, flipV, Vector3D(true));
 }
 
 Form::~Form()
@@ -22,6 +23,7 @@ Form::Form(int size)
 	this->flipV = false;
 	this->surface = 0;
 	points.resize(size);
+	orientation.setOrientation(omega, scale, flipH, flipV, Vector3D(true));
 }
 
 Form::Form(float omega, float scale, bool flipH, bool flipV, float surface, const Vector3D& vec)

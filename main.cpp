@@ -27,8 +27,9 @@ int main(int argc, char* args[])
     }
     SDL_Delay(3000);*/
 
+	FileManager& fileM = FileManager::getInstance();
+	bool a = fileM.isFolderExisting("Binsdf");
 
-
-
+	std::cout << a;
     return 0;
 }

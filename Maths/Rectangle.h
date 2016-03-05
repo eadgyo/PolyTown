@@ -1,4 +1,6 @@
 #pragma once
+
+class Rectangle;
 #include "Vector3D.h"
 #include "Form.h"
 

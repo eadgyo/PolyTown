@@ -8,6 +8,8 @@
 #ifndef SRECTANGLE_H_
 #define SRECTANGLE_H_
 
+class sRectangle;
+
 #include "Form.h"
 #include "Vector3D.h"
 

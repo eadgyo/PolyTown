@@ -1,25 +1,36 @@
 
 #include "Form.h"
 
-Form::Form():
-	Form(0, 1.0f, false, false, 0, Vector3D(true))
+Form::Form()
 {
-
+	this->omega = 0;
+	this->scale = 1.0f;
+	this->flipH = false;
+	this->flipV = false;
+	this->surface = 0;
 }
 
 Form::~Form()
 {
 }
 
-Form::Form(int size):
-		Form(0, 1.0f, false, false, 0, Vector3D(true))
+Form::Form(int size)
 {
+	this->omega = 0;
+	this->scale = 1.0f;
+	this->flipH = false;
+	this->flipV = false;
+	this->surface = 0;
 	points.resize(size);
 }
 
-Form::Form(float omega, float scale, bool flipH, bool flipV, float surface, const Vector3D& vec):
-		omega(omega), scale(scale), flipH(flipH), flipV(flipV), surface(surface)
+Form::Form(float omega, float scale, bool flipH, bool flipV, float surface, const Vector3D& vec)
 {
+	this->omega = omega;
+	this->scale = scale;
+	this->flipH = flipH;
+	this->flipV = flipV;
+	this->surface = surface;
 	orientation.setOrientation(omega, scale, flipH, flipV, vec);
 }
 

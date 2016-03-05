@@ -11,17 +11,17 @@
 
 struct Edge
 {
-	Edge prev;
-	Edge next;
-	PointType p0;
-	PointType p1;
+	Edge* prev;
+	Edge* next;
+	PointType* p0;
+	PointType* p1;
 
 	inline float getMinX()
 	{
-		if(p0.x() < p1.x())
-			return p0.x();
+		if(p0->x() < p1->x())
+			return p0->x();
 		else
-			return p1.x();
+			return p1->x();
 	}
 };
 

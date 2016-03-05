@@ -16,17 +16,12 @@
 #include "Edge.h"
 #include "PointType.h"
 #include <map>
+#include "AxesSat.h"
 
 
 class Form
 {
-	class AxesSat
-	{
-		std::vector<Vector3D> axes;
-		std::vector<float> tAxes;
-		std::vector<Vector3D> axesT;
-		std::vector<float> tAxesT;
-	};
+
 
 public:
 	Form(int size);
@@ -49,7 +44,7 @@ public:
 	inline bool getFlipV() const { return flipV; };
 	Vector3D getCentroidWorld() const;
 	Vector3D getCentroidLocal() const;
-	inline int size() const { return points.size(); };
+	inline unsigned size() const { return points.size(); };
 
 	float getLocalX() const;
 	float getLocalY() const;
@@ -117,41 +112,44 @@ public:
 	bool collisionSat(Form& form, const Vector3D& VA,
 			const Vector3D& VB, const Vector3D& push, float& t);
 	bool collisionSatFree(const Form& B, const Vector3D& VA, const Vector3D& VB);
-	bool intervalIntersectionFree(const Vector3D& axis, const Vector3D* pointsA, int sizeA,
-			const Vector3D* pointsB, int sizeB, const Vector3D& relPos, const Vector3D& relVel, const Matrix4& orientI) const;
+	bool intervalIntersectionFree(const Vector3D& axis, const Vector3D* pointsA, unsigned sizeA,
+			const Vector3D* pointsB, unsigned sizeB, const Vector3D& relPos, const Vector3D& relVel, const Matrix4& orientI) const;
 
 	bool collisionSatA(const Form& B, const Vector3D& VA, const Vector3D& VB, const Vector3D& push, float& t) const;
-	bool intervalIntersection(const Vector3D& axis, const Vector3D* pointsA, int sizeA,
-			const Vector3D* pointsB, int sizeB, const Vector3D& relPos, const Vector3D& relVel, const Matrix4& orientI,
+
+	bool intervalIntersection(const Vector3D& axis, const Vector3D* pointsA, unsigned sizeA,
+			const Vector3D* pointsB, unsigned sizeB, const Vector3D& relPos, const Vector3D& relVel, const Matrix4& orientI,
 			AxesSat& axes, float& t) const;
 
-	bool getInterval(const Vector3D& axis, const Vector3D* points, int size) const;
+	Vector3D getInterval(const Vector3D& axis, const Vector3D* points, unsigned size) const;
 	void getPushVector(AxesSat& axesSat, Vector3D& push, float& t);
 
+	std::vector<Form> splitUnsecured(const Vector3D& p0, const Vector3D& p1, std::vector<std::set<Vector3D>> bst);
 
 	// Convex
 	bool isConvex() const;
 	int getClockwise() const;
-	Edge* getEdgesLocal() const;
+	std::vector<Edge> getEdgesLocal() const;
 
 	// Triangulate
 	void triangulate();
 
 	// Make Monotone
 	std::vector<Form> makeMonotone();
-	void sortPointsY(Edge* edges, int sizeE, int* v, int sizeI);
-	void determineType(int pos, Edge* edges, int sizeE, std::map<Edge, PointType>& helpers, std::map<float, std::vector<Edge>>& I);
-	Edge getLeftEdge(int pos, Edge* edges, int sizeE, std::map<float, std::vector<Edge>>& I);
-	Edge getLeftEdge(PointType& p, Edge* lEdges, int sizeE);
-	Form* transformEdges(Edge* edges, int sizeE);
-	void handleStartVertex(int pos, Edge* edges, int sizeE, std::map<Edge, PointType>& helpers);
-	void handleSplitVertex(int pos, Edge* edges, int sizeE, std::map<Edge, PointType>& helpers, std::map<float, std::vector<Edge>>& I);
-	void handleMergeVertex(int pos, Edge* edges, int sizeE, std::map<Edge, PointType>& helpers,  std::map<float, std::vector<Edge>>& I);
-	void handleRegularVertex(int pos, Edge* edges, int sizeE, std::map<Edge, PointType>& helpers,  std::map<float, std::vector<Edge>>& I);
-	int numberLeftEdges(int pos, Edge* edges, int sizeE, std::map<float, std::vector<Edge>>& I);
-	int numberLeftEdges(PointType& p, Edge* edges, int sizeE);
+	void sortPointsY(std::vector<Edge> edges, int* v, unsigned sizeI);
+	void determineType(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers, std::map<float, std::vector<Edge>>& I);
+	Edge* getLeftEdge(int pos, std::vector<Edge> edges, std::map<float, std::vector<Edge>>& I);
+	Edge* getLeftEdge(PointType& p, std::vector<Edge> lEdges);
+	std::vector<Form> transformEdges(std::vector<Edge> edges);
+	void handleStartVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers);
+	void handleSplitVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers, std::map<float, std::vector<Edge>>& I);
+	void handleMergeVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers,  std::map<float, std::vector<Edge>>& I);
+	void handleEndVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers);
+	void handleRegularVertex(int pos, std::vector<Edge> edges, std::map<Edge, PointType>& helpers,  std::map<float, std::vector<Edge>>& I);
+	int numberLeftEdges(int pos, std::vector<Edge> edges, std::map<float, std::vector<Edge>>& I);
+	int numberLeftEdges(PointType& p, std::vector<Edge> edges);
 	std::vector<Form> triangulateMonotone();
-	void createChains(int* v, int size, Edge* edges, int sizeE, std::set<PointType> lChain);
+	void createChains(int* v, unsigned size, std::vector<Edge> edges, std::set<PointType> lChain);
 	std::vector<Form> getTriangulation();
 
 	void setConvex(const std::vector<Form>& forms);

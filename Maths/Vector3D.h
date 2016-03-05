@@ -38,7 +38,7 @@ public:
 	inline bool isPoint() const { return coor[3] == 0; };
 	float getMagnitude() const;
 	float getSqMagnitude() const;
-	void normalize();
+	float normalize();
 	inline bool isColinear2D(const Vector3D v) const { return std::abs((*this)*(v.getPerpendicular2D())) < 0.000001f; };
 
 	// Getter
@@ -55,9 +55,13 @@ public:
 	inline float getW() const { return coor[3]; };
 	inline const float* getCoor() const { return coor; };
 	inline Vector3D getPerpendicular2D() const { return Vector3D(y(), x(), 0, true); };
-
+	Vector3D getProjection2D(const Vector3D& vec, const Vector3D& p) const;
 
 	// Setter
+	inline void addX(float f) { set(0, getX() + f); };
+	inline void addY(float f) { set(0, getY() + f); };
+	inline void addZ(float f) { set(0, getZ() + f); };
+	inline void addW(float f) { set(0, getW() + f); };
 	inline void setX(float f) { set(0, f); };
 	inline void setY(float f) { set(1, f); };
 	inline void setZ(float f) { set(2, f); };

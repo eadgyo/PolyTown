@@ -102,10 +102,19 @@ float Vector3D::getSqMagnitude() const
 {
 	return (*this)*(*this);
 }
-void Vector3D::normalize()
+float Vector3D::normalize()
 {
 	float magn = getMagnitude();
 	(*this)/=magn;
+	return magn;
+}
+Vector3D Vector3D::getProjection2D(const Vector3D& vec, const Vector3D& p) const
+{
+	Vector3D l_vec = vec.getNormalize();
+	Vector3D vec1(p, (*this));
+	float projectScalar = l_vec*vec1;
+	Vector3D projection(p + (l_vec*projectScalar));
+	return projection;
 }
 
 //====================================================

@@ -176,3 +176,52 @@ SDL_Texture* Graphics::getTexture(std::string textureName)
 	return textures[i];
 
 }
+
+// Draw forms
+
+void Graphics::drawLine(const Vector3D& p1, const Vector3D& p2)
+{
+	glBegin(GL_LINES);
+	glVertex3f(p1.x(), p1.y(), p1.z());
+	glVertex3f(p2.x(), p2.y(), p2.z());
+	glEnd();
+}
+
+void Graphics::drawTriangle(const Vector3D& p1, const Vector3D& p2,
+		const Vector3D& p3)
+{
+	glBegin(GL_TRIANGLES);
+	glVertex3f(p1.x(), p1.y(), p1.z());
+	glVertex3f(p2.x(), p2.y(), p2.z());
+	glVertex3f(p3.x(), p3.y(), p3.z());
+	glEnd();
+}
+
+void Graphics::drawForm(const Form& form)
+{
+	glBegin(GL_POLYGON);
+	for(unsigned i=0; i<form.size(); i++)
+	{
+		Vector3D a = form.get(i);
+		glVertex3f(a.x(), a.y(), a.z());
+	}
+	glEnd();
+}
+
+void Graphics::setColor(float r, float g, float b)
+{
+	glColor3f(r, g, b);
+}
+
+void Graphics::drawLines(const Form& form)
+{
+	for(unsigned i=0, j=form.size()-1; i<form.size(); j=i, i++)
+	{
+		drawLine(form.get(i), form.get(j));
+	}
+}
+
+void Graphics::setSize(float a)
+{
+	glLineWidth(a);
+}

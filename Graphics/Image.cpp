@@ -448,6 +448,25 @@ void Image::initialize(Graphics* graphics, int width, int height, int cols,
 	isInitialized = true;
 }
 
+void Image::initialize(Graphics* graphics, int width, int height, int currentFrame, int cols,
+		std::string textureName)
+{
+	this->currentFrame = currentFrame;
+	this->graphics = graphics;
+	spriteData->texture = graphics->getTexture(textureName);
+	if(cols == 0)
+		this->cols = 1;
+	else
+		this->cols = cols;
+	spriteData->rect->setLeft((currentFrame % this->cols)*width,
+			(currentFrame / this->cols)*height,
+			width,
+			height);
+	this->rec.set(Vector3D(width*0.5f,  height*0.5f), Vector3D(width, height), 0);
+	spriteData->textureName = textureName;
+	isInitialized = true;
+}
+
 void Image::draw()
 {
 	draw(graphics);

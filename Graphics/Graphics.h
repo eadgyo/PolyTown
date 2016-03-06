@@ -13,6 +13,7 @@ class Graphics;
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_main.h>
 #include "../Maths/Vector3D.h"
+#include "../Maths/Form.h"
 #include <string>
 #include <assert.h>
 #include "Image.h"
@@ -40,6 +41,14 @@ public:
 	SDL_Texture* getTexture(std::string textureName);
 
 	inline SDL_Renderer* getRenderer() { return renderer; };
+
+	// Draw forms
+	void drawLine(const Vector3D& p1, const Vector3D& p2);
+	void drawLines(const Form& form);
+	void drawTriangle(const Vector3D& p1, const Vector3D& p2, const Vector3D& p3);
+	void drawForm(const Form& form);
+	void setColor(float r, float g, float b);
+	void setSize(float a);
 
 private:
 	SDL_Window *screen;

@@ -96,7 +96,7 @@ float Rectangle::getAngle(const Vector3D& vec) const
 	Vector3D l_vec1 = getVecWorld();
 	if(l_vec1.x() == 0 && l_vec1.y() == 0)
 		return getAngle();
-	return l_vec1.getAngle(vec);
+	return l_vec1.getAngle2D(vec);
 }
 
 float Rectangle::getAngle() const

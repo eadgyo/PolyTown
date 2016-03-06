@@ -46,7 +46,8 @@ public:
 
 	// Getter
 	float get(int i) const;
-	float getAngle(const Vector3D& vec) const;
+	float getAngle2D(const Vector3D& vec) const;
+	float getAngle2D(const Vector3D& A, const Vector3D& C) const;
 	Vector3D getNormalize() const;
 	inline float x() const { return coor[0]; };
 	inline float y() const { return coor[1]; };

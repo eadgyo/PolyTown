@@ -5,6 +5,7 @@
 #include "Maths/Form.h"
 #include "FileManager.h"
 
+
 int main(int argc, char* args[])
 {
 	/*
@@ -41,44 +42,22 @@ int main(int argc, char* args[])
 
 	image.draw();*/
 
-	SDL_Surface* sur = fileM.loadTexture("a.png", false);
+	Form form;
+	form.addPoint(Vector3D(10, 10));
+	//form.addPoint(Vector3D(70, 60));
+	form.addPoint(Vector3D(200, 30));
+	form.addPoint(Vector3D(100, 120));
+	form.addPoint(Vector3D(10, 100));
 
-	SDL_Texture* tex = g->loadTextureFromSurface(sur);
+	form.triangulate();
 
-	SDL_Texture* texture = IMG_LoadTexture(g->getRenderer(), "a.png");
-
-	//
-	SDL_Rect dst;
-	dst.x = 0;
-	dst.y = 450;
-	dst.w = 565;
-	dst.h = 203;
-	//g->update();
-	SDL_Rect texture_rect;
-
-	//g->render(texture, NULL);
-	//glLoadIdentity();
-	Image image;
-	image.initialize(g, 260, 203, 2, texture, "a.png");
-	image.setCurrentFrame(0);
-	image.setPositionX(0);
-	image.setPositionY(0);
-	image.scale(2.0f, Vector3D(true));
-	// image.flipV(Vector3D(true));
-
-	SDL_RenderClear(g->getRenderer());
-	glTranslatef(600, 400, 0);
-	image.draw();
+	g->setColor(1.0f, 0.0f, 0.0f);
+	g->drawLines(form);
 
 
-	//SDL_RenderCopy(g->getRenderer(), texture, NULL, &dst);
 	g->update();
 
-	SDL_Delay(1000);
 
-	image.setCurrentFrame(1);
-	image.draw();
-	g->update();
 
 	SDL_Delay(1000);
     return 0;

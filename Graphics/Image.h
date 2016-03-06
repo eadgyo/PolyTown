@@ -96,6 +96,8 @@ public:
 			SDL_Texture* texture, std::string textureName);
 	void initialize(Graphics* graphics, int width, int height, int cols,
 			std::string textureName);
+	void initialize(Graphics* graphics, int width, int height, int currentFrame, int cols,
+			std::string textureName);
 	void draw();
 	void draw(Graphics* g);
 	void draw(const Vector3D& translation);

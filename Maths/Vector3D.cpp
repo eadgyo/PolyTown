@@ -62,13 +62,13 @@ Vector3D Vector3D::copy() const
 //====================================================
 // Getter
 //====================================================
-float Vector3D::getAngle(const Vector3D& vec) const
+float Vector3D::getAngle2D(const Vector3D& vec) const
 {
-	float scalar = getNormalize()*vec.getNormalize();
+	float scalar = getNormalize()*(vec.getNormalize());
 	float l_fTheta = 0;
-	if(scalar > 1)
+	if(scalar > 1.0f)
 		l_fTheta = 0;
-	else if(scalar < -1)
+	else if(scalar < -1.0f)
 		l_fTheta = (float) PI;
 	else
 		l_fTheta = (float) acos(scalar);
@@ -78,6 +78,14 @@ float Vector3D::getAngle(const Vector3D& vec) const
 
 
 	return l_fTheta;
+}
+
+float Vector3D::getAngle2D(const Vector3D& A, const Vector3D& C) const
+{
+	Vector3D AB((*this), A);
+	Vector3D CB(C, (*this));
+	float theta = (float) (PI - AB.getAngle2D(CB));
+	return theta;
 }
 
 Vector3D Vector3D::getNormalize() const

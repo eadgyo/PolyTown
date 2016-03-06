@@ -969,7 +969,7 @@ int Form::getClockwise() const
 	//float sumInt = 0;
 	for(unsigned i=0; i<size(); i++)
 	{
-		sum = sum + (PI - points.at((i+1)%size()).getAngle(Vector3D(points.at(i), points.at((i+2)%size()))));
+		sum = sum + (PI - (points.at((i+1)%size()).getAngle2D(points.at(i), points.at((i+2)%size()))));
 	}
 
 	if(PI*2 - 0.001 < std::abs(sum) && std::abs(sum) < 2*PI + 0.001f)
@@ -980,6 +980,7 @@ int Form::getClockwise() const
 	}
 	else
 	{
+		std::cout << sum;
 		return 0;
 	}
 }
@@ -1193,9 +1194,9 @@ void Form::sortPointsY(std::vector<Edge>& edges, int* v, unsigned sizeV)
 
 	// Tri à bulles
 	// Opti dégueu mais bon
-	for(unsigned i=sizeV-1; i != 1; i++)
+	for(unsigned t=0; t<sizeV-1; t++)
 	{
-		for(unsigned j=0; j<i-1; j++)
+		for(unsigned i=t; i<sizeV-1; i++)
 		{
 			p0 = edges[v[i]].p0;
 			p1 = edges[v[i+1]].p0;
@@ -1268,7 +1269,7 @@ void Form::determineType(int pos, std::vector<Edge> edges,
 	PointType* p1 = edge.p0;
 	PointType* p2 = edge.p1;
 
-	float theta = -(PI - p1->getAngle(Vector3D((*p0), (*p2))));
+	float theta = -(PI - p1->getAngle2D((*p0), (*p2)));
 	if(p1->y() < p0->y() && p1->y() < p2->y())
 	{
 		if(theta > 0 && theta < PI)

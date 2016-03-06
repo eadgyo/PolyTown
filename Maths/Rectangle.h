@@ -11,7 +11,7 @@ public:
 	Rectangle(const Rectangle& rectangle);
 	Rectangle(const Form& form);
 	Rectangle(const Vector3D& center, const Vector3D& length, float omega);
-	virtual ~Rectangle();
+	~Rectangle();
 
 	Rectangle clone();
 

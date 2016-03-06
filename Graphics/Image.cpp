@@ -9,6 +9,13 @@
 
 Image::Image()
 {
+	graphics = NULL;
+	cols = 0;
+	currentFrame = 0;
+
+	startFrame = 0;
+	endFrame = 0;
+
 	isDisplayingRec = false;
 	visible = 1.0f;
 	isInitialized = false;
@@ -18,7 +25,18 @@ Image::Image()
 
 Image::Image(Image& image)
 {
-	Image();
+	graphics = NULL;
+	cols = 0;
+	currentFrame = 0;
+
+	startFrame = 0;
+	endFrame = 0;
+
+	isDisplayingRec = false;
+	visible = 1.0f;
+	isInitialized = false;
+	spriteData = new SpriteData();
+	setColorFilter(0.0f,0.0f,0.0f,0.0f);
 	set(image);
 }
 
@@ -192,7 +210,8 @@ float Image::getSpriteDataWidth() const
 void Image::set(Image& image)
 {
 	SpriteData* l_spriteData = image.getSpriteData();
-	initialize(image.getGraphics(), (int) l_spriteData->rect->getWidth(), (int) l_spriteData->rect->getHeight(), image.getCols(), l_spriteData->texture, image.getTextureName());
+	initialize(image.getGraphics(), (int) l_spriteData->rect->getWidth(), (int) l_spriteData->rect->getHeight(),
+			image.getCols(), l_spriteData->texture, image.getTextureName());
 	isDisplayingRec = image.getIsRectDisplaying();
 	setCurrentFrame(image.getCurrentFrame());
 	rec.set(image.getRectangle());

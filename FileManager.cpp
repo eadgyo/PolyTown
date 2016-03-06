@@ -76,7 +76,7 @@ void FileManager::initialize()
 
 SDL_Surface* FileManager::getDefTexture(std::string textureName)
 {
-	if(textureName.compare(""))
+	if(!textureName.compare(""))
 		return NULL;
 
 	std::map<std::string, int>::iterator it;

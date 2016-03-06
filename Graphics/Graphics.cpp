@@ -12,7 +12,7 @@ Graphics::Graphics(std::string windowName, int width, int height)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 	    std::cout << "Failed to init SDL\n";
 	}
@@ -28,41 +28,45 @@ Graphics::Graphics(std::string windowName, int width, int height)
 
 	assert(screen != NULL);
 
-	renderer = SDL_CreateRenderer(screen, -1, 0);
+	renderer = SDL_CreateRenderer(screen, -1, SDL_RENDERER_ACCELERATED);
 
 	assert(renderer != NULL);
+
+	clear();
 }
 
 void Graphics::clear()
 {
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
-	glClearColor(0.0, 0.0, 0.0, 1.0);
-	glLoadIdentity();
 }
 
 void Graphics::update()
 {
 	SDL_RenderPresent(renderer);
+	clear();
 }
 
-void Graphics::render(SDL_Texture *texture, SDL_Rect& textureRect)
+void Graphics::render(SDL_Texture *texture, SDL_Rect* textureRect)
 {
-	SDL_RenderCopy(renderer, texture, NULL, &textureRect);
+	SDL_RenderCopy(renderer, texture, NULL, NULL);
 }
 
 void Graphics::render(Image& image)
 {
-	glLoadIdentity();
+	glPushMatrix();
 
 	const Rectangle rec = image.getRectangle();
 	SpriteData* spriteData = image.getSpriteData();
-	glTranslatef(rec.getCenterX() + ((int)rec.getWidth())*((spriteData->flipH)?0:0),
-				rec.getCenterY() + ((int)rec.getHeight())*((spriteData->flipV)?0:0),
+	glTranslatef(rec.getCenterX() + ((int)rec.getWidth())*((spriteData->flipH)?1:0),
+				rec.getCenterY() + ((int)rec.getHeight())*((spriteData->flipV)?1:0),
 				0.0f);
 
-	glScalef(rec.getWidth()/spriteData->rect->getWidth(), rec.getHeight()/spriteData->rect->getHeight(), 0.0f);
+	glScalef(rec.getWidth()/spriteData->rect->getWidth()*((spriteData->flipH)?-1.0f:1.0f),
+			rec.getHeight()/spriteData->rect->getHeight()*((spriteData->flipV)?-1.0f:1.0f),
+			0.0f);
 
-	float rot = -rec.getAngle() + ((spriteData->flipH)?PI:0);
+	float rot = -rec.getAngle(); //+ ((spriteData->flipH)?PI:0);
 	if(std::abs(rot) > 0.001f && std::abs(rot - PI*2) > 0.001f)
 		glRotatef(rot, 0, 0, 1.0f);
 
@@ -70,22 +74,28 @@ void Graphics::render(Image& image)
 				-spriteData->rect->getHeight()*(0.5f - ((spriteData->flipV)?1.0f:0.0f)),
 				0.0f);
 
+
 	SDL_Rect sdlRec = spriteData->rect->getSDLRect();
-	SDL_Rect destRect = spriteData->rect->getSDLRect(spriteData->flipH, spriteData->flipV);
+	glTranslatef(-sdlRec.x, - sdlRec.y, 0.0f);
+	SDL_Rect destRect = spriteData->rect->getSDLRectDest(); //spriteData->flipH, spriteData->flipV);
 	SDL_RenderCopy(renderer, spriteData->texture, &sdlRec, &destRect);
+
+	glPopMatrix();
 }
 
 void Graphics::render(Image& image, const Vector3D& translation)
 {
-	glLoadIdentity();
+	glPushMatrix();
 
 	const Rectangle rec = image.getRectangle();
 	SpriteData* spriteData = image.getSpriteData();
-	glTranslatef(translation.x() + rec.getCenterX() + ((int)rec.getWidth())*((spriteData->flipH)?0:0),
-				translation.y() + rec.getCenterY() + ((int)rec.getHeight())*((spriteData->flipV)?0:0),
+	glTranslatef(translation.x() + rec.getCenterX() + ((int)rec.getWidth())*((spriteData->flipH)?1:0),
+				translation.y() + rec.getCenterY() + ((int)rec.getHeight())*((spriteData->flipV)?1:0),
 				0.0f);
 
-	glScalef(rec.getWidth()/spriteData->rect->getWidth(), rec.getHeight()/spriteData->rect->getHeight(), 0.0f);
+	glScalef(rec.getWidth()/spriteData->rect->getWidth()*((spriteData->flipH)?-1.0f:1.0f),
+			rec.getHeight()/spriteData->rect->getHeight()*((spriteData->flipV)?-1.0f:1.0f),
+			0.0f);
 
 	float rot = -rec.getAngle() + ((spriteData->flipH)?PI:0);
 	if(std::abs(rot) > 0.001f && std::abs(rot - PI*2) > 0.001f)
@@ -96,23 +106,27 @@ void Graphics::render(Image& image, const Vector3D& translation)
 				0.0f);
 
 	SDL_Rect sdlRec = spriteData->rect->getSDLRect();
-	SDL_Rect destRect = spriteData->rect->getSDLRect(spriteData->flipH, spriteData->flipV);
+	SDL_Rect destRect = spriteData->rect->getSDLRect(); //spriteData->flipH, spriteData->flipV);
 	SDL_RenderCopy(renderer, spriteData->texture, &sdlRec, &destRect);
+
+	glPopMatrix();
 }
 
 void Graphics::render(Image& image, const Vector3D& translation, float scale)
 {
-	glLoadIdentity();
+	glPushMatrix();
 
 	Rectangle rec(image.getRectangle());
 	rec.scaleF(scale, Vector3D(true));
 
 	SpriteData* spriteData = image.getSpriteData();
-	glTranslatef(translation.x() + rec.getCenterX() + ((int)rec.getWidth())*((spriteData->flipH)?0:0),
-				translation.y() + rec.getCenterY() + ((int)rec.getHeight())*((spriteData->flipV)?0:0),
+	glTranslatef(translation.x() + rec.getCenterX() + ((int)rec.getWidth())*((spriteData->flipH)?1:0),
+				translation.y() + rec.getCenterY() + ((int)rec.getHeight())*((spriteData->flipV)?1:0),
 				0.0f);
 
-	glScalef(rec.getWidth()/spriteData->rect->getWidth(), rec.getHeight()/spriteData->rect->getHeight(), 0.0f);
+	glScalef(rec.getWidth()/spriteData->rect->getWidth()*((spriteData->flipH)?-1.0f:1.0f),
+			rec.getHeight()/spriteData->rect->getHeight()*((spriteData->flipV)?-1.0f:1.0f),
+			0.0f);
 
 	float rot = -rec.getAngle() + ((spriteData->flipH)?PI:0);
 	if(std::abs(rot) > 0.001f && std::abs(rot - PI*2) > 0.001f)
@@ -125,6 +139,8 @@ void Graphics::render(Image& image, const Vector3D& translation, float scale)
 	SDL_Rect sdlRec = spriteData->rect->getSDLRect();
 	SDL_Rect destRect = spriteData->rect->getSDLRect(spriteData->flipH, spriteData->flipV);
 	SDL_RenderCopy(renderer, spriteData->texture, &sdlRec, &destRect);
+
+	glPopMatrix();
 }
 
 SDL_Texture* Graphics::loadTextureFromSurface(SDL_Surface *surface)
@@ -149,7 +165,7 @@ Graphics::~Graphics()
 
 SDL_Texture* Graphics::getTexture(std::string textureName)
 {
-	if(textureName.compare(""))
+	if(!textureName.compare(""))
 			return NULL;
 
 	std::map<std::string, int>::iterator it;

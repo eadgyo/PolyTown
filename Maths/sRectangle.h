@@ -34,8 +34,8 @@ public:
 	void setLeft(float x, float y, float width, float height);
 
 	// Getter
-	inline float getLeftX() const { return points.at(0).x(); };
-	inline float getLeftY() const { return points.at(0).y(); };
+	inline float getLeftX() const { return getX(0); };
+	inline float getLeftY() const { return getY(0); };
 	inline float getWidth() const { return length.getX(); };
 	inline float getHeight() const { return length.getY(); };
 	inline const Vector3D& getLength() const { return length; };
@@ -48,6 +48,7 @@ public:
 	inline const Vector3D& getLeft() const { return points.at(0); };
 	SDL_Rect getSDLRect();
 	SDL_Rect getSDLRect(bool flipH, bool flipW);
+	SDL_Rect getSDLRectDest();
 
 private:
 	Vector3D length;

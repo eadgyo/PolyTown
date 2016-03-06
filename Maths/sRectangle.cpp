@@ -3,11 +3,13 @@
 
 sRectangle::sRectangle() : Form(4)
 {
+
 	set(0, 0, 0, 0);
 }
 
 sRectangle::sRectangle(const Vector3D& left, const Vector3D& length) : Form(4)
 {
+
 	setLeft(left, length);
 }
 
@@ -52,10 +54,10 @@ void sRectangle::set(const Vector3D& center, const Vector3D& length)
 {
 	orientation.setPos(center);
 	this->length.set(length);
-	points.at(0).set(center.x() - 0.5f*length.x(), center.y() - 0.5f*length.y());
-	points.at(1).set(center.x() - 0.5f*length.x(), center.y() + 0.5f*length.y());
-	points.at(2).set(center.x() + 0.5f*length.x(), center.y() + 0.5f*length.y());
-	points.at(3).set(center.x() + 0.5f*length.x(), center.y() - 0.5f*length.y());
+	points.at(0).set2D(center.x() - 0.5f*length.x(), center.y() - 0.5f*length.y());
+	points.at(1).set2D(center.x() - 0.5f*length.x(), center.y() + 0.5f*length.y());
+	points.at(2).set2D(center.x() + 0.5f*length.x(), center.y() + 0.5f*length.y());
+	points.at(3).set2D(center.x() + 0.5f*length.x(), center.y() - 0.5f*length.y());
 }
 
 void sRectangle::set(const sRectangle& rec)
@@ -69,10 +71,10 @@ void sRectangle::set(float x, float y, float width, float height)
 	orientation.setY(y);
 	length[0] = width;
 	length[1] = height;
-	points.at(0).set(- 0.5f*length.x(), - 0.5f*length.y());
-	points.at(1).set(- 0.5f*length.x(), + 0.5f*length.y());
-	points.at(2).set(+ 0.5f*length.x(), + 0.5f*length.y());
-	points.at(3).set(+ 0.5f*length.x(), - 0.5f*length.y());
+	points.at(0).set2D(- 0.5f*length.x(), - 0.5f*length.y());
+	points.at(1).set2D(- 0.5f*length.x(), + 0.5f*length.y());
+	points.at(2).set2D(+ 0.5f*length.x(), + 0.5f*length.y());
+	points.at(3).set2D(+ 0.5f*length.x(), - 0.5f*length.y());
 }
 
 void sRectangle::setLeft(const Vector3D& left, const Vector3D& length)
@@ -80,21 +82,21 @@ void sRectangle::setLeft(const Vector3D& left, const Vector3D& length)
 	this->length.set(length);
 	orientation.setPos(Vector3D(left.x() + length.x()*0.5f, left.y() + length.y()*0.5f));
 
-	points.at(0).set(- 0.5f*length.x(), - 0.5f*length.y());
-	points.at(1).set(- 0.5f*length.x(), + 0.5f*length.y());
-	points.at(2).set(+ 0.5f*length.x(), + 0.5f*length.y());
-	points.at(3).set(+ 0.5f*length.x(), - 0.5f*length.y());
+	points.at(0).set2D(- 0.5f*length.x(), - 0.5f*length.y());
+	points.at(1).set2D(- 0.5f*length.x(), + 0.5f*length.y());
+	points.at(2).set2D(+ 0.5f*length.x(), + 0.5f*length.y());
+	points.at(3).set2D(+ 0.5f*length.x(), - 0.5f*length.y());
 }
 
 void sRectangle::setLeft(float x, float y, float width, float height)
 {
-	this->length.set(width, height);
+	this->length.set2D(width, height);
 	orientation.setPos(Vector3D(x + width*0.5f, y + height*0.5f));
 
-	points.at(0).set(- 0.5f*length.x(), - 0.5f*length.y());
-	points.at(1).set(- 0.5f*length.x(), + 0.5f*length.y());
-	points.at(2).set(+ 0.5f*length.x(), + 0.5f*length.y());
-	points.at(3).set(+ 0.5f*length.x(), - 0.5f*length.y());
+	points.at(0).set2D(- 0.5f*length.x(), - 0.5f*length.y());
+	points.at(1).set2D(- 0.5f*length.x(), + 0.5f*length.y());
+	points.at(2).set2D(+ 0.5f*length.x(), + 0.5f*length.y());
+	points.at(3).set2D(+ 0.5f*length.x(), - 0.5f*length.y());
 }
 
 bool sRectangle::isInside(const sRectangle& rect) const
@@ -159,5 +161,15 @@ SDL_Rect sRectangle::getSDLRect(bool flipH, bool flipW)
 	src.y = getLeftY();
 	src.w = getWidth()*(flipH)?-1:1;
 	src.h = getHeight()*(flipV)?-1:1;
+	return src;
+}
+
+SDL_Rect sRectangle::getSDLRectDest()
+{
+	SDL_Rect src;
+	src.x = getLeftX();
+	src.y = getLeftY();
+	src.w = getWidth();
+	src.h = getHeight();
 	return src;
 }

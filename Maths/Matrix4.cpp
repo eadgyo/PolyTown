@@ -186,7 +186,7 @@ void Matrix4::setTranspose(const Matrix4& m4)
 void Matrix4::setOrientation(const Quaternion& q5)
 {
 	float n = q5.getMagnitude();
-	if(n < 0.000001f)
+	if(std::abs(n) < 0.000001f)
 		setIdentity();
 		return;
 
@@ -367,6 +367,8 @@ void Matrix4::transpose()
 }
 void Matrix4::changeBasis(const Matrix4& m4)
 {
+	Vector3D a;
+	a.set(0.0f, 1.0f);
 	Matrix4 inv = getInverse();
 	(*this) *= (m4*inv);
 }

@@ -30,6 +30,7 @@ public:
 	Vector3D(bool isPoint);
 	Vector3D(const Vector3D& a);
 	Vector3D(const Vector3D&, const Vector3D&);
+	Vector3D(float, float);
 	Vector3D(float, float, float);
 	Vector3D(float, float, float, bool);
 	Vector3D(float const*);
@@ -73,6 +74,7 @@ public:
 	void set(const Vector3D& a);
 	void set(int, float);
 	void set(float);
+	inline void set2D(float x, float y) { set(x, y, 0, 1); };
 	void set(float, float);
 	void set(float, float, float);
 	void set(float, float, float, float);

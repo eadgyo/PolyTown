@@ -46,10 +46,10 @@ void Rectangle::set(const Vector3D& center, const Vector3D& length, float omega)
 	orientation.setPos(center);
 	this->length.set(length);
 
-	points.at(0).set(- 0.5f*length.x(),- 0.5f*length.y());
-	points.at(1).set(- 0.5f*length.x(),+ 0.5f*length.y());
-	points.at(2).set(+ 0.5f*length.x(),+ 0.5f*length.y());
-	points.at(3).set(+ 0.5f*length.x(),- 0.5f*length.y());
+	points.at(0).set2D(- 0.5f*length.x(),- 0.5f*length.y());
+	points.at(1).set2D(- 0.5f*length.x(),+ 0.5f*length.y());
+	points.at(2).set2D(+ 0.5f*length.x(),+ 0.5f*length.y());
+	points.at(3).set2D(+ 0.5f*length.x(),- 0.5f*length.y());
 
 	rotateRadians(omega, center);
 }

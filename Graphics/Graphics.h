@@ -33,11 +33,13 @@ public:
 	void render(Image& image);
 	void render(Image& image, const Vector3D& translation);
 	void render(Image& image, const Vector3D& translation, float scale);
-	void render(SDL_Texture *texture, SDL_Rect& textureRect);
+	void render(SDL_Texture *texture, SDL_Rect* textureRect);
 	SDL_Texture* loadTextureFromSurface(SDL_Surface *surface);
 	void loadTextures(std::vector<SDL_Surface*>& surfaces,
 			std::map<std::string, int>& names);
 	SDL_Texture* getTexture(std::string textureName);
+
+	inline SDL_Renderer* getRenderer() { return renderer; };
 
 private:
 	SDL_Window *screen;

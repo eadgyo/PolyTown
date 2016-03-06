@@ -27,19 +27,59 @@ int main(int argc, char* args[])
     }
     SDL_Delay(3000);*/
 
-	Graphics *g = new Graphics("Ma bite", 800, 600);
+	Graphics *g = new Graphics("Ma bite", 1600, 900);
 
 	FileManager& fileM = FileManager::getInstance();
 	fileM.initialize();
 	fileM.load(g);
 
-	g->clear();
+	/*g->clear();
 	Image image;
 	image.initialize(g, 565, 203, 0, "a.png");
+	image.setPositionX(0);
+	image.setPositionY(0);
 
-	image.draw();
+	image.draw();*/
+
+	SDL_Surface* sur = fileM.loadTexture("a.png", false);
+
+	SDL_Texture* tex = g->loadTextureFromSurface(sur);
+
+	SDL_Texture* texture = IMG_LoadTexture(g->getRenderer(), "a.png");
+
+	//
+	SDL_Rect dst;
+	dst.x = 0;
+	dst.y = 450;
+	dst.w = 565;
+	dst.h = 203;
 	//g->update();
+	SDL_Rect texture_rect;
 
-	SDL_Delay(3000);
+	//g->render(texture, NULL);
+	//glLoadIdentity();
+	Image image;
+	image.initialize(g, 260, 203, 2, texture, "a.png");
+	image.setCurrentFrame(0);
+	image.setPositionX(0);
+	image.setPositionY(0);
+	image.scale(2.0f, Vector3D(true));
+	// image.flipV(Vector3D(true));
+
+	SDL_RenderClear(g->getRenderer());
+	glTranslatef(600, 400, 0);
+	image.draw();
+
+
+	//SDL_RenderCopy(g->getRenderer(), texture, NULL, &dst);
+	g->update();
+
+	SDL_Delay(1000);
+
+	image.setCurrentFrame(1);
+	image.draw();
+	g->update();
+
+	SDL_Delay(1000);
     return 0;
 }

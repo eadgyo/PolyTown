@@ -2,7 +2,13 @@
 
 Vector3D::Vector3D(bool isPoint)
 {
-	Vector3D(0, 0, 0, isPoint);
+	coor[0] = 0;
+	coor[1] = 0;
+	coor[2] = 0;
+	if(isPoint)
+		coor[3] = 1;
+	else
+		coor[3] = 0;
 }
 Vector3D::Vector3D(const Vector3D& a)
 {
@@ -15,6 +21,13 @@ Vector3D::Vector3D(const Vector3D& a, const Vector3D& b)
 {
 	Vector3D result = b - a;
 	set(result);
+}
+Vector3D::Vector3D(float x, float y)
+{
+	coor[0] = x;
+	coor[1] = y;
+	coor[2] = 0;
+	coor[3] = 1;
 }
 Vector3D::Vector3D(float x, float y, float z)
 {
@@ -165,6 +178,9 @@ void Vector3D::set(float a, float b)
 {
 	coor[0] = a;
 	coor[1] = b;
+	if(std::abs(coor[2]) > 0.0001f || std::abs(coor[3]) > 0.0001f)
+		std::cout << "set(float, float) au lieu de set2D??";
+	//assert(std::abs(coor[2]) < 0.0001f && std::abs(coor[3]) < 0.0001f);
 }
 void Vector3D::set(float a, float b, float c)
 {

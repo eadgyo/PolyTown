@@ -27,7 +27,7 @@ public:
 	Form();
 	Form(const Form& form);
 	Form(float omega, float scale, bool flipH, bool flipV, float surface, const Vector3D& vec);
-	virtual ~Form();
+	~Form();
 
 	Form clone() const;
 	void resetTransformations();

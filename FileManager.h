@@ -37,7 +37,7 @@ private:
 	const std::string objectsFolder = binFolder + "/" + "Objects";
 	const std::string textureFolder = binFolder + "/" + "pic";
 
-	std::vector<SDL_Surface*> textures;
+	std::vector<SDL_Surface*> surfaces;
 	std::map<std::string, int> names;
 
 	static FileManager INSTANCE;

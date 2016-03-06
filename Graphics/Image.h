@@ -89,7 +89,7 @@ public:
 	void clearTexture();
 	void loadTexture();
 
-	void initialize(Graphics* graphics, int width, int height, int cols, SDL_Surface* texture, std::string textureName);
+	void initialize(Graphics* graphics, int width, int height, int cols, SDL_Texture* texture, std::string textureName);
 	void draw();
 	void draw(Graphics* g);
 	void draw(const Vector3D& translation);

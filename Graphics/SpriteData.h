@@ -25,7 +25,7 @@ public:
 		texture = NULL;
 		textureName = "";
 	};
-	inline SpriteData(SDL_Surface* texture, std::string textureName)
+	inline SpriteData(SDL_Texture* texture, std::string textureName)
 	{
 		flipH = false;
 		flipV = false;
@@ -34,7 +34,7 @@ public:
 		this->textureName = textureName;
 	};
 
-	SDL_Surface* texture;
+	SDL_Texture* texture;
 	std::string textureName;
 	sRectangle* rect;
 	bool flipH, flipV;

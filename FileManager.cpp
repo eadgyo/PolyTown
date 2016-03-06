@@ -6,11 +6,9 @@ FileManager::FileManager()
 	createFolder(binFolder);
 	createFolder(textureFolder);
 	//createFolder(objectFolder);
-	std::vector<std::string> names = getAllFilesName(textureFolder, false);
-	for(unsigned i=0; i<names.size(); i++)
-	{
-		std::cout << names[i] << "\n";
-	}
+
+	// Chargement des images
+	loadDefTextures();
 }
 
 FileManager& FileManager::getInstance()
@@ -81,7 +79,7 @@ SDL_Surface* FileManager::getDefTexture(std::string textureName)
 	it = names.find(textureName);
 	assert(it != names.end());
 	int i = it->second;
-	return textures[i];
+	return surfaces[i];
 }
 
 void FileManager::loadDefTextures()
@@ -93,8 +91,8 @@ void FileManager::loadDefTextures()
 		SDL_Surface* texture = loadTexture(textureFolder + "/" + names[i], false);
 		if(texture != NULL)
 		{
-			textures.push_back(texture);
-			this->names[names[j]] = j;
+			surfaces.push_back(texture);
+			this->names[names[i]] = j;
 			j++;
 		}
 	}

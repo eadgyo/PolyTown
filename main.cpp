@@ -27,9 +27,12 @@ int main(int argc, char* args[])
     }
     SDL_Delay(3000);*/
 
-	FileManager& fileM = FileManager::getInstance();
-	bool a = fileM.isFolderExisting("Binsdf");
+	Graphics *g = new Graphics("Ma bite", 800, 600);
 
-	std::cout << a;
+	FileManager& fileM = FileManager::getInstance();
+	SDL_Texture *aaa = fileM.loadTexture(g, "a.png", false);
+	// fileM.initialize(g);
+
+
     return 0;
 }

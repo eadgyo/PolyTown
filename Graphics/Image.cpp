@@ -372,7 +372,7 @@ void Image::loadTexture()
 }
 
 void Image::initialize(Graphics* graphics, int width, int height, int cols,
-		SDL_Surface* texture, std::string textureName)
+		SDL_Texture* texture, std::string textureName)
 {
 	this->graphics = graphics;
 	spriteData->texture = texture;

@@ -37,6 +37,7 @@ public:
 	SDL_Texture* loadTextureFromSurface(SDL_Surface *surface);
 	void loadTextures(std::vector<SDL_Surface*>& surfaces,
 			std::map<std::string, int>& names);
+	SDL_Texture* getTexture(std::string textureName);
 
 private:
 	SDL_Window *screen;

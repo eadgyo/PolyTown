@@ -10,6 +10,8 @@
 Graphics::Graphics(std::string windowName, int width, int height)
 {
 	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 	    std::cout << "Failed to init SDL\n";
@@ -145,3 +147,16 @@ Graphics::~Graphics()
     SDL_Quit();
 }
 
+SDL_Texture* Graphics::getTexture(std::string textureName)
+{
+	if(textureName.compare(""))
+			return NULL;
+
+	std::map<std::string, int>::iterator it;
+
+	it = names.find(textureName);
+	assert(it != names.end());
+	int i = it->second;
+	return textures[i];
+
+}

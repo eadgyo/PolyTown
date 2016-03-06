@@ -1,4 +1,6 @@
 #pragma once
+class FileManager;
+
 #include <string>
 #include <vector>
 #include <set>

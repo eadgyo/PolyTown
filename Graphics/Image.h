@@ -10,6 +10,7 @@ class Image;
 #include "../Maths/Vector3D.h"
 #include "../Maths/Rectangle.h"
 #include "../Maths/sRectangle.h"
+#include "../FileManager.h"
 
 class Image
 {
@@ -91,7 +92,10 @@ public:
 	void clearTexture();
 	void loadTexture();
 
-	void initialize(Graphics* graphics, int width, int height, int cols, SDL_Texture* texture, std::string textureName);
+	void initialize(Graphics* graphics, int width, int height, int cols,
+			SDL_Texture* texture, std::string textureName);
+	void initialize(Graphics* graphics, int width, int height, int cols,
+			std::string textureName);
 	void draw();
 	void draw(Graphics* g);
 	void draw(const Vector3D& translation);

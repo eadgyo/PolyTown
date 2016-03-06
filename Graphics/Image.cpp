@@ -254,7 +254,7 @@ void Image::setRadians(float radians)
 void Image::setScale(float scale, const Vector3D& center)
 {
 	float factor = scale*(1.0f/getScale());
-	scale(factor, getPos());
+	this->scale(factor, getPos());
 }
 
 void Image::setDegrees(float degrees, const Vector3D& vec,
@@ -389,7 +389,8 @@ void Image::clearTexture()
 
 void Image::loadTexture()
 {
-	this->spriteData->texture = FileManager::getInstance().getDefTexture(spriteData->textureName);
+	if(graphics != NULL)
+		this->spriteData->texture = graphics->getTexture(spriteData->textureName);
 }
 
 void Image::initialize(Graphics* graphics, int width, int height, int cols,
@@ -397,6 +398,24 @@ void Image::initialize(Graphics* graphics, int width, int height, int cols,
 {
 	this->graphics = graphics;
 	spriteData->texture = texture;
+	if(cols == 0)
+		this->cols = 1;
+	else
+		this->cols = cols;
+	spriteData->rect->setLeft((currentFrame % this->cols)*width,
+			(currentFrame / this->cols)*height,
+			width,
+			height);
+	this->rec.set(Vector3D(width*0.5f,  height*0.5f), Vector3D(width, height), 0);
+	spriteData->textureName = textureName;
+	isInitialized = true;
+}
+
+void Image::initialize(Graphics* graphics, int width, int height, int cols,
+		std::string textureName)
+{
+	this->graphics = graphics;
+	spriteData->texture = graphics->getTexture(textureName);
 	if(cols == 0)
 		this->cols = 1;
 	else

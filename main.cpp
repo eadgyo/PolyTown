@@ -31,8 +31,15 @@ int main(int argc, char* args[])
 
 	FileManager& fileM = FileManager::getInstance();
 	fileM.initialize();
-
 	fileM.load(g);
+
+	g->clear();
+	Image image;
+	image.initialize(g, 565, 203, 0, "a.png");
+
+	image.draw();
+	//g->update();
+
 	SDL_Delay(3000);
     return 0;
 }

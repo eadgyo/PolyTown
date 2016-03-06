@@ -1,5 +1,7 @@
 #ifndef _IMAGE_H_
 #define _IMAGE_H_
+class Image;
+
 #include "string.h"
 #include "Graphics.h"
 #include "../Constant.h"

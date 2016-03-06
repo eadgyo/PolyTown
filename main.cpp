@@ -30,9 +30,9 @@ int main(int argc, char* args[])
 	Graphics *g = new Graphics("Ma bite", 800, 600);
 
 	FileManager& fileM = FileManager::getInstance();
-	SDL_Texture *aaa = fileM.loadTexture(g, "a.png", false);
-	// fileM.initialize(g);
+	fileM.initialize();
 
-
+	fileM.load(g);
+	SDL_Delay(3000);
     return 0;
 }

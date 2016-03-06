@@ -25,6 +25,7 @@ public:
 	bool isFileExisting(std::string directory);
 	std::vector<std::string> getAllFilesName(std::string directory, bool isInternal);
 	int type(std::string directory, bool isInternal);
+	void load(Graphics* g);
 
 private:
 	FileManager& operator=(const FileManager&) {return (*this); };

@@ -59,6 +59,11 @@ int FileManager::type(std::string directory, bool isInternal)
 	return 0;
 }
 
+void FileManager::load(Graphics* g)
+{
+	g->loadTextures(surfaces, names);
+}
+
 FileManager::~FileManager()
 {
 }

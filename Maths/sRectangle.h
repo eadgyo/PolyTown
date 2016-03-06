@@ -10,6 +10,7 @@
 
 class sRectangle;
 
+#include <SDL2/SDL.h>
 #include "Form.h"
 #include "Vector3D.h"
 
@@ -33,6 +34,8 @@ public:
 	void setLeft(float x, float y, float width, float height);
 
 	// Getter
+	inline float getLeftX() const { return points.at(0).x(); };
+	inline float getLeftY() const { return points.at(0).y(); };
 	inline float getWidth() const { return length.getX(); };
 	inline float getHeight() const { return length.getY(); };
 	inline const Vector3D& getLength() const { return length; };
@@ -43,8 +46,8 @@ public:
 	bool collision(const sRectangle& rect) const;
 	bool collisionBorder(const sRectangle& rect) const;
 	inline const Vector3D& getLeft() const { return points.at(0); };
-
-
+	SDL_Rect getSDLRect();
+	SDL_Rect getSDLRect(bool flipH, bool flipW);
 
 private:
 	Vector3D length;

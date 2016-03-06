@@ -141,3 +141,23 @@ bool sRectangle::collisionBorder(const sRectangle& rect) const
 	return ((getX(0) >= rect.getX(0) or getX(2) >= rect.getX(0)) and (getX(0) <= rect.getX(2) or getX(2) <= rect.getX(2))) and
 			((getY(0) >= rect.getY(0) or getY(2) >= rect.getY(0)) and (getY(0) <= rect.getY(2) or getY(2) <= rect.getY(2)));
 }
+
+SDL_Rect sRectangle::getSDLRect()
+{
+	SDL_Rect src;
+	src.x = getLeftX();
+	src.y = getLeftY();
+	src.w = getWidth();
+	src.h = getHeight();
+	return src;
+}
+
+SDL_Rect sRectangle::getSDLRect(bool flipH, bool flipW)
+{
+	SDL_Rect src;
+	src.x = getLeftX();
+	src.y = getLeftY();
+	src.w = getWidth()*(flipH)?-1:1;
+	src.h = getHeight()*(flipV)?-1:1;
+	return src;
+}

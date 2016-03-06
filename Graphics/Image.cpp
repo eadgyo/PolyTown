@@ -253,46 +253,67 @@ void Image::setRadians(float radians)
 
 void Image::setScale(float scale, const Vector3D& center)
 {
-
+	float factor = scale*(1.0f/getScale());
+	scale(factor, getPos());
 }
 
 void Image::setDegrees(float degrees, const Vector3D& vec,
 		const Vector3D& center)
 {
+	float radians = (float) (degrees*PI)/180.0f;
+	setRadians(radians, vec, center);
 }
 
 void Image::setRadians(float radians, const Vector3D& vec,
 		const Vector3D& center)
 {
+	float angle = radians - rec.getAngle(vec);
+	rotateRadians(angle, center);
 }
 
 void Image::setPositionX(float x, const Vector3D& vec)
 {
+	float scalar = vec*getPos();
+	translate(vec*(x-scalar));
 }
 
 void Image::setPositionY(float y, const Vector3D& vec)
 {
+	Vector3D l_vec = vec.getPerpendicular2D();
+	float scalar = l_vec*(getPos());
+	translate(l_vec*(y - scalar));
 }
 
 void Image::setPosition(const Vector3D& p)
 {
+	Vector3D vec(getPos(), p);
+	translate(vec);
 }
 
 void Image::setPositionX(float x)
 {
+	translateX(x - getX());
 }
 
 void Image::setPositionY(float y)
 {
+	translateY(y - getY());
 }
 
 void Image::setFlipH(bool b, const Vector3D& center)
 {
-
+	if(spriteData->flipH != b)
+	{
+		flipH(center);
+	}
 }
 
 void Image::setFlipV(bool b, const Vector3D& center)
 {
+	if(spriteData->flipV != b)
+	{
+		flipV(center);
+	}
 }
 
 
@@ -368,7 +389,7 @@ void Image::clearTexture()
 
 void Image::loadTexture()
 {
-	// this->spriteData->texture = FileManager::getInstance().getDefTexture(spriteData->textureName);
+	this->spriteData->texture = FileManager::getInstance().getDefTexture(spriteData->textureName);
 }
 
 void Image::initialize(Graphics* graphics, int width, int height, int cols,
@@ -396,45 +417,9 @@ void Image::draw()
 
 void Image::draw(Graphics* g)
 {
-	// (g) && (spriteData->texture) &&
 	if(g && spriteData->texture && visible >= 0.01f)
 	{
-		/*
-		Graphics2D g2d = (Graphics2D)g;
-		AffineTransform old = g2d.getTransform();
-
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, visible));
-
-		g2d.translate(rec.getCenter().x + (int) (rec.getLength().x)*((spriteData.flipH)?0:0),
-				rec.getCenter().y + (int) (rec.getLength().y)*((spriteData.flipV)?0:0));
-
-		g2d.scale(rec.getLength().x/spriteData.rect.getWidth(), rec.getLength().y/spriteData.rect.getHeight());
-
-		float rot = (float) (-rec.getAngle() + ((spriteData.flipH)?Math.PI:0));
-		if(Math.abs(rot) > 0.001 && Math.abs(rot - Math.PI*2) > 0.001)
-			g2d.rotate(rot, 0,  0);
-
-		g2d.translate(-spriteData.rect.getWidth()*(0.5 - ((spriteData.flipH)?1:0)), -spriteData.rect.getHeight()*(0.5 - ((spriteData.flipV)?1:0)));
-
-		g2d.drawImage(spriteData.texture,
-				0,
-				0,
-				(int) (spriteData.rect.getWidth())*((spriteData.flipH)?-1:1),
-				(int) (spriteData.rect.getHeight())*((spriteData.flipV)?-1:1),
-				(int) (spriteData.rect.getX()),
-				(int) (spriteData.rect.getY()),
-				(int) (spriteData.rect.getX() + spriteData.rect.getWidth()),
-				(int) (spriteData.rect.getY() + spriteData.rect.getHeight()),
-				null, null);
-		g2d.setTransform(old);
-
-		if(isDisplayingRec)
-		{
-			g2d.setColor(Color.CYAN);
-			Polygon pol = this.rec.getPolygon();
-			g2d.drawPolygon(pol);
-		}
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));*/
+		g->render((*this));
 	}
 }
 
@@ -447,7 +432,7 @@ void Image::draw(Graphics* g, const Vector3D& translation)
 {
 	if(g && spriteData->texture && visible >= 0.01f)
 	{
-
+		g->render((*this), translation);
 	}
 }
 
@@ -455,7 +440,7 @@ void Image::draw(Graphics* g, const Vector3D& translation, float scale)
 {
 	if(g && spriteData->texture && visible >= 0.01f)
 	{
-
+		g->render((*this), translation, scale);
 	}
 }
 

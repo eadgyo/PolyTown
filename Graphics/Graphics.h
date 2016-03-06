@@ -12,11 +12,16 @@ class Graphics;
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_main.h>
+#include "../Maths/Vector3D.h"
 #include <string>
 #include <assert.h>
 #include "Image.h"
 #include <vector>
 #include <map>
+#define GL3_PROTOTYPES 1
+#include <GL/glew.h>
+
+
 
 class Graphics
 {
@@ -25,7 +30,9 @@ public:
 	virtual ~Graphics();
 	void clear();
 	void update();
-	void render(const Image& image);
+	void render(Image& image);
+	void render(Image& image, const Vector3D& translation);
+	void render(Image& image, const Vector3D& translation, float scale);
 	void render(SDL_Texture *texture, SDL_Rect& textureRect);
 	SDL_Texture* loadTextureFromSurface(SDL_Surface *surface);
 	void loadTextures(std::vector<SDL_Surface*>& surfaces,

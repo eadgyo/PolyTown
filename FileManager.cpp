@@ -3,12 +3,13 @@ FileManager FileManager::INSTANCE=FileManager();
 
 FileManager::FileManager()
 {
+	/*
 	createFolder(binFolder);
 	createFolder(textureFolder);
 	//createFolder(objectFolder);
 
 	// Chargement des images
-	loadDefTextures();
+	loadDefTextures();*/
 }
 
 FileManager& FileManager::getInstance()

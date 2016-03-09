@@ -27,13 +27,13 @@ int main(int argc, char* args[])
         return 1;
     }
     SDL_Delay(3000);*/
-
-	Graphics *g = new Graphics("Ma bite", 1600, 900);
-
+	/*
+	Graphics *g = new Graphics("Affichage forme", 1600, 900);*/
+	/*
 	FileManager& fileM = FileManager::getInstance();
 	fileM.initialize();
 	fileM.load(g);
-
+	*/
 	/*g->clear();
 	Image image;
 	image.initialize(g, 565, 203, 0, "a.png");
@@ -41,6 +41,7 @@ int main(int argc, char* args[])
 	image.setPositionY(0);
 
 	image.draw();*/
+	g->clear();
 
 	Form form;
 	form.addPoint(Vector3D(10, 10));
@@ -51,14 +52,22 @@ int main(int argc, char* args[])
 
 	//form.triangulate();
 
-	g->setColor(1.0f, 0.0f, 0.0f);
-	g->drawLines(form);
-
+	//g->setColor(1.0f, 0.0f, 0.0f);
+	//g->drawLines(form);
 
 	//g->update();
 
+	glFlush();
+	
+	SDL_Window *screen = SDL_CreateWindow("My Game Window",
+		SDL_WINDOWPOS_UNDEFINED,
+		SDL_WINDOWPOS_UNDEFINED,
+		640, 480,
+		SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL);
+	SDL_Renderer *renderer = SDL_CreateRenderer(screen, -1, 0);
 
 
-	SDL_Delay(1000);
+
+	SDL_Delay(3000);
     return 0;
 }

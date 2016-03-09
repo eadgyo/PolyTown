@@ -62,6 +62,7 @@ public:
 	void setOrientation(float omega, float scale, bool flipH, bool flipV);
 	void setOrientation(float omega, float scale, bool flipH, bool flipV, const Vector3D& vec);
 	void setOrientation(float omega, float scale, bool flipH, bool flipV, bool flipM, const Vector3D& vec);
+	void setOrientation(const Quaternion& q, float scale);
 	void setIdentity(float factor);
 	void setIdentity();
 	void flipX();

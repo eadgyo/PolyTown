@@ -15,10 +15,10 @@ Rectangle::Rectangle(const Form& form) : Form(form)
 	assert(form.size() == 4);
 
 	//Les 2 points doivent être opposés
-	Vector3D vec(points.at(0), points.at(2));
+	Vector3D vec = Vector3D::sub(points.at(0), points.at(2));
 	orientation.setPos(points.at(0) + vec * 0.5f);
 
-	Vector3D side(points.at(0), points.at(1));
+	Vector3D side = Vector3D::sub(points.at(0), points.at(1));
 	length[0] = side.getMagnitude();
 
 	side.set(points.at(0), points.at(1));
@@ -68,10 +68,10 @@ void Rectangle::set(const Form& form)
 		points[i].set(form.getLocal(i));
 
 	//Les 2 points doivent être opposés
-	Vector3D vec(form.getLocal(0), form.getLocal(2));
+	Vector3D vec = Vector3D::sub(form.getLocal(0), form.getLocal(2));
 	orientation.setPos(form.getLocal(0) + vec*0.5f);
 
-	Vector3D side = new Vector3D(form.getLocal(0), form.getLocal(1));
+	Vector3D side = Vector3D::sub(form.getLocal(0), form.getLocal(1));
 	length[0] = side.getMagnitude();
 
 	side.set(form.getLocal(0), form.getLocal(3));
@@ -82,12 +82,12 @@ void Rectangle::set(const Form& form)
 
 Vector3D Rectangle::getVecLocal() const
 {
-	return Vector3D(points.at(0), points.at(3));
+	return Vector3D::sub(points.at(0), points.at(3));
 }
 
 Vector3D Rectangle::getVecWorld() const
 {
-	Vector3D vec(points.at(0), points.at(3));
+	Vector3D vec = Vector3D::sub(points.at(0), points.at(3));
 	return orientation*vec;
 }
 

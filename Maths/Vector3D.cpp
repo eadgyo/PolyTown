@@ -17,11 +17,6 @@ Vector3D::Vector3D(const Vector3D& a)
 		 coor[i] = a.get(i);
 	 }
 }
-Vector3D::Vector3D(const Vector3D& a, const Vector3D& b)
-{
-	Vector3D result = b - a;
-	set(result);
-}
 Vector3D::Vector3D(float x, float y)
 {
 	coor[0] = x;
@@ -46,19 +41,18 @@ Vector3D::Vector3D(float x, float y, float z, bool isPoint)
 	else
 		coor[3] = 0;
 }
-Vector3D::Vector3D(float const* v)
-{
-	for(int i=0; i<SIZE_V; i++)
-	{
-		coor[i] = v[i];
-	}
-}
+
 
 Vector3D Vector3D::copy() const
 {
 	return Vector3D((*this));
 }
 
+Vector3D Vector3D::sub(const Vector3D& a, const Vector3D& b)
+{
+	Vector3D result = b - a;
+	return result;
+}
 //====================================================
 // Getter
 //====================================================
@@ -82,8 +76,8 @@ float Vector3D::getAngle2D(const Vector3D& vec) const
 
 float Vector3D::getAngle2D(const Vector3D& A, const Vector3D& C) const
 {
-	Vector3D AB((*this), A);
-	Vector3D CB(C, (*this));
+	Vector3D AB = Vector3D::sub((*this), A);
+	Vector3D CB = Vector3D::sub(C, (*this));
 	float theta = (float) (PI - AB.getAngle2D(CB));
 	return theta;
 }
@@ -132,7 +126,7 @@ float Vector3D::normalize()
 Vector3D Vector3D::getProjection2D(const Vector3D& vec, const Vector3D& p) const
 {
 	Vector3D l_vec = vec.getNormalize();
-	Vector3D vec1(p, (*this));
+	Vector3D vec1 = Vector3D::sub(p, (*this));
 	float projectScalar = l_vec*vec1;
 	Vector3D projection(p + (l_vec*projectScalar));
 	return projection;

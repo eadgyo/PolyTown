@@ -254,6 +254,11 @@ void Matrix4::setOrientation(float omega, float scale, bool flipH, bool flipV)
 	if(flipV)
 		flipY();
 }
+void Matrix4::setOrientation(const Quaternion& q, float scale)
+{
+	setOrientation(q);
+	(*this) *= Matrix4::createIdentity(scale);
+}
 void Matrix4::setOrientation(float omega, float scale, bool flipH, bool flipV, bool flipM, const Vector3D& vec)
 {
 	Quaternion qZ(Vector3D(true), omega);
@@ -495,7 +500,7 @@ Matrix4 Matrix4::createRotate(const Vector3D& v, float theta)
 
 Vector3D Matrix4::getPos() const
 {
-	return Vector3D(m[3], m[7], m[11], m[15]);
+	return Vector3D(m[3], m[7], m[11], m[15] == 0);
 }
 
 void Matrix4::display()

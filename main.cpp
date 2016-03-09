@@ -44,18 +44,18 @@ int main(int argc, char* args[])
 
 	Form form;
 	form.addPoint(Vector3D(10, 10));
-	//form.addPoint(Vector3D(70, 60));
+	form.addPoint(Vector3D(70, 60));
 	form.addPoint(Vector3D(200, 30));
 	form.addPoint(Vector3D(100, 120));
 	form.addPoint(Vector3D(10, 100));
 
-	form.triangulate();
+	//form.triangulate();
 
 	g->setColor(1.0f, 0.0f, 0.0f);
 	g->drawLines(form);
 
 
-	g->update();
+	//g->update();
 
 
 

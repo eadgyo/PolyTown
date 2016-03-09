@@ -309,7 +309,7 @@ std::vector<Vector3D> Form::getVectorsSatLocal() const
 	std::vector<Vector3D> l_vectors;
 	for(unsigned j=points.size()-1, i=0; i<points.size(); j=i, i++)
 	{
-		Vector3D v(points.at(j), points.at(i));
+		Vector3D v = Vector3D::sub(points.at(j), points.at(i));
 		l_vectors.push_back(v.getPerpendicular2D());
 	}
 
@@ -339,7 +339,7 @@ Vector3D* Form::getVectorsLocal() const
 	Vector3D* l_vectors = new Vector3D[size()];
 	for(unsigned j=size()-1, i=0; i<size(); j=i, i++)
 	{
-		new (l_vectors + i) Vector3D(i, Vector3D(points.at(j), points.at(i)));
+		new (l_vectors + i) Vector3D(Vector3D::sub(points.at(j), points.at(i)));
 	}
 	return l_vectors;
 }
@@ -389,8 +389,8 @@ Vector3D Form::transform(const Vector3D& vertex, const Vector3D& p,
 Vector3D Form::handleEdgePoint(const Vector3D& PA, const Vector3D& PB1,
 		const Vector3D& PB2) const
 {
-	Vector3D edgeB(PB1, PB2);
-	Vector3D projection(PB1, PB2);
+	Vector3D edgeB = Vector3D::sub(PB1, PB2);
+	Vector3D projection = Vector3D::sub(PB1, PB2);
 	float fProjection = edgeB*projection;
 
 	return edgeB*fProjection;
@@ -505,7 +505,7 @@ void Form::updateOrientation()
 
 void Form::setCenter(const Vector3D& center)
 {
-	Vector3D vec(getCenter(), center);
+	Vector3D vec = Vector3D::sub(getCenter(), center);
 	translate(vec);
 }
 
@@ -521,7 +521,7 @@ void Form::addPointFree(const Vector3D& p)
 	if(orientation.getDeterminant() != 0)
 		points.push_back(orientation.getInverse()*p);
 	else
-		points.push_back(Vector3D(getCenter(), p));
+		points.push_back(Vector3D::sub(getCenter(), p));
 	convexForms.clear();
 }
 
@@ -714,7 +714,7 @@ bool Form::collisionSatFree(const Form& B, const Vector3D& VA,
 	std::vector<Vector3D> axisA = getVectorsSatLocal();
 	std::vector<Vector3D> axisB = B.getVectorsSatLocal();
 
-	AxesSat axesSat();
+	AxesSat axesSat;
 
 	int sizeA = size();
 	int sizeB = B.size();
@@ -1269,7 +1269,7 @@ void Form::determineType(int pos, std::vector<Edge> edges,
 	PointType* p1 = edge.p0;
 	PointType* p2 = edge.p1;
 
-	float theta = -(PI - p1->getAngle2D((*p0), (*p2)));
+	float theta = -((float) PI - p1->getAngle2D((*p0), (*p2)));
 	if(p1->y() < p0->y() && p1->y() < p2->y())
 	{
 		if(theta > 0 && theta < PI)
@@ -1373,8 +1373,8 @@ Edge* Form::getLeftEdge(PointType& p, std::vector<Edge> lEdges)
 {
 	for(unsigned i=0; i<lEdges.size(); i++)
 	{
-		Vector3D vec(lEdges[i].p0, lEdges[i].p1);
-		Vector3D projection = p.getProjection2D(vec, lEdges[i].p0);
+		Vector3D vec = Vector3D::sub((*lEdges[i].p0), (*lEdges[i].p1));
+		Vector3D projection = p.getProjection2D(vec, (*lEdges[i].p0));
 		projection = projection - p;
 		if(projection.x() < 0)
 			return &lEdges[i];
@@ -1401,12 +1401,12 @@ std::vector<Form> Form::transformEdges(std::vector<Edge> edges)
 		int max = forms.size();
 		for(int j=0; j<max; j++)
 		{
-			bool is_in = (bst[j]).find(p0) != bst[j].end();
-			bool is_in1 = (bst[j]).find(p1) != bst[j].end();
+			bool is_in = (bst[j]).find((*p0)) != bst[j].end();
+			bool is_in1 = (bst[j]).find((*p1)) != bst[j].end();
 			if(is_in && is_in1)
 			{
 				std::vector<std::set<Vector3D> > bst2;
-				std::vector<Form> newForm = forms[j].splitUnsecured(p0, p1, bst2);
+				std::vector<Form> newForm = forms[j].splitUnsecured((*p0), (*p1), bst2);
 				if(newForm.size() == 2)
 				{
 					forms.insert(forms.end(), newForm.begin(), newForm.end());
@@ -1613,7 +1613,7 @@ int Form::numberLeftEdges(PointType& p, std::vector<Edge> edges)
 	int numberLines = 0;
 	for(unsigned i=0; i<edges.size(); i++)
 	{
-		Vector3D vec(edges[i].p0, edges[i].p1);
+		Vector3D vec = Vector3D::sub((*edges[i].p0), (*edges[i].p1));
 		Vector3D projection = p.getProjection2D(vec, (*edges[i].p0));
 		projection -= p;
 
@@ -1709,7 +1709,7 @@ std::vector<Form> Form::triangulateMonotone()
 						q = points[edges[l[l.size() - 1]].p0->posPoint];
 						r = points[edges[l[l.size() - 2]].p0->posPoint];
 
-						orientation = Vector3D::orientation(p1, q, r);
+						orientation = Vector3D::orientation((*p1), q, r);
 					}
 				}
 			}
@@ -1745,11 +1745,11 @@ void Form::createChains(int *v, int sizeV, std::vector<Edge> edges,
 	Edge start = edges[v[0]];
 	PointType* last = edges[v[sizeV - 1]].p0;
 
-	Vector3D collisionVec(start.p0, start.next->p0);
+	Vector3D collisionVec = Vector3D::sub((*start.p0), (*start.next->p0));
 	Vector3D vec(1.0f, 0.0f);
 
 	Vector3D collision;
-	bool result = collision.computeIntersection2D(collisionVec, vec, start.p0, (*start.prev->p0));
+	bool result = collision.computeIntersection2D(collisionVec, vec, (*start.p0), (*start.prev->p0));
 	bool left = false;
 	if(result)
 	{

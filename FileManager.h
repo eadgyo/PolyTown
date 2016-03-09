@@ -10,7 +10,6 @@ class FileManager;
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <SDL2/SDL_image.h>
 
 class FileManager

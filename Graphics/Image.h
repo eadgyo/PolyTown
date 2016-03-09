@@ -55,8 +55,8 @@ public:
 
 	// Setter
 	void setFrames(int start, int end);
-	void setColorFilter(float r, float g, float b) { colorFilter.r = r; colorFilter.g = g; colorFilter.b = b; };
-	void setColorFilter(float a, float r, float g, float b) { colorFilter.a = a; colorFilter.r = r; colorFilter.g = g; colorFilter.b = b; };
+	void setColorFilter(Uint8 r, Uint8 g, Uint8 b) { colorFilter.r = r; colorFilter.g = g; colorFilter.b = b; };
+	void setColorFilter(Uint8 a, Uint8 r, Uint8 g, Uint8 b) { colorFilter.a = a; colorFilter.r = r; colorFilter.g = g; colorFilter.b = b; };
 	void set(Image& image);
 	void setCols(int cols);
 	void setIsDisplayingRec(bool isDisplayingRec);
@@ -92,11 +92,11 @@ public:
 	void clearTexture();
 	void loadTexture();
 
-	void initialize(Graphics* graphics, int width, int height, int cols,
+	void initialize(Graphics* graphics, float width, float height, int cols,
 			SDL_Texture* texture, std::string textureName);
-	void initialize(Graphics* graphics, int width, int height, int cols,
+	void initialize(Graphics* graphics, float width, float height, int cols,
 			std::string textureName);
-	void initialize(Graphics* graphics, int width, int height, int currentFrame, int cols,
+	void initialize(Graphics* graphics, float width, float height, int currentFrame, int cols,
 			std::string textureName);
 	void draw();
 	void draw(Graphics* g);

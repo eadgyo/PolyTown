@@ -76,7 +76,7 @@ void Graphics::render(Image& image)
 
 
 	SDL_Rect sdlRec = spriteData->rect->getSDLRect();
-	glTranslatef(-sdlRec.x, - sdlRec.y, 0.0f);
+	glTranslatef((float) -sdlRec.x, (float) - sdlRec.y, 0.0f);
 	SDL_Rect destRect = spriteData->rect->getSDLRectDest(); //spriteData->flipH, spriteData->flipV);
 	SDL_RenderCopy(renderer, spriteData->texture, &sdlRec, &destRect);
 
@@ -97,7 +97,7 @@ void Graphics::render(Image& image, const Vector3D& translation)
 			rec.getHeight()/spriteData->rect->getHeight()*((spriteData->flipV)?-1.0f:1.0f),
 			0.0f);
 
-	float rot = -rec.getAngle() + ((spriteData->flipH)?PI:0);
+	float rot = -rec.getAngle() + ((spriteData->flipH)?(float) PI:0);
 	if(std::abs(rot) > 0.001f && std::abs(rot - PI*2) > 0.001f)
 		glRotatef(rot, 0, 0, 1.0f);
 
@@ -128,8 +128,8 @@ void Graphics::render(Image& image, const Vector3D& translation, float scale)
 			rec.getHeight()/spriteData->rect->getHeight()*((spriteData->flipV)?-1.0f:1.0f),
 			0.0f);
 
-	float rot = -rec.getAngle() + ((spriteData->flipH)?PI:0);
-	if(std::abs(rot) > 0.001f && std::abs(rot - PI*2) > 0.001f)
+	float rot = -rec.getAngle() + ((spriteData->flipH)?(float) PI:0);
+	if(std::abs(rot) > 0.001f && std::abs(rot - PI*2.0f) > 0.001f)
 		glRotatef(rot, 0, 0, 1.0f);
 
 	glTranslatef(-spriteData->rect->getWidth()*(0.5f - ((spriteData->flipH)?1.0f:0.0f)),

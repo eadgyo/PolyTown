@@ -29,11 +29,11 @@ public:
 	inline Vector3D() {};
 	Vector3D(bool isPoint);
 	Vector3D(const Vector3D& a);
-	Vector3D(const Vector3D&, const Vector3D&);
 	Vector3D(float, float);
 	Vector3D(float, float, float);
 	Vector3D(float, float, float, bool);
-	Vector3D(float const*);
+
+	static Vector3D sub(const Vector3D&, const Vector3D&);
 
 	Vector3D copy() const;
 	Vector3D getTransformation(const Matrix4&) const;

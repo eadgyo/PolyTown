@@ -20,7 +20,7 @@ Image::Image()
 	visible = 1.0f;
 	isInitialized = false;
 	spriteData = new SpriteData();
-	setColorFilter(0.0f,0.0f,0.0f,0.0f);
+	setColorFilter(0,0,0,0);
 }
 
 Image::Image(Image& image)
@@ -36,7 +36,7 @@ Image::Image(Image& image)
 	visible = 1.0f;
 	isInitialized = false;
 	spriteData = new SpriteData();
-	setColorFilter(0.0f,0.0f,0.0f,0.0f);
+	setColorFilter(0,0,0,0);
 	set(image);
 }
 
@@ -210,7 +210,7 @@ float Image::getSpriteDataWidth() const
 void Image::set(Image& image)
 {
 	SpriteData* l_spriteData = image.getSpriteData();
-	initialize(image.getGraphics(), (int) l_spriteData->rect->getWidth(), (int) l_spriteData->rect->getHeight(),
+	initialize(image.getGraphics(), l_spriteData->rect->getWidth(), l_spriteData->rect->getHeight(),
 			image.getCols(), l_spriteData->texture, image.getTextureName());
 	isDisplayingRec = image.getIsRectDisplaying();
 	setCurrentFrame(image.getCurrentFrame());
@@ -239,13 +239,13 @@ void Image::setY(float y)
 
 void Image::setPos(const Vector3D& center)
 {
-	Vector3D translateV(getPos(), center);
+	Vector3D translateV = Vector3D::sub(getPos(), center);
 	translate(translateV);
 }
 
 void Image::setLeftPos(const Vector3D& left)
 {
-	Vector3D translateV(getLeftPos(), left);
+	Vector3D translateV = Vector3D::sub(getLeftPos(), left);
 	translate(translateV);
 }
 
@@ -305,7 +305,7 @@ void Image::setPositionY(float y, const Vector3D& vec)
 
 void Image::setPosition(const Vector3D& p)
 {
-	Vector3D vec(getPos(), p);
+	Vector3D vec = Vector3D::sub(getPos(), p);
 	translate(vec);
 }
 
@@ -412,7 +412,7 @@ void Image::loadTexture()
 		this->spriteData->texture = graphics->getTexture(spriteData->textureName);
 }
 
-void Image::initialize(Graphics* graphics, int width, int height, int cols,
+void Image::initialize(Graphics* graphics, float width, float height, int cols,
 		SDL_Texture* texture, std::string textureName)
 {
 	this->graphics = graphics;
@@ -430,7 +430,7 @@ void Image::initialize(Graphics* graphics, int width, int height, int cols,
 	isInitialized = true;
 }
 
-void Image::initialize(Graphics* graphics, int width, int height, int cols,
+void Image::initialize(Graphics* graphics, float width, float height, int cols,
 		std::string textureName)
 {
 	this->graphics = graphics;
@@ -448,7 +448,7 @@ void Image::initialize(Graphics* graphics, int width, int height, int cols,
 	isInitialized = true;
 }
 
-void Image::initialize(Graphics* graphics, int width, int height, int currentFrame, int cols,
+void Image::initialize(Graphics* graphics, float width, float height, int currentFrame, int cols,
 		std::string textureName)
 {
 	this->currentFrame = currentFrame;

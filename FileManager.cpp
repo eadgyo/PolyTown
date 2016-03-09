@@ -128,8 +128,9 @@ bool FileManager::isFolderExisting(std::string directory)
 
 bool FileManager::createFolder(std::string directory)
 {
-	int result = mkdir(directory.c_str(), 0777);
-	return (bool) result;
+	/*int result = mkdir(directory.c_str(), 0777);
+	return (bool) result;*/
+	return true;
 }
 
 bool FileManager::isFileExisting(std::string directory)

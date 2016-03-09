@@ -32,7 +32,7 @@ sRectangle sRectangle::createSRectangleCenter(const Vector3D& center,
 		const Vector3D& length)
 {
 	sRectangle rec(center, length);
-	rec.translate(Vector3D(rec.getCenter(), center));
+	rec.translate(Vector3D::sub(rec.getCenter(), center));
 	return rec;
 }
 
@@ -40,10 +40,10 @@ void sRectangle::set(const Form& form)
 {
 	assert(form.size() == 4);
 	//Les 2 points doivent être opposés
-	Vector3D vec(points[0], points[2]);
+	Vector3D vec = Vector3D::sub(points[0], points[2]);
 	orientation.setPos(points[0] + vec*0.5f);
 
-	Vector3D side(points[0], points[1]);
+	Vector3D side = Vector3D::sub(points[0], points[1]);
 	length[0] = side.getMagnitude();
 
 	side.set(points[0], points[1]);
@@ -133,43 +133,43 @@ bool sRectangle::isInsideBorder(const Vector3D& p) const
 
 bool sRectangle::collision(const sRectangle& rect) const
 {
-	return ((getX(0) > rect.getX(0) or getX(2) > rect.getX(0)) and (getX(0) < rect.getX(2) or getX(2) < rect.getX(2))) and
-		((getY(0) > rect.getY(0) or getY(2) > rect.getY(0)) and (getY(0) < rect.getY(2) or getY(2) < rect.getY(2)));
+	return ((getX(0) > rect.getX(0) || getX(2) > rect.getX(0)) && (getX(0) < rect.getX(2) || getX(2) < rect.getX(2))) &&
+		((getY(0) > rect.getY(0) || getY(2) > rect.getY(0)) && (getY(0) < rect.getY(2) || getY(2) < rect.getY(2)));
 }
 
 
 bool sRectangle::collisionBorder(const sRectangle& rect) const
 {
-	return ((getX(0) >= rect.getX(0) or getX(2) >= rect.getX(0)) and (getX(0) <= rect.getX(2) or getX(2) <= rect.getX(2))) and
-			((getY(0) >= rect.getY(0) or getY(2) >= rect.getY(0)) and (getY(0) <= rect.getY(2) or getY(2) <= rect.getY(2)));
+	return ((getX(0) >= rect.getX(0) || getX(2) >= rect.getX(0)) && (getX(0) <= rect.getX(2) || getX(2) <= rect.getX(2))) &&
+			((getY(0) >= rect.getY(0) || getY(2) >= rect.getY(0)) && (getY(0) <= rect.getY(2) || getY(2) <= rect.getY(2)));
 }
 
 SDL_Rect sRectangle::getSDLRect()
 {
 	SDL_Rect src;
-	src.x = getLeftX();
-	src.y = getLeftY();
-	src.w = getWidth();
-	src.h = getHeight();
+	src.x = (int) getLeftX();
+	src.y = (int) getLeftY();
+	src.w = (int) getWidth();
+	src.h = (int) getHeight();
 	return src;
 }
 
 SDL_Rect sRectangle::getSDLRect(bool flipH, bool flipW)
 {
 	SDL_Rect src;
-	src.x = getLeftX();
-	src.y = getLeftY();
-	src.w = getWidth()*(flipH)?-1:1;
-	src.h = getHeight()*(flipV)?-1:1;
+	src.x = (int) getLeftX();
+	src.y = (int) getLeftY();
+	src.w = (int) getWidth()*(flipH)?-1:1;
+	src.h = (int) getHeight()*(flipV)?-1:1;
 	return src;
 }
 
 SDL_Rect sRectangle::getSDLRectDest()
 {
 	SDL_Rect src;
-	src.x = getLeftX();
-	src.y = getLeftY();
-	src.w = getWidth();
-	src.h = getHeight();
+	src.x = (int) getLeftX();
+	src.y = (int) getLeftY();
+	src.w = (int) getWidth();
+	src.h = (int) getHeight();
 	return src;
 }

@@ -2,13 +2,15 @@
 #define _IMAGE_H_
 class Image;
 
-#include "string.h"
+#include <Windows.h>
+#include <GL/glew.h>
+#include "SpriteData.h"
 #include "Graphics.h"
+#include "string.h"
 #include "../Constant.h"
 #include <assert.h>
-#include "SpriteData.h"
 #include "../Maths/Vector3D.h"
-#include "../Maths/Rectangle.h"
+#include "../Maths/myRectangle.h"
 #include "../Maths/sRectangle.h"
 #include "../FileManager.h"
 
@@ -26,7 +28,7 @@ public:
 	// Getter
 	const Vector3D getPos() const { return rec.getCenter(); };
 	bool getIsRectDisplaying() const;
-	const Rectangle& getRectangle() const;
+	const myRectangle& getRectangle() const;
 	int getCols() const;
 	float getVisible() const;
 	int getOrigWidth() const;
@@ -87,13 +89,13 @@ public:
 	void setGraphics(Graphics* g);
 	void setSize(int size);
 	void setSpriteData(const SpriteData& spriteData);
-	void setRec(const Rectangle& rec);
+	void setRec(const myRectangle& rec);
 	void setRec(const Form& rec);
 	void clearTexture();
 	void loadTexture();
 
 	void initialize(Graphics* graphics, float width, float height, int cols,
-			SDL_Texture* texture, std::string textureName);
+		mySurface* texture, std::string textureName);
 	void initialize(Graphics* graphics, float width, float height, int cols,
 			std::string textureName);
 	void initialize(Graphics* graphics, float width, float height, int currentFrame, int cols,
@@ -124,7 +126,7 @@ protected:
 	int currentFrame;
 	bool isDisplayingRec;
 
-	Rectangle rec;
+	myRectangle rec;
 
 	float visible;
 	bool isInitialized;

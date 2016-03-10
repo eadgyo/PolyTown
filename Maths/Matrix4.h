@@ -85,7 +85,7 @@ public:
 	float multiplyZ(const Vector3D& v) const;
 	void translate(const Vector3D& v);
 	inline void translateX(float x) { m[3] += x; };
-	inline void translateY(float y) { m[5] += y; };
+	inline void translateY(float y) { m[7] += y; };
 	inline void translateZ(float z) { m[11] += z; };
 	void rotateRadiansZFree(float omega, const Vector3D& center);
 	void scale(float factor, const Vector3D& center);

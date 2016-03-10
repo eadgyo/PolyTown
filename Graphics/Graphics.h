@@ -1,14 +1,17 @@
 /*
- * Graphics.h
- *
- *  Created on: Mar 3, 2016
- *      Author: ronan-h
- */
+* Graphics.h
+*
+*  Created on: Mar 3, 2016
+*      Author: ronan-h
+*/
 
 #ifndef GRAPHICS_H_
 #define GRAPHICS_H_
 class Graphics;
 
+#include <Windows.h>
+#include <GL/glew.h>
+#include "mySurface.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_main.h>
@@ -19,28 +22,29 @@ class Graphics;
 #include "Image.h"
 #include <vector>
 #include <map>
-#define GL3_PROTOTYPES 1
-#include <GL/glew.h>
+
 
 
 
 class Graphics
 {
 public:
-	Graphics(std::string windowName, int width, int height);
+	Graphics();
 	virtual ~Graphics();
+	SDL_Window* init(std::string windowName, int width, int height);
+	mySurface* getTexture(std::string textureName);
+	void initGL(SDL_GLContext& context, float width, float height);
+	void initGL3D(SDL_GLContext& context, float width, float height);
 	void clear();
-	void update();
+	void swapGL();
 	void render(Image& image);
 	void render(Image& image, const Vector3D& translation);
 	void render(Image& image, const Vector3D& translation, float scale);
-	void render(SDL_Texture *texture, SDL_Rect* textureRect);
-	SDL_Texture* loadTextureFromSurface(SDL_Surface *surface);
-	void loadTextures(std::vector<SDL_Surface*>& surfaces,
-			std::map<std::string, int>& names);
-	SDL_Texture* getTexture(std::string textureName);
-
-	inline SDL_Renderer* getRenderer() { return renderer; };
+	void render(SDL_Surface *texture, SDL_Rect* dest);
+	void renderCopy(mySurface* surface, SDL_Rect& rec);
+	void loadSurface(SDL_Surface* image, std::string name);
+	void loadAllSurfaces();
+	
 
 	// Draw forms
 	void drawLine(const Vector3D& p1, const Vector3D& p2);
@@ -52,8 +56,7 @@ public:
 
 private:
 	SDL_Window *screen;
-	SDL_Renderer *renderer;
-	std::vector<SDL_Texture*> textures;
+	std::vector<mySurface*> surfaces;
 	std::map<std::string, int> names;
 };
 

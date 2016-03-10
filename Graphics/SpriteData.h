@@ -2,9 +2,10 @@
 #ifndef SPRITEDATA_H_
 #define SPRITEDATA_H_
 
-#include <SDL2/SDL.h>
+#include "mySurface.h"
 #include <string.h>
 #include "../Maths/sRectangle.h"
+
 
 class SpriteData
 {
@@ -25,7 +26,7 @@ public:
 		texture = NULL;
 		textureName = "";
 	};
-	inline SpriteData(SDL_Texture* texture, std::string textureName)
+	inline SpriteData(mySurface* texture, std::string textureName)
 	{
 		flipH = false;
 		flipV = false;
@@ -34,7 +35,7 @@ public:
 		this->textureName = textureName;
 	};
 
-	SDL_Texture* texture;
+	mySurface* texture;
 	std::string textureName;
 	sRectangle* rect;
 	bool flipH, flipV;

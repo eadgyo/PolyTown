@@ -494,7 +494,7 @@ void Form::updateCenter()
 	}
 	orientation.setPos(newCenter);
 
-	//update inertia
+	//swapSDL inertia
 	calculateSurface();
 }
 

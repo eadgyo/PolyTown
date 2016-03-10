@@ -67,7 +67,7 @@ bool Image::getIsRectDisplaying() const
 	return isDisplayingRec;
 }
 
-const Rectangle& Image::getRectangle() const
+const myRectangle& Image::getRectangle() const
 {
 	return rec;
 }
@@ -391,7 +391,7 @@ void Image::setSpriteData(const SpriteData& spriteData)
 	this->spriteData->rect->set((*spriteData.rect));
 }
 
-void Image::setRec(const Rectangle& rec)
+void Image::setRec(const myRectangle& rec)
 {
 	this->rec.set(rec);
 }
@@ -413,7 +413,7 @@ void Image::loadTexture()
 }
 
 void Image::initialize(Graphics* graphics, float width, float height, int cols,
-		SDL_Texture* texture, std::string textureName)
+	mySurface* texture, std::string textureName)
 {
 	this->graphics = graphics;
 	spriteData->texture = texture;

@@ -3,13 +3,15 @@ FileManager FileManager::INSTANCE=FileManager();
 
 FileManager::FileManager()
 {
-	/*
+	
 	createFolder(binFolder);
 	createFolder(textureFolder);
 	//createFolder(objectFolder);
 
 	// Chargement des images
-	loadDefTextures();*/
+	loadDefTextures();
+
+	//loadTexture("a.png", false);
 }
 
 FileManager& FileManager::getInstance()
@@ -60,10 +62,6 @@ int FileManager::type(std::string directory, bool isInternal)
 	return 0;
 }
 
-void FileManager::load(Graphics* g)
-{
-	g->loadTextures(surfaces, names);
-}
 
 FileManager::~FileManager()
 {
@@ -98,6 +96,7 @@ void FileManager::loadDefTextures()
 		if(texture != NULL)
 		{
 			surfaces.push_back(texture);
+			namesStr.push_back(names[i]);
 			this->names[names[i]] = j;
 			j++;
 		}
@@ -131,6 +130,8 @@ bool FileManager::createFolder(std::string directory)
 {
 	/*int result = mkdir(directory.c_str(), 0777);
 	return (bool) result;*/
+
+	int result = CreateDirectory(directory.c_str(), NULL);
 	return true;
 }
 

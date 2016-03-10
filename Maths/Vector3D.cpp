@@ -295,9 +295,9 @@ Vector3D Vector3D::operator%(Vector3D const& v) const
 {
 	// cross Product
 	Vector3D vec;
-	vec[0] = coor[1]*vec.get(2) - coor[2]*vec.get(1);
-	vec[1] = coor[2]*vec.get(0) - coor[0]*vec.get(2);
-	vec[2] = coor[0]*vec.get(1) - coor[1]*vec.get(0);
+	vec[0] = coor[1]*v.get(2) - coor[2]*v.get(1);
+	vec[1] = coor[2]*v.get(0) - coor[0]*v.get(2);
+	vec[2] = coor[0]*v.get(1) - coor[1]*v.get(0);
 	vec[3] = 0;
 	return vec;
 }

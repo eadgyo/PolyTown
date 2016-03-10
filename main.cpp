@@ -20,44 +20,51 @@ int main(int argc, char* args[])
 	SDL_GLContext context = SDL_GL_CreateContext(g->init("Affichage forme", WIDTH, HEIGHT));
 	g->initGL(context, WIDTH, HEIGHT);
 	
-	
-	Image image;
-	image.initialize(g, 250, 250, 2, "a.png");
-	image.setCurrentFrame(0);
-	//image.flipH(Vector3D(true));
-	image.scale(1.0f, Vector3D(true));
-	image.setPositionX(500);
-	image.setPositionY(500);
-	
-	image.draw();
-	
-	g->swapGL();
-
-	SDL_Delay(1000);
-	
-	image.setCurrentFrame(1);
-	image.draw();
-
-	g->swapGL();
-	SDL_Delay(1000);
-	/*
 	Form form;
 	form.addPoint(Vector3D(10, 10));
 	form.addPoint(Vector3D(70, 60));
 	form.addPoint(Vector3D(200, 30));
 	form.addPoint(Vector3D(100, 120));
 	form.addPoint(Vector3D(10, 100));
+	form.triangulate();
+	glColor4f(1.0, 0, 0, 0.0);
+	std::vector<Form> forms = form.getConvexForms();
+	for (unsigned i = 0; i < form.getConvexFormsSize(); i++)
+	{
+		g->drawForm(forms.at(i));
+	}
+	//g->drawForm(form);
+
+	g->swapGL();
+	SDL_Delay(2000);
+	/*
+	Image image;
+	image.initialize(g, 250, 250, 2, "a.png");
+	image.setCurrentFrame(3);
+	//image.flipH(Vector3D(true));
+	image.scale(1.0f, Vector3D(true));
+	image.setPositionX(500);
+	image.setPositionY(500);
 	
-	//form.triangulate();
+	image.draw();
+	g->render(image);
 	glColor4f(1.0, 0, 0, 0.0);
 	g->drawLines(form);
+	g->swapGL();
+
+	SDL_Delay(2000);
+	
+	image.setCurrentFrame(1);
+	image.draw();
+	glColor4f(1.0, 0, 0, 0.0);
+	g->drawLines(form);
+	g->swapGL();
+	SDL_Delay(2000);
 	*/
 
-
-	
-
-	// Libère les élémebts
+	// Libère les éléments
+	/*
 	SDL_GL_DeleteContext(context);
-	SDL_Quit();
+	SDL_Quit();*/
     return 0;
 }

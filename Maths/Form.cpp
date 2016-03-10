@@ -14,6 +14,7 @@ Form::Form()
 
 Form::~Form()
 {
+	std::cout << "Destructor Form";
 }
 
 Form::Form(int size)
@@ -396,9 +397,10 @@ Vector3D Form::handleEdgePoint(const Vector3D& PA, const Vector3D& PB1,
 	return edgeB*fProjection;
 }
 
-std::vector<Form> Form::splitUnsecured(const Vector3D& p0, const Vector3D& p1, std::vector< std::set<Vector3D> > bst)
+
+std::vector<Form*> Form::splitUnsecured(const Vector3D& p0, const Vector3D& p1, std::vector< std::set<Vector3D*> >& bst)
 {
-	std::vector<Form> forms;
+	std::vector<Form*> forms;
 
 	// On cherche la position des 2 points
 	int pos0 = -1;
@@ -420,39 +422,39 @@ std::vector<Form> Form::splitUnsecured(const Vector3D& p0, const Vector3D& p1, s
 	if(pos0 + 1 != pos1 && pos1 + 1 != pos0)
 	{
 		// Form1
-		Form form1;
-		bst.push_back(std::set<Vector3D>());
+		Form* form1 = new Form();
+		bst.push_back(std::set<Vector3D*>());
 
 		pos = pos0;
 		while(pos != pos1)
 		{
-			form1.addPointFree(points[pos]);
-			(bst[size() - 1]).insert(points[pos1]);
+			form1->addPointFree(points[pos]);
+			(bst[0]).insert(&(points[pos1]));
 			pos = (pos + 1)%points.size();
 		}
-		form1.addPointFree(points[pos1]);
-		bst[size() - 1].insert(points[pos1]);
+		form1->addPointFree(points[pos1]);
+		bst[0].insert(&(points[pos1]));
 
 		// Form2
-		Form form2;
-		bst.push_back(std::set<Vector3D>());
+		Form* form2 = new Form();
+		bst.push_back(std::set<Vector3D*>());
 
 		pos = pos1;
 		while(pos != pos0)
 		{
-			form2.addPointFree(points[pos]);
-			bst[size() - 1].insert(points[pos]);
+			form2->addPointFree(points[pos]);
+			bst[1].insert(&(points[pos]));
 			pos = (pos + 1)%size();
 		}
-		form2.addPointFree(points[pos0]);
-		bst[size() - 1].insert(points[pos0]);
+		form2->addPointFree(points[pos0]);
+		bst[1].insert(&(points[pos0]));
 
 		forms.push_back(form1);
 		forms.push_back(form2);
 	}
 	else
 	{
-		forms.push_back((*this));
+		forms.push_back(this);
 	}
 	return forms;
 }
@@ -969,6 +971,7 @@ int Form::getClockwise() const
 	//float sumInt = 0;
 	for(unsigned i=0; i<size(); i++)
 	{
+		float test = points.at((i + 1) % points.size()).getAngle2D(points.at(i), points.at((i + 2) % points.size()));
 		sum = sum + (PI - (points.at((i+1)%size()).getAngle2D(points.at(i), points.at((i+2)%size()))));
 	}
 
@@ -985,10 +988,10 @@ int Form::getClockwise() const
 	}
 }
 
-std::vector<Edge> Form::getEdgesLocal() const
+std::vector<Edge*> Form::getEdgesLocal() const
 {
 	int factor = getClockwise();
-	std::vector<Edge> edges;
+	std::vector<Edge*> edges;
 	if(points.size() < 2 || factor == 0)
 		return edges;
 
@@ -1017,19 +1020,19 @@ std::vector<Edge> Form::getEdgesLocal() const
 
 	for(unsigned i=0; i<size(); i++)
 	{
-		edges.push_back(Edge());
+		edges.push_back(new Edge());
 
-		edges[i].p0 = &pointsType[i];
-		edges[i].p1 = &pointsType[(i+1)%size()];
+		edges[i]->p0 = &(pointsType[i]);
+		edges[i]->p1 = &(pointsType[(i+1)%size()]);
 
 		if(i != 0)
 		{
-			edges[i].prev = &edges[i - 1];
-			edges[i - 1].next = &edges[i];
+			edges[i]->prev = edges[i - 1];
+			edges[i - 1]->next = edges[i];
 		}
 	}
-	edges[0].prev = &edges[size() - 1];
-	edges[size() - 1].next = &edges[0];
+	edges[0]->prev = edges[size() - 1];
+	edges[size() - 1]->next = edges[0];
 
 	return edges;
 }
@@ -1041,12 +1044,12 @@ void Form::triangulate()
 {
 	convexForms.clear();
 
-	std::vector<Form> monotonesForms = makeMonotone();
+	std::vector<Form*> monotonesForms = makeMonotone();
 	if(monotonesForms.size() != 0)
 	{
 		for(unsigned i=0; i<monotonesForms.size(); i++)
 		{
-			convexForms.insert(convexForms.begin(), monotonesForms.begin(), monotonesForms.end());
+			convexForms.push_back(monotonesForms[i]->clone());
 		}
 	}
 	else
@@ -1057,10 +1060,10 @@ void Form::triangulate()
 //  Make Monotone
 //******************
 
-std::vector<Form> Form::makeMonotone()
+std::vector<Form*> Form::makeMonotone()
 {
-	std::vector<Edge> edges = getEdgesLocal();
-	std::vector<Form> forms;
+	std::vector<Edge*> edges = getEdgesLocal();
+	std::vector<Form*> forms;
 	if(size() < 2 || size() == 3)
 		return forms;
 
@@ -1071,12 +1074,12 @@ std::vector<Form> Form::makeMonotone()
 	int* v = new int[sizeV];
 
 	//Scanning line l store Edges colliding with l, sorted by x
-	std::map<float, std::vector<Edge> > l;
-	std::vector<Edge> preBufferL;
+	std::map<float, std::vector<Edge*> > l;
+	std::vector<Edge*> preBufferL;
 
 	//<Edge, PointType>
-	std::map<Edge, PointType> helpers;
-	std::set<PointType> trash;
+	std::map<Edge*, PointType*> helpers;
+	std::set<PointType*> trash;
 
 	//***************
 	//   Sorting
@@ -1093,24 +1096,25 @@ std::vector<Form> Form::makeMonotone()
 	while(cur < sizeV)
 	{
 		int pos = v[cur];
-		Edge edge = edges[pos];
+		Edge* edge = edges[pos];
 		cur++;
 
 		//On determine le type de point
-		p0 = edge.prev->p0;
-		p1 = edge.p0;
-		p2 = edge.p1;
+		p0 = edge->prev->p0;
+		p1 = edge->p0;
+		p2 = edge->p1;
 
-		trash.insert((*p1));
+		trash.insert(p1);
 
 		//On regarde si les 2 segments débutent à partir de ce point
 		//ou finissent à partir de ce point
-		bool is_in = trash.find((*p0)) != trash.end();
+
+		bool is_in = trash.find(p0) != trash.end();
 		if(is_in)
 		{
-			float minX = edge.prev->getMinX();
-			// assert(l.find(minX) != NULL);
-			std::vector<Edge> e = l.at(minX);
+			float minX = edge->prev->getMinX();
+			assert(l.find(minX) != l.end());
+			std::vector<Edge*>& e = l[minX];
 			if(e.size() == 1)
 			{
 				e.clear();
@@ -1118,9 +1122,9 @@ std::vector<Form> Form::makeMonotone()
 			}
 			else
 			{
-				for(std::vector<Edge>::iterator it = e.begin(); it != e.end(); it++)
+				for(std::vector<Edge*>::iterator it = e.begin(); it != e.end(); it++)
 				{
-					if(&(*it) == edge.prev)
+					if(*it == edge->prev)
 					{
 						e.erase(it);
 						break;	//it is now invalud must break!
@@ -1129,13 +1133,13 @@ std::vector<Form> Form::makeMonotone()
 			}
 		}
 		else
-			preBufferL.push_back((*edge.prev));
+			preBufferL.push_back(edge->prev);
 
-		is_in = trash.find((*p2)) != trash.end();
+		is_in = trash.find(p2) != trash.end();
 		if(is_in)
 		{
-			float minX = edge.getMinX();
-			std::vector<Edge> e = l.at(minX);
+			float minX = edge->getMinX();
+			std::vector<Edge*>& e = l[minX];
 			if(e.size() == 1)
 			{
 				e.clear();
@@ -1143,9 +1147,9 @@ std::vector<Form> Form::makeMonotone()
 			}
 			else
 			{
-				for(std::vector<Edge>::iterator it = e.begin(); it != e.end(); it++)
+				for(std::vector<Edge*>::iterator it = e.begin(); it != e.end(); it++)
 				{
-					if(&(*it) == edge.prev)
+					if(*it == edge)
 					{
 						e.erase(it);
 						break;	//it is now invalud must break!
@@ -1155,7 +1159,7 @@ std::vector<Form> Form::makeMonotone()
 
 		}
 		else
-			preBufferL.push_back((*edge.prev));
+			preBufferL.push_back(edge);
 
 		//***************
 		//     Type
@@ -1165,7 +1169,7 @@ std::vector<Form> Form::makeMonotone()
 		//On ajoute les nouveaux segments stockés dans le prébuffer
 		for(unsigned i=0; i<preBufferL.size(); i++)
 		{
-			float minX = preBufferL.at(i).getMinX();
+			float minX = preBufferL.at(i)->getMinX();
 			is_in = l.find(minX) != l.end();
 			if(is_in)
 			{
@@ -1173,7 +1177,7 @@ std::vector<Form> Form::makeMonotone()
 			}
 			else
 			{
-				std::vector<Edge> e;
+				std::vector<Edge*> e;
 				e.push_back(preBufferL[i]);
 				l[minX] = e;
 			}
@@ -1184,7 +1188,7 @@ std::vector<Form> Form::makeMonotone()
 	return transformEdges(edges);
 }
 
-void Form::sortPointsY(std::vector<Edge>& edges, int* v, unsigned sizeV)
+void Form::sortPointsY(std::vector<Edge*>& edges, int* v, unsigned sizeV)
 {
 	PointType *p0, *p1;
 	for(unsigned i=0; i<points.size(); i++)
@@ -1196,10 +1200,10 @@ void Form::sortPointsY(std::vector<Edge>& edges, int* v, unsigned sizeV)
 	// Opti dégueu mais bon
 	for(unsigned t=0; t<sizeV-1; t++)
 	{
-		for(unsigned i=t; i<sizeV-1; i++)
+		for(unsigned i=0; i<sizeV-t-1; i++)
 		{
-			p0 = edges[v[i]].p0;
-			p1 = edges[v[i+1]].p0;
+			p0 = edges[v[i]]->p0;
+			p1 = edges[v[i+1]]->p0;
 			if(p0->y() > p1->y())
 			{
 				// Echange
@@ -1221,8 +1225,10 @@ void Form::sortPointsY(std::vector<Edge>& edges, int* v, unsigned sizeV)
 	}
 }
 
-void Form::sortPointsY(std::vector<Edge>& edges, std::vector<int>& v)
+void Form::sortPointsY(std::vector<Edge*>& edges, std::vector<int>& v)
 {
+
+	std::cout << "To change";
 	PointType *p0, *p1;
 	for(unsigned i=0; i<points.size(); i++)
 	{
@@ -1235,8 +1241,8 @@ void Form::sortPointsY(std::vector<Edge>& edges, std::vector<int>& v)
 	{
 		for(unsigned j=0; j<i-1; j++)
 		{
-			p0 = edges[v[i]].p0;
-			p1 = edges[v[i+1]].p0;
+			p0 = edges[v[i]]->p0;
+			p1 = edges[v[i+1]]->p0;
 			if(p0->y() > p1->y())
 			{
 				// Echange
@@ -1258,16 +1264,16 @@ void Form::sortPointsY(std::vector<Edge>& edges, std::vector<int>& v)
 	}
 }
 
-void Form::determineType(int pos, std::vector<Edge> edges,
-		std::map<Edge, PointType>& helpers,
-		std::map<float, std::vector<Edge> >& I)
+void Form::determineType(int pos, std::vector<Edge*>& edges,
+		std::map<Edge*, PointType*>& helpers,
+		std::map<float, std::vector<Edge*> >& I)
 {
-	Edge edge = edges[pos];
+	Edge *edge = edges[pos];
 
 	// On determine le type de point
-	PointType* p0 = edge.prev->p0;
-	PointType* p1 = edge.p0;
-	PointType* p2 = edge.p1;
+	PointType* p0 = edge->prev->p0;
+	PointType* p1 = edge->p0;
+	PointType* p2 = edge->p1;
 
 	float theta = -((float) PI - p1->getAngle2D((*p0), (*p2)));
 	if(p1->y() < p0->y() && p1->y() < p2->y())
@@ -1296,6 +1302,7 @@ void Form::determineType(int pos, std::vector<Edge> edges,
 		else
 		{
 			// Merge
+			p1->type = PointType::MERGE;
 			handleMergeVertex(pos, edges, helpers, I);
 		}
 	}
@@ -1350,18 +1357,28 @@ void Form::determineType(int pos, std::vector<Edge> edges,
 	}
 }
 
-Edge* Form::getLeftEdge(int pos, std::vector<Edge> edges,
-		std::map<float, std::vector<Edge> >& I)
+Edge* Form::getLeftEdge(int pos, std::vector<Edge*>& edges,
+		std::map<float, std::vector<Edge*> >& I)
 {
-	PointType* p = edges[pos].p0;
-	std::map<float, std::vector<Edge> >::iterator low, lastLow;
-	low = I.lower_bound(p->x());
+	PointType* p = edges[pos]->p0;
+	std::map<float, std::vector<Edge*> >::iterator low, lastLow;
+	low = I.upper_bound(p->x());
+	if (low != I.begin())
+		low--;
+	else
+		low = I.end();
+
 	Edge* leftEdge = getLeftEdge((*p), low->second);
 
 	while(leftEdge == NULL)
 	{
 		lastLow = low;
-		low = I.lower_bound(low->first);
+		low = I.upper_bound(low->first);
+		if (low != I.begin())
+			low--;
+		else
+			low = I.end();
+
 		if((low == I.end()) || (low->second == lastLow->second))
 			return NULL;
 		leftEdge = getLeftEdge((*p), low->second);
@@ -1369,48 +1386,49 @@ Edge* Form::getLeftEdge(int pos, std::vector<Edge> edges,
 	return leftEdge;
 }
 
-Edge* Form::getLeftEdge(PointType& p, std::vector<Edge> lEdges)
+Edge* Form::getLeftEdge(PointType& p, std::vector<Edge*>& lEdges)
 {
 	for(unsigned i=0; i<lEdges.size(); i++)
 	{
-		Vector3D vec = Vector3D::sub((*lEdges[i].p0), (*lEdges[i].p1));
-		Vector3D projection = p.getProjection2D(vec, (*lEdges[i].p0));
+		Vector3D vec = Vector3D::sub((*(lEdges[i]->p0)), (*(lEdges[i]->p1)));
+		Vector3D projection = p.getProjection2D(vec, (*lEdges[i]->p0));
 		projection = projection - p;
 		if(projection.x() < 0)
-			return &lEdges[i];
+			return lEdges[i];
 	}
 	return NULL;
 }
 
-std::vector<Form> Form::transformEdges(std::vector<Edge> edges)
+std::vector<Form*> Form::transformEdges(std::vector<Edge*>& edges)
 {
-	std::vector<Form> forms;
-	std::vector<std::set<Vector3D> > bst;
+	std::vector<Form*> forms;
+	std::vector<std::set<Vector3D*> > bst;
 
-	forms.push_back((*this));
-	bst.push_back(std::set<Vector3D>());
-	bst[0].insert(points.begin(), points.end());
+	forms.push_back(this);
+	bst.push_back(std::set<Vector3D*>());
+	for (unsigned i = 0; i < points.size(); i++)
+		bst[0].insert(&(points[i]));
 
 	for(unsigned i=points.size(); i<edges.size(); i++)
 	{
-		Edge edge = edges[i];
-		Vector3D *p0 = &points[edge.p0->posPoint];
-		Vector3D *p1 = &points[edge.p1->posPoint];
+		Edge *edge = edges[i];
+		Vector3D *p0 = &(points[edge->p0->posPoint]);
+		Vector3D *p1 = &(points[edge->p1->posPoint]);
 
 		int n = 0;
 		int max = forms.size();
 		for(int j=0; j<max; j++)
 		{
-			bool is_in = (bst[j]).find((*p0)) != bst[j].end();
-			bool is_in1 = (bst[j]).find((*p1)) != bst[j].end();
+			bool is_in = (bst[j]).find(p0) != bst[j].end();
+			bool is_in1 = (bst[j]).find(p1) != bst[j].end();
 			if(is_in && is_in1)
 			{
-				std::vector<std::set<Vector3D> > bst2;
-				std::vector<Form> newForm = forms[j].splitUnsecured((*p0), (*p1), bst2);
+				std::vector<std::set<Vector3D*> > bst2;
+				std::vector<Form*> newForm = forms[j]->splitUnsecured((*p0), (*p1), bst2);
 				if(newForm.size() == 2)
 				{
 					forms.insert(forms.end(), newForm.begin(), newForm.end());
-					forms.erase(forms.end() + j);
+					forms.erase(forms.begin() + j);
 					bst.insert(bst.end(), bst2.begin(), bst2.end());
 					bst.erase(bst.begin() + j);
 
@@ -1424,76 +1442,79 @@ std::vector<Form> Form::transformEdges(std::vector<Edge> edges)
 	return forms;
 }
 
-void Form::handleStartVertex(int pos, std::vector<Edge> edges,
-		std::map<Edge, PointType>& helpers)
+void Form::handleStartVertex(int pos, std::vector<Edge*>& edges,
+		std::map<Edge*, PointType*>& helpers)
 {
-	helpers[edges[pos]] = (*edges[pos].p0);
+	helpers[edges[pos]] = edges[pos]->p0;
 }
 
-void Form::handleEndVertex(int pos, std::vector<Edge> edges,
-		std::map<Edge, PointType>& helpers)
+void Form::handleEndVertex(int pos, std::vector<Edge*>& edges,
+		std::map<Edge*, PointType*>& helpers)
 {
 	// Si c'est le helper du coté précédent est un point de type merge
 	// il sera dans l'arbre
 
-	if(helpers.find((*edges[pos].prev)) != helpers.end())
+	if (helpers.find(edges[pos]->prev) != helpers.end())
 	{
-		PointType helper = helpers.at((*edges[pos].prev));
-		// On crée une diagnoale entre le point pos et le helper
-		Edge diagonal;
-		diagonal.p0 = edges[pos].p0;
-		diagonal.p1 = &helper;
-		diagonal.prev = NULL;
-		diagonal.next = NULL;
-		edges.push_back(diagonal);
+		PointType* helper = helpers[edges[pos]->prev];
+		if (helper->type == PointType::MERGE)
+		{
+			// On crée une diagnoale entre le point pos et le helper
+			Edge *diagonal = new Edge();
+			diagonal->p0 = edges[pos]->p0;
+			diagonal->p1 = helper;
+			diagonal->prev = NULL;
+			diagonal->next = NULL;
+			edges.push_back(diagonal);
+		}
 	}
-	helpers.erase((*edges[pos].prev));
+	helpers.erase(edges[pos]->prev);
 }
-void Form::handleSplitVertex(int pos, std::vector<Edge> edges,
-		std::map<Edge, PointType>& helpers,
-		std::map<float, std::vector<Edge> >& I)
+void Form::handleSplitVertex(int pos, std::vector<Edge*>& edges,
+		std::map<Edge*, PointType*>& helpers,
+		std::map<float, std::vector<Edge*> >& I)
 {
 	// On cherche le coté à gauche du point le plus proche
 	Edge *leftEdge = getLeftEdge(pos, edges, I);
 	assert(leftEdge != NULL);
 
 	// On récupère le helper de ce coté
-	PointType helper = helpers.at((*leftEdge));
+	PointType* helper = helpers[leftEdge];
 
 	// On crée une diagonale entre le point pos et le helper
-	Edge diagonal;
-	diagonal.p0 = edges[pos].p0;
-	diagonal.p1 = &helper;
-	diagonal.prev = NULL;
-	diagonal.next = NULL;
+	Edge *diagonal = new Edge();
+	diagonal->p0 = edges[pos]->p0;
+	diagonal->p1 = helper;
+	diagonal->prev = NULL;
+	diagonal->next = NULL;
 	edges.push_back(diagonal);
 
 	//Le helper du coté à gauche devient vi
-	helpers.erase((*leftEdge));
-	helpers[(*leftEdge)] = (*diagonal.p0);
-	helpers[edges[pos]] = (*edges[pos].p0);
+	helpers.erase(leftEdge);
+	helpers[leftEdge] = diagonal->p0;
+	helpers[edges[pos]] = edges[pos]->p0;
 }
 
-void Form::handleMergeVertex(int pos, std::vector<Edge> edges,
-		std::map<Edge, PointType>& helpers,
-		std::map<float, std::vector<Edge> >& I)
+void Form::handleMergeVertex(int pos, std::vector<Edge*>& edges,
+		std::map<Edge*, PointType*>& helpers,
+		std::map<float, std::vector<Edge*> >& I)
 {
 	// On regarde le type du helper du dernier coté
-	if(helpers.find((*edges[pos].prev)) != helpers.end())
+	if(helpers.find(edges[pos]->prev) != helpers.end())
 	{
-		PointType helper = helpers.at((*edges[pos].prev));
-		if(helper.type == PointType::MERGE)
+		PointType* helper = helpers[edges[pos]->prev];
+		if(helper->type == PointType::MERGE)
 		{
 			//On crée une diagonale entre le point pos et le helper
-			Edge diagonal;
-			diagonal.p0 = edges[pos].p0;
-			diagonal.p1 = &helper;
-			diagonal.prev = NULL;
-			diagonal.next = NULL;
+			Edge *diagonal = new Edge();
+			diagonal->p0 = edges[pos]->p0;
+			diagonal->p1 = helper;
+			diagonal->prev = NULL;
+			diagonal->next = NULL;
 			edges.push_back(diagonal);
 		}
 	}
-	helpers.erase((*edges[pos].prev));
+	helpers.erase(edges[pos]->prev);
 
 	// On cherche le coté à gauche de ce point
 	Edge* leftEdge = getLeftEdge(pos, edges, I);
@@ -1501,28 +1522,28 @@ void Form::handleMergeVertex(int pos, std::vector<Edge> edges,
 
 	// On récupère le helper de ce coté
 
-	if(helpers.find((*leftEdge)) != helpers.end())
+	if(helpers.find(leftEdge) != helpers.end())
 	{
-		PointType helper = helpers.at((*leftEdge));
-		if(helper.type == PointType::MERGE)
+		PointType* helper = helpers[leftEdge];
+		if(helper->type == PointType::MERGE)
 		{
 			//On crée une diagonale entre le point pos et le helper
-			Edge diagonal;
-			diagonal.p0 = edges[pos].p0;
-			diagonal.p1 = &helper;
-			diagonal.prev = NULL;
-			diagonal.next = NULL;
+			Edge* diagonal = new Edge();
+			diagonal->p0 = edges[pos]->p0;
+			diagonal->p1 = helper;
+			diagonal->prev = NULL;
+			diagonal->next = NULL;
 			edges.push_back(diagonal);
 		}
 	}
 	//Le helper du coté à gauche devient vi
-	helpers.erase((*leftEdge));
-	helpers[(*leftEdge)] = (*edges[pos].p0);
+	helpers.erase(leftEdge);
+	helpers[leftEdge] = edges[pos]->p0;
 }
 
-void Form::handleRegularVertex(int pos, std::vector<Edge> edges,
-		std::map<Edge, PointType>& helpers,
-		std::map<float, std::vector<Edge> >& I)
+void Form::handleRegularVertex(int pos, std::vector<Edge*>& edges,
+		std::map<Edge*, PointType*>& helpers,
+		std::map<float, std::vector<Edge*> >& I)
 {
 	//On détermine si le polygone est à droite du coté
 	//si le nombre de coté touché est pair = exterieur à droite
@@ -1533,22 +1554,22 @@ void Form::handleRegularVertex(int pos, std::vector<Edge> edges,
 	if(numberLines%2 == 0)
 	{//impair
 
-		if(helpers.find((*edges[pos].prev)) != helpers.end())
+		if(helpers.find(edges[pos]->prev) != helpers.end())
 		{
-			PointType helper = helpers.at((*edges[pos].prev));
-			if(helper.type == PointType::MERGE)
+			PointType *helper = helpers[edges[pos]->prev];
+			if(helper->type == PointType::MERGE)
 			{
 				//On crée une diagonale entre le point pos et le helper
-				Edge diagonal;
-				diagonal.p0 = edges[pos].p0;
-				diagonal.p1 = &helper;
-				diagonal.prev = NULL;
-				diagonal.next = NULL;
+				Edge *diagonal = new Edge();
+				diagonal->p0 = edges[pos]->p0;
+				diagonal->p1 = helper;
+				diagonal->prev = NULL;
+				diagonal->next = NULL;
 				edges.push_back(diagonal);
 			}
 		}
-		helpers.erase((*edges[pos].prev));
-		helpers[edges[pos]] = (*edges[pos].p0);
+		helpers.erase(edges[pos]->prev);
+		helpers[edges[pos]] = edges[pos]->p0;
 	}
 	else
 	{//pair
@@ -1557,28 +1578,28 @@ void Form::handleRegularVertex(int pos, std::vector<Edge> edges,
 		assert(leftEdge != NULL);
 
 		//On récupère le helper de ce coté
-		if(helpers.find((*edges[pos].prev)) != helpers.end())
+		if(helpers.find(edges[pos]->prev) != helpers.end())
 		{
-			PointType helper = helpers.at((*edges[pos].prev));
-			if(helper.type == PointType::MERGE)
+			PointType *helper = helpers[edges[pos]->prev];
+			if(helper->type == PointType::MERGE)
 			{
 				//On crée une diagonale entre le point pos et le helper
-				Edge diagonal;
-				diagonal.p0 = edges[pos].p0;
-				diagonal.p1 = &helper;
-				diagonal.prev = NULL;
-				diagonal.next = NULL;
+				Edge *diagonal = new Edge();
+				diagonal->p0 = edges[pos]->p0;
+				diagonal->p1 = helper;
+				diagonal->prev = NULL;
+				diagonal->next = NULL;
 				edges.push_back(diagonal);
 			}
 		}
 		//Le helper du coté à gauche devient vi
-		helpers.erase((*leftEdge));
-		helpers[(*leftEdge)] = (*edges[pos].p0);
+		helpers.erase(leftEdge);
+		helpers[leftEdge] = edges[pos]->p0;
 	}
 }
 
-int Form::numberLeftEdges(int pos, std::vector<Edge> edges,
-		std::map<float, std::vector<Edge> >& I)
+int Form::numberLeftEdges(int pos, std::vector<Edge*>& edges,
+		std::map<float, std::vector<Edge*> >& I)
 {
 	/*
 	 *
@@ -1589,10 +1610,14 @@ int Form::numberLeftEdges(int pos, std::vector<Edge> edges,
 	 */
 
 	int numberLines = 0;
-	PointType* p = edges[pos].p0;
+	PointType* p = edges[pos]->p0;
 
-	std::map<float, std::vector<Edge> >::iterator low, lastLow;
-	low = I.lower_bound(p->x());
+	std::map<float, std::vector<Edge*> >::iterator low, lastLow;
+	low = I.upper_bound(p->x());
+	if (low != I.begin())
+		low--;
+	else
+		low = I.end();
 
 	if(low != I.end())
 	{
@@ -1601,20 +1626,24 @@ int Form::numberLeftEdges(int pos, std::vector<Edge> edges,
 		{
 			numberLines += numberLeftEdges((*p), low->second);
 			lastLow = low;
-			low = I.lower_bound(low->first);
+			low = I.upper_bound(low->first);
+			if (low != I.begin())
+				low--;
+			else
+				low = I.end();
 
 		} while(low != I.end() && low->second != lastLow->second);
 	}
 	return numberLines;
 }
 
-int Form::numberLeftEdges(PointType& p, std::vector<Edge> edges)
+int Form::numberLeftEdges(PointType& p, std::vector<Edge*>& edges)
 {
 	int numberLines = 0;
 	for(unsigned i=0; i<edges.size(); i++)
 	{
-		Vector3D vec = Vector3D::sub((*edges[i].p0), (*edges[i].p1));
-		Vector3D projection = p.getProjection2D(vec, (*edges[i].p0));
+		Vector3D vec = Vector3D::sub((*edges[i]->p0), (*edges[i]->p1));
+		Vector3D projection = p.getProjection2D(vec, (*edges[i]->p0));
 		projection -= p;
 
 		if(projection.x() < 0)
@@ -1625,7 +1654,7 @@ int Form::numberLeftEdges(PointType& p, std::vector<Edge> edges)
 
 std::vector<Form> Form::triangulateMonotone()
 {
-	std::vector<Edge> edges = getEdgesLocal();
+	std::vector<Edge*> edges = getEdgesLocal();
 
 	std::vector<Form> forms;
 	int sizeV = size();
@@ -1637,7 +1666,7 @@ std::vector<Form> Form::triangulateMonotone()
 		return std::vector<Form>();
 	}
 
-	std::set<PointType> lChain;
+	std::set<PointType*> lChain;
 	//1) on range par ordre croissant suivant Y les points
 	sortPointsY(edges, v, sizeV);
 	createChains(v, sizeV, edges, lChain);
@@ -1656,23 +1685,23 @@ std::vector<Form> Form::triangulateMonotone()
 	while(cur < sizeV)
 	{
 		int pos = v[cur];
-		Edge edge = edges[pos];
+		Edge* edge = edges[pos];
 		cur++;
 
-		p1 = edge.p0;
+		p1 = edge->p0;
 
 
-		last = edges[l[l.size() - 1]].p0;
+		last = edges[l[l.size() - 1]]->p0;
 
 		//Si le point appartient à une chaine différente
-		bool is_in  = lChain.find((*last)) != lChain.end();
-		bool is_in2 = lChain.find((*p1)) != lChain.end();
+		bool is_in  = lChain.find(last) != lChain.end();
+		bool is_in2 = lChain.find(p1) != lChain.end();
 		if(is_in != is_in2)
 		{
 			while(l.size() > 1)
 			{
-				Vector3D l_p0 = points[edges[l[0]].p0->posPoint];
-				Vector3D l_p1 = points[edges[l[1]].p0->posPoint];
+				Vector3D l_p0 = points[edges[l[0]]->p0->posPoint];
+				Vector3D l_p1 = points[edges[l[1]]->p0->posPoint];
 				Vector3D l_p2 = points[p1->posPoint];
 
 				Form form;
@@ -1688,12 +1717,12 @@ std::vector<Form> Form::triangulateMonotone()
 		{
 			if(l.size() > 1)
 			{
-				Vector3D q = points[edges[l[l.size() - 1]].p0->posPoint];
-				Vector3D r = points[edges[l[l.size() - 2]].p0->posPoint];
+				Vector3D q = points[edges[l[l.size() - 1]]->p0->posPoint];
+				Vector3D r = points[edges[l[l.size() - 2]]->p0->posPoint];
 				Vector3D p = points[p1->posPoint];
 
 				//vec1.crossProductZ(vec2)
-				bool bLChain = lChain.find((*p1)) != lChain.end();
+				bool bLChain = lChain.find(p1) != lChain.end();
 				float orientation = Vector3D::orientation(p, q, r);
 				while(l.size() > 1 && ((bLChain && orientation > 0) || (!bLChain && orientation < 0)))
 				{
@@ -1706,8 +1735,8 @@ std::vector<Form> Form::triangulateMonotone()
 					l.pop_back();
 					if(l.size() > 1)
 					{
-						q = points[edges[l[l.size() - 1]].p0->posPoint];
-						r = points[edges[l[l.size() - 2]].p0->posPoint];
+						q = points[edges[l[l.size() - 1]]->p0->posPoint];
+						r = points[edges[l[l.size() - 2]]->p0->posPoint];
 
 						orientation = Vector3D::orientation((*p1), q, r);
 					}
@@ -1725,9 +1754,9 @@ std::vector<Form> Form::triangulateMonotone()
 		for(unsigned i=0; i<l.size()-1; i++)
 		{
 
-			Vector3D l_p0 = points[edges[l[i]].p0->posPoint];
-			Vector3D l_p1 = points[edges[l[i + 1]].p0->posPoint];
-			Vector3D l_p2 = points[edges[v[sizeV - 1]].p0->posPoint];
+			Vector3D l_p0 = points[edges[l[i]]->p0->posPoint];
+			Vector3D l_p1 = points[edges[l[i + 1]]->p0->posPoint];
+			Vector3D l_p2 = points[edges[v[sizeV - 1]]->p0->posPoint];
 
 			Form form;
 			form.addPointFree(l_p0);
@@ -1739,43 +1768,43 @@ std::vector<Form> Form::triangulateMonotone()
 	return forms;
 }
 
-void Form::createChains(int *v, int sizeV, std::vector<Edge> edges,
-		std::set<PointType> lChain)
+void Form::createChains(int *v, int sizeV, std::vector<Edge*>& edges,
+		std::set<PointType*>& lChain)
 {
-	Edge start = edges[v[0]];
-	PointType* last = edges[v[sizeV - 1]].p0;
+	Edge* start = edges[v[0]];
+	PointType* last = edges[v[sizeV - 1]]->p0;
 
-	Vector3D collisionVec = Vector3D::sub((*start.p0), (*start.next->p0));
+	Vector3D collisionVec = Vector3D::sub((*start->p0), (*start->next->p0));
 	Vector3D vec(1.0f, 0.0f);
 
 	Vector3D collision;
-	bool result = collision.computeIntersection2D(collisionVec, vec, (*start.p0), (*start.prev->p0));
+	bool result = collision.computeIntersection2D(collisionVec, vec, (*start->p0), (*start->prev->p0));
 	bool left = false;
 	if(result)
 	{
-		left = (collision.x() < start.prev->p0->x());
+		left = (collision.x() < start->prev->p0->x());
 	}
 	else
 	{
-		assert(start.next->p0->y() == start.p0->y());
-		left = (start.next->p0->x() < start.p0->x());
+		assert(start->next->p0->y() == start->p0->y());
+		left = (start->next->p0->x() < start->p0->x());
 	}
 
 	if(left)
 	{
-		Edge* current = start.next;
+		Edge* current = start->next;
 		while(current->p0 != last)
 		{
-			lChain.insert((*current->p0));
+			lChain.insert(current->p0);
 			current = current->next;
 		}
 	}
 	else
 	{
-		Edge* current = start.prev;
+		Edge* current = start->prev;
 		while(current->p0 != last)
 		{
-			lChain.insert((*current->p0));
+			lChain.insert(current->p0);
 			current = current->prev;
 		}
 	}

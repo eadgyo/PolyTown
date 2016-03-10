@@ -217,6 +217,7 @@ void Graphics::render(Image& image, const Vector3D& translation, float scale)
 
 void Graphics::renderCopy(mySurface* surface, SDL_Rect& rec)
 {
+	glColor4f(1.0f, 1.0f, 1.0f, 0);
 	glBindTexture(GL_TEXTURE_2D, surface->texture);
 
 	//Render texture quad
@@ -230,7 +231,6 @@ void Graphics::renderCopy(mySurface* surface, SDL_Rect& rec)
 	glTexCoord2f(x2, y2); glVertex2f(rec.x + rec.w, rec.y + rec.h); //Top right
 	glTexCoord2f(x1, y2); glVertex2f(rec.x, rec.y + rec.h); //Top left
 	glEnd();
-
 }
 
 Graphics::~Graphics()

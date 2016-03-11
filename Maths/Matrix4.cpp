@@ -1,10 +1,10 @@
 #include "Matrix4.h"
 
-Matrix4::Matrix4(const float* m)
+Matrix4::Matrix4(const float* m4)
 {
 	for(int i=0; i<SIZE_M; i++)
 	{
-		this->m[i] = m[i];
+		m[i] = m4[i];
 	}
 }
 Matrix4::Matrix4(const Quaternion& q)

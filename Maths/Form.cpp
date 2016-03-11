@@ -3,13 +3,13 @@
 
 Form::Form()
 {
-	this->omega = 0;
-	this->scale = 1.0f;
-	this->flipH = false;
-	this->flipV = false;
-	this->surface = 0;
-	this->orientation.setIdentity();
-	this->orientation.setOrientation(omega, scale, flipH, flipV, Vector3D(true));
+	omega = 0;
+	scale = 1.0f;
+	flipH = false;
+	flipV = false;
+	surface = 0;
+	orientation.setIdentity();
+	orientation.setOrientation(omega, scale, flipH, flipV, Vector3D(true));
 }
 
 Form::~Form()
@@ -42,6 +42,7 @@ Form::Form(float omega, float scale, bool flipH, bool flipV, float surface, cons
 
 Form::Form(const Form& form)
 {
+	std::cout << "Copie Maker \n";
 	// Copie de convexForms
 	convexForms.reserve(form.getConvexFormsSize());
 	for(int i=0; i<form.getConvexFormsSize(); i++)
@@ -60,8 +61,9 @@ Form::Form(const Form& form)
 	flipH = form.getFlipH();
 	flipV = form.getFlipV();
 	surface = form.getSurface();
-
-	orientation.setOrientation(omega, scale, flipH, flipV, form.getCenter());
+	
+	orientation.set(form.getOrientation());
+	// orientation.setOrientation(omega, scale, flipH, flipV, form.getCenter());
 }
 
 Form Form::clone() const
@@ -398,66 +400,6 @@ Vector3D Form::handleEdgePoint(const Vector3D& PA, const Vector3D& PB1,
 }
 
 
-std::vector<Form*> Form::splitUnsecured(const Vector3D& p0, const Vector3D& p1, std::vector< std::set<Vector3D*> >& bst)
-{
-	std::vector<Form*> forms;
-
-	// On cherche la position des 2 points
-	int pos0 = -1;
-	int pos1 = -1;
-	int pos = 0;
-	while(pos0 == -1 || pos1 == -1)
-	{
-		if(&p0 == &(points[pos]))
-		{
-			pos0 = pos;
-		}
-		else if(&p1 == &(points[pos]))
-		{
-			pos1 = pos;
-		}
-		pos++;
-	}
-
-	if(pos0 + 1 != pos1 && pos1 + 1 != pos0)
-	{
-		// Form1
-		Form* form1 = new Form();
-		bst.push_back(std::set<Vector3D*>());
-
-		pos = pos0;
-		while(pos != pos1)
-		{
-			form1->addPointFree(points[pos]);
-			(bst[0]).insert(&(points[pos1]));
-			pos = (pos + 1)%points.size();
-		}
-		form1->addPointFree(points[pos1]);
-		bst[0].insert(&(points[pos1]));
-
-		// Form2
-		Form* form2 = new Form();
-		bst.push_back(std::set<Vector3D*>());
-
-		pos = pos1;
-		while(pos != pos0)
-		{
-			form2->addPointFree(points[pos]);
-			bst[1].insert(&(points[pos]));
-			pos = (pos + 1)%size();
-		}
-		form2->addPointFree(points[pos0]);
-		bst[1].insert(&(points[pos0]));
-
-		forms.push_back(form1);
-		forms.push_back(form2);
-	}
-	else
-	{
-		forms.push_back(this);
-	}
-	return forms;
-}
 
 Vector3D& Form::operator [](int i)
 {
@@ -1044,12 +986,12 @@ void Form::triangulate()
 {
 	convexForms.clear();
 
-	std::vector<Form*> monotonesForms = makeMonotone();
+	std::vector<Form> monotonesForms = makeMonotone();
 	if(monotonesForms.size() != 0)
 	{
 		for(unsigned i=0; i<monotonesForms.size(); i++)
 		{
-			convexForms.push_back(monotonesForms[i]->clone());
+			convexForms.push_back(monotonesForms[i]);
 		}
 	}
 	else
@@ -1060,10 +1002,10 @@ void Form::triangulate()
 //  Make Monotone
 //******************
 
-std::vector<Form*> Form::makeMonotone()
+std::vector<Form> Form::makeMonotone()
 {
 	std::vector<Edge*> edges = getEdgesLocal();
-	std::vector<Form*> forms;
+	std::vector<Form> forms;
 	if(size() < 2 || size() == 3)
 		return forms;
 
@@ -1185,7 +1127,16 @@ std::vector<Form*> Form::makeMonotone()
 		preBufferL.clear();
 	}
 
-	return transformEdges(edges);
+	std::vector<Form> formsResult = transformEdges(edges);
+
+	// On libère les vecteurs
+	std::vector<Edge*>::iterator it;
+	for (it = edges.begin(); it != edges.end(); )
+	{
+		delete * it;
+		it = edges.erase(it);
+	}
+	return formsResult;
 }
 
 void Form::sortPointsY(std::vector<Edge*>& edges, int* v, unsigned sizeV)
@@ -1399,38 +1350,124 @@ Edge* Form::getLeftEdge(PointType& p, std::vector<Edge*>& lEdges)
 	return NULL;
 }
 
-std::vector<Form*> Form::transformEdges(std::vector<Edge*>& edges)
+std::vector<Form> Form::splitUnsecured(int p0, int p1, std::vector< std::set<int> >& bst, std::vector<std::vector<int> >& vectPos, int actual)
 {
-	std::vector<Form*> forms;
-	std::vector<std::set<Vector3D*> > bst;
+	/*
+	 * Utilisé pour la division Edges
+	 * Chaque vecteur est représenté par un entier (pour remplacer le pointeur)
+	*/
+	std::vector<Form> forms;
+	std::vector<int> actualsPos = vectPos[actual];
 
-	forms.push_back(this);
-	bst.push_back(std::set<Vector3D*>());
+	int pos0 = -1;
+	int pos1 = -1;
+	int pos = 0;
+	while (pos0 == -1 || pos1 == -1)
+	{
+		if (p0 == actualsPos[pos])
+			pos0 = pos;
+		else if (p1 == actualsPos[pos])
+			pos1 = pos;
+		pos++;
+	}
+
+	if (pos0 + 1 != pos1 && pos1 + 1 != pos0)
+	{
+		// Form1
+		Form form1;
+		bst.push_back(std::set<int>());
+		vectPos.push_back(std::vector<int>());
+
+		pos = pos0;
+		while (pos != pos1)
+		{
+			form1.addPointFree(points[pos]);
+			(bst[bst.size() - 1]).insert(actualsPos[pos]); // Ajout du point dans le bst
+			(vectPos[vectPos.size() - 1]).push_back(actualsPos[pos]); // Ajout du point dans la liste de points
+			pos = (pos + 1) % points.size();
+		}
+		form1.addPointFree(points[pos1]);
+		bst[bst.size() - 1].insert(actualsPos[pos]);
+		(vectPos[vectPos.size() - 1]).push_back(actualsPos[pos1]);
+
+		// Form2
+		Form form2;
+		bst.push_back(std::set<int>());
+		vectPos.push_back(std::vector<int>());
+
+		pos = pos1;
+		while (pos != pos0)
+		{
+			form2.addPointFree(points[pos]);
+			bst[bst.size() - 1].insert(actualsPos[pos]); // Ajout du point dans le bst
+			(vectPos[vectPos.size() - 1]).push_back(actualsPos[pos]); // Ajout du point dans la liste de points
+			pos = (pos + 1) % points.size();
+		}
+		form2.addPointFree(points[pos0]);
+		bst[bst.size() - 1].insert(actualsPos[pos]);
+		(vectPos[vectPos.size() - 1]).push_back(actualsPos[pos0]);
+
+		forms.push_back(form1);
+		forms.push_back(form2);
+	}
+	else
+	{
+		forms.push_back((*this));
+	}
+	return forms;
+}
+
+
+std::vector<Form> Form::transformEdges(std::vector<Edge*>& edges)
+{
+	std::vector<Form> forms;
+	std::vector<std::set<int> > bst;
+	// Pour éviter les problèmes de pointeur (adresse), on passe par une liste d'entiers
+	// Ces entiers représentent juste la position dans la liste de départ (cette forme).
+	std::vector<std::vector<int> > vectPos;
+
+	forms.push_back((*this));
+	bst.push_back(std::set<int>()); // Ajout du bst
+	vectPos.push_back(std::vector<int>()); // Ajout de la liste d'entiers
 	for (unsigned i = 0; i < points.size(); i++)
-		bst[0].insert(&(points[i]));
+	{
+		bst[0].insert(i);
+		vectPos[0].push_back(i);
+	}
+
 
 	for(unsigned i=points.size(); i<edges.size(); i++)
 	{
 		Edge *edge = edges[i];
-		Vector3D *p0 = &(points[edge->p0->posPoint]);
-		Vector3D *p1 = &(points[edge->p1->posPoint]);
+		int p0 = edge->p0->posPoint; // Position du point dans la liste de départ
+		int p1 = edge->p1->posPoint; // Position du point dans la liste de départ
+
+		assert(p1 >= 0 && (int) p1 < size() && (int) p0 >= 0 && p0 < size());
 
 		int n = 0;
 		int max = forms.size();
 		for(int j=0; j<max; j++)
 		{
-			bool is_in = (bst[j]).find(p0) != bst[j].end();
+			// On regarde si les deux points sont bien dans cette forme
+			// La liste point étant représentée pour la recherche par le bst
+			// et pour l'accession par un vector<>
+			bool is_in = (bst[j]).find(p0) != bst[j].end(); 
 			bool is_in1 = (bst[j]).find(p1) != bst[j].end();
 			if(is_in && is_in1)
 			{
-				std::vector<std::set<Vector3D*> > bst2;
-				std::vector<Form*> newForm = forms[j]->splitUnsecured((*p0), (*p1), bst2);
+				std::vector<std::set<int> > bst2;
+				std::vector<Form> newForm = forms[j].splitUnsecured(p0, p1, bst2, vectPos, j);
 				if(newForm.size() == 2)
 				{
+					// L'ancienne forme est remplacée par deux nouvelles
+					// Suppression dans la list de formes
 					forms.insert(forms.end(), newForm.begin(), newForm.end());
 					forms.erase(forms.begin() + j);
+					// Suppression dans le bst
 					bst.insert(bst.end(), bst2.begin(), bst2.end());
 					bst.erase(bst.begin() + j);
+					// Suppression dans la liste de points;
+					vectPos.erase(vectPos.begin() + j);
 
 					max--;
 					j--;
@@ -1439,6 +1476,7 @@ std::vector<Form*> Form::transformEdges(std::vector<Edge*>& edges)
 			}
 		}
 	}
+
 	return forms;
 }
 

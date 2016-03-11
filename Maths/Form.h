@@ -123,7 +123,7 @@ public:
 	Vector3D getInterval(const Vector3D& axis, const Vector3D* points, unsigned size) const;
 	void getPushVector(AxesSat& axesSat, Vector3D& push, float& t);
 
-	std::vector<Form*> splitUnsecured(const Vector3D& p0, const Vector3D& p1, std::vector< std::set<Vector3D*> >& bst);
+	std::vector<Form> splitUnsecured(int p0, int p1, std::vector< std::set<int> >& bst, std::vector<std::vector<int> >& vectPos, int actual);
 	
 	// Convex
 	bool isConvex() const;
@@ -134,13 +134,13 @@ public:
 	void triangulate();
 
 	// Make Monotone
-	std::vector<Form*> makeMonotone();
+	std::vector<Form> makeMonotone();
 	void sortPointsY(std::vector<Edge*>& edges, int* v, unsigned sizeI);
 	void sortPointsY(std::vector<Edge*>& edges, std::vector<int>& v);
 	void determineType(int pos, std::vector<Edge*>& edges, std::map<Edge*, PointType*>& helpers, std::map<float, std::vector<Edge*> >& I);
 	Edge* getLeftEdge(int pos, std::vector<Edge*>& edges, std::map<float, std::vector<Edge*> >& I);
 	Edge* getLeftEdge(PointType& p, std::vector<Edge*>& lEdges);
-	std::vector<Form*> transformEdges(std::vector<Edge*>& edges);
+	std::vector<Form> transformEdges(std::vector<Edge*>& edges);
 	void handleStartVertex(int pos, std::vector<Edge*>& edges, std::map<Edge*, PointType*>& helpers);
 	void handleSplitVertex(int pos, std::vector<Edge*>& edges, std::map<Edge*, PointType*>& helpers, std::map<float, std::vector<Edge*> >& I);
 	void handleMergeVertex(int pos, std::vector<Edge*>& edges, std::map<Edge*, PointType*>& helpers,  std::map<float, std::vector<Edge*> >& I);

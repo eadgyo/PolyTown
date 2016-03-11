@@ -14,7 +14,7 @@ Form::Form()
 
 Form::~Form()
 {
-	std::cout << "Destructor Form";
+	// std::cout << "Destructor Form";
 }
 
 Form::Form(int size)
@@ -42,7 +42,7 @@ Form::Form(float omega, float scale, bool flipH, bool flipV, float surface, cons
 
 Form::Form(const Form& form)
 {
-	std::cout << "Copie Maker \n";
+	// std::cout << "Copie Maker \n";
 	// Copie de convexForms
 	convexForms.reserve(form.getConvexFormsSize());
 	for(int i=0; i<form.getConvexFormsSize(); i++)
@@ -991,7 +991,8 @@ void Form::triangulate()
 	{
 		for(unsigned i=0; i<monotonesForms.size(); i++)
 		{
-			convexForms.push_back(monotonesForms[i]);
+			std::vector<Form> forms = monotonesForms[i].triangulateMonotone();
+			convexForms.insert(convexForms.end(), forms.begin(), forms.end());
 		}
 	}
 	else
@@ -1188,9 +1189,9 @@ void Form::sortPointsY(std::vector<Edge*>& edges, std::vector<int>& v)
 
 	// Tri à bulles
 	// Opti dégueu mais bon
-	for(unsigned i=v.size()-1; i != 1; i++)
+	for (unsigned t = 0; t<edges.size() - 1; t++)
 	{
-		for(unsigned j=0; j<i-1; j++)
+		for (unsigned i = 0; i<edges.size() - t - 1; i++)
 		{
 			p0 = edges[v[i]]->p0;
 			p1 = edges[v[i+1]]->p0;
@@ -1856,25 +1857,26 @@ std::vector<Form> Form::getTriangulation()
 		forms.push_back((*this));
 		return forms;
 	}
-	std::deque<Vector3D> pointsV(points.size());
+	std::deque<Vector3D> pointsV;
 	for(unsigned i=0; i<points.size(); i++)
 		pointsV.push_back(points[i]);
 	//ArrayList<Point2D[]> edgesL = new ArrayList<Point2D[]>();
 
-	std::deque<int> pointsVPos(points.size());
-	std::deque<int> pointsPreviousVPos(points.size());
+	std::deque<int> pointsVPos;
+	std::deque<int> pointsPreviousVPos;
 	std::deque<int> edgesLPos;
 	for(unsigned i=0; i<pointsV.size(); i++)
 		pointsVPos.push_back(i);
 
 	//1) on range par ordre croissant suivant X les points
-	for(unsigned t=1; t<pointsV.size(); t++)
+	for(unsigned t=0; t<pointsV.size()-1; t++)
 	{
-		for(unsigned i=0; i<pointsV.size() - 1; i++)
+		for(unsigned i=0; i<pointsV.size()-t-1; i++)
 		{
 			if(pointsV[i].x() > pointsV[i+1].x())
 			{
 				std::iter_swap(pointsV.begin() + i, pointsV.begin() + i + 1);
+				std::iter_swap(pointsVPos.begin() + i, pointsVPos.begin() + i + 1);
 			}
 		}
 	}
@@ -1915,6 +1917,7 @@ std::vector<Form> Form::getTriangulation()
 					{
 						edgesLPos.insert(edgesLPos.begin() + j, pos[0] + i/2);
 						added = true;
+						break;
 					}
 				}
 				if(!added)
@@ -1931,6 +1934,7 @@ std::vector<Form> Form::getTriangulation()
 					{
 						edgesLPos.insert(edgesLPos.begin() + j, pos[0] + i/2);
 						added = true;
+						break;
 					}
 				}
 				if(!added)

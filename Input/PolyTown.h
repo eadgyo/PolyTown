@@ -26,7 +26,7 @@ private:
     SDL_Window *window;
 
     bool running;
-    
+
     PolyTown();
 };
 

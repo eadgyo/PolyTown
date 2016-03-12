@@ -3,23 +3,23 @@
 
 class Input
 {
-    public:
-        Input();
-        void update();
-        void display();
-        bool* getKeys();
+public:
+    Input();
+    void update();
+    void display();
+    bool* getKeys();
 
-        bool getQuit();
+    bool getQuit();
 
-    private:
-        bool quit;
+private:
+    bool quit;
 
-        int mousePos[2];
-        bool mouseDown[2];
-        bool mousePressed[2];
+    int mousePos[2];
+    bool mouseDown[2];
+    bool mousePressed[2];
 
-        bool keysDown[2];
-        bool keysPressed[2];
+    bool keysDown[2];
+    bool keysPressed[2];
 };
 
 #endif // !INPUT_H

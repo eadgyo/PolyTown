@@ -1,5 +1,7 @@
 #include "HUD.h"
 
+#include <iostream>
+
 HUD::HUD()
 {
 	// Création de l'outil graphique

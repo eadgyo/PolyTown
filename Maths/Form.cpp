@@ -827,7 +827,8 @@ bool Form::intervalIntersection(const Vector3D& axis, const Vector3D* pointsA,
 
 Vector3D Form::getInterval(const Vector3D& axis, const Vector3D* points, unsigned size) const
 {
-	Vector3D minMax(points[0].getX(), points[0].getY(), 0, true);
+	float h = points[0] * axis;
+	Vector3D minMax(h, h, 0, true);
 	for(unsigned i=1; i<size; i++)
 	{
 		float scalar = points[i]*axis;

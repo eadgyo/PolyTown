@@ -22,21 +22,29 @@ int main(int argc, char* args[])
 	
 	Form form;
 	form.addPoint(Vector3D(10, 10));
-	form.addPoint(Vector3D(70, 60));
+	form.addPoint(Vector3D(70, 5));
 	form.addPoint(Vector3D(200, 30));
-	form.addPoint(Vector3D(100, 70));
+	//form.addPoint(Vector3D(100, 70));
 	form.addPoint(Vector3D(150, 140));
 	form.addPoint(Vector3D(10, 100));
+
+	Form form1;
+	form1.addPoint(Vector3D(10, 10));
+	form1.addPoint(Vector3D(70, 60));
+	//form1.addPoint(Vector3D(200, 30));
+	//form1.addPoint(Vector3D(100, 70));
+	form1.addPoint(Vector3D(150, 140));
+	form1.addPoint(Vector3D(10, 100));
+	form1.translateX(60);
+
+	bool result = form.collisionSatFree(form1, Vector3D(true), Vector3D(true));
+	std::cout << result << "\n";
 
 	form.triangulate();
 	glColor4f(1.0, 0, 0, 0.0);
 	std::vector<Form> forms = form.getConvexForms();
-	for (unsigned i = 0; i < form.getConvexFormsSize(); i++)
-	{
-		g->drawLines(forms.at(i));
-	}
 	g->drawLines(form);
-	//g->drawForm(form);
+	g->drawLines(form1);
 
 	g->swapGL();
 	SDL_Delay(2000);

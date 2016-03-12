@@ -20,5 +20,6 @@ private:
 	int r, g, b, a;
 	sRectangle rectangle;
 	std::string text;
+	float textSize;
 };
 

@@ -310,7 +310,7 @@ void Graphics::drawTriangle(const Vector3D& p1, const Vector3D& p2,
 	glEnd();
 }
 
-void Graphics::drawForm(const Form& form)
+void Graphics::render(const Form& form)
 {
 	glBegin(GL_POLYGON);
 	for (unsigned i = 0; i<form.size(); i++)
@@ -331,7 +331,7 @@ void Graphics::setColor(float r, float g, float b, float a)
 	glColor4f(r, g, b, a);
 }
 
-void Graphics::drawLines(const Form& form)
+void Graphics::drawForm(const Form& form)
 {
 	for (unsigned i = 0, j = form.size() - 1; i<form.size(); j = i, i++)
 	{

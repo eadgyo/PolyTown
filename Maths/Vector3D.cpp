@@ -1,6 +1,15 @@
 #include "Vector3D.h"
 
-
+Vector3D::Vector3D(bool isPoint)
+{
+	coor[0] = 0;
+	coor[1] = 0;
+	coor[2] = 0;
+	if(isPoint)
+		coor[3] = 1;
+	else
+		coor[3] = 0;
+}
 Vector3D::Vector3D(const Vector3D& a)
 {
 	 for(int i=0; i<SIZE_V; i++)
@@ -8,10 +17,12 @@ Vector3D::Vector3D(const Vector3D& a)
 		 coor[i] = a.get(i);
 	 }
 }
-Vector3D::Vector3D(const Vector3D& a, const Vector3D& b)
+Vector3D::Vector3D(float x, float y)
 {
-	Vector3D result = b - a;
-	set(result);
+	coor[0] = x;
+	coor[1] = y;
+	coor[2] = 0;
+	coor[3] = 1;
 }
 Vector3D::Vector3D(float x, float y, float z)
 {
@@ -30,18 +41,54 @@ Vector3D::Vector3D(float x, float y, float z, bool isPoint)
 	else
 		coor[3] = 0;
 }
-Vector3D::Vector3D(float const* v)
-{
-	for(int i=0; i<SIZE_V; i++)
-	{
-		coor[i] = v[i];
-	}
-}
+
 
 Vector3D Vector3D::copy() const
 {
 	return Vector3D((*this));
 }
+
+Vector3D Vector3D::sub(const Vector3D& a, const Vector3D& b)
+{
+	Vector3D result = b - a;
+	return result;
+}
+//====================================================
+// Getter
+//====================================================
+float Vector3D::getAngle2D(const Vector3D& vec) const
+{
+	float scalar = getNormalize()*(vec.getNormalize());
+	float l_fTheta = 0;
+	if(scalar > 1.0f)
+		l_fTheta = 0;
+	else if(scalar < -1.0f)
+		l_fTheta = (float) PI;
+	else
+		l_fTheta = (float) acos(scalar);
+
+	if(((*this) % vec).z() < 0)
+		l_fTheta = - l_fTheta;
+
+
+	return l_fTheta;
+}
+
+float Vector3D::getAngle2D(const Vector3D& A, const Vector3D& C) const
+{
+	Vector3D AB = Vector3D::sub((*this), A);
+	Vector3D CB = Vector3D::sub(C, (*this));
+	float theta = (float) (PI - AB.getAngle2D(CB));
+	return theta;
+}
+
+Vector3D Vector3D::getNormalize() const
+{
+	Vector3D vec = copy();
+	vec.normalize();
+	return vec;
+}
+
 float Vector3D::get(int i) const
 {
 	assert(i >=0 && i < SIZE_V);
@@ -70,15 +117,49 @@ float Vector3D::getSqMagnitude() const
 {
 	return (*this)*(*this);
 }
-void Vector3D::normalize()
+float Vector3D::normalize()
 {
 	float magn = getMagnitude();
 	(*this)/=magn;
+	return magn;
+}
+Vector3D Vector3D::getProjection2D(const Vector3D& vec, const Vector3D& p) const
+{
+	Vector3D l_vec = vec.getNormalize();
+	Vector3D vec1 = Vector3D::sub(p, (*this));
+	float projectScalar = l_vec*vec1;
+	Vector3D projection(p + (l_vec*projectScalar));
+	return projection;
+}
+bool Vector3D::computeIntersection2D(const Vector3D& v1, const Vector3D& v2, const Vector3D& p1, const Vector3D& p2)
+{
+	if(v1.x()*v2.y() -v2.x()*v1.y() != 0)
+	{
+		if(v1.y() != 0)
+		{
+			setY((-(p1.x()*v1.y()-p1.y()*v1.x())*v2.y() + (p2.x()*v2.y()-p2.y()*v2.x())*v1.y())/(v1.x()*v2.y()-v2.x()*v1.y()));
+			setX((p1.x()*v1.y()-p1.y()*v1.x()+v1.x()*y())/v1.y());
+		}
+		else
+		{
+			setY((-(p2.x()*v2.y()-p2.y()*v2.x())*v1.y() + (p1.x()*v1.y()-p1.y()*v1.x())*v2.y())/(v2.x()*v1.y()-v1.x()*v2.y()));
+			setX((p2.x()*v2.y()-p2.y()*v2.x()+v2.x()*y())/v2.y());
+		}
+		return true;
+	}
+	return false;//Parallele
 }
 
 //====================================================
 // Setter
 //====================================================
+void Vector3D::set(const Vector3D& a, const Vector3D& b)
+{
+	for(int i=0; i<SIZE_V; i++)
+	{
+		coor[i] = b.get(i) - a.get(i);
+	}
+}
 void Vector3D::set(const Vector3D& a)
 {
 	for(int i=0; i<SIZE_V; i++)
@@ -99,6 +180,9 @@ void Vector3D::set(float a, float b)
 {
 	coor[0] = a;
 	coor[1] = b;
+	if(std::abs(coor[2]) > 0.0001f || std::abs(coor[3]) > 0.0001f)
+		std::cout << "set(float, float) au lieu de set2D??";
+	//assert(std::abs(coor[2]) < 0.0001f && std::abs(coor[3]) < 0.0001f);
 }
 void Vector3D::set(float a, float b, float c)
 {
@@ -211,9 +295,9 @@ Vector3D Vector3D::operator%(Vector3D const& v) const
 {
 	// cross Product
 	Vector3D vec;
-	vec[0] = coor[1]*vec.get(2) - coor[2]*vec.get(1);
-	vec[1] = coor[2]*vec.get(0) - coor[0]*vec.get(2);
-	vec[2] = coor[0]*vec.get(1) - coor[1]*vec.get(0);
+	vec[0] = coor[1]*v.get(2) - coor[2]*v.get(1);
+	vec[1] = coor[2]*v.get(0) - coor[0]*v.get(2);
+	vec[2] = coor[0]*v.get(1) - coor[1]*v.get(0);
 	vec[3] = 0;
 	return vec;
 }
@@ -250,4 +334,15 @@ void Vector3D::display()
 	std::cout << coor[SIZE_V - 1];
 	std::cout << " )\n";
 
+}
+
+float Vector3D::orientation(const Vector3D& p, const Vector3D& q, const Vector3D& r)
+{
+	return (q.x()*r.y() + p.x()*q.y() + r.x()*p.y()) - (p.x()*r.y() + q.x()*p.y() + r.x()*q.y());
+}
+
+bool Vector3D::operator <(const Vector3D& a) const
+{
+	 std::cout << "Vector3D < ??";
+	 return true;
 }

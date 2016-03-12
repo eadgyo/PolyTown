@@ -122,6 +122,7 @@ void Quaternion::set(const Vector3D& vec, float theta)
 //====================================================
 // Surchage opérateurs
 //====================================================
+
 Quaternion Quaternion::operator*(const Quaternion& q) const
 {
 	Quaternion q1;
@@ -163,9 +164,17 @@ void Quaternion::operator +=(const Quaternion& q)
 	j += q.getJ();
 	k += q.getK();
 }
-Quaternion Quaternion::operator*(const float& f) const
+Quaternion Quaternion::operator*(float f) const
 {
 	return Quaternion(r*f, i*f, j*f, k*f);
+}
+Quaternion Quaternion::operator*(int f) const
+{
+	return Quaternion(r*f, i*f, j*f, k*f);
+}
+Quaternion Quaternion::operator-() const
+{
+	return Quaternion(-r, -i, -j, -k);
 }
 void Quaternion::operator*=(const float& f)
 {
@@ -192,7 +201,7 @@ void Quaternion::operator/=(const float& f)
 }
 Vector3D Quaternion::operator*(const Vector3D& v) const
 {
-	return transform(v, Vector3D());
+	return transform(v, Vector3D(true));
 }
 float& Quaternion::operator[](int a)
 {
@@ -222,7 +231,7 @@ void Quaternion::rotateByVector(const Vector3D& vec, float theta)
 }
 Vector3D Quaternion::transform(const Vector3D& vec) const
 {
-	return transform(vec, Vector3D());
+	return transform(vec, Vector3D(true));
 }
 Vector3D Quaternion::transform(const Vector3D& vec, const Vector3D& center) const
 {

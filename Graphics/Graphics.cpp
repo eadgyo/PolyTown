@@ -283,6 +283,14 @@ void Graphics::loadAllSurfaces()
 	}
 }
 
+void Graphics::renderText(std::string text, const Vector3D & pos, float size)
+{
+}
+
+void Graphics::renderTextCentered(std::string text, const Vector3D & pos, float size)
+{
+}
+
 // Draw forms
 void Graphics::drawLine(const Vector3D& p1, const Vector3D& p2)
 {
@@ -316,6 +324,11 @@ void Graphics::drawForm(const Form& form)
 void Graphics::setColor(float r, float g, float b)
 {
 	glColor3f(r, g, b);
+}
+
+void Graphics::setColor(float r, float g, float b, float a)
+{
+	glColor4f(r, g, b, a);
 }
 
 void Graphics::drawLines(const Form& form)

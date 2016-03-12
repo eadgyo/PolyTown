@@ -3,7 +3,7 @@ class FileManager;
 
 #include <Windows.h>
 #include <GL/glew.h>
-#include "Graphics/Image.h"
+#include "../Graphics/Image.h"
 #include <string>
 #include <vector>
 #include <set>

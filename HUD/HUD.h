@@ -8,19 +8,20 @@
 class HUD : public Input
 {
 public:
+	HUD();
 	// Création de la fenetre et des graphics
-	void initialize();
+	void initialize(std::string name, int width, int height);
 	// Rendu sur la fenetre
 	void render();
 	// Fin du Jeu
 	void exitGame();
 	// Mise à jour graphique
-	void update();
+	void update(float dt);
 	// Détection des collisions 
 	void collisions();
 
 protected:
-	std::deque<Interface> interfacesStack;
+	std::deque<Interface*> interfacesStack;
 	Graphics* g;
 
 };

@@ -41,17 +41,21 @@ public:
 	void render(Image& image, const Vector3D& translation);
 	void render(Image& image, const Vector3D& translation, float scale);
 	void render(SDL_Surface *texture, SDL_Rect* dest);
+	void render(const Form& form);
 	void renderCopy(mySurface* surface, SDL_Rect& rec);
 	void loadSurface(SDL_Surface* image, std::string name);
 	void loadAllSurfaces();
+	void renderText(std::string text, const Vector3D& pos, float size);
+	void renderTextCentered(std::string text, const Vector3D& pos, float size);
 	
 
 	// Draw forms
 	void drawLine(const Vector3D& p1, const Vector3D& p2);
-	void drawLines(const Form& form);
-	void drawTriangle(const Vector3D& p1, const Vector3D& p2, const Vector3D& p3);
 	void drawForm(const Form& form);
+	void drawTriangle(const Vector3D& p1, const Vector3D& p2, const Vector3D& p3);
 	void setColor(float r, float g, float b);
+	// Gestion de la transparence
+	void setColor(float r, float g, float b, float a);
 	void setSize(float a);
 
 private:

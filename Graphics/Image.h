@@ -12,7 +12,7 @@ class Image;
 #include "../Maths/Vector3D.h"
 #include "../Maths/myRectangle.h"
 #include "../Maths/sRectangle.h"
-#include "../FileManager.h"
+#include "../FileManager/FileManager.h"
 
 class Image
 {

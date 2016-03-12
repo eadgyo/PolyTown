@@ -5,17 +5,17 @@
 #include <iostream>
 #include "Maths/myRectangle.h"
 #include "Maths/Form.h"
-#include "FileManager.h"
+#include "FileManager/FileManager.h"
+#include "HUD/HUD.h"
 #define WIDTH 1500
 #define HEIGHT 800
 
 int main(int argc, char* args[])
 {
-	Graphics *g = new Graphics();
 	
 	FileManager& fileM = FileManager::getInstance();
 	fileM.initialize();
-	
+	/*
 	// Création du module de gestion rendu openGL
 	SDL_GLContext context = SDL_GL_CreateContext(g->init("Affichage forme", WIDTH, HEIGHT));
 	g->initGL(context, WIDTH, HEIGHT);
@@ -77,5 +77,15 @@ int main(int argc, char* args[])
 	/*
 	SDL_GL_DeleteContext(context);
 	SDL_Quit();*/
+
+	// Création de la fenetre
+
+	Graphics* g = new Graphics();
+	//g->init("Test", 600, 800);
+	
+	HUD hud;
+	hud.initialize("Test", 800, 600);
+	hud.render();
+	SDL_Delay(2000);
     return 0;
 }

@@ -17,7 +17,7 @@ public:
 	bool isColliding(const Vector3D& pos);
 
 private:
-	int r, g, b, a;
+	float r, g, b, a;
 	sRectangle rectangle;
 	std::string text;
 	float textSize;

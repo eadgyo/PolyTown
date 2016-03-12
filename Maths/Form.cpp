@@ -1441,8 +1441,8 @@ std::vector<Form> Form::transformEdges(std::vector<Edge*>& edges)
 	for(unsigned i=points.size(); i<edges.size(); i++)
 	{
 		Edge *edge = edges[i];
-		int p0 = edge->p0->posPoint; // Position du point dans la liste de départ
-		int p1 = edge->p1->posPoint; // Position du point dans la liste de départ
+		unsigned p0 = edge->p0->posPoint; // Position du point dans la liste de départ
+		unsigned p1 = edge->p1->posPoint; // Position du point dans la liste de départ
 
 		assert(p1 >= 0 && (int) p1 < size() && (int) p0 >= 0 && p0 < size());
 

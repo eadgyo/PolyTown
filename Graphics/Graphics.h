@@ -31,10 +31,10 @@ class Graphics
 public:
 	Graphics();
 	virtual ~Graphics();
-	SDL_Window* init(std::string windowName, int width, int height);
+	void init(std::string windowName, int width, int height);
 	mySurface* getTexture(std::string textureName);
-	void initGL(SDL_GLContext& context, float width, float height);
-	void initGL3D(SDL_GLContext& context, float width, float height);
+	void initGL(int width, int height);
+	void initGL3D(float width, float height);
 	void clear();
 	void swapGL();
 	void render(Image& image);
@@ -60,6 +60,7 @@ public:
 
 private:
 	SDL_Window *screen;
+	SDL_GLContext* context;
 	std::vector<mySurface*> surfaces;
 	std::map<std::string, int> names;
 };

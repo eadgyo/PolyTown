@@ -10,7 +10,7 @@ Bouton::Bouton(int x, int y, int width, int height)
 	a = 0;
 	textSize = 16;
 	text = "";
-	rectangle.set(x, y, width, height);
+	rectangle.set((float) x, (float) y, (float) width, (float) height);
 }
 
 Bouton::Bouton(std::string text, int x, int y, int width, int height)
@@ -21,7 +21,7 @@ Bouton::Bouton(std::string text, int x, int y, int width, int height)
 	a = 0;
 	textSize = 16;
 	this->text = text;
-	rectangle.set(x, y, width, height);
+	rectangle.set((float) x, (float) y, (float) width, (float) height);
 }
 
 Bouton::~Bouton()

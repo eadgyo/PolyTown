@@ -10,12 +10,13 @@
 Graphics::Graphics()
 {
 	screen = NULL;
+	context = NULL;
 }
 
-SDL_Window* Graphics::init(std::string windowName, int width, int height)
+void Graphics::init(std::string windowName, int width, int height)
 {
 	if (screen != NULL)
-		return false;
+		return;
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -33,14 +34,15 @@ SDL_Window* Graphics::init(std::string windowName, int width, int height)
 			SDL_WINDOW_OPENGL); // SDL_WINDOW_FULLSCREEN
 		if (screen != NULL)
 		{
-			//renderer = SDL_CreateRenderer(screen, -1, SDL_RENDERER_ACCELERATED);
-			return screen;
+			// Création du context OpenGL
+			SDL_GLContext l_context = SDL_GL_CreateContext(screen);
+			context = &l_context;
+			return;
 		}
 	}
 	std::cout << "Failed to init SDL\n";
-	return NULL;
 }
-void Graphics::initGL(SDL_GLContext& context, float width, float height)
+void Graphics::initGL(int width, int height)
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0);  //Set the cleared screen colour to black
 	glViewport(0, 0, width, height);   //This sets up the viewport so that the coordinates (0, 0) are at the top left of the window
@@ -57,7 +59,7 @@ void Graphics::initGL(SDL_GLContext& context, float width, float height)
 
 	loadAllSurfaces();
 }
-void Graphics::initGL3D(SDL_GLContext& context, float width, float height)
+void Graphics::initGL3D(float width, float height)
 {
 	GLfloat ratio = (GLfloat)width / (GLfloat)height;
 
@@ -226,16 +228,17 @@ void Graphics::renderCopy(mySurface* surface, SDL_Rect& rec)
 	float y1 = ((float) rec.y) / surface->image->h;
 	float y2 = ((float) rec.y + rec.h) / surface->image->h;
 	glBegin(GL_QUADS);
-	glTexCoord2f(x1, y1); glVertex2f(rec.x, rec.y); //Bottom left
-	glTexCoord2f(x2, y1); glVertex2f(rec.x + rec.w, rec.y); //Bottom right
-	glTexCoord2f(x2, y2); glVertex2f(rec.x + rec.w, rec.y + rec.h); //Top right
-	glTexCoord2f(x1, y2); glVertex2f(rec.x, rec.y + rec.h); //Top left
+	glTexCoord2f(x1, y1); glVertex2f((float) rec.x, (float) rec.y); //Bottom left
+	glTexCoord2f(x2, y1); glVertex2f((float) (rec.x + rec.w), (float) rec.y); //Bottom right
+	glTexCoord2f(x2, y2); glVertex2f((float) (rec.x + rec.w), (float) (rec.y + rec.h)); //Top right
+	glTexCoord2f(x1, y2); glVertex2f((float) rec.x, (float) (rec.y + rec.h)); //Top left
 	glEnd();
 }
 
 Graphics::~Graphics()
 {
-    SDL_DestroyWindow(screen);
+	SDL_GL_DeleteContext(context);
+	SDL_DestroyWindow(screen);
     SDL_Quit();
 }
 

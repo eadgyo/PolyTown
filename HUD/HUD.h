@@ -2,13 +2,17 @@
 
 #include "Input.h"
 #include <deque>
+#include <vector>
 #include "../Interfaces/Interface.h"
+#include "../Interfaces/Menu.h"
 #include "../Graphics/Graphics.h"
 
-class HUD : public Input
+
+class HUD
 {
 public:
 	HUD();
+	~HUD();
 	// Création de la fenetre et des graphics
 	void initialize(std::string name, int width, int height);
 	// Rendu sur la fenetre
@@ -17,11 +21,14 @@ public:
 	void exitGame();
 	// Mise à jour graphique
 	void update(float dt);
-	// Détection des collisions 
-	void collisions();
+	// Détection des events Souris/Clavier
+	void checkEvent();
+	// Détection du stack empty
+	void checkStack();
 
 protected:
-	std::deque<Interface*> interfacesStack;
+	std::deque<Interface*> iStack;
+	std::vector<Interface*> interfaces;
 	Graphics* g;
-
+	//Input input;
 };

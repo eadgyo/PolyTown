@@ -11,7 +11,9 @@ public:
     Input();
     void update();
     void display();
-    bool* getKeys();
+    const bool* getMouseState() const;
+    const bool* getKeysState() const;
+    const int* getMousePos() const;
 
     bool getQuit();
 
@@ -22,8 +24,7 @@ private:
     bool mouseDown[2] = {false};
     bool mousePressed[2] = {false};
 
-    static std::string const keysName[NUMBER_OF_KEYS];
-    static int const keysCode[NUMBER_OF_KEYS];
+    static const int const keysCode[NUMBER_OF_KEYS];
     bool keysDown[NUMBER_OF_KEYS] = {false};
     bool keysPressed[NUMBER_OF_KEYS] = {false};
 };

@@ -1,5 +1,4 @@
 #include "Input.h"
-
 #include "../Constant.h"
 
 #include <SDL2/SDL.h>
@@ -13,8 +12,7 @@ Input::Input()
     quit = false;
 }
 
-string const Input::keysName[] = {KEY_1_NAME, KEY_2_NAME};
-int const Input::keysCode[] = {KEY_1_CODE, KEY_2_CODE};
+const int const Input::keysCode[] = {KEY_CODE_1, KEY_CODE_2};
 
 void Input::update()
 {
@@ -82,9 +80,19 @@ void Input::update()
     }
 }
 
-bool* Input::getKeys()
+const bool* Input::getMouseState() const
 {
-    return keysDown;
+    return mousePressed;
+}
+
+const bool* Input::getKeysState() const
+{
+    return keysPressed;
+}
+
+const int* Input::getMousePos() const
+{
+    return mousePos;
 }
 
 bool Input::getQuit()
@@ -94,16 +102,14 @@ bool Input::getQuit()
 
 void Input::display()
 {
-    cout << "mousePos : " << mousePos[0] << ' ' << mousePos[1] << endl;
+    cout << "mousePos     : " << '[' << mousePos[0] << ", " << mousePos[1] << ']' << endl;
     //cout << "mouseDown : " << "Left = "<< mouseDown[0] << ' ' << "Right = " << mouseDown[1]<< endl;
-    cout << "mousePressed : " << "Left = " << mousePressed[0] << ' ' << "Right = " << mousePressed[1] << endl;
+    cout << "mousePressed : " << "[Left " << mousePressed[0] << "][Right " << mousePressed[1] << ']' << endl;
 
-    cout << endl;
-
-    cout << "keysPressed :";
+    cout << "keysPressed  : ";
     for (int i = 0; i < NUMBER_OF_KEYS; i++) {
-        cout << ' ' << keysName[i] << ' ' << keysPressed[i];
+        cout << '[' << SDL_GetKeyName(keysCode[i]) << ' ' << keysPressed[i] << ']';
     }
 
-    cout << endl;
+    cout << endl << endl;
 }

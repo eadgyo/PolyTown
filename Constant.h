@@ -7,9 +7,7 @@
 // Keyboard
 #define NUMBER_OF_KEYS 2
 
-#define KEY_1_NAME "Escape"
-#define KEY_1_CODE SDLK_ESCAPE
-#define KEY_2_NAME "Enter"
-#define KEY_2_CODE SDLK_RETURN
+#define KEY_CODE_1 SDLK_ESCAPE
+#define KEY_CODE_2 SDLK_RETURN
 
 #endif // !CONSTANT_H

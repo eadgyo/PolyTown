@@ -5,6 +5,8 @@
 #define SCREEN_HEIGHT 600
 
 // Keyboard
+#define NUMBER_OF_KEYS 2
+
 #define KEY_1_NAME "Escape"
 #define KEY_1_CODE SDLK_ESCAPE
 #define KEY_2_NAME "Enter"

@@ -14,6 +14,7 @@ Input::Input()
 }
 
 string const Input::keysName[] = {KEY_1_NAME, KEY_2_NAME};
+int const Input::keysCode[] = {KEY_1_CODE, KEY_2_CODE};
 
 void Input::update()
 {
@@ -21,6 +22,9 @@ void Input::update()
 
     mousePressed[0] = false;
     mousePressed[1] = false;
+    for (int i = 0; i < NUMBER_OF_KEYS; i++) {
+        keysPressed[i] = false;
+    }
 
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -56,12 +60,20 @@ void Input::update()
                 }
                 break;
             case SDL_KEYDOWN:
-                cout << "Key press detected" << endl;
+                for (int i = 0; i < NUMBER_OF_KEYS; i++) {
+                    if (event.key.keysym.sym == keysCode[i]) {
+                        keysPressed[i] = !keysDown[i];
+                        keysDown[i] = true;
+                    }
+                }
                 break;
 
             case SDL_KEYUP:
-
-                cout << "Key release detected" << endl;
+                for (int i = 0; i < NUMBER_OF_KEYS; i++) {
+                    if (event.key.keysym.sym == keysCode[i]) {
+                        keysDown[i] = false;
+                    }
+                }
                 break;
 
             default:
@@ -89,8 +101,8 @@ void Input::display()
     cout << endl;
 
     cout << "keysPressed :";
-    for (int i = 0; i < numberOfKeys; i++) {
-        cout << ' ' << keysName[i] << ' ' << keysPressed[0];
+    for (int i = 0; i < NUMBER_OF_KEYS; i++) {
+        cout << ' ' << keysName[i] << ' ' << keysPressed[i];
     }
 
     cout << endl;

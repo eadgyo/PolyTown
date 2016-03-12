@@ -1,6 +1,8 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#include "../Constant.h"
+
 #include <string>
 
 class Input
@@ -16,15 +18,14 @@ public:
 private:
     bool quit;
 
-    int mousePos[2];
+    int mousePos[2] = {0};
     bool mouseDown[2] = {false};
     bool mousePressed[2] = {false};
 
-    static const int numberOfKeys = 2;
-    static std::string const keysName[];
-    static int const keysCode[];
-    bool keysDown[2] = {false};
-    bool keysPressed[2] = {false};
+    static std::string const keysName[NUMBER_OF_KEYS];
+    static int const keysCode[NUMBER_OF_KEYS];
+    bool keysDown[NUMBER_OF_KEYS] = {false};
+    bool keysPressed[NUMBER_OF_KEYS] = {false};
 };
 
 #endif // !INPUT_H

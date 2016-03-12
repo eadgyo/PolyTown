@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-#include "Input.h"
+//#include "Input.h"
 
 class PolyTown
 {
@@ -21,7 +21,7 @@ public:
 private:
     static PolyTown& instance;
 
-    Input input;
+    //Input input;
 
     SDL_Window *window;
 

@@ -1,12 +1,13 @@
 #include "PolyTown.h"
+#include "../Constant.h"
 
+#include <GL/glew.h>
 #include <SDL2/SDL.h>
 
-//
 #include <iostream>
+#include <Windows.h>
 
 using namespace std;
-//
 
 PolyTown& PolyTown::instance = PolyTown();
 
@@ -22,21 +23,7 @@ PolyTown& PolyTown::getInstance()
 
 bool PolyTown::init()
 {
-    window = SDL_CreateWindow(
-        "PolyTown Alpha 0.1.1",            // window title
-        SDL_WINDOWPOS_UNDEFINED,           // initial x position
-        SDL_WINDOWPOS_UNDEFINED,           // initial y position
-        640,                               // width, in pixels
-        480,                               // height, in pixels
-        SDL_WINDOW_OPENGL                  // flags - see below
-        );
-
-    // Check that the window was successfully created
-    if (window == NULL) {
-        // In the case that the window could not be made...
-        cout << "Could not create window : " << SDL_GetError() << endl;
-        return 1;
-    }
+    HUD::initialize("PolyTown Alpha 0.1", SCREEN_WIDTH, SCREEN_HEIGHT);
 
     running = true;
 
@@ -47,7 +34,7 @@ bool PolyTown::init()
 
 void PolyTown::mainLoop()
 {
-    cout << "Game running" << endl;
+    cout << "Game is running" << endl;
 
     while (running) {
         input.update();
@@ -62,8 +49,7 @@ void PolyTown::mainLoop()
 
 void PolyTown::quit()
 {
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    HUD::exitGame();
 
     cout << "Game ended" << endl;
 }

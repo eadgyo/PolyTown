@@ -1,11 +1,12 @@
 #ifndef POLYTOWN_H
 #define POLYTOWN_H
 
+#include "../HUD/HUD.h" // Héritage
+#include "../HUD/Input.h" // Temp
+
 #include <SDL2/SDL.h>
 
-//#include "Input.h"
-
-class PolyTown
+class PolyTown : public HUD
 {
 public:
     static PolyTown& getInstance();
@@ -21,11 +22,9 @@ public:
 private:
     static PolyTown& instance;
 
-    //Input input;
-
-    SDL_Window *window;
-
     bool running;
+
+    Input input;
 
     PolyTown();
 };

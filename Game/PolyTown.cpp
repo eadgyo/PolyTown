@@ -40,6 +40,7 @@ void PolyTown::mainLoop()
     while (running) {
         input.update();
         input.display();
+
         SDL_Delay(500);
 
         if (wantQuit()) {

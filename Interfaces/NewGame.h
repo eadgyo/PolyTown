@@ -1,6 +1,6 @@
 #pragma once
 #include "Interface.h"
-#include "Bouton.h"
+#include "../GameElements/Bouton.h"
 #include "../HUD/Input.h"
 
 class NewGame : public Interface

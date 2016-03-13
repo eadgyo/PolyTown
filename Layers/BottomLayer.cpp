@@ -9,7 +9,7 @@ void BottomLayer::initialize(float x, float y, int width, int height)
 {
 	// Création des infrastructures
 	// Routes
-	Bouton *Bouton = new Bouton("R", posX, startY, SIZE_BW, SIZE_BH);
+	//Bouton *Bouton = new Bouton("R", posX, startY, SIZE_BW, SIZE_BH);
 	// Zones
 
 	// Energies

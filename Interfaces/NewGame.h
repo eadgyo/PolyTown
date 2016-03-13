@@ -3,8 +3,7 @@
 #include "Bouton.h"
 #include "../HUD/Input.h"
 
-class NewGame :
-	public Interface
+class NewGame : public Interface
 {
 public:
 	NewGame();

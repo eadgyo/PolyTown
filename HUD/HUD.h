@@ -7,6 +7,7 @@
 #include "../Interfaces/Menu.h"
 #include "../Interfaces/NewGame.h"
 #include "../Graphics/Graphics.h"
+#include "../Interfaces/Game.h"
 
 
 class HUD

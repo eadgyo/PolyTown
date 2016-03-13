@@ -24,6 +24,7 @@ void HUD::initialize(std::string name, int width, int height)
 	// Menu
 	interfaces.push_back(new Menu());
 	interfaces.push_back(new NewGame());
+	interfaces.push_back(new Game());
 
 	// Initialisation des boutons
 	for (unsigned i = 0; i < interfaces.size(); i++)
@@ -32,7 +33,7 @@ void HUD::initialize(std::string name, int width, int height)
 	}
 
 	// On initialise la pile en ajoutant le Menu
-	iStack.push_back(interfaces[0]);
+	iStack.push_back(interfaces[2]);
 }
 
 void HUD::render()

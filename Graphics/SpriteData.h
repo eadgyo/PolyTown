@@ -17,6 +17,11 @@ public:
 		rect = new sRectangle(0, 0, 0, 0);
 		texture = NULL;
 		textureName = "";
+		isText = false;
+		r = 1.0f;
+		g = 1.0f;
+		b = 1.0f;
+		a = 0.0f;
 	};
 	inline SpriteData(sRectangle* rect)
 	{
@@ -25,6 +30,11 @@ public:
 		this->rect = rect;
 		texture = NULL;
 		textureName = "";
+		isText = false;
+		r = 1.0f;
+		g = 1.0f;
+		b = 1.0f;
+		a = 0.0f;
 	};
 	inline SpriteData(mySurface* texture, std::string textureName)
 	{
@@ -33,12 +43,18 @@ public:
 		rect = new sRectangle(0, 0, 0, 0);
 		this->texture = texture;
 		this->textureName = textureName;
+		isText = false;
+		r = 1.0f;
+		g = 1.0f;
+		b = 1.0f;
+		a = 0.0f;
 	};
 
 	mySurface* texture;
 	std::string textureName;
 	sRectangle* rect;
-	bool flipH, flipV;
+	bool flipH, flipV, isText;
+	float r, g, b, a;
 };
 
 #endif /* SPRITEDATA_H_ */

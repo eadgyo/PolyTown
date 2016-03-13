@@ -79,13 +79,10 @@ int main(int argc, char* args[])
 	SDL_Quit();*/
 
 	// Création de la fenetre
-
-	Graphics* g = new Graphics();
-	//g->init("Test", 600, 800);
-	
 	HUD hud;
 	hud.initialize("Test", 800, 600);
 	hud.render();
 	SDL_Delay(2000);
+
     return 0;
 }

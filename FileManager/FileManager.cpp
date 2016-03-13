@@ -1,17 +1,10 @@
 #include "FileManager.h"
-FileManager FileManager::INSTANCE=FileManager();
+FileManager &FileManager::INSTANCE=FileManager();
 
 FileManager::FileManager()
 {
 	
-	createFolder(binFolder);
-	createFolder(textureFolder);
-	//createFolder(objectFolder);
 
-	// Chargement des images
-	loadDefTextures();
-
-	//loadTexture("a.png", false);
 }
 
 FileManager& FileManager::getInstance()
@@ -65,11 +58,17 @@ int FileManager::type(std::string directory, bool isInternal)
 
 FileManager::~FileManager()
 {
+	std::cout << "Destruction File Manager" << std::endl;
 }
 
 void FileManager::initialize()
 {
 	createFolder(binFolder);
+	createFolder(textureFolder);
+	createFolder(ttfFolder);
+	//createFolder(objectFolder);
+
+	// Chargement des images
 	loadDefTextures();
 }
 
@@ -118,6 +117,11 @@ SDL_Surface* FileManager::loadTexture(std::string allocator, bool isInternal)
 		assert(texture != NULL);
 		return texture;
 	}
+}
+
+TTF_Font* FileManager::loadFont(std::string path, unsigned size)
+{
+	return TTF_OpenFont((ttfFolder + "/" + path).c_str(), size);
 }
 
 bool FileManager::isFolderExisting(std::string directory)

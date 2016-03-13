@@ -21,6 +21,8 @@ Image::Image()
 	isInitialized = false;
 	spriteData = new SpriteData();
 	setColorFilter(0,0,0,0);
+
+	deletion = false;
 }
 
 Image::Image(Image& image)
@@ -38,11 +40,18 @@ Image::Image(Image& image)
 	spriteData = new SpriteData();
 	setColorFilter(0,0,0,0);
 	set(image);
+
+	image.letDeleting(false);
+	deletion = false;
 }
 
 Image::~Image()
 {
-
+	if (deletion)
+	{
+		SDL_FreeSurface(spriteData->texture->image);
+		glDeleteTextures(1, &spriteData->texture->texture);
+	}
 }
 
 Image Image::clone()
@@ -464,6 +473,29 @@ void Image::initialize(Graphics* graphics, float width, float height, int curren
 			height);
 	this->rec.set(Vector3D(width*0.5f,  height*0.5f), Vector3D(width, height), 0);
 	spriteData->textureName = textureName;
+	isInitialized = true;
+}
+void Image::initialize(Graphics* graphics, std::string textureName)
+{
+	this->currentFrame = 0;
+	this->graphics = graphics;
+	spriteData->texture = graphics->getTexture(textureName);
+	this->cols = 1;
+	spriteData->rect->setLeft(0, 0, (float) spriteData->texture->image->w, (float) spriteData->texture->image->h);
+	this->rec.set(Vector3D(spriteData->texture->image->w*0.5f, spriteData->texture->image->h*0.5f), Vector3D(spriteData->texture->image->w, spriteData->texture->image->h), 0);
+	spriteData->textureName = textureName;
+	isInitialized = true;
+}
+void Image::initialize(Graphics* graphics, mySurface* surface, std::string text)
+{
+	this->currentFrame = 0;
+	this->graphics = graphics;
+	spriteData->texture = surface;
+	this->cols = 1;
+	spriteData->rect->setLeft(0, 0, (float) spriteData->texture->image->w, (float) spriteData->texture->image->h);
+	this->rec.set(Vector3D(spriteData->texture->image->w*0.5f, spriteData->texture->image->h*0.5f), Vector3D(spriteData->texture->image->w, spriteData->texture->image->h), 0);
+	spriteData->textureName = text;
+	spriteData->isText = true;
 	isInitialized = true;
 }
 

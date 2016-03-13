@@ -13,6 +13,7 @@ PolyTown& PolyTown::instance = PolyTown();
 
 PolyTown::PolyTown()
 {
+	std::cout << "Construction";
     running = false;
 }
 

@@ -15,6 +15,7 @@ class Graphics;
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_main.h>
+#include <SDL2/SDL_ttf.h>
 #include "../Maths/Vector3D.h"
 #include "../Maths/Form.h"
 #include <string>
@@ -43,11 +44,20 @@ public:
 	void render(SDL_Surface *texture, SDL_Rect* dest);
 	void render(const Form& form);
 	void renderCopy(mySurface* surface, SDL_Rect& rec);
+	GLuint loadSurfaceGL(SDL_Surface* image);
+	mySurface* createMySurface(GLuint texture, SDL_Surface* image);
 	void loadSurface(SDL_Surface* image, std::string name);
 	void loadAllSurfaces();
-	void renderText(std::string text, const Vector3D& pos, float size);
-	void renderTextCentered(std::string text, const Vector3D& pos, float size);
 	
+	// Fonts
+	void renderText(std::string path, std::string text, const Vector3D & pos, float size);
+	void renderTextCentered(std::string path, std::string text, const Vector3D & pos, float size);
+	TTF_Font* getFont(std::string name);
+	void pushFont(std::string name, std::string path, unsigned size);
+	void pushFontTTF(std::string name, std::string path, unsigned size);
+	void freeFont(std::string name);
+	Image* createImageFromFont(std::string name, std::string text);
+	Image* createImageFromFont(TTF_Font* font, std::string text);
 
 	// Draw forms
 	void drawLine(const Vector3D& p1, const Vector3D& p2);
@@ -63,6 +73,8 @@ private:
 	SDL_GLContext* context;
 	std::vector<mySurface*> surfaces;
 	std::map<std::string, int> names;
+	std::map<std::string, TTF_Font*> fontNames;
+	bool isInitialized;
 };
 
 #endif /* GRAPHICS_H_ */

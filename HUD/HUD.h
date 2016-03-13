@@ -12,7 +12,7 @@ class HUD
 {
 public:
 	HUD();
-	~HUD();
+	virtual ~HUD();
 	// Création de la fenetre et des graphics
 	void initialize(std::string name, int width, int height);
 	// Rendu sur la fenetre

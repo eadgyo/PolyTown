@@ -40,7 +40,7 @@ void Bouton::render(Graphics* graphics)
 	// Si besoin d'améliorations faire un héritage
 	graphics->setColor(r, g, b, a);
 	graphics->render(rectangle);
-	graphics->renderTextCentered(text, rectangle.getCenter(), textSize);
+	graphics->renderTextCentered("stocky.ttf", text, rectangle.getCenter(), textSize);
 }
 
 bool Bouton::isColliding(const Vector3D& pos)

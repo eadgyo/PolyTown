@@ -17,7 +17,8 @@ public:
 
     bool wantQuit();
 
-    void update();
+    void update(); 
+	virtual ~PolyTown() { std::cout << "Destruction\n"; };
 
 private:
     static PolyTown& instance;
@@ -27,6 +28,7 @@ private:
     Input input;
 
     PolyTown();
+	
 };
 
 #endif // !POLYTOWN_H

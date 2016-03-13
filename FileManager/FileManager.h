@@ -23,7 +23,8 @@ public:
 	void initialize();
 	SDL_Surface* getDefTexture(std::string textureName);
 	void loadDefTextures();
-	SDL_Surface* loadTexture(std::string, bool isInternal);
+	SDL_Surface* loadTexture(std::string path, bool isInternal);
+	TTF_Font* loadFont(std::string path, unsigned size);
 	bool isFolderExisting(std::string directory);
 	bool createFolder(std::string directory);
 	bool isFileExisting(std::string directory);
@@ -43,12 +44,13 @@ private:
 	const std::string binFolder = "bin";
 	const std::string objectsFolder = binFolder + "/" + "Objects";
 	const std::string textureFolder = binFolder + "/" + "pic";
+	const std::string ttfFolder = binFolder + "/" + "ttf";
 
 	std::vector<SDL_Surface*> surfaces;
 	std::vector<std::string> namesStr;
 	std::map<std::string, int> names;
 
-	static FileManager INSTANCE;
+	static FileManager& INSTANCE;
 
 };
 

@@ -23,7 +23,7 @@ void Menu::initialize(int width, int height)
 	while(boutonsTexte[i].compare("") != 0)
 	{
 		Bouton* bouton = new Bouton(boutonsTexte[i], posX, startY, SIZE_BW, SIZE_BH);
-		bouton->setColor(1.0f, 0, 0, 0);
+		bouton->setColor(1.0f, 0, 0, 1);
 		boutons.push_back(bouton);
 		startY += (int) (SIZE_BH*1.2f);
 		i += 1;

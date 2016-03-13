@@ -59,6 +59,8 @@ public:
 	void setFrames(int start, int end);
 	void setColorFilter(Uint8 r, Uint8 g, Uint8 b) { colorFilter.r = r; colorFilter.g = g; colorFilter.b = b; };
 	void setColorFilter(Uint8 a, Uint8 r, Uint8 g, Uint8 b) { colorFilter.a = a; colorFilter.r = r; colorFilter.g = g; colorFilter.b = b; };
+	void setColor(float r, float g, float b) { spriteData->r = r; spriteData->g = g; spriteData->b = b; };
+	void setColor(float a, float r, float g, float b) { spriteData->a = a; spriteData->r = r; spriteData->g = g; spriteData->b = b; };
 	void set(Image& image);
 	void setCols(int cols);
 	void setIsDisplayingRec(bool isDisplayingRec);
@@ -100,6 +102,8 @@ public:
 			std::string textureName);
 	void initialize(Graphics* graphics, float width, float height, int currentFrame, int cols,
 			std::string textureName);
+	void initialize(Graphics* graphics,	std::string textureName);
+	void initialize(Graphics* graphics, mySurface* surface, std::string text);
 	void draw();
 	void draw(Graphics* g);
 	void draw(const Vector3D& translation);
@@ -117,11 +121,15 @@ public:
 	void flipV(const Vector3D& center);
 	void scale(float factor, const Vector3D& center);
 	void rotateRadians(float radians, const Vector3D& center);
+	
+	void letDeleting(bool del) { deletion = del; };
+	bool getDeleting() { return deletion; };
 
 protected:
 	Graphics* graphics;
 	SpriteData* spriteData;
 	SDL_Color colorFilter;
+	SDL_Color color;
 	int cols;
 	int currentFrame;
 	bool isDisplayingRec;
@@ -132,7 +140,7 @@ protected:
 	bool isInitialized;
 	int startFrame;
 	int endFrame;
-
+	bool deletion;
 };
 
 #endif /* _IMAGE_H_ */

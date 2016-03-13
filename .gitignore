@@ -1,0 +1,12 @@
+.git
+.vs
+Debug
+Release
+*.dll
+*.sdf
+resource.h
+resource1.h
+*.vcxproj
+*.vcxproj.filters
+*.VC.opendb
+*.aps

@@ -11,15 +11,13 @@ Graphics::Graphics()
 {
 	screen = NULL;
 	context = NULL;
+	isInitialized = false;
 }
 
 void Graphics::init(std::string windowName, int width, int height)
 {
 	if (screen != NULL)
 		return;
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	if (SDL_Init(SDL_INIT_VIDEO) >= 0)
 	{
@@ -34,13 +32,19 @@ void Graphics::init(std::string windowName, int width, int height)
 			SDL_WINDOW_OPENGL); // SDL_WINDOW_FULLSCREEN
 		if (screen != NULL)
 		{
-			// Création du context OpenGL
-			SDL_GLContext l_context = SDL_GL_CreateContext(screen);
-			context = &l_context;
-			return;
+			if (TTF_Init() != -1)
+			{
+				// Création du context OpenGL
+				SDL_GLContext l_context = SDL_GL_CreateContext(screen);
+				context = &l_context;
+				// On active l'alpha
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				return;
+			}
 		}
 	}
-	std::cout << "Failed to init SDL\n";
+	std::cout << "\nFailed to init SDL\n";
 }
 void Graphics::initGL(int width, int height)
 {
@@ -58,6 +62,7 @@ void Graphics::initGL(int width, int height)
 	glEnable(GL_TEXTURE_2D);
 
 	loadAllSurfaces();
+	isInitialized = true;
 }
 void Graphics::initGL3D(float width, float height)
 {
@@ -105,6 +110,8 @@ void Graphics::initGL3D(float width, float height)
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	isInitialized = true;
 }
 
 
@@ -128,10 +135,12 @@ void Graphics::render(SDL_Surface *texture, SDL_Rect* textureRect)
 
 void Graphics::render(Image& image)
 {
+	
 	glPushMatrix();
 
 	const myRectangle rec = image.getRectangle();
 	SpriteData* spriteData = image.getSpriteData();
+	glColor4f(spriteData->r, spriteData->g, spriteData->b, spriteData->a);
 	glTranslatef(rec.getCenterX() + ((int)rec.getWidth())*((spriteData->flipH)?1:0),
 				rec.getCenterY() + ((int)rec.getHeight())*((spriteData->flipV)?1:0),
 				0.0f);
@@ -189,7 +198,7 @@ void Graphics::render(Image& image, const Vector3D& translation)
 void Graphics::render(Image& image, const Vector3D& translation, float scale)
 {
 	glPushMatrix();
-
+	
 	myRectangle rec(image.getRectangle());
 	rec.scaleF(scale, Vector3D(true));
 
@@ -219,7 +228,6 @@ void Graphics::render(Image& image, const Vector3D& translation, float scale)
 
 void Graphics::renderCopy(mySurface* surface, SDL_Rect& rec)
 {
-	glColor4f(1.0f, 1.0f, 1.0f, 0);
 	glBindTexture(GL_TEXTURE_2D, surface->texture);
 
 	//Render texture quad
@@ -233,6 +241,9 @@ void Graphics::renderCopy(mySurface* surface, SDL_Rect& rec)
 	glTexCoord2f(x2, y2); glVertex2f((float) (rec.x + rec.w), (float) (rec.y + rec.h)); //Top right
 	glTexCoord2f(x1, y2); glVertex2f((float) rec.x, (float) (rec.y + rec.h)); //Top left
 	glEnd();
+
+	// On deselectionne la Texture
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 Graphics::~Graphics()
@@ -257,26 +268,52 @@ mySurface* Graphics::getTexture(std::string textureName)
 
 void Graphics::loadSurface(SDL_Surface* image, std::string name)
 {
+	GLuint textures = loadSurfaceGL(image);
+	mySurface *surface = createMySurface(textures, image);
+	
+	names[name] = surfaces.size();
+	surfaces.push_back(surface);
+}
+mySurface* Graphics::createMySurface(GLuint texture, SDL_Surface* image)
+{
+	mySurface *surface = new mySurface();
+	surface->image = image;
+	surface->texture = texture;
+	return surface;
+}
+GLuint Graphics::loadSurfaceGL(SDL_Surface* image)
+{
 	GLuint textures;
 	glGenTextures(1, &textures);
 
 	glBindTexture(GL_TEXTURE_2D, textures);
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);  //Always set the base and max mipmap levels of a texture.
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
 
 	// Map the surface to the texture in video memory
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels); //GL_BITMAP
-
-	mySurface *surface = new mySurface();
-	surface->image = image;
-	surface->texture = textures;
-	names[name] = surfaces.size();
-
-	surfaces.push_back(surface);
+	
+	switch(image->format->BytesPerPixel)
+	{
+		case 4:
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels); //GL_PNG
+			break;
+		case 3:
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels); //GL_BITMAP
+			break;
+		case 1:
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, image->w, image->h, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, image->pixels); //GL_BITMAP
+			break;
+		default:
+			std::cout << "Fuck";
+			break;
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+	return textures;
 }
+
 void Graphics::loadAllSurfaces()
 {
 	FileManager& fileM = FileManager::getInstance();
@@ -286,12 +323,105 @@ void Graphics::loadAllSurfaces()
 	}
 }
 
-void Graphics::renderText(std::string text, const Vector3D & pos, float size)
+void Graphics::pushFont(std::string name, std::string path, unsigned size)
 {
+	TTF_Font* font = TTF_OpenFont(path.c_str(), size);
+	assert(font != NULL); // Echec initialisation
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(name);
+	assert(it != fontNames.end()); // Déjà dans la liste
+	fontNames[name] = font;
 }
 
-void Graphics::renderTextCentered(std::string text, const Vector3D & pos, float size)
+void Graphics::pushFontTTF(std::string name, std::string path, unsigned size)
 {
+	TTF_Font* font = FileManager::getInstance().loadFont(path, size);
+	assert(font != NULL); // Echec initialisation
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(name);
+	assert(it != fontNames.end()); // Déjà dans la liste
+	fontNames[name] = font;
+}
+
+
+TTF_Font* Graphics::getFont(std::string name)
+{
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(name);
+	if (it != fontNames.end())
+	{
+		return it->second;
+	}
+	return NULL;
+}
+
+void Graphics::freeFont(std::string name)
+{
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(name);
+	if (it != fontNames.end())
+	{
+		TTF_CloseFont(it->second);
+	}
+}
+
+Image* Graphics::createImageFromFont(std::string name, std::string text)
+{
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(name);
+	if (it != fontNames.end())
+	{
+		return createImageFromFont(it->second, text);
+	}
+}
+
+Image* Graphics::createImageFromFont(TTF_Font* font, std::string text)
+{
+	SDL_Color White = { 255, 255, 255 };  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text.c_str(), White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	GLuint texture = loadSurfaceGL(surfaceMessage);
+	mySurface* surface = createMySurface(texture, surfaceMessage);
+
+	Image* image = new Image();
+	image->letDeleting(true);
+	image->setColor(1.0f, 1.0f, 1.0f, 1.0f);
+	image->initialize(this, surface, text);
+	return image;
+}
+
+void Graphics::renderText(std::string path, std::string text, const Vector3D & pos, float size)
+{
+	TTF_Font* Sans = TTF_OpenFont(path.c_str(), size); //this opens a font style and sets a size
+	assert(Sans != NULL);
+
+	SDL_Color White = { 255, 255, 255 };  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(Sans, text.c_str(), White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	GLuint texture = loadSurfaceGL(surfaceMessage);
+	mySurface* surface = createMySurface(texture, surfaceMessage);
+
+	Image image;
+	image.letDeleting(true);
+	image.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+	image.initialize(this, surface, text);
+	image.setLeftPos(pos);
+	render(image);
+
+	TTF_CloseFont(Sans);
+}
+
+void Graphics::renderTextCentered(std::string path, std::string text, const Vector3D & pos, float size)
+{
+	TTF_Font* Sans = TTF_OpenFont(path.c_str(), size); //this opens a font style and sets a size
+	assert (Sans != NULL);
+
+	SDL_Color White = { 255, 255, 255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(Sans, text.c_str(), White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	GLuint texture = loadSurfaceGL(surfaceMessage);
+	mySurface* surface = createMySurface(texture, surfaceMessage);
+
+	Image image;
+	image.letDeleting(true);
+	image.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+	image.initialize(this, surface, text);
+	image.setPosition(pos);
+	render(image);
+	
+	TTF_CloseFont(Sans);
 }
 
 // Draw forms

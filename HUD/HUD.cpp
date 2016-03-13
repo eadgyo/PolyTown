@@ -62,8 +62,13 @@ void HUD::update(float dt)
 void HUD::checkEvent()
 {
 	checkStack();
+	std::cout << "CheckEvent" << std::endl;
+	HudEvent result = iStack.back()->handleEvent(input);
 
-	//iStack.back()->handleEvent(input);
+	if (result % NEW_GAME)
+	{
+		std::cout << "New Game";
+	}
 }
 
 void HUD::checkStack()

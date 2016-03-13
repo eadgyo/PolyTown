@@ -4,13 +4,10 @@
 #include "../HUD/HUD.h" // Héritage
 #include "../HUD/Input.h" // Temp
 
-#include <SDL2/SDL.h>
-
 class PolyTown : public HUD
 {
 public:
-    static PolyTown& getInstance();
-
+	PolyTown();
     bool init();
     void mainLoop();
     void quit();
@@ -21,13 +18,9 @@ public:
 	virtual ~PolyTown() { std::cout << "Destruction\n"; };
 
 private:
-    static PolyTown& instance;
-
     bool running;
 
-    Input input;
-
-    PolyTown();
+   
 	
 };
 

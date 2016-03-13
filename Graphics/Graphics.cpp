@@ -368,6 +368,7 @@ Image* Graphics::createImageFromFont(std::string name, std::string text)
 	{
 		return createImageFromFont(it->second, text);
 	}
+	return NULL;
 }
 
 Image* Graphics::createImageFromFont(TTF_Font* font, std::string text)
@@ -384,7 +385,7 @@ Image* Graphics::createImageFromFont(TTF_Font* font, std::string text)
 	return image;
 }
 
-void Graphics::renderText(std::string path, std::string text, const Vector3D & pos, float size)
+void Graphics::renderText(std::string path, std::string text, const Vector3D & pos, unsigned size)
 {
 	TTF_Font* Sans = TTF_OpenFont(path.c_str(), size); //this opens a font style and sets a size
 	assert(Sans != NULL);
@@ -404,7 +405,7 @@ void Graphics::renderText(std::string path, std::string text, const Vector3D & p
 	TTF_CloseFont(Sans);
 }
 
-void Graphics::renderTextCentered(std::string path, std::string text, const Vector3D & pos, float size)
+void Graphics::renderTextCentered(std::string path, std::string text, const Vector3D & pos, unsigned size)
 {
 	TTF_Font* Sans = TTF_OpenFont(path.c_str(), size); //this opens a font style and sets a size
 	assert (Sans != NULL);

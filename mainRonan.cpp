@@ -6,7 +6,8 @@
 #include "Maths/myRectangle.h"
 #include "Maths/Form.h"
 #include "FileManager/FileManager.h"
-#include "HUD/HUD.h"
+#include "Game/PolyTown.h"
+
 #define WIDTH 1500
 #define HEIGHT 800
 
@@ -79,9 +80,13 @@ int main(int argc, char* args[])
 	SDL_Quit();*/
 
 	// Création de la fenetre
-	HUD hud;
+	/*HUD hud;
 	hud.initialize("Test", 800, 600);
 	hud.render();
+	*/
+	PolyTown game;
+	game.init();
+	game.mainLoop();
 	SDL_Delay(2000);
 
     return 0;

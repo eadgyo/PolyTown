@@ -8,6 +8,7 @@ class Bouton
 public:
 	Bouton(int x, int y, int width, int height);
 	Bouton(std::string text, int x, int y, int width, int height);
+	Bouton(std::string text, unsigned int size, int x, int y, int width, int height);
 	~Bouton();
 
 	void setColor(float r, float g, float b, float a);
@@ -20,6 +21,6 @@ private:
 	float r, g, b, a;
 	sRectangle rectangle;
 	std::string text;
-	float textSize;
+	unsigned textSize;
 };
 

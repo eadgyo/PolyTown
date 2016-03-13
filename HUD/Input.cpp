@@ -10,9 +10,10 @@ using namespace std;
 Input::Input()
 {
     quit = false;
+	lastEvent = 0;
 }
 
-const int const Input::keysCode[] = {KEY_CODE_1, KEY_CODE_2};
+const int Input::keysCode[] = {KEY_CODE_1, KEY_CODE_2};
 
 void Input::update()
 {
@@ -25,7 +26,8 @@ void Input::update()
     }
 
     while (SDL_PollEvent(&event)) {
-        switch (event.type) {
+		lastEvent = event.type;
+		switch (event.type) {
             case SDL_QUIT:
                 quit = true;
                 break;
@@ -112,4 +114,102 @@ void Input::display()
     }
 
     cout << endl << endl;
+}
+
+// Ronan
+
+// Getter
+bool Input::getKeyDown(int n)
+{
+	return keysDown[n];
+}
+
+bool Input::getKeyPressed(int n)
+{
+	return keysPressed[n];
+}
+
+bool Input::getMouseDown(int n)
+{
+	return mouseDown[n];
+}
+
+bool Input::getMousePressed(int n)
+{
+	return mousePressed[n];
+}
+
+// Setter
+void Input::clearKeyPressed()
+{
+	for (unsigned i = 0; i < NUMBER_OF_KEYS; i++)
+	{
+		mousePressed[i] = false;
+	}
+}
+void Input::clearKeyPressed(int n)
+{
+	mousePressed[n] = false;
+}
+void Input::clearKeyDown()
+{
+	for (unsigned i = 0; i < NUMBER_OF_KEYS; i++)
+	{
+		mouseDown[i] = false;
+	}
+}
+void Input::clearKeyDown(int n)
+{
+	mouseDown[n] = false;
+}
+void Input::clearKey()
+{
+	clearKeyPressed();
+	clearKeyDown();
+}
+void Input::clearKey(int n)
+{
+	clearKeyPressed(n);
+	clearKeyDown(n);
+}
+
+// Mouse
+void Input::clearMousePressed()
+{
+	for (unsigned i = 0; i < 2; i++)
+	{
+		mousePressed[i] = false;
+	}
+}
+void Input::clearMousePressed(int n)
+{
+	mousePressed[n] = false;
+}
+void Input::clearMouseDown()
+{
+	for (unsigned i = 0; i < 2; i++)
+	{
+		mouseDown[i] = false;
+	}
+}
+void Input::clearMouseDown(int n)
+{
+	mouseDown[n] = false;
+}
+
+void Input::clearMouse()
+{
+	clearMousePressed();
+	clearMouseDown();
+}
+void Input::clearMouse(int n)
+{
+	clearMousePressed(n);
+	clearMouseDown(n);
+}
+
+void Input::clear()
+{
+	clearMouse();
+	clearKey();
 }

@@ -50,8 +50,8 @@ public:
 	void loadAllSurfaces();
 	
 	// Fonts
-	void renderText(std::string path, std::string text, const Vector3D & pos, float size);
-	void renderTextCentered(std::string path, std::string text, const Vector3D & pos, float size);
+	void renderText(std::string path, std::string text, const Vector3D & pos, unsigned size);
+	void renderTextCentered(std::string path, std::string text, const Vector3D & pos, unsigned size);
 	TTF_Font* getFont(std::string name);
 	void pushFont(std::string name, std::string path, unsigned size);
 	void pushFontTTF(std::string name, std::string path, unsigned size);

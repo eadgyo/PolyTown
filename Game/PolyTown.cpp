@@ -9,17 +9,10 @@
 
 using namespace std;
 
-PolyTown& PolyTown::instance = PolyTown();
-
 PolyTown::PolyTown()
 {
 	std::cout << "Construction";
     running = false;
-}
-
-PolyTown& PolyTown::getInstance()
-{
-    return instance;
 }
 
 bool PolyTown::init()
@@ -38,9 +31,11 @@ void PolyTown::mainLoop()
     cout << "Game is running" << endl;
 
     while (running) {
+		
         input.update();
-        input.display();
-
+        //input.display();
+		HUD::render();
+		HUD::checkEvent();
         SDL_Delay(500);
 
         if (wantQuit()) {

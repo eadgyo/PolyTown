@@ -50,7 +50,35 @@ void Menu::update(float dt)
 }
 HudEvent Menu::handleEvent(Input& input)
 {
+	std::cout << "EnterHandle" << std::endl;
+	if (input.getLastEvent() == SDL_MOUSEBUTTONUP) // && input.getMouseState()[0])
+	{
+		std::cout << "Push" << std::endl;
+		const int *mousePosI = input.getMousePos();
+		Vector3D mousePos((float) mousePosI[0], (float) mousePosI[1], 0, true);
 
+		// On regarde si le clique est sur un bouton
+		unsigned i = 0;
+		while(i < boutons.size() && boutons[i]->isColliding(mousePos))
+		{
+			i++;
+		}
+		switch (i)
+		{
+		case 0: // Nouvelle partie
+			return NEW_GAME | RESET;
+		case 1:
+			return LOAD_GAME | RESET;
+		case 2:
+			return SCORE | RESET;
+		case 3:
+			return CREDIT | RESET;
+		case 4:
+			return EXIT;
+		default:
+			return OK;
+		}
+	}
 
 	return HudEvent::OK;
 }

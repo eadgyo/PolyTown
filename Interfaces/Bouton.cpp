@@ -24,6 +24,17 @@ Bouton::Bouton(std::string text, int x, int y, int width, int height)
 	rectangle.set((float) x, (float) y, (float) width, (float) height);
 }
 
+Bouton::Bouton(std::string text, unsigned int size, int x, int y, int width, int height)
+{
+	r = 0;
+	g = 0;
+	b = 0;
+	a = 0;
+	textSize = size;
+	this->text = text;
+	rectangle.set((float)x, (float)y, (float)width, (float)height);
+}
+
 Bouton::~Bouton()
 {
 	// Negro t'y est à moi

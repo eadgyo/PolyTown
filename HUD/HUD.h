@@ -30,5 +30,5 @@ protected:
 	std::deque<Interface*> iStack;
 	std::vector<Interface*> interfaces;
 	Graphics* g;
-	//Input input;
+	Input input;
 };

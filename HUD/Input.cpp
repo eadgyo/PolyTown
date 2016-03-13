@@ -11,9 +11,10 @@ Input::Input()
 {
     quit = false;
 	lastEvent = 0;
-}
 
-const int Input::keysCode[] = {KEY_CODE_1, KEY_CODE_2};
+    keysCode[0] = KEY_CODE_1;
+    keysCode[1] = KEY_CODE_2;
+}
 
 void Input::update()
 {

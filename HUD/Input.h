@@ -49,7 +49,7 @@ private:
     bool mouseDown[2] = {false};
     bool mousePressed[2] = {false};
 
-    static const int keysCode[NUMBER_OF_KEYS];
+    int keysCode[NUMBER_OF_KEYS];
     bool keysDown[NUMBER_OF_KEYS] = {false};
     bool keysPressed[NUMBER_OF_KEYS] = {false};
 };

@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[])
 {
-    PolyTown& game = PolyTown::getInstance();
+    PolyTown game;
 
     if (game.init()) {
         return 1;

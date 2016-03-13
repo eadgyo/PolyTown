@@ -11,10 +11,13 @@ public:
 	Layer() { isInitialized = false; };
 	~Layer() {};
 	Layer(int, int) { isInitialized = false; };
+	Layer(int, int, int, int) { isInitialized = false; };
 
+	void virtual render(Graphics * g, const Vector3D translation) = 0;
 	// Détection des collisions 
 	LayerNs::LayerEvent virtual handleEvent(Input& input) = 0;
 protected:
 	bool isInitialized;
+	Vector3D translate;
 };
 

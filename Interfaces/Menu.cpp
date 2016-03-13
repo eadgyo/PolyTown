@@ -10,6 +10,8 @@ Menu::~Menu()
 
 void Menu::initialize(int width, int height)
 {
+	if (isInitialized)
+		return;
 
 	// Initialisation des noms boutons
 	std::string boutonsTexte[] = { "Nouvelle Partie",
@@ -30,6 +32,7 @@ void Menu::initialize(int width, int height)
 	}
 
 	// Si besoin de Boutons spéciaux, cette méthode est à modifier
+	isInitialized = true;
 }
 void Menu::reset()
 {
@@ -50,22 +53,21 @@ void Menu::update(float dt)
 }
 HudEvent Menu::handleEvent(Input& input)
 {
-	std::cout << "EnterHandle" << std::endl;
-	if (input.getLastEvent() == SDL_MOUSEBUTTONUP) // && input.getMouseState()[0])
+	if (input.getLastEvent() == SDL_MOUSEBUTTONUP && input.getMousePressed(0))
 	{
-		std::cout << "Push" << std::endl;
 		const int *mousePosI = input.getMousePos();
 		Vector3D mousePos((float) mousePosI[0], (float) mousePosI[1], 0, true);
 
 		// On regarde si le clique est sur un bouton
 		unsigned i = 0;
-		while(i < boutons.size() && boutons[i]->isColliding(mousePos))
+		while(i < boutons.size() && !boutons[i]->isColliding(mousePos))
 		{
 			i++;
 		}
 		switch (i)
 		{
 		case 0: // Nouvelle partie
+			std::cout << "Ok";
 			return NEW_GAME | RESET;
 		case 1:
 			return LOAD_GAME | RESET;

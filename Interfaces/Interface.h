@@ -23,6 +23,6 @@ public:
 	// Détection des collisions 
 	HudEvent virtual handleEvent(Input& input) = 0;
 
-private:
+protected:
 	bool isInitialized;
 };

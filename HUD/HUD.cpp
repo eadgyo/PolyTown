@@ -23,6 +23,7 @@ void HUD::initialize(std::string name, int width, int height)
 	// Création de toutes les interfaces
 	// Menu
 	interfaces.push_back(new Menu());
+	interfaces.push_back(new NewGame());
 
 	// Initialisation des boutons
 	for (unsigned i = 0; i < interfaces.size(); i++)
@@ -30,7 +31,7 @@ void HUD::initialize(std::string name, int width, int height)
 		interfaces[i]->initialize(width, height);
 	}
 
-	// On initialise la pile
+	// On initialise la pile en ajoutant le Menu
 	iStack.push_back(interfaces[0]);
 }
 
@@ -62,12 +63,15 @@ void HUD::update(float dt)
 void HUD::checkEvent()
 {
 	checkStack();
-	std::cout << "CheckEvent" << std::endl;
 	HudEvent result = iStack.back()->handleEvent(input);
 
 	if (result % NEW_GAME)
 	{
-		std::cout << "New Game";
+		iStack.push_back(interfaces[1]);
+	}
+	if (result % LOAD_GAME)
+	{
+
 	}
 }
 

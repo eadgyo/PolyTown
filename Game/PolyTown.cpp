@@ -33,7 +33,7 @@ void PolyTown::mainLoop()
     while (running) {
 		
         input.update();
-        //input.display();
+        input.display();
 		HUD::render();
 		HUD::checkEvent();
         SDL_Delay(500);

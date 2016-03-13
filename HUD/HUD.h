@@ -5,6 +5,7 @@
 #include <vector>
 #include "../Interfaces/Interface.h"
 #include "../Interfaces/Menu.h"
+#include "../Interfaces/NewGame.h"
 #include "../Graphics/Graphics.h"
 
 

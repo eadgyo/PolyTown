@@ -13,12 +13,36 @@ NewGame::~NewGame()
 
 void NewGame::initialize(int width, int height)
 {
+	if (isInitialized)
+		return;
+
 	// Initialisation des noms des boutons
 	std::string boutonsTexte[] = { "Démarrer La partie", "Back",  ""};
 	
 	// Création de démarrer la partie
 	//Bouton* bouton = new Bouton(boutonsTexte[0], )
-	std::cout << "Création newGame";
+	isInitialized = true;
+}
+
+void NewGame::reset()
+{
+}
+
+void NewGame::resize(int width, int height)
+{
+}
+
+void NewGame::render(Graphics * g)
+{
+}
+
+void NewGame::update(float dt)
+{
+}
+
+HudEvent NewGame::handleEvent(Input & input)
+{
+	return HudEvent();
 }
 
 

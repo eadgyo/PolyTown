@@ -3,6 +3,7 @@
 #include "../HUD/HudEvent.h"
 #include "../HUD/Input.h"
 #include "../Graphics/GraphicsObject.h"
+#include "LayerEvent.h"
 
 class Layer : public GraphicsObject
 {
@@ -12,7 +13,7 @@ public:
 	Layer(int, int) { isInitialized = false; };
 
 	// Détection des collisions 
-	bool virtual handleEvent(Input& input) = 0;
+	LayerNs::LayerEvent virtual handleEvent(Input& input) = 0;
 protected:
 	bool isInitialized;
 };

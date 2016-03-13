@@ -6,6 +6,7 @@ class Interface;
 #include "../HUD/Input.h"
 #include "../Graphics/GraphicsObject.h"
 
+
 class Interface : public GraphicsObject
 {
 public:
@@ -13,5 +14,5 @@ public:
 	Interface(int, int) { isInitialized = false; };
 
 	// Détection des collisions 
-	HudEvent virtual handleEvent(Input& input) = 0;
+	HudNs::HudEvent virtual handleEvent(Input& input) = 0;
 };

@@ -40,9 +40,9 @@ void NewGame::update(float dt)
 {
 }
 
-HudEvent NewGame::handleEvent(Input & input)
+HudNs::HudEvent NewGame::handleEvent(Input & input)
 {
-	return HudEvent();
+	return HudNs::HudEvent();
 }
 
 

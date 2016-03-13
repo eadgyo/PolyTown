@@ -51,7 +51,7 @@ void Menu::update(float dt)
 {
 
 }
-HudEvent Menu::handleEvent(Input& input)
+HudNs::HudEvent Menu::handleEvent(Input& input)
 {
 	if (input.getLastEvent() == SDL_MOUSEBUTTONUP && input.getMousePressed(0))
 	{
@@ -68,21 +68,21 @@ HudEvent Menu::handleEvent(Input& input)
 		{
 		case 0: // Nouvelle partie
 			std::cout << "Ok";
-			return NEW_GAME | RESET;
+			return HudNs::NEW_GAME | HudNs::RESET;
 		case 1:
-			return LOAD_GAME | RESET;
+			return HudNs::LOAD_GAME | HudNs::RESET;
 		case 2:
-			return SCORE | RESET;
+			return HudNs::SCORE | HudNs::RESET;
 		case 3:
-			return CREDIT | RESET;
+			return HudNs::CREDIT | HudNs::RESET;
 		case 4:
-			return EXIT;
+			return HudNs::EXIT;
 		default:
-			return OK;
+			return HudNs::OK;
 		}
 	}
 
-	return HudEvent::OK;
+	return HudNs::OK;
 }
 
 void Menu::resize(int width, int height)

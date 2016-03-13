@@ -1,23 +1,14 @@
 #pragma once
-#include "Interface.h"
 
-class Game :
-	public Interface
+#include "Layer.h"
+
+class BottomLayer : public Layer
 {
-
-public:
-	Game();
-	~Game();
-
+	BottomLayer();
 	void initialize(int width, int height);
 	void reset();
 	void resize(int width, int height);
 	void render(Graphics* g);
 	void update(float dt);
-	HudNs::HudEvent handleEvent(Input& input);
-
-
+	LayerNs::LayerEvent handleEvent(Input& input);
 };
-
-
-

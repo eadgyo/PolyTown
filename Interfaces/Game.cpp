@@ -28,7 +28,7 @@ void Game::update(float dt)
 {
 }
 
-HudEvent Game::handleEvent(Input & input)
+HudNs::HudEvent Game::handleEvent(Input & input)
 {
-	return HudEvent();
+	return HudNs::HudEvent();
 }

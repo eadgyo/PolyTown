@@ -13,7 +13,7 @@ public:
 	void virtual resize(int width, int height);
 	void virtual render(Graphics* g);
 	void virtual update(float dt);
-	HudEvent virtual handleEvent(Input& input);
+	HudNs::HudEvent virtual handleEvent(Input& input);
 
 };
 

@@ -64,13 +64,13 @@ void HUD::update(float dt)
 void HUD::checkEvent()
 {
 	checkStack();
-	HudEvent result = iStack.back()->handleEvent(input);
+	HudNs::HudEvent result = iStack.back()->handleEvent(input);
 
-	if (result % NEW_GAME)
+	if (result % HudNs::NEW_GAME)
 	{
 		iStack.push_back(interfaces[1]);
 	}
-	if (result % LOAD_GAME)
+	if (result % HudNs::LOAD_GAME)
 	{
 
 	}

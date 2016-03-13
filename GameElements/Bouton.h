@@ -15,6 +15,7 @@ public:
 
 	void update(float dt);
 	void render(Graphics* g);
+	void render(Graphics* g, const Vector3D& translation);
 	bool isColliding(const Vector3D& pos);
 
 private:

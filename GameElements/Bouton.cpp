@@ -4,10 +4,10 @@
 
 Bouton::Bouton(int x, int y, int width, int height)
 {
-	r = 0;
-	g = 0;
-	b = 0;
-	a = 0;
+	r = 1;
+	g = 1;
+	b = 1;
+	a = 1;
 	textSize = 16;
 	text = "";
 	rectangle.set((float) x, (float) y, (float) width, (float) height);
@@ -15,10 +15,10 @@ Bouton::Bouton(int x, int y, int width, int height)
 
 Bouton::Bouton(std::string text, int x, int y, int width, int height)
 {
-	r = 0;
-	g = 0;
-	b = 0;
-	a = 0;
+	r = 1;
+	g = 1;
+	b = 1;
+	a = 1;
 	textSize = 16;
 	this->text = text;
 	rectangle.set((float) x, (float) y, (float) width, (float) height);
@@ -26,10 +26,10 @@ Bouton::Bouton(std::string text, int x, int y, int width, int height)
 
 Bouton::Bouton(std::string text, unsigned int size, int x, int y, int width, int height)
 {
-	r = 0;
-	g = 0;
-	b = 0;
-	a = 0;
+	r = 1;
+	g = 1;
+	b = 1;
+	a = 1;
 	textSize = size;
 	this->text = text;
 	rectangle.set((float)x, (float)y, (float)width, (float)height);
@@ -51,7 +51,15 @@ void Bouton::render(Graphics* graphics)
 	// Si besoin d'améliorations faire un héritage
 	graphics->setColor(r, g, b, a);
 	graphics->render(rectangle);
-	graphics->renderTextCentered("stocky.ttf", text, rectangle.getCenter(), textSize);
+	graphics->renderTextCentered("test.ttf", text, rectangle.getCenter(), textSize);
+}
+void Bouton::render(Graphics* graphics, const Vector3D& translation)
+{
+	// Rendu du bouton
+	// Si besoin d'améliorations faire un héritage
+	graphics->setColor(r, g, b, a);
+	graphics->render(rectangle, translation);
+	graphics->renderTextCentered("test.ttf", text, rectangle.getCenter() + translation, textSize);
 }
 
 bool Bouton::isColliding(const Vector3D& pos)

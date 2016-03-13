@@ -43,6 +43,8 @@ public:
 	void render(Image& image, const Vector3D& translation, float scale);
 	void render(SDL_Surface *texture, SDL_Rect* dest);
 	void render(const Form& form);
+	void render(const Form& form, const Vector3D& translation);
+	void render(const Form& form, const Vector3D& translation, float scale);
 	void renderCopy(mySurface* surface, SDL_Rect& rec);
 	GLuint loadSurfaceGL(SDL_Surface* image);
 	mySurface* createMySurface(GLuint texture, SDL_Surface* image);

@@ -3,6 +3,7 @@
 #include "../HUD/HudEvent.h"
 #include "../HUD/Input.h"
 #include "../Graphics/GraphicsObject.h"
+#include "../GameElements/Bouton.h"
 #include "LayerEvent.h"
 
 class Layer : public GraphicsObject

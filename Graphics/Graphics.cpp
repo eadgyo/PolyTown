@@ -454,6 +454,26 @@ void Graphics::render(const Form& form)
 	}
 	glEnd();
 }
+void Graphics::render(const Form& form, const Vector3D& translation)
+{
+	glBegin(GL_POLYGON);
+	for (unsigned i = 0; i<form.size(); i++)
+	{
+		Vector3D a = form.get(i) + translation;
+		glVertex3f(a.x(), a.y(), a.z());
+	}
+	glEnd();
+}
+void Graphics::render(const Form& form, const Vector3D& translation, float scale)
+{
+	glBegin(GL_POLYGON);
+	for (unsigned i = 0; i<form.size(); i++)
+	{
+		Vector3D a = (form.get(i) + translation)*scale;
+		glVertex3f(a.x(), a.y(), a.z());
+	}
+	glEnd();
+}
 
 void Graphics::setColor(float r, float g, float b)
 {

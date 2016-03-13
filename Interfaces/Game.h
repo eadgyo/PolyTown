@@ -1,5 +1,6 @@
 #pragma once
 #include "Interface.h"
+#include "../Layers/BottomLayer.h"
 
 class Game :
 	public Interface
@@ -16,6 +17,8 @@ public:
 	void update(float dt);
 	HudNs::HudEvent handleEvent(Input& input);
 
+protected:
+	BottomLayer bottomLayer;
 
 };
 

@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 
     game.mainLoop();
 
-    game.quit();
+    game.exit();
 
     return 0;
 }

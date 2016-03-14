@@ -1,10 +1,11 @@
 #ifndef INPUT_H
 #define INPUT_H
-class Input;
+
 #include "../Constant.h"
+#include "../Maths/Vector3D.h"
+
 #include <SDL2/SDL.h>
 #include <string>
-#include "../Maths/Vector3D.h"
 
 class Input
 {
@@ -16,34 +17,34 @@ public:
     // ----- GETTER ----- //
 
     // Keyboard
-    bool getKeyDown(int n) const;
-    bool getKeyPressed(int n) const;
+    bool getKeyDown(unsigned int n) const;
+    bool getKeyPressed(unsigned int n) const;
 
     // Mouse
 
-    int getMousePos(int n) const;
+    int getMousePos(unsigned int n) const;
 	Vector3D getMousePos() const;
-    bool getMouseDown(int n) const;
-    bool getMousePressed(int n) const;
+    bool getMouseDown(unsigned int n) const;
+    bool getMousePressed(unsigned int n) const;
 
 	// ----- SETTER ----- //
     void clear();
 
     // Keyboard
     void clearKeys();
-    void clearKey(int n);
+    void clearKey(unsigned int n);
     void clearKeysDown();
-    void clearKeyDown(int n);
+    void clearKeyDown(unsigned int n);
     void clearKeysPressed();
-    void clearKeyPressed(int n);
+    void clearKeyPressed(unsigned int n);
 
     // Mouse
 	void clearMouse();
-	void clearMouse(int n);
+	void clearMouse(unsigned int n);
 	void clearMousePressed();
-	void clearMousePressed(int n);
+	void clearMousePressed(unsigned int n);
 	void clearMouseDown();
-	void clearMouseDown(int n);
+	void clearMouseDown(unsigned int n);
 
 	inline Uint32 getLastEvent() { return lastEvent; };
 

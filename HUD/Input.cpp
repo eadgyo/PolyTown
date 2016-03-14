@@ -86,19 +86,19 @@ void Input::update()
 
 // Keyboard
 
-bool Input::getKeyDown(int n) const
+bool Input::getKeyDown(unsigned int n) const
 {
     return keysDown[n];
 }
 
-bool Input::getKeyPressed(int n) const
+bool Input::getKeyPressed(unsigned int n) const
 {
     return keysPressed[n];
 }
 
 // Mouse
 
-int Input::getMousePos(int n) const
+int Input::getMousePos(unsigned int n) const
 {
     return mousePos[n];
 }
@@ -108,12 +108,12 @@ Vector3D Input::getMousePos() const
 	return Vector3D(mousePos[0], mousePos[1]);
 }
 
-bool Input::getMouseDown(int n) const
+bool Input::getMouseDown(unsigned int n) const
 {
     return mouseDown[n];
 }
 
-bool Input::getMousePressed(int n) const
+bool Input::getMousePressed(unsigned int n) const
 {
     return mousePressed[n];
 }
@@ -134,7 +134,7 @@ void Input::clearKeys()
     clearKeysDown();
 }
 
-void Input::clearKey(int n)
+void Input::clearKey(unsigned int n)
 {
     clearKeyPressed(n);
     clearKeyDown(n);
@@ -147,7 +147,7 @@ void Input::clearKeysDown()
     }
 }
 
-void Input::clearKeyDown(int n)
+void Input::clearKeyDown(unsigned int n)
 {
     mouseDown[n] = false;
 }
@@ -159,7 +159,7 @@ void Input::clearKeysPressed()
     }
 }
 
-void Input::clearKeyPressed(int n)
+void Input::clearKeyPressed(unsigned int n)
 {
     mousePressed[n] = false;
 }
@@ -171,7 +171,7 @@ void Input::clearMouse()
     clearMousePressed();
     clearMouseDown();
 }
-void Input::clearMouse(int n)
+void Input::clearMouse(unsigned int n)
 {
     clearMousePressed(n);
     clearMouseDown(n);
@@ -184,7 +184,7 @@ void Input::clearMousePressed()
     }
 }
 
-void Input::clearMousePressed(int n)
+void Input::clearMousePressed(unsigned int n)
 {
     mousePressed[n] = false;
 }
@@ -196,7 +196,7 @@ void Input::clearMouseDown()
     }
 }
 
-void Input::clearMouseDown(int n)
+void Input::clearMouseDown(unsigned int n)
 {
     mouseDown[n] = false;
 }

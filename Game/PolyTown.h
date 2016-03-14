@@ -10,18 +10,15 @@ public:
 	PolyTown();
     bool init();
     void mainLoop();
-    void quit();
+    void exit();
 
     bool wantQuit();
 
     void update(); 
-	virtual ~PolyTown() { std::cout << "Destruction\n"; };
+    virtual ~PolyTown() { std::cout << "PolyTown : Destruction" << std::endl; };
 
 private:
     bool running;
-
-   
-	
 };
 
 #endif // !POLYTOWN_H

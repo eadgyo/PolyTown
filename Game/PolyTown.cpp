@@ -11,7 +11,7 @@ using namespace std;
 
 PolyTown::PolyTown()
 {
-	std::cout << "Construction";
+    cout << "PolyTown : Construction" << endl;
     running = false;
 }
 
@@ -44,7 +44,7 @@ void PolyTown::mainLoop()
     }
 }
 
-void PolyTown::quit()
+void PolyTown::exit()
 {
     HUD::exitGame();
 

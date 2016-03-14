@@ -3,8 +3,7 @@ FileManager &FileManager::INSTANCE=FileManager();
 
 FileManager::FileManager()
 {
-	
-
+    std::cout << "FileManager : Construction" << std::endl;
 }
 
 FileManager& FileManager::getInstance()
@@ -58,7 +57,7 @@ int FileManager::type(std::string directory, bool isInternal)
 
 FileManager::~FileManager()
 {
-	std::cout << "Destruction File Manager" << std::endl;
+	std::cout << "FileManager : Destruction" << std::endl;
 }
 
 void FileManager::initialize()

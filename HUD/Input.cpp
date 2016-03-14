@@ -103,6 +103,11 @@ int Input::getMousePos(int n) const
     return mousePos[n];
 }
 
+Vector3D Input::getMousePos() const
+{
+	return Vector3D(mousePos[0], mousePos[1]);
+}
+
 bool Input::getMouseDown(int n) const
 {
     return mouseDown[n];

@@ -29,6 +29,7 @@ public:
 	inline Vector3D() {};
 	Vector3D(bool isPoint);
 	Vector3D(const Vector3D& a);
+	Vector3D(int, int);
 	Vector3D(float, float);
 	Vector3D(float, float, float);
 	Vector3D(float, float, float, bool);

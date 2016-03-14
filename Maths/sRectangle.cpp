@@ -18,6 +18,11 @@ sRectangle::sRectangle(float x, float y, float width, float height) : Form(4)
 	setLeft(x, y, width, height);
 }
 
+sRectangle::sRectangle(int x, int y, int width, int height) : Form(4)
+{
+	setLeft((float) x, (float) y, (float) width, (float) height);
+}
+
 sRectangle::sRectangle(const Form& form) : Form(form)
 {
 	set(form);

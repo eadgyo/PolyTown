@@ -42,7 +42,6 @@ Form::Form(float omega, float scale, bool flipH, bool flipV, float surface, cons
 
 Form::Form(const Form& form)
 {
-	// std::cout << "Copie Maker \n";
 	// Copie de convexForms
 	convexForms.reserve(form.getConvexFormsSize());
 	for(int i=0; i<form.getConvexFormsSize(); i++)
@@ -305,6 +304,17 @@ float Form::getMaxY() const
 	}
 	return yMax;
 }
+/*
+sRectangle Form::getWrap() const
+{
+	float minX = getMinX();
+	float minY = getMinY();
+	float maxX = getMaxX();
+	float maxY = getMaxY();
+	float width = maxX - minX;
+	float height = maxY - minY;
+	sRectangle rec = (width*0.5f + minX, height*0.5 + minY, width, height);
+}*/
 
 // Penser à liberer lorsque fin d'utilisation du tableau
 std::vector<Vector3D> Form::getVectorsSatLocal() const

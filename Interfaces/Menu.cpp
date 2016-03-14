@@ -55,8 +55,7 @@ HudNs::HudEvent Menu::handleEvent(Input& input)
 {
 	if (input.getLastEvent() == SDL_MOUSEBUTTONUP && input.getMousePressed(0))
 	{
-		const int *mousePosI = input.getMousePos();
-		Vector3D mousePos((float) mousePosI[0], (float) mousePosI[1], 0, true);
+		Vector3D mousePos = input.getMousePos();
 
 		// On regarde si le clique est sur un bouton
 		unsigned i = 0;

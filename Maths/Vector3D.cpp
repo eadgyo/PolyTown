@@ -24,6 +24,13 @@ Vector3D::Vector3D(float x, float y)
 	coor[2] = 0;
 	coor[3] = 1;
 }
+Vector3D::Vector3D(int x, int y)
+{
+	coor[0] = (float) x;
+	coor[1] = (float) y;
+	coor[2] = 0;
+	coor[3] = 1;
+}
 Vector3D::Vector3D(float x, float y, float z)
 {
 	coor[0] = x;

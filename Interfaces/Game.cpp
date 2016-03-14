@@ -10,7 +10,7 @@ Game::~Game()
 
 void Game::initialize(int width, int height)
 {
-	bottomLayer.initialize(0, height*0.8, (int) width, (int) height*0.2);
+	bottomLayer.initialize(0, height*0.8f, (int) width, (int) (height*0.2f));
 }
 
 void Game::reset()

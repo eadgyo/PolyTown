@@ -19,6 +19,7 @@ class sRectangle : public Form
 public:
 	sRectangle();
 	sRectangle(const Vector3D& left, const Vector3D& length);
+	sRectangle(int x, int y, int width, int height);
 	sRectangle(float x, float y, float width, float height);
 	sRectangle(const Form& form);
 	~sRectangle();

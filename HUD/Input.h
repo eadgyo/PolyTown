@@ -4,6 +4,7 @@ class Input;
 #include "../Constant.h"
 #include <SDL2/SDL.h>
 #include <string>
+#include "../Maths/Vector3D.h"
 
 class Input
 {
@@ -21,6 +22,7 @@ public:
     // Mouse
 
     int getMousePos(int n) const;
+	Vector3D getMousePos() const;
     bool getMouseDown(int n) const;
     bool getMousePressed(int n) const;
 

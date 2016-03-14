@@ -18,7 +18,7 @@
 #include "PointType.h"
 #include <map>
 #include "AxesSat.h"
-
+//#include "sRectangle.h"
 
 class Form
 {

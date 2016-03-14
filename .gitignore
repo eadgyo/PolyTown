@@ -1,9 +1,10 @@
-.git
 .vs
 Debug
 Release
 *.dll
 *.sdf
+*.sln
+*.vcxproj.user
 resource.h
 resource1.h
 *.vcxproj

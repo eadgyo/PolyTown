@@ -81,8 +81,7 @@ LayerNs::LayerEvent BottomLayer::handleEvent(Input & input)
 {
 	if (input.getLastEvent() == SDL_MOUSEBUTTONUP && input.getMousePressed(0))
 	{
-		const int *mousePosI = input.getMousePos();
-		Vector3D mousePos((float)mousePosI[0], (float)mousePosI[1], 0, true);
+		Vector3D mousePos = input.getMousePos();
 		mousePos -= translate;
 		for (unsigned i = 0; i < boutons.size(); i++)
 		{

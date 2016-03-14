@@ -68,7 +68,6 @@ void Input::update()
                     }
                 }
                 break;
-
             case SDL_KEYUP:
                 for (int i = 0; i < NUMBER_OF_KEYS; i++) {
                     if (event.key.keysym.sym == keysCode[i]) {
@@ -83,25 +82,121 @@ void Input::update()
     }
 }
 
-const bool* Input::getMouseState() const
+// ----- GETTER ----- //
+
+// Keyboard
+
+bool Input::getKeyDown(int n) const
 {
-    return mousePressed;
+    return keysDown[n];
 }
 
-const bool* Input::getKeysState() const
+bool Input::getKeyPressed(int n) const
 {
-    return keysPressed;
+    return keysPressed[n];
 }
 
-const int* Input::getMousePos() const
+// Mouse
+
+int Input::getMousePos(int n) const
 {
-    return mousePos;
+    return mousePos[n];
 }
 
-bool Input::getQuit()
+bool Input::getMouseDown(int n) const
 {
-    return quit;
+    return mouseDown[n];
 }
+
+bool Input::getMousePressed(int n) const
+{
+    return mousePressed[n];
+}
+
+// ----- SETTER ----- //
+
+void Input::clear()
+{
+	clearMouse();
+	clearKeys();
+}
+
+// Keyboard
+
+void Input::clearKeys()
+{
+    clearKeysPressed();
+    clearKeysDown();
+}
+
+void Input::clearKey(int n)
+{
+    clearKeyPressed(n);
+    clearKeyDown(n);
+}
+
+void Input::clearKeysDown()
+{
+    for (unsigned i = 0; i < NUMBER_OF_KEYS; i++) {
+        mouseDown[i] = false;
+    }
+}
+
+void Input::clearKeyDown(int n)
+{
+    mouseDown[n] = false;
+}
+
+void Input::clearKeysPressed()
+{
+    for (unsigned i = 0; i < NUMBER_OF_KEYS; i++) {
+        mousePressed[i] = false;
+    }
+}
+
+void Input::clearKeyPressed(int n)
+{
+    mousePressed[n] = false;
+}
+
+// Mouse
+
+void Input::clearMouse()
+{
+    clearMousePressed();
+    clearMouseDown();
+}
+void Input::clearMouse(int n)
+{
+    clearMousePressed(n);
+    clearMouseDown(n);
+}
+
+void Input::clearMousePressed()
+{
+    for (unsigned i = 0; i < 2; i++) {
+        mousePressed[i] = false;
+    }
+}
+
+void Input::clearMousePressed(int n)
+{
+    mousePressed[n] = false;
+}
+
+void Input::clearMouseDown()
+{
+    for (unsigned i = 0; i < 2; i++) {
+        mouseDown[i] = false;
+    }
+}
+
+void Input::clearMouseDown(int n)
+{
+    mouseDown[n] = false;
+}
+
+// ----- DEBUG ----- //
 
 void Input::display()
 {
@@ -117,100 +212,9 @@ void Input::display()
     cout << endl << endl;
 }
 
-// Ronan
+// ----- TEMP ----- //
 
-// Getter
-bool Input::getKeyDown(int n)
+bool Input::getQuit()
 {
-	return keysDown[n];
-}
-
-bool Input::getKeyPressed(int n)
-{
-	return keysPressed[n];
-}
-
-bool Input::getMouseDown(int n)
-{
-	return mouseDown[n];
-}
-
-bool Input::getMousePressed(int n)
-{
-	return mousePressed[n];
-}
-
-// Setter
-void Input::clearKeyPressed()
-{
-	for (unsigned i = 0; i < NUMBER_OF_KEYS; i++)
-	{
-		mousePressed[i] = false;
-	}
-}
-void Input::clearKeyPressed(int n)
-{
-	mousePressed[n] = false;
-}
-void Input::clearKeyDown()
-{
-	for (unsigned i = 0; i < NUMBER_OF_KEYS; i++)
-	{
-		mouseDown[i] = false;
-	}
-}
-void Input::clearKeyDown(int n)
-{
-	mouseDown[n] = false;
-}
-void Input::clearKey()
-{
-	clearKeyPressed();
-	clearKeyDown();
-}
-void Input::clearKey(int n)
-{
-	clearKeyPressed(n);
-	clearKeyDown(n);
-}
-
-// Mouse
-void Input::clearMousePressed()
-{
-	for (unsigned i = 0; i < 2; i++)
-	{
-		mousePressed[i] = false;
-	}
-}
-void Input::clearMousePressed(int n)
-{
-	mousePressed[n] = false;
-}
-void Input::clearMouseDown()
-{
-	for (unsigned i = 0; i < 2; i++)
-	{
-		mouseDown[i] = false;
-	}
-}
-void Input::clearMouseDown(int n)
-{
-	mouseDown[n] = false;
-}
-
-void Input::clearMouse()
-{
-	clearMousePressed();
-	clearMouseDown();
-}
-void Input::clearMouse(int n)
-{
-	clearMousePressed(n);
-	clearMouseDown(n);
-}
-
-void Input::clear()
-{
-	clearMouse();
-	clearKey();
+    return quit;
 }

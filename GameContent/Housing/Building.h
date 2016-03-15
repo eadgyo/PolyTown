@@ -7,10 +7,13 @@ class Building : public Housing
 {
 public:
     Building();
+    Building(p_uint water_needs, p_uint energy_needs);
+    Building(p_uint water_needs, p_uint energy_needs, p_uint floor);
 
 private:
-
+    p_uint m_floor;
+    p_uint m_max_floor;
+    p_uint m_max_inhabitants_per_floor;
 };
-
 
 #endif // !BUILDING_H

@@ -74,11 +74,11 @@ int QuadTree::getIndex(const QTEntity *entity)
 	return getIndex(entity->getBounds());
 }
 
-void QuadTree::insert(QTEntity * entity)
+void QuadTree::insert(QTEntity * entity, const sRectangle& recEntity)
 {
 	if (nodes != NULL)
 	{
-		int index = getIndex(entity->getBounds());
+		int index = getIndex(recEntity);
 		if (index != -1)//si le rectangle rentre dans l'une des quatres cases
 		{
 			nodes[index].insert(entity);
@@ -108,14 +108,19 @@ void QuadTree::insert(QTEntity * entity)
 					i++;
 			}
 		}
-		int index = getIndex(entity->getBounds());
+		int index = getIndex(recEntity);
 		if (index != -1)
-			nodes[index].insert(entity);
+			nodes[index].insert(entity, recEntity);
 		else
 			entities.push_back(entity);
 	}
 	else
 		entities.push_back(entity);
+}
+
+void QuadTree::insert(QTEntity * entity)
+{
+	insert(entity, entity->getBounds());
 }
 
 void QuadTree::inserts(std::vector<QTEntity*>& entities)
@@ -136,15 +141,48 @@ void QuadTree::retrieve(const sRectangle& sRectangle, std::vector<QTEntity*>& en
 	int index = getIndex(sRectangle);
 	if (index != -1 && nodes != NULL)
 		nodes[index].retrieve(sRectangle, entities);
-	else
-		addEntities(entities);
+	else if(nodes != NULL)
+	{
+		for (unsigned i = 0; i < 4; i++)
+		{
+			nodes[index].addEntities(entities);
+		}
+	}
 	entities.insert(entities.end(), this->entities.begin(), this->entities.end());
 }
 
 void QuadTree::addEntities(std::vector<QTEntity*>& entities)
 {
-	if (nodes == NULL)
-		return;
-	for (unsigned i = 0; i < 4; i++)
-		nodes[i].addEntities(entities);
+	if (nodes != NULL)
+	{
+		for (unsigned i = 0; i < 4; i++)
+			nodes[i].addEntities(entities);
+	}
+	entities.insert(entities.end(), this->entities.begin(), this->entities.end());
+}
+
+void QuadTree::erase(QTEntity* qtEntity, const sRectangle& recEntity)
+{
+	int index = getIndex(qtEntity->getBounds());
+
+	if (index != -1 && nodes != NULL)
+		nodes[index].erase(qtEntity, recEntity);
+	else
+	{	
+		unsigned i = 0;
+		while (qtEntity != entities[i] && i < entities.size())
+			i++;
+		
+		if (i == entities.size())
+			std::cout << "Entity not found in Quadtree";
+		else
+		{
+			entities.erase(entities.begin() + i);
+		}
+	}
+}
+
+void QuadTree::erase(QTEntity* qtEntity)
+{
+	erase(qtEntity, qtEntity->getBounds());
 }

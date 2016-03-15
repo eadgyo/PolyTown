@@ -3,11 +3,18 @@
 
 #include "../Housing.h"
 
-class House : public Housing
+#include "../Graphics/Image.h"
+#include "../Maths/myRectangle.h"
+
+#include <string>
+
+class House final : public Housing
 {
 public:
-    House();
-    House(p_uint water_needs, p_uint energy_needs);
+    House(Image & image, myRectangle & rect);
+    House(Image & image, myRectangle & rect, p_uint water_needs, p_uint energy_needs);
+    House(std::string name, Image & image, myRectangle & rect);
+    House(std::string name, Image & image, myRectangle & rect, p_uint water_needs, p_uint energy_needs);
 
 private:
 

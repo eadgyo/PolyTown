@@ -3,12 +3,22 @@
 
 #include "../Housing.h"
 
-class Building : public Housing
+#include "../Graphics/Image.h"
+#include "../Maths/myRectangle.h"
+
+#include <string>
+
+class Building final : public Housing
 {
 public:
-    Building();
-    Building(p_uint water_needs, p_uint energy_needs);
-    Building(p_uint water_needs, p_uint energy_needs, p_uint floor);
+    Building(Image & image, myRectangle & rect);
+    Building(Image & image, myRectangle & rect, p_uint floor);
+    Building(Image & image, myRectangle & rect, p_uint water_needs, p_uint energy_needs);
+    Building(Image & image, myRectangle & rect, p_uint water_needs, p_uint energy_needs, p_uint floor);
+    Building(std::string name, Image & image, myRectangle & rect);
+    Building(std::string name, Image & image, myRectangle & rect, p_uint floor);
+    Building(std::string name, Image & image, myRectangle & rect, p_uint water_needs, p_uint energy_needs);
+    Building(std::string name, Image & image, myRectangle & rect, p_uint water_needs, p_uint energy_needs, p_uint floor);
 
     // ----- GETTER ----- //
     p_uint getFloors() const;

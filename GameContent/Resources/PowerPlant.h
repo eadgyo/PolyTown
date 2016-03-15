@@ -1,7 +1,9 @@
 #ifndef POWER_PLANT_H
 #define POWER_PLANT_H
 
-class PowerPlant
+#include "../Resources.h"
+
+class PowerPlant : public Resources
 {
 public:
     PowerPlant();
@@ -9,6 +11,5 @@ public:
 private:
 
 };
-
 
 #endif // !POWER_PLANT_H

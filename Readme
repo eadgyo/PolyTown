@@ -1,1 +1,17 @@
-// HelloWorld
+GameContent Constructors
+
+Road
+
+House
+Building
+
+SocialBuilding : School, Hospital, FireStation, PoliceStation
+
+PowerPlant
+WaterTower
+
+Farm
+Shop
+Manufactory
+
+PollutionArea

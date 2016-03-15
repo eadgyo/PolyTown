@@ -8,22 +8,29 @@ class Housing
 public:
     Housing(p_uint max_inhabitants, p_uint water_needs, p_uint energy_needs);
 
-    p_uint getInhabitants();
-    p_uint getFoodNeeds();
-    p_uint getWaterNeeds();
-    p_uint getEnergyNeeds();
+    // ----- GETTER ----- //
+    p_uint getInhabitants() const;
+    p_uint getFoodNeeds() const;
+    p_uint getWaterNeeds() const;
+    p_uint getEnergyNeeds() const;
 
-    bool isFull();
-    bool hasFood();
-    bool hasWater();
-    bool hasEnergy();
+    bool isFull() const;
+    bool hasFood() const;
+    bool hasWater() const;
+    bool hasEnergy() const;
+
+    // ----- SETTER ----- //
+    p_uint addInhabitants(p_uint n);
+    p_uint delInhabitants(p_uint n);
+
+    void upgrade(p_uint water_needs, p_uint energy_needs);
 
 protected:
     p_uint m_inhabitants;
-    const p_uint m_max_inhabitants;
+    p_uint m_max_inhabitants;
     static const p_uint m_food_needs;
-    const p_uint m_water_needs;
-    const p_uint m_energy_needs;
+    p_uint m_water_needs;
+    p_uint m_energy_needs;
 
     bool m_hasFood;
     bool m_hasWater; // pointeur

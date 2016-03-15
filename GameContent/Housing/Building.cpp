@@ -1,6 +1,6 @@
 #include "Building.h"
 
-#include "../Constant.h"
+#include "../../Constant.h"
 
 #include <iostream>
 

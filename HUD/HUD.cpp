@@ -33,7 +33,7 @@ void HUD::initialize(std::string name, int width, int height)
 	}
 
 	// On initialise la pile en ajoutant le Menu
-	iStack.push_back(interfaces[2]);
+	iStack.push_back(interfaces[0]);
 }
 
 void HUD::render()

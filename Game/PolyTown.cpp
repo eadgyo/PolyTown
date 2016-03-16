@@ -16,7 +16,6 @@ PolyTown::PolyTown() :
 {
     cout << "PolyTown : Construction" << endl;
     running = false;
-
 }
 
 bool PolyTown::init()
@@ -24,7 +23,7 @@ bool PolyTown::init()
     HUD::initialize("PolyTown Alpha 0.1", SCREEN_WIDTH, SCREEN_HEIGHT);
 	
 	// Création des ressources
-	house = new House(g, myRectangle(Vector3D(0, 0), 250, 250));
+    house = new House(g, 100, 100);
 
     running = true;
 

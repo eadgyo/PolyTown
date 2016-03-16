@@ -19,17 +19,16 @@ typedef unsigned int p_uint;
 // ----- GameContent ----- //
 
 // Sprites
-//#define SPRITES_IMAGE "link_sprites.png"
-//#define SPRITES_WIDTH 1200
-//#define SPRITES_HEIGHT 1040
-
-#define SPRITES_IMAGE "Untitled.png"
-#define SPRITES_WIDTH 475
-#define SPRITES_HEIGHT 73
 
 // Housing
 #define HOUSING_FOOD_NEEDS 10
 
+#define HOUSE_IMAGE_NAME "link_sprites.png"
+#define HOUSE_IMAGE_COLS 10
+#define HOUSE_FRAME_WIDTH 120
+#define HOUSE_FRAME_HEIGHT 130
+#define HOUSE_FRAME_NUMBER 0
+#define HOUSE_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250)
 #define HOUSE_NAME "Maison"
 #define HOUSE_MAX_INHAB 1
 #define HOUSE_WATER_NEEDS 10

@@ -13,10 +13,9 @@
 class House final : public virtual Housing
 {
 public:
-    House(Graphics* graphics, myRectangle & rect);
-    House(Image & image, myRectangle & rect, p_uint water_needs, p_uint energy_needs);
-    House(std::string name, Image & image, myRectangle & rect);
-    House(std::string name, Image & image, myRectangle & rect, p_uint water_needs, p_uint energy_needs);
+    House(Graphics* graphics);
+    House(Graphics* graphics, int x, int y);
+    House(Graphics* graphics, int x, int y, p_uint water_needs, p_uint energy_needs);
 
 private:
 

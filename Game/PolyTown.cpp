@@ -18,7 +18,7 @@ PolyTown::PolyTown() :
     running = false;
 
 
-    //house = new House(g, myRectangle(Vector3D(0, 0), Vector3D(250, 250)));
+    house = new House(g, myRectangle(Vector3D(0, 0), Vector3D(250, 250)));
 }
 
 bool PolyTown::init()
@@ -43,7 +43,7 @@ void PolyTown::mainLoop()
 		HUD::render();
 		HUD::checkEvent();
 
-        //house->draw();
+        house->draw();
 
         SDL_Delay(500);
 

@@ -46,20 +46,8 @@ void HUD::render()
 	// On reset l'écran
 	g->clear();
 
-	Image image;
-	image.initialize(g, 250, 50, 0, "Untitled.png");
-	image.setCurrentFrame(1);
-	//image.flipH(Vector3D(true));
-	image.scale(1.0f, Vector3D(true));
-	image.setPositionX(500);
-	image.setPositionY(500);
-	image.setVisible(255.0f);
-	
-
 	// On rend le dernier élément
-	//iStack.back()->render(g);
-	
-	image.draw();
+	iStack.back()->render(g);
 
 	// Swap buffer
 	g->swapGL();

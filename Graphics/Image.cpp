@@ -47,7 +47,6 @@ Image::Image(Image& image)
 
 Image::Image(Graphics* graphics, float width, float height, int currentFrame, int cols, std::string textureName)
 {
-	currentFrame = 0;
 	startFrame = 0;
 	endFrame = 0;
 	isDisplayingRec = false;

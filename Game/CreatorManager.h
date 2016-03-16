@@ -16,7 +16,7 @@ public:
 	void setGameStruct(GameStruct* gameStruct);
 
 	// isPossibleToMake
-	bool isMakableRoad(Road* road);
+	bool isMakableRoad(Road* road, std::vector<Road*> roadsGood, std::vector<int> side);
 	bool isMakable(QTEntity* qtEntity);
 
 	// Remove ressources

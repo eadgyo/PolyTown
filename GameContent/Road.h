@@ -12,10 +12,12 @@ public:
 	Road();
 	Road(const Vector3D& center, const Vector3D& length);
 	Road(const Vector3D& center, const Vector3D& length, float theta);
+	~Road() {};
 	static Road create2points(const Vector3D& A, const Vector3D& B, float width);
 	static Road createLeft(const Vector3D& left, const Vector3D& length);
 
 	// Getter
+	myRectangle getBigRectangle(float width, float height) const;
 	Vector3D getStart() const;
 	Vector3D getEnd() const;
 	Vector3D get(unsigned n) const;

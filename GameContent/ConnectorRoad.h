@@ -3,6 +3,8 @@
 #include "Road.h"
 class ConnectorRoad : public Road
 {
+	~ConnectorRoad() {};
+
 	inline unsigned sizeConnected() const { return connected.size(); };
 	inline Road* getConnected(unsigned n) const { return connected[n]; };
 

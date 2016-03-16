@@ -185,6 +185,27 @@ myRectangle Road::getRect() const
 	return (*rec);
 }
 
+myRectangle Road::getBigRectangle(float defWidth, float defHeight) const
+{
+	float width, height;
+	float side0 = (get(0) - get(1)).getMagnitude();
+	float side1 = (get(1) - get(2)).getMagnitude();
+	bool inf = side0 < side1;
+	if (inf)
+	{
+		width = side0 + defWidth;
+		height = side1 + defHeight;
+	}
+	else
+	{
+		width = side1 + defWidth;
+		height = side0 + defHeight;
+	}
+	return myRectangle(getCenter(), width, height, getAngle2D());
+}
+
+
+
 std::vector<myRectangle> Road::getMidColl(float defHeight) const
 {
 	std::vector<myRectangle> midColl;

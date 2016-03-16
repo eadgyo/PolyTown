@@ -15,7 +15,7 @@ public:
 	QTEntity(const Vector3D& center, const Vector3D& length);
 	QTEntity(const Vector3D& center, const Vector3D& length, float theta);
 	QTEntity(const Vector3D& center, float radius);
-	~QTEntity();
+	virtual ~QTEntity();
 
 	
 

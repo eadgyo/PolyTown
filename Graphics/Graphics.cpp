@@ -140,7 +140,6 @@ void Graphics::render(Image& image)
 
 	const myRectangle rec = image.getRectangle();
 	SpriteData* spriteData = image.getSpriteData();
-	glColor4f(spriteData->r, spriteData->g, spriteData->b, spriteData->a);
 	glTranslatef(rec.getCenterX() + ((int)rec.getWidth())*((spriteData->flipH)?1:0),
 				rec.getCenterY() + ((int)rec.getHeight())*((spriteData->flipV)?1:0),
 				0.0f);
@@ -161,6 +160,9 @@ void Graphics::render(Image& image)
 	SDL_Rect sdlRec = spriteData->rect->getSDLRect();
 	glTranslatef((float) -sdlRec.x, (float) - sdlRec.y, 0.0f);
 	SDL_Rect destRect = spriteData->rect->getSDLRectDest(); //spriteData->flipH, spriteData->flipV);
+	
+	// Changement de couleur
+	setColor(image.getColor());
 	renderCopy(spriteData->texture, sdlRec);
 
 	glPopMatrix();
@@ -191,6 +193,7 @@ void Graphics::render(Image& image, const Vector3D& translation)
 	SDL_Rect sdlRec = spriteData->rect->getSDLRect();
 	SDL_Rect destRect = spriteData->rect->getSDLRect(); //spriteData->flipH, spriteData->flipV);
 	//SDL_RenderCopy(renderer, spriteData->texture, &sdlRec, &destRect);
+	setColor(image.getColor());
 	renderCopy(spriteData->texture, sdlRec);
 	glPopMatrix();
 }
@@ -221,7 +224,7 @@ void Graphics::render(Image& image, const Vector3D& translation, float scale)
 
 	SDL_Rect sdlRec = spriteData->rect->getSDLRect();
 	SDL_Rect destRect = spriteData->rect->getSDLRect();
-	//SDL_RenderCopy(renderer, spriteData->texture, &sdlRec, &destRect);
+	setColor(image.getColor());
 	renderCopy(spriteData->texture, sdlRec);
 	glPopMatrix();
 }
@@ -478,6 +481,11 @@ void Graphics::render(const Form& form, const Vector3D& translation, float scale
 void Graphics::setColor(float r, float g, float b)
 {
 	glColor3f(r, g, b);
+}
+
+void Graphics::setColor(myColor color)
+{
+	glColor4f(color.r, color.g, color.g, color.a);
 }
 
 void Graphics::setColor(float r, float g, float b, float a)

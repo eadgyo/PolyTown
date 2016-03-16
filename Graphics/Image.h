@@ -13,6 +13,7 @@ class Image;
 #include "../Maths/myRectangle.h"
 #include "../Maths/sRectangle.h"
 #include "../FileManager/FileManager.h"
+#include "myColor.h"
 
 class Image
 {
@@ -45,7 +46,7 @@ public:
 	float getDegrees(const Vector3D& vec) const;
 	int getCurrentFrame() const;
 	const sRectangle* getSpriteDataRect() const;
-	const SDL_Color& getColorFilter() const;
+	const myColor& getColorFilter() const;
 	SpriteData* getSpriteData();
 	const bool getFlipV() const;
 	const bool getFlipH() const;
@@ -55,13 +56,16 @@ public:
 	std::string getTextureName() const;
 	float getRecWidth() const;
 	float getSpriteDataWidth() const;
+	myColor getColor() const { return color; };
 
 	// Setter
 	void setFrames(int start, int end);
 	void setColorFilter(Uint8 r, Uint8 g, Uint8 b) { colorFilter.r = r; colorFilter.g = g; colorFilter.b = b; };
 	void setColorFilter(Uint8 a, Uint8 r, Uint8 g, Uint8 b) { colorFilter.a = a; colorFilter.r = r; colorFilter.g = g; colorFilter.b = b; };
-	void setColor(float r, float g, float b) { spriteData->r = r; spriteData->g = g; spriteData->b = b; };
-	void setColor(float a, float r, float g, float b) { spriteData->a = a; spriteData->r = r; spriteData->g = g; spriteData->b = b; };
+	void setColorFilter(myColor colorFilter) { this->colorFilter.r = colorFilter.r;  this->colorFilter.g = colorFilter.g; this->colorFilter.b = colorFilter.b; this->colorFilter.a = colorFilter.a; };
+	void setColor(float r, float g, float b) { color.r = r; color.g = g; color.b = b; };
+	void setColor(float a, float r, float g, float b) { color.a = a; color.r = r; color.g = g; color.b = b; };
+	void setColor(myColor color) { this->color.r = color.r;  this->color.g = color.g; this->color.b = color.b; this->color.a = color.a; };
 	void set(Image& image);
 	void setCols(int cols);
 	void setIsDisplayingRec(bool isDisplayingRec);
@@ -85,7 +89,7 @@ public:
 	void setFlipV(bool b, const Vector3D& center);
 	void setVisible(float visible);
 	void setSpriteDataRect(sRectangle* rect);
-	void setColorFilter(SDL_Color& colorFilter);
+	void setColorFilter(myColor& colorFilter);
 	void setFlipH(bool flipHorizontal);
 	void setFlipV(bool flipVertical);
 	void setScale(float scale);
@@ -129,15 +133,14 @@ public:
 protected:
 	Graphics* graphics;
 	SpriteData* spriteData;
-	SDL_Color colorFilter;
-	SDL_Color color;
+	myColor colorFilter;
+	myColor color;
 	int cols;
 	int currentFrame;
 	bool isDisplayingRec;
 
 	myRectangle rec;
 
-	float visible;
 	bool isInitialized;
 	int startFrame;
 	int endFrame;

@@ -17,10 +17,10 @@ Image::Image()
 	endFrame = 0;
 
 	isDisplayingRec = false;
-	visible = 1.0f;
 	isInitialized = false;
 	spriteData = new SpriteData();
 	setColorFilter(0,0,0,0);
+	setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	deletion = false;
 }
@@ -35,10 +35,10 @@ Image::Image(Image& image)
 	endFrame = 0;
 
 	isDisplayingRec = false;
-	visible = 1.0f;
 	isInitialized = false;
 	spriteData = new SpriteData();
-	setColorFilter(0,0,0,0);
+	setColorFilter(image.getColorFilter());
+	setColor(image.getColor());
 	set(image);
 
 	image.letDeleting(false);
@@ -51,9 +51,9 @@ Image::Image(Graphics* graphics, float width, float height, int currentFrame, in
 	startFrame = 0;
 	endFrame = 0;
 	isDisplayingRec = false;
-	visible = 1.0f;
 	spriteData = new SpriteData();
 	setColorFilter(0,0,0,0);
+	setColor(1.0f, 1.0f, 1.0f, 1.0f);
 	deletion = false;
 
 	initialize(graphics, width, height, currentFrame, cols, textureName);
@@ -103,7 +103,7 @@ int Image::getCols() const
 
 float Image::getVisible() const
 {
-	return visible;
+	return color.a;
 }
 
 int Image::getOrigWidth() const
@@ -177,7 +177,7 @@ const sRectangle* Image::getSpriteDataRect() const
 	return spriteData->rect;
 }
 
-const SDL_Color& Image::getColorFilter() const
+const myColor& Image::getColorFilter() const
 {
 	return colorFilter;
 }
@@ -239,7 +239,8 @@ void Image::set(Image& image)
 	isDisplayingRec = image.getIsRectDisplaying();
 	setCurrentFrame(image.getCurrentFrame());
 	rec.set(image.getRectangle());
-	visible = image.getVisible();
+	setColorFilter(image.getColorFilter());
+	setColor(image.getColor());
 }
 void Image::setCols(int cols)
 {
@@ -365,7 +366,7 @@ void Image::setSpriteDataRect(sRectangle* rect)
 	spriteData->rect = rect;
 }
 
-void Image::setColorFilter(SDL_Color& colorFilter)
+void Image::setColorFilter(myColor& colorFilter)
 {
 	this->colorFilter = colorFilter;
 }
@@ -521,7 +522,7 @@ void Image::draw()
 
 void Image::draw(Graphics* g)
 {
-	if(g && spriteData->texture && visible >= 0.01f)
+	if(g && spriteData->texture && color.a >= 0.01f)
 	{
 		g->render((*this));
 	}
@@ -534,7 +535,7 @@ void Image::draw(const Vector3D& translation)
 
 void Image::draw(Graphics* g, const Vector3D& translation)
 {
-	if(g && spriteData->texture && visible >= 0.01f)
+	if(g && spriteData->texture && color.a >= 0.01f)
 	{
 		g->render((*this), translation);
 	}
@@ -542,7 +543,7 @@ void Image::draw(Graphics* g, const Vector3D& translation)
 
 void Image::draw(Graphics* g, const Vector3D& translation, float scale)
 {
-	if(g && spriteData->texture && visible >= 0.01f)
+	if(g && spriteData->texture && color.a >= 0.01f)
 	{
 		g->render((*this), translation, scale);
 	}
@@ -630,9 +631,9 @@ void Image::rotateRadians(float radians, const Vector3D& center)
 
 void Image::setVisible(float f)
 {
-	visible *= f;
-	if(visible > 1.0f)
-		visible = 1.0f;
-	else if(visible < 0.01f)
-		visible = 0.005f;
+	color.a *= f;
+	if(color.a > 1.0f)
+		color.a = 1.0f;
+	else if(color.a < 0.01f)
+		color.a = 0.005f;
 }

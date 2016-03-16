@@ -23,7 +23,7 @@ class Graphics;
 #include "Image.h"
 #include <vector>
 #include <map>
-
+#include "myColor.h"
 
 
 
@@ -66,6 +66,7 @@ public:
 	void drawForm(const Form& form);
 	void drawTriangle(const Vector3D& p1, const Vector3D& p2, const Vector3D& p3);
 	void setColor(float r, float g, float b);
+	void setColor(myColor color);
 	// Gestion de la transparence
 	void setColor(float r, float g, float b, float a);
 	void setSize(float a);

@@ -14,6 +14,8 @@ public:
 	Layer(int, int) { isInitialized = false; };
 	Layer(int, int, int, int) { isInitialized = false; };
 
+
+	void setTranslate(const Vector3D& translate) { this->translate.set(translate); };
 	void virtual render(Graphics * g, const Vector3D translation) = 0;
 	// Détection des collisions 
 	LayerNs::LayerEvent virtual handleEvent(Input& input) = 0;

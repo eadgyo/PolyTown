@@ -47,7 +47,16 @@ Image::Image(Image& image)
 
 Image::Image(Graphics* graphics, float width, float height, int currentFrame, int cols, std::string textureName)
 {
-    initialize(graphics, width, height, currentFrame, cols, textureName);
+	currentFrame = 0;
+	startFrame = 0;
+	endFrame = 0;
+	isDisplayingRec = false;
+	visible = 1.0f;
+	spriteData = new SpriteData();
+	setColorFilter(0,0,0,0);
+	deletion = false;
+
+	initialize(graphics, width, height, currentFrame, cols, textureName);
 }
 
 Image::~Image()

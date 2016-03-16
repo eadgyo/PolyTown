@@ -20,6 +20,7 @@ Road Road::create2points(const Vector3D& A, const Vector3D& B, float width)
 	Road road;
 	float height = (A - B).getMagnitude();
 	road.set2points(A, B, Vector3D(width, height));
+	return road;
 }
 
 Road Road::createLeft(const Vector3D& left, const Vector3D& length)
@@ -161,8 +162,7 @@ myRectangle Road::getStartColl(float defWidth, float defHeight) const
 	getLength(width, height);
 
 	Vector3D start = getStart();
-	Vector3D length(defWidth, defHeight);
-	return myRectangle(start.x(), length, getAngle2D());
+	return myRectangle(start, defWidth, defHeight, getAngle2D());
 }
 
 myRectangle Road::getEndColl(float defWidth, float defHeight) const
@@ -175,8 +175,7 @@ myRectangle Road::getEndColl(float defWidth, float defHeight) const
 	getLength(width, height);
 
 	Vector3D end = getEnd();
-	Vector3D length(defWidth, defHeight);
-	return myRectangle(end.x(), length, getAngle2D());
+	return myRectangle(end, defWidth, defHeight, getAngle2D());
 }
 
 myRectangle Road::getRect() const
@@ -242,6 +241,7 @@ std::vector<myRectangle> Road::getMidColl(float defHeight) const
 		Vector3D length(side0, side1);
 		midColl.push_back(myRectangle(center, length, getAngle2D()));
 	}
+	return midColl;
 }
 
 std::set<QTEntity*> Road::getEntConnected() const

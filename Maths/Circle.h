@@ -22,12 +22,12 @@ public:
 	float getMaxY() const;
 	bool isColliding(const Circle& circle) const;
 
-	/*
+	
 	bool collisionSat(Form& form);
 	bool collisionSat(Form& form, const Vector3D& VA,
 		const Vector3D& VB, const Vector3D& push, float& t);
 	bool collisionSatFree(const Form& B, const Vector3D& VA, const Vector3D& VB);
-	*/
+	
 protected:
 	float radius;
 };

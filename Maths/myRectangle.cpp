@@ -35,6 +35,14 @@ myRectangle::myRectangle(const Vector3D& center, const Vector3D& length,
 {
 	set(center, length, omega);
 }
+myRectangle::myRectangle(const Vector3D& center, float width, float height, float omega) : Form(4)
+{
+	set(center, width, height, omega);
+}
+myRectangle::myRectangle(float x, float y, float width, float height, float omega) : Form(4)
+{
+	set(Vector3D(x, y), width, height, omega);
+}
 
 myRectangle::~myRectangle()
 {
@@ -55,6 +63,20 @@ void myRectangle::set(const Vector3D& center, const Vector3D& length, float omeg
 	points.at(1).set2D(- 0.5f*length.x(),+ 0.5f*length.y());
 	points.at(2).set2D(+ 0.5f*length.x(),+ 0.5f*length.y());
 	points.at(3).set2D(+ 0.5f*length.x(),- 0.5f*length.y());
+
+	rotateRadians(omega, center);
+}
+
+void myRectangle::set(const Vector3D& center, float width, float height, float omega)
+{
+	clearTransformations();
+	orientation.setPos(center);
+	this->length.set(width, height, 0, false);
+
+	points.at(0).set2D(-0.5f*width, -0.5f*height);
+	points.at(1).set2D(-0.5f*width, +0.5f*height);
+	points.at(2).set2D(+0.5f*width, +0.5f*height);
+	points.at(3).set2D(+0.5f*width, -0.5f*height);
 
 	rotateRadians(omega, center);
 }

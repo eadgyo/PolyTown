@@ -314,7 +314,7 @@ sRectangle Form::getBound() const
 	float maxY = getMaxY();
 	float width = maxX - minX;
 	float height = maxY - minY;
-	return sRectangle(width*0.5f + minX, height*0.5 + minY, width, height);
+	return sRectangle(width*0.5f + minX, height*0.5f + minY, width, height);
 }
 
 // Penser à liberer lorsque fin d'utilisation du tableau

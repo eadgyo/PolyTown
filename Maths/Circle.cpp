@@ -62,3 +62,18 @@ bool Circle::isColliding(const Circle& circle) const
 		return true;
 	return false;
 }
+
+bool Circle::collisionSat(Form & form)
+{
+	return false;
+}
+
+bool Circle::collisionSat(Form & form, const Vector3D & VA, const Vector3D & VB, const Vector3D & push, float & t)
+{
+	return false;
+}
+
+bool Circle::collisionSatFree(const Form & B, const Vector3D & VA, const Vector3D & VB)
+{
+	return false;
+}

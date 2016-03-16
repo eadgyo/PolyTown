@@ -2,8 +2,9 @@
 #define POLYTOWN_H
 
 #include "../HUD/HUD.h" // Héritage
-#include "../HUD/Input.h" // Temp
+
 #include "../GameContent/Housing/House.h"
+#include "../GameContent/Housing/Building.h"
 
 class PolyTown : public HUD
 {
@@ -22,6 +23,7 @@ private:
     bool running;
 
     House* house;
+    Building* building;
 };
 
 #endif // !POLYTOWN_H

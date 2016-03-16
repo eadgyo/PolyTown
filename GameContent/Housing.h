@@ -3,8 +3,10 @@
 
 #include "../Constant.h"
 
-#include "../Quadtree/QTEntity.h"
 #include "../Graphics/Image.h"
+#include "../Quadtree/QTEntity.h"
+#include "../Maths/myRectangle.h"
+#include "../Maths/Vector3D.h"
 
 class Housing : public virtual QTEntity, public virtual Image
 {

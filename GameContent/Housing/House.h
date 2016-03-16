@@ -3,13 +3,6 @@
 
 #include "../Housing.h"
 
-#include "../Graphics/Image.h"
-#include "../Maths/myRectangle.h"
-
-#include "../Maths/Vector3D.h"
-
-#include <string>
-
 class House final : public virtual Housing
 {
 public:

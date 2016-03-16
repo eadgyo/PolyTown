@@ -28,7 +28,7 @@ typedef unsigned int p_uint;
 #define HOUSE_FRAME_WIDTH 120
 #define HOUSE_FRAME_HEIGHT 130
 #define HOUSE_FRAME_NUMBER 0
-#define HOUSE_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250)
+#define HOUSE_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define HOUSE_NAME "Maison"
 #define HOUSE_MAX_INHAB 1
 #define HOUSE_WATER_NEEDS 10
@@ -37,6 +37,12 @@ typedef unsigned int p_uint;
 #define LOW_ENERGY_HOUSE_WATER_NEEDS 10
 #define LOW_ENERGY_HOUSE_ENERGY_NEEDS 10
 
+#define BUILDING_IMAGE_NAME "link_sprites.png"
+#define BUILDING_IMAGE_COLS 10
+#define BUILDING_FRAME_WIDTH 120
+#define BUILDING_FRAME_HEIGHT 130
+#define BUILDING_FRAME_NUMBER 1
+#define BUILDING_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define BUILDING_NAME "Immeuble"
 #define BUILDING_MAX_INHAB_PER_FLOOR 1
 #define BUILDING_WATER_NEEDS 10

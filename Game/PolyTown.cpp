@@ -23,7 +23,8 @@ bool PolyTown::init()
     HUD::initialize("PolyTown Alpha 0.1", SCREEN_WIDTH, SCREEN_HEIGHT);
 	
 	// Création des ressources
-    house = new House(g, 100, 100);
+    house = new House(g, 60, 65);
+    building = new Building(g, 120, 130);
 
     running = true;
 
@@ -43,6 +44,7 @@ void PolyTown::mainLoop()
 
         HUD::clear();
         house->draw();
+        building->draw();
 		HUD::render();
         HUD::swap();
 		HUD::checkEvent();

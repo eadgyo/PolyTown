@@ -6,8 +6,6 @@ int main(int argc, char *argv[])
     
     PolyTown game;
 
-    
-
     if (game.init()) {
         return 1;
     }

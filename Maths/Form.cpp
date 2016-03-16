@@ -606,6 +606,24 @@ void Form::calculateSurface()
 	surface /= 2;
 }
 
+bool Form::isColliding(Form & form)
+{
+	// Test juste la collision grâce à System Axis Theorem
+	
+	return collisionSat(form);
+}
+
+bool Form::isColliding(Form & form, const Vector3D & push, float & t)
+{
+	// push représente la direction normalisée dans laquelle il faut pousser
+	// t est la norme de push
+
+	// Donc pour ne plus avoir de collisions, il faut juste pousser l'objet
+	// de push*t
+
+	return collisionSat(form, Vector3D(true), Vector3D(true), push, t);
+}
+
 bool Form::collisionSat(Form& form)
 {
 	if(convexForms.size() == 0)

@@ -14,13 +14,14 @@ public:
 	myRectangle(const Vector3D& center, const Vector3D& length, float omega);
 	myRectangle(const Vector3D& center, float width, float height, float omega);
 	myRectangle(float x, float y, float width, float height, float omega);
+	myRectangle(const Vector3D& center, float width, float height);
 	~myRectangle();
 
 	myRectangle clone();
 
 	// Setter
 	void set(const Vector3D& center, const Vector3D& length, float omega);
-	void myRectangle::set(const Vector3D& center, float width, float height, float omega);
+	void set(const Vector3D& center, float width, float height, float omega);
 	void set(const myRectangle& rec);
 	void set(const Form& form);
 

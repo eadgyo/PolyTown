@@ -110,6 +110,10 @@ public:
 	void calculateSurface();
 
 	// Collisions detection
+	bool isColliding(Form& form);
+	bool isColliding(Form& form, const Vector3D& push, float& t);
+
+	// Pas à utiliser directement
 	bool collisionSat(Form& form);
 	bool collisionSat(Form& form, const Vector3D& VA,
 			const Vector3D& VB, const Vector3D& push, float& t);

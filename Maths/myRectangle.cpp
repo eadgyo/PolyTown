@@ -44,6 +44,11 @@ myRectangle::myRectangle(float x, float y, float width, float height, float omeg
 	set(Vector3D(x, y), width, height, omega);
 }
 
+myRectangle::myRectangle(const Vector3D& center, float width, float height) : Form(4)
+{
+	set(center, width, height, 0);
+}
+
 myRectangle::~myRectangle()
 {
 }

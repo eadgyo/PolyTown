@@ -125,6 +125,9 @@ void Graphics::clear()
 
 void Graphics::swapGL()
 {
+	// Dans le cas ou le graphics n'a pas été init
+	assert(isInitialized);
+
 	SDL_GL_SwapWindow(screen);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -138,7 +141,6 @@ void Graphics::render(SDL_Surface *texture, SDL_Rect* textureRect)
 
 void Graphics::render(Image& image)
 {
-	
 	glPushMatrix();
 
 	const myRectangle rec = image.getRectangle();
@@ -173,6 +175,7 @@ void Graphics::render(Image& image)
 
 void Graphics::render(Image& image, const Vector3D& translation)
 {
+	assert(isInitialized);
 	glPushMatrix();
 
 	const myRectangle rec = image.getRectangle();

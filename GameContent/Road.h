@@ -40,7 +40,8 @@ public:
 	QTEntity* getEnt(unsigned n) const;
 	inline Road* getLast() { return last; };
 	inline Road* getNext() { return next; };
-	
+	inline int getConnec() const { return connex; };
+
 	// Setter
 	void setStart(const Vector3D& center, float minHeight);
 	void setEnd(const Vector3D& center, float minHeight);
@@ -50,8 +51,10 @@ public:
 	void erase(unsigned i);
 	void addEntity(QTEntity* entity);
 	void addAllEntities(std::vector<QTEntity*> entities);
+	void setConnext(int connex) { this->connex = connex; };
 
 protected:
+	int connex;
 	std::set<QTEntity*> entConnected;
 	Road* last;
 	Road* next;

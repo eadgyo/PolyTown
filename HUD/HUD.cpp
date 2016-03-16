@@ -7,8 +7,6 @@ HUD::HUD()
 	// Création de l'outil graphique
     FileManager& fileM = FileManager::getInstance();
     g = new Graphics();
-	//initialize
-    //g->loadAllSurfaces();
 }
 
 HUD::~HUD()

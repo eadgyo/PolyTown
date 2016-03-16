@@ -6,6 +6,7 @@
 struct GameStruct
 {
 	// Gérer collisions et affichages
+	// Autre que les routes
 	QuadTree QTCollision;
 
 	// Gestion des ressources
@@ -22,5 +23,6 @@ struct GameStruct
 	QuadTree QTRoads;
 	QuadTree QTHabitations;
 
-
+	QuadTree QTPollutionWater;
+	QuadTree QTPollutionAir;
 };

@@ -14,9 +14,8 @@
 int main(int argc, char* args[])
 {
 	
-	FileManager& fileM = FileManager::getInstance();
-	fileM.initialize();
-	/*
+	/*FileManager& fileM = FileManager::getInstance();
+	
 	// Création du module de gestion rendu openGL
 	SDL_GLContext context = SDL_GL_CreateContext(g->init("Affichage forme", WIDTH, HEIGHT));
 	g->initGL(context, WIDTH, HEIGHT);

@@ -18,6 +18,8 @@ void Graphics::init(std::string windowName, int width, int height)
 {
 	if (screen != NULL)
 		return;
+	if (isInitialized)
+		return;
 
 	if (SDL_Init(SDL_INIT_VIDEO) >= 0)
 	{
@@ -40,6 +42,7 @@ void Graphics::init(std::string windowName, int width, int height)
 				// On active l'alpha
 				glEnable(GL_BLEND);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				isInitialized = true;
 				return;
 			}
 		}

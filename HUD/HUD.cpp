@@ -6,9 +6,9 @@ HUD::HUD()
 {
 	// Création de l'outil graphique
     FileManager& fileM = FileManager::getInstance();
-    fileM.initialize();
     g = new Graphics();
-    g->loadAllSurfaces();
+	//initialize
+    //g->loadAllSurfaces();
 }
 
 HUD::~HUD()

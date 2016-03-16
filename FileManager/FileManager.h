@@ -20,7 +20,7 @@ class FileManager
 public:
 	static FileManager& getInstance();
 	inline void test() { std::cout << "test"; };
-	void initialize();
+	
 	SDL_Surface* getDefTexture(std::string textureName);
 	void loadDefTextures();
 	SDL_Surface* loadTexture(std::string path, bool isInternal);
@@ -35,6 +35,8 @@ public:
 	std::string getNameSurface(int i) { return namesStr[i]; };
 
 private:
+	void initialize();
+
 	FileManager& operator=(const FileManager&) {return (*this); };
 	FileManager(const FileManager&) {};
 
@@ -50,6 +52,7 @@ private:
 	std::vector<std::string> namesStr;
 	std::map<std::string, int> names;
 
+	bool isInitilialized;
 	static FileManager& INSTANCE;
 
 };

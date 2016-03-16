@@ -4,6 +4,8 @@ FileManager &FileManager::INSTANCE=FileManager();
 FileManager::FileManager()
 {
     std::cout << "FileManager : Construction" << std::endl;
+	isInitilialized = false;
+	initialize();;
 }
 
 FileManager& FileManager::getInstance()

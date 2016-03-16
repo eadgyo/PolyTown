@@ -16,9 +16,11 @@ PolyTown::PolyTown() :
 {
     cout << "PolyTown : Construction" << endl;
     running = false;
-
+	init();
 
     house = new House(g, myRectangle(Vector3D(0, 0), Vector3D(250, 250)));
+
+	
 }
 
 bool PolyTown::init()

@@ -18,7 +18,9 @@ public:
 	// Création de la fenetre et des graphics
 	void initialize(std::string name, int width, int height);
 	// Rendu sur la fenetre
+	void clear();
 	void render();
+	void swap();
 	// Fin du Jeu
 	void exitGame();
 	// Mise à jour graphique

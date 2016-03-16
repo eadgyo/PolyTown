@@ -38,21 +38,23 @@ void HUD::initialize(std::string name, int width, int height)
 	// On initialise la pile en ajoutant le Menu
 	iStack.push_back(interfaces[0]);
 }
-
+void HUD::clear()
+{
+	// On reset l'écran
+	g->clear();
+}
 void HUD::render()
 {
 	checkStack();
-
-	// On reset l'écran
-	g->clear();
-
 	// On rend le dernier élément
 	iStack.back()->render(g);
+}
 
+void HUD::swap()
+{
 	// Swap buffer
 	g->swapGL();
 }
-
 void HUD::exitGame()
 {
 }

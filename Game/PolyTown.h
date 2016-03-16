@@ -15,7 +15,7 @@ public:
 
     bool wantQuit();
 
-    void update(); 
+    void update();
     virtual ~PolyTown() { std::cout << "PolyTown : Destruction" << std::endl; };
 
 private:

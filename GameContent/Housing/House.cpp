@@ -2,7 +2,7 @@
 
 House::House(Graphics* graphics, myRectangle & rect) :
     QTEntity(rect),
-    Image(graphics, 250, 250, 0, 2, "test.jpg"),
+    Image(graphics, SPRITES_WIDTH, SPRITES_HEIGHT, 0, 10, SPRITES_IMAGE),
     Housing(HOUSE_MAX_INHAB, HOUSE_WATER_NEEDS, HOUSE_ENERGY_NEEDS)
 {
     setPos(Vector3D(0, 0));

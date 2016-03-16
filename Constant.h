@@ -18,6 +18,15 @@ typedef unsigned int p_uint;
 
 // ----- GameContent ----- //
 
+// Sprites
+//#define SPRITES_IMAGE "link_sprites.png"
+//#define SPRITES_WIDTH 1200
+//#define SPRITES_HEIGHT 1040
+
+#define SPRITES_IMAGE "Untitled.png"
+#define SPRITES_WIDTH 475
+#define SPRITES_HEIGHT 73
+
 // Housing
 #define HOUSING_FOOD_NEEDS 10
 

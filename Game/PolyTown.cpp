@@ -40,10 +40,12 @@ void PolyTown::mainLoop()
 		
         input.update();
         //input.display();
-		HUD::render();
-		HUD::checkEvent();
 
+        HUD::clear();
         house->draw();
+		HUD::render();
+        HUD::swap();
+		HUD::checkEvent();
 
         SDL_Delay(500);
 

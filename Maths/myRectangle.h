@@ -10,6 +10,7 @@ public:
 	myRectangle();
 	myRectangle(const myRectangle& rectangle);
 	myRectangle(const Form& form);
+	myRectangle(const Vector3D& center, const Vector3D& length);
 	myRectangle(const Vector3D& center, const Vector3D& length, float omega);
 	~myRectangle();
 
@@ -32,6 +33,8 @@ public:
 	float getAngle() const;
 	void scaleF(float factor, const Vector3D& center);
 
+
+	inline virtual unsigned getType() { return 2; };
 private:
 	Vector3D length;
 

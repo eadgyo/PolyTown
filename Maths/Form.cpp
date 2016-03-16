@@ -1,5 +1,6 @@
 
 #include "Form.h"
+#include "sRectangle.h"
 
 Form::Form()
 {
@@ -304,8 +305,8 @@ float Form::getMaxY() const
 	}
 	return yMax;
 }
-/*
-sRectangle Form::getWrap() const
+
+sRectangle Form::getBound() const
 {
 	float minX = getMinX();
 	float minY = getMinY();
@@ -314,7 +315,7 @@ sRectangle Form::getWrap() const
 	float width = maxX - minX;
 	float height = maxY - minY;
 	sRectangle rec = (width*0.5f + minX, height*0.5 + minY, width, height);
-}*/
+}
 
 // Penser à liberer lorsque fin d'utilisation du tableau
 std::vector<Vector3D> Form::getVectorsSatLocal() const

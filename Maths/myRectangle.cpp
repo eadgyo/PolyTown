@@ -25,6 +25,11 @@ myRectangle::myRectangle(const Form& form) : Form(form)
 	length[1] = side.getMagnitude();
 }
 
+myRectangle::myRectangle(const Vector3D& center, const Vector3D& length) : Form(4)
+{
+	set(center, length, 0);
+}
+
 myRectangle::myRectangle(const Vector3D& center, const Vector3D& length,
 		float omega) : Form(4)
 {

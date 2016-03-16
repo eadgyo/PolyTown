@@ -1,5 +1,5 @@
-
 #include "sRectangle.h"
+
 
 sRectangle::sRectangle() : Form(4)
 {

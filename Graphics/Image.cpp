@@ -76,7 +76,8 @@ bool Image::getIsRectDisplaying() const
 	return isDisplayingRec;
 }
 
-const myRectangle& Image::getRectangle() const
+const myRectangle
+& Image::getRectangle() const
 {
 	return rec;
 }

@@ -51,6 +51,8 @@ public:
 	SDL_Rect getSDLRect(bool flipH, bool flipW);
 	SDL_Rect getSDLRectDest();
 
+
+	inline virtual unsigned getType() { return 3; };
 private:
 	Vector3D length;
 

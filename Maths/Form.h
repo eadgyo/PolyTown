@@ -8,6 +8,8 @@
 #ifndef FORM_H_
 #define FORM_H_
 
+class sRectangle;
+
 #include <iterator>
 #include <vector>
 #include <deque>
@@ -18,7 +20,7 @@
 #include "PointType.h"
 #include <map>
 #include "AxesSat.h"
-//#include "sRectangle.h"
+
 
 class Form
 {
@@ -35,6 +37,7 @@ public:
 	void setInit(Form form);
 
 	// Getter
+	inline virtual unsigned getType() { return 0; };
 	const Matrix4& getOrientation() const;
 	Matrix4 getOrientationInverse() const;
 	inline float getOmega() const { return omega; };
@@ -75,7 +78,7 @@ public:
 	Vector3D* getPointsWorld() const;
 	Vector3D transform(const Vector3D& vertex, const Vector3D& p, const Vector3D& v, const Matrix4& orientation, float& t) const;
 	Vector3D handleEdgePoint(const Vector3D& PA, const Vector3D& PB, const Vector3D& PB2) const;
-
+	sRectangle getBound() const;
 	Vector3D& operator[](int i);
 	void updateCenter();
 	void updateOrientation();

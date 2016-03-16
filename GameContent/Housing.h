@@ -3,11 +3,12 @@
 
 #include "../Constant.h"
 
-class Housing
+#include "../Quadtree/QTEntity.h"
+#include "../Graphics/Image.h"
+
+class Housing : public virtual QTEntity, public virtual Image
 {
 public:
-    Housing(p_uint max_inhabitants, p_uint water_needs, p_uint energy_needs);
-
     // ----- GETTER ----- //
     p_uint getInhabitants() const;
     p_uint getFoodNeeds() const;
@@ -26,6 +27,8 @@ public:
     void upgrade(p_uint water_needs, p_uint energy_needs);
 
 protected:
+    Housing(p_uint max_inhabitants, p_uint water_needs, p_uint energy_needs);
+
     p_uint m_inhabitants;
     p_uint m_max_inhabitants;
     static const p_uint m_food_needs;

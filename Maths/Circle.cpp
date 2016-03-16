@@ -24,7 +24,7 @@ Circle::~Circle()
 void Circle::set(const Circle& circle)
 {
 	setInit(circle);
-	this->radius = circle.getRadius;
+	this->radius = circle.getRadius();
 }
 
 void Circle::set(const Vector3D& center, float radius)

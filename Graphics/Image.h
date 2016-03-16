@@ -19,6 +19,7 @@ class Image
 public:
 	Image();
 	Image(Image& image);
+    Image(Graphics* graphics, float width, float height, int currentFrame, int cols, std::string textureName);
 	virtual ~Image();
 	Image clone();
 	void reset();
@@ -50,7 +51,7 @@ public:
 	const bool getFlipH() const;
 	Graphics* getGraphics() const;
 	float getScale() const;
-	bool getIsInitialized() const;
+    inline bool getIsInitialized() const { return isInitialized; };
 	std::string getTextureName() const;
 	float getRecWidth() const;
 	float getSpriteDataWidth() const;

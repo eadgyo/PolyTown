@@ -1,8 +1,11 @@
 #include "House.h"
 
-House::House(Image & image, myRectangle & rect) :
+House::House(Graphics* graphics, myRectangle & rect) :
+    QTEntity(rect),
+    Image(graphics, 250, 250, 0, 2, "test.jpg"),
     Housing(HOUSE_MAX_INHAB, HOUSE_WATER_NEEDS, HOUSE_ENERGY_NEEDS)
 {
+    setPos(Vector3D(0, 0));
 }
 
 House::House(Image & image, myRectangle & rect, p_uint water_needs, p_uint energy_needs) :

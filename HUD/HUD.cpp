@@ -5,7 +5,10 @@
 HUD::HUD()
 {
 	// Création de l'outil graphique
-	g = new Graphics();
+    FileManager& fileM = FileManager::getInstance();
+    fileM.initialize();
+    g = new Graphics();
+    g->loadAllSurfaces();
 }
 
 HUD::~HUD()

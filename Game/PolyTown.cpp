@@ -7,12 +7,18 @@
 #include <iostream>
 #include <Windows.h>
 
+#include "../Maths/myRectangle.h"
+
 using namespace std;
 
-PolyTown::PolyTown()
+PolyTown::PolyTown() :
+    HUD()
 {
     cout << "PolyTown : Construction" << endl;
     running = false;
+
+
+    house = new House(g, myRectangle(Vector3D(0, 0), Vector3D(250, 250)));
 }
 
 bool PolyTown::init()
@@ -36,6 +42,9 @@ void PolyTown::mainLoop()
         //input.display();
 		HUD::render();
 		HUD::checkEvent();
+
+        house->draw();
+
         SDL_Delay(500);
 
         if (wantQuit()) {

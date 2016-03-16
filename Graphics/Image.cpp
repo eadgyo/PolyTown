@@ -45,6 +45,11 @@ Image::Image(Image& image)
 	deletion = false;
 }
 
+Image::Image(Graphics* graphics, float width, float height, int currentFrame, int cols, std::string textureName)
+{
+    initialize(graphics, width, height, currentFrame, cols, textureName);
+}
+
 Image::~Image()
 {
 	if (deletion)

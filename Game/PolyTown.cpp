@@ -24,7 +24,7 @@ bool PolyTown::init()
 	
 	// Création des ressources
     house = new House(g, 60, 65);
-    building = new Building(g, 120, 130);
+    building = new Building(g, 180, 65);
 
     running = true;
 

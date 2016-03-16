@@ -20,8 +20,6 @@ public:
 
 private:
     p_uint m_floor;
-    p_uint m_max_floor;
-    p_uint m_max_inhabitants_per_floor;
 };
 
 #endif // !BUILDING_H

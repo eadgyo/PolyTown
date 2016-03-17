@@ -1,8 +1,8 @@
 #ifndef POLYTOWN_H
 #define POLYTOWN_H
 
-#include "../GameContent/HousingF/House.h"
-#include "../GameContent/HousingF/Building.h"
+#include "../GameContent/Housing/House.h"
+#include "../GameContent/Housing/Building.h"
 #include "../GameContent/Factory/Shop.h"
 #include "../GameContent/Factory/Manufactory.h"
 #include "../GameContent/Factory/Farm.h"

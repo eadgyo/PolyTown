@@ -56,22 +56,51 @@ typedef unsigned int p_uint;
 #define LOW_IMPACT_BUILDING_ENERGY_NEEDS 10
 
 // SocialBuilding
+#define SCHOOL_IMAGE_NAME "link_sprites.png"
+#define SCHOOL_IMAGE_COLS 10
+#define SCHOOL_FRAME_WIDTH 120
+#define SCHOOL_FRAME_HEIGHT 130
+#define SCHOOL_FRAME_NUMBER 1
+#define SCHOOL_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define SCHOOL_NAME "Ecole"
+
 #define SCHOOL_SCORE 0
 #define SCHOOL_RATIO 0.1f
 #define SCHOOL_RADIUS 0.1f
 
+#define HOSPITAL_IMAGE_NAME "link_sprites.png"
+#define HOSPITAL_IMAGE_COLS 10
+#define HOSPITAL_FRAME_WIDTH 120
+#define HOSPITAL_FRAME_HEIGHT 130
+#define HOSPITAL_FRAME_NUMBER 1
+#define HOSPITAL_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define HOSPITAL_NAME "Hôpital"
+
 #define HOSPITAL_SCORE 0
 #define HOSPITAL_RATIO 0.1f
 #define HOSPITAL_RADIUS 0.1f
 
+
+#define FIRE_STATION_IMAGE_NAME "link_sprites.png"
+#define FIRE_STATION_IMAGE_COLS 10
+#define FIRE_STATION_FRAME_WIDTH 120
+#define FIRE_STATION_FRAME_HEIGHT 130
+#define FIRE_STATION_FRAME_NUMBER 1
+#define FIRE_STATION_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define FIRE_STATION_NAME "Caserne"
+
 #define FIRE_STATION_SCORE 0
 #define FIRE_STATION_RATIO 0.1f
 #define FIRE_STATION_RADIUS 0.1f
 
+#define POLICE_STATION_IMAGE_NAME "link_sprites.png"
+#define POLICE_STATION_IMAGE_COLS 10
+#define POLICE_STATION_FRAME_WIDTH 120
+#define POLICE_STATION_FRAME_HEIGHT 130
+#define POLICE_STATION_FRAME_NUMBER 1
+#define POLICE_STATION_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define POLICE_STATION_NAME "Commissariat"
+
 #define POLICE_STATION_SCORE 0
 #define POLICE_STATION_RATIO 0.1f
 #define POLICE_STATION_RADIUS 0.1f
@@ -85,6 +114,14 @@ typedef unsigned int p_uint;
 #define POWER_PLANT_FRAME_NUMBER 13
 #define POWER_PLANT_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define POWER_PLANT_NAME "Centrale"
+
+#define WATER_TOWER_IMAGE_NAME "link_sprites.png"
+#define WATER_TOWER_IMAGE_COLS 10
+#define WATER_TOWER_FRAME_WIDTH 120
+#define WATER_TOWER_FRAME_HEIGHT 130
+#define WATER_TOWER_FRAME_NUMBER 13
+#define WATER_TOWER_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
+#define WATER_TOWER_NAME "Château d'eau"
 
 // Factory
 #define SHOP_IMAGE_NAME "link_sprites.png"

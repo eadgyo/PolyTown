@@ -1,12 +1,10 @@
 #ifndef HOUSING_H
 #define HOUSING_H
 
-#include "../Constant.h"
+#include "../Displayable.h"
 
-#include "Displayable.h"
-
-#include "Energy.h"
-#include "Water.h"
+#include "../Resources/Energy.h"
+#include "../Resources/Water.h"
 
 class Housing : public virtual Displayable, public virtual Energy, public virtual Water
 {

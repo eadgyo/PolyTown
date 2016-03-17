@@ -79,7 +79,7 @@ void BottomLayer::update(float dt)
 
 LayerNs::LayerEvent BottomLayer::handleEvent(Input & input)
 {
-	if (input.getLastEvent() == SDL_MOUSEBUTTONUP && input.getMousePressed(0))
+	if (input.getMousePressed(0))
 	{
 		Vector3D mousePos = input.getMousePos();
 		mousePos -= translate;

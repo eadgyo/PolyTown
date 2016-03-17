@@ -1,12 +1,12 @@
 #ifndef WATER_TOWER_H
 #define WATER_TOWER_H
 
-#include "../Displayable.h"
+#include "Resources.h"
 
-class WaterTower
+class WaterTower : public virtual Resources
 {
 public:
-    WaterTower();
+    WaterTower(Graphics* graphics, int x, int y);
 
 private:
 

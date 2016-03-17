@@ -1,9 +1,7 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
-#include "../Constant.h"
-
-#include "Displayable.h"
+#include "../Displayable.h"
 
 class Factory : public virtual Displayable
 {

@@ -1,9 +1,9 @@
 #ifndef FARM_H
 #define FARM_H
 
-#include "../Factory.h"
+#include "Factory.h"
 
-#include "../Water.h"
+#include "../Resources/Water.h"
 
 class Farm final : public virtual Factory, public virtual Water
 {

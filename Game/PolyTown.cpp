@@ -9,7 +9,7 @@
 
 #include "../Maths/myRectangle.h"
 
-#include "../Game/StructFactory.h"
+#include "../GameContent/StructFactory.h"
 
 using namespace std;
 
@@ -24,7 +24,7 @@ PolyTown::PolyTown()
 
 bool PolyTown::init()
 {
-    HUD::initialize("PolyTown Alpha 0.1", SCREEN_WIDTH, SCREEN_HEIGHT);
+    initialize("PolyTown Alpha 0.1", SCREEN_WIDTH, SCREEN_HEIGHT);
 	
 	// Création des ressources
     house = StructFactory::newHouse(g, 60, 65);
@@ -93,8 +93,6 @@ void PolyTown::mainLoop()
 
 void PolyTown::exit()
 {
-    HUD::exitGame();
-
     cout << "Game ended" << endl;
 }
 

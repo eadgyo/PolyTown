@@ -6,7 +6,7 @@
 class PowerPlant : public Resources
 {
 public:
-    PowerPlant(Graphics* graphics, int x, int y);
+    PowerPlant(std::string name, Graphics* graphics, int x, int y);
 
 private:
 

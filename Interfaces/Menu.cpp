@@ -53,7 +53,7 @@ void Menu::update(float dt)
 }
 HudNs::HudEvent Menu::handleEvent(Input& input)
 {
-	if (input.getLastEvent() == SDL_MOUSEBUTTONUP && input.getMousePressed(0))
+	if (input.getMousePressed(0))
 	{
 		Vector3D mousePos = input.getMousePos();
 

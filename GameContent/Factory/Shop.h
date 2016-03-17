@@ -1,9 +1,9 @@
 #ifndef SHOP_H
 #define SHOP_H
 
-#include "../Factory.h"
+#include "Factory.h"
 
-#include "../Energy.h"
+#include "../Resources/Energy.h"
 
 class Shop final : public virtual Factory, public virtual Energy
 {

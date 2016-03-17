@@ -1,7 +1,7 @@
 #ifndef BUILDING_H
 #define BUILDING_H
 
-#include "../Housing.h"
+#include "Housing.h"
 
 class Building final : public Housing
 {

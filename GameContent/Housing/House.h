@@ -1,7 +1,7 @@
 #ifndef HOUSE_H
 #define HOUSE_H
 
-#include "../Housing.h"
+#include "Housing.h"
 
 class House final : public virtual Housing
 {

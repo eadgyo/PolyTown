@@ -1,10 +1,10 @@
 #ifndef MANUFACTORY_H
 #define MANUFACTORY_H
 
-#include "../Factory.h"
+#include "Factory.h"
 
-#include "../Energy.h"
-#include "../Water.h"
+#include "../Resources/Energy.h"
+#include "../Resources/Water.h"
 
 class Manufactory final : public virtual Factory, public virtual Energy, public virtual Water
 {

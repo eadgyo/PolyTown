@@ -12,7 +12,7 @@ class Displayable : public virtual QTEntity
 {
 public:
     Displayable();
-    Displayable(std::string name, myRectangle rect, Image* image, int x, int y);
+    Displayable(std::string name, Image* image, int x, int y);
 
     void render();
 

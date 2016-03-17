@@ -6,8 +6,7 @@ Displayable::Displayable()
     name = "";
 }
 
-Displayable::Displayable(std::string name, myRectangle rect, Image* image, int x, int y) :
-    QTEntity(rect),
+Displayable::Displayable(std::string name, Image* image, int x, int y) :
     name(name)
 {
     m_image = image;

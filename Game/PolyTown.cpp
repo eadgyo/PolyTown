@@ -56,8 +56,6 @@ void PolyTown::mainLoop()
 {
     cout << "Game is running" << endl;
 
-    cout << (32 | 1) << endl;
-
     unsigned int lastFrame = 0;
 
     while (running) {

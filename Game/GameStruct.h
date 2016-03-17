@@ -13,7 +13,7 @@ struct GameStruct
 	
 	// Gestion de l'eau
 	QuadTree QTWaterGen;
-	QuadTree QTEauRes;
+	QuadTree QTWaterRes;
 
 	// Gestion de l'électricité
 	QuadTree QTElecGen;
@@ -25,4 +25,9 @@ struct GameStruct
 
 	QuadTree QTPollutionWater;
 	QuadTree QTPollutionAir;
+
+
+	// Roads
+	std::map<int, int> roadsConnex;
+
 };

@@ -83,10 +83,12 @@ void Input::update()
         }
     }
 
-    if (mouseButtonsPressed[0])
+    mousePressed = (mouseButtonsPressed[0] || mouseButtonsPressed[1]);
+    mouseDown = (mouseButtonsDown[0] || mouseButtonsDown[1]);;
 
     for (int i = 0; i < NUMBER_OF_KEYS; i++) {
-        if (keys)
+        keyPressed = (keyPressed || keysPressed[i]);
+        keyDown = (keyDown || keysDown[i]);
     }
 }
 

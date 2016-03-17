@@ -1,12 +1,12 @@
 #ifndef POWER_PLANT_H
 #define POWER_PLANT_H
 
-#include "../Resources.h"
+#include "Resources.h"
 
 class PowerPlant : public Resources
 {
 public:
-    PowerPlant();
+    PowerPlant(Graphics* graphics, int x, int y);
 
 private:
 

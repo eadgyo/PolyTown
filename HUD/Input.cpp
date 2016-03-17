@@ -10,8 +10,12 @@ using namespace std;
 Input::Input()
 {
     quit = false;
-	lastEvent = 0;
 
+    mouseMoves = false;
+    mouseDown = false;
+    mousePressed;
+    keyDown = false;
+    keyPressed = false;
     keysCode[0] = KEY_CODE_1;
     keysCode[1] = KEY_CODE_2;
 }
@@ -20,31 +24,29 @@ void Input::update()
 {
     SDL_Event event;
 
-    mousePressed[0] = false;
-    mousePressed[1] = false;
-    for (int i = 0; i < NUMBER_OF_KEYS; i++) {
-        keysPressed[i] = false;
-    }
+    mouseMoves = false;
+    clearMousePressed();
+    clearKeysPressed();
 
     while (SDL_PollEvent(&event)) {
-		lastEvent = event.type;
 		switch (event.type) {
             case SDL_QUIT:
                 quit = true;
                 break;
             case SDL_MOUSEMOTION:
+                mouseMoves = true;
                 mousePos[0] = event.motion.x;
                 mousePos[1] = event.motion.y;
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 switch (event.button.button) {
                     case SDL_BUTTON_LEFT:
-                        mousePressed[0] = !mouseDown[0];
-                        mouseDown[0] = true;
+                        mouseButtonsPressed[0] = !mouseButtonsDown[0];
+                        mouseButtonsDown[0] = true;
                         break;
                     case SDL_BUTTON_RIGHT:
-                        mousePressed[1] = !mouseDown[1];
-                        mouseDown[1] = true;
+                        mouseButtonsPressed[1] = !mouseButtonsDown[1];
+                        mouseButtonsDown[1] = true;
                         break;
                     default:
                         break;
@@ -53,10 +55,10 @@ void Input::update()
             case SDL_MOUSEBUTTONUP:
                 switch (event.button.button) {
                     case SDL_BUTTON_LEFT:
-                        mouseDown[0] = false;
+                        mouseButtonsDown[0] = false;
                         break;
                     case SDL_BUTTON_RIGHT:
-                        mouseDown[1] = false;
+                        mouseButtonsDown[1] = false;
                         break;
                 }
                 break;
@@ -80,11 +82,27 @@ void Input::update()
                 break;
         }
     }
+
+    if (mouseButtonsPressed[0])
+
+    for (int i = 0; i < NUMBER_OF_KEYS; i++) {
+        if (keys)
+    }
 }
 
 // ----- GETTER ----- //
 
 // Keyboard
+
+bool Input::isKeyDown() const
+{
+    return keyDown;
+}
+
+bool Input::isKeyPressed() const
+{
+    return keyPressed;
+}
 
 bool Input::getKeyDown(unsigned int n) const
 {
@@ -98,6 +116,11 @@ bool Input::getKeyPressed(unsigned int n) const
 
 // Mouse
 
+bool Input::isMouseMoving() const
+{
+    return mouseMoves;
+}
+
 int Input::getMousePos(unsigned int n) const
 {
     return mousePos[n];
@@ -108,14 +131,24 @@ Vector3D Input::getMousePos() const
 	return Vector3D(mousePos[0], mousePos[1]);
 }
 
+bool Input::isMouseDown() const
+{
+    return mouseDown;
+}
+
+bool Input::isMousePressed() const
+{
+    return mousePressed;
+}
+
 bool Input::getMouseDown(unsigned int n) const
 {
-    return mouseDown[n];
+    return mouseButtonsDown[n];
 }
 
 bool Input::getMousePressed(unsigned int n) const
 {
-    return mousePressed[n];
+    return mouseButtonsPressed[n];
 }
 
 // ----- SETTER ----- //
@@ -142,26 +175,28 @@ void Input::clearKey(unsigned int n)
 
 void Input::clearKeysDown()
 {
+    keyDown = false;
     for (unsigned i = 0; i < NUMBER_OF_KEYS; i++) {
-        mouseDown[i] = false;
+        keysDown[i] = false;
     }
 }
 
 void Input::clearKeyDown(unsigned int n)
 {
-    mouseDown[n] = false;
+    keysDown[n] = false;
 }
 
 void Input::clearKeysPressed()
 {
+    keyPressed = false;
     for (unsigned i = 0; i < NUMBER_OF_KEYS; i++) {
-        mousePressed[i] = false;
+        keysPressed[i] = false;
     }
 }
 
 void Input::clearKeyPressed(unsigned int n)
 {
-    mousePressed[n] = false;
+    keysPressed[n] = false;
 }
 
 // Mouse
@@ -177,28 +212,30 @@ void Input::clearMouse(unsigned int n)
     clearMouseDown(n);
 }
 
-void Input::clearMousePressed()
-{
-    for (unsigned i = 0; i < 2; i++) {
-        mousePressed[i] = false;
-    }
-}
-
-void Input::clearMousePressed(unsigned int n)
-{
-    mousePressed[n] = false;
-}
-
 void Input::clearMouseDown()
 {
+    mouseDown = false;
     for (unsigned i = 0; i < 2; i++) {
-        mouseDown[i] = false;
+        mouseButtonsDown[i] = false;
     }
 }
 
 void Input::clearMouseDown(unsigned int n)
 {
-    mouseDown[n] = false;
+    mouseButtonsDown[n] = false;
+}
+
+void Input::clearMousePressed()
+{
+    mousePressed = false;
+    for (unsigned i = 0; i < 2; i++) {
+        mouseButtonsPressed[i] = false;
+    }
+}
+
+void Input::clearMousePressed(unsigned int n)
+{
+    mouseButtonsPressed[n] = false;
 }
 
 // ----- DEBUG ----- //
@@ -207,7 +244,7 @@ void Input::display()
 {
     cout << "mousePos     : " << '[' << mousePos[0] << ", " << mousePos[1] << ']' << endl;
     //cout << "mouseDown : " << "Left = "<< mouseDown[0] << ' ' << "Right = " << mouseDown[1]<< endl;
-    cout << "mousePressed : " << "[Left " << mousePressed[0] << "][Right " << mousePressed[1] << ']' << endl;
+    cout << "mousePressed : " << "[Left " << mouseButtonsPressed[0] << "][Right " << mouseButtonsPressed[1] << ']' << endl;
 
     cout << "keysPressed  : ";
     for (int i = 0; i < NUMBER_OF_KEYS; i++) {

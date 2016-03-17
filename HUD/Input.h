@@ -17,13 +17,18 @@ public:
     // ----- GETTER ----- //
 
     // Keyboard
+    bool isKeyDown() const;
+    bool isKeyPressed() const;
     bool getKeyDown(unsigned int n) const;
     bool getKeyPressed(unsigned int n) const;
 
     // Mouse
 
+    bool isMouseMoving() const;
     int getMousePos(unsigned int n) const;
 	Vector3D getMousePos() const;
+    bool isMouseDown() const;
+    bool isMousePressed() const;
     bool getMouseDown(unsigned int n) const;
     bool getMousePressed(unsigned int n) const;
 
@@ -41,12 +46,10 @@ public:
     // Mouse
 	void clearMouse();
 	void clearMouse(unsigned int n);
-	void clearMousePressed();
-	void clearMousePressed(unsigned int n);
 	void clearMouseDown();
 	void clearMouseDown(unsigned int n);
-
-	inline Uint32 getLastEvent() { return lastEvent; };
+    void clearMousePressed();
+    void clearMousePressed(unsigned int n);
 
     // ----- DEBUG ----- //
     void display();
@@ -55,16 +58,19 @@ public:
     bool getQuit();
 
 private:
-	Uint32 lastEvent;
-
     // Mouse state
+    bool mouseMoves;
     int mousePos[2] = {0};
-    bool mouseDown[2] = {false};
-    bool mousePressed[2] = {false};
+    bool mouseDown;
+    bool mouseButtonsDown[2] = {false};
+    bool mousePressed;
+    bool mouseButtonsPressed[2] = {false};
 
     // Keyboard state
     int keysCode[NUMBER_OF_KEYS];
+    bool keyDown;
     bool keysDown[NUMBER_OF_KEYS] = {false};
+    bool keyPressed;
     bool keysPressed[NUMBER_OF_KEYS] = {false};
 
     // ----- TEMP ----- //

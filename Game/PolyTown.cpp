@@ -9,6 +9,8 @@
 
 #include "../Maths/myRectangle.h"
 
+#include "../Game/StructFactory.h"
+
 using namespace std;
 
 PolyTown::PolyTown() :
@@ -23,7 +25,7 @@ bool PolyTown::init()
     HUD::initialize("PolyTown Alpha 0.1", SCREEN_WIDTH, SCREEN_HEIGHT);
 	
 	// Création des ressources
-    house = new House(g, 60, 65);
+    house = StructFactory::newHouse(g, 60, 65);
     building = new Building(g, 180, 70);
     shop = new Shop(g, 300, 75);
     manufactory = new Manufactory(g, 420, 80);

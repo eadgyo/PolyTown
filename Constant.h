@@ -35,8 +35,8 @@ typedef unsigned int p_uint;
 #define HOUSE_WATER_NEEDS 10
 #define HOUSE_ENERGY_NEEDS 10
 
-#define LOW_ENERGY_HOUSE_WATER_NEEDS 10
-#define LOW_ENERGY_HOUSE_ENERGY_NEEDS 10
+#define LOW_IMPACT_HOUSE_WATER_NEEDS 10
+#define LOW_IMPACT_HOUSE_ENERGY_NEEDS 10
 
 #define BUILDING_IMAGE_NAME "link_sprites.png"
 #define BUILDING_IMAGE_COLS 10
@@ -52,8 +52,8 @@ typedef unsigned int p_uint;
 #define BUILDING_FLOOR 2
 #define BUILDING_MAX_FLOOR 5
 
-#define LOW_ENERGY_BUILDING_WATER_NEEDS 10
-#define LOW_ENERGY_BUILDING_ENERGY_NEEDS 10
+#define LOW_IMPACT_BUILDING_WATER_NEEDS 10
+#define LOW_IMPACT_BUILDING_ENERGY_NEEDS 10
 
 // SocialBuilding
 #define SCHOOL_NAME "Ecole"
@@ -78,12 +78,20 @@ typedef unsigned int p_uint;
 
 // Resources
 
+#define POWER_PLANT_IMAGE_NAME "link_sprites.png"
+#define POWER_PLANT_IMAGE_COLS 10
+#define POWER_PLANT_FRAME_WIDTH 120
+#define POWER_PLANT_FRAME_HEIGHT 130
+#define POWER_PLANT_FRAME_NUMBER 13
+#define POWER_PLANT_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
+#define POWER_PLANT_NAME "Centrale"
+
 // Factory
 #define SHOP_IMAGE_NAME "link_sprites.png"
 #define SHOP_IMAGE_COLS 10
 #define SHOP_FRAME_WIDTH 120
 #define SHOP_FRAME_HEIGHT 130
-#define SHOP_FRAME_NUMBER 2
+#define SHOP_FRAME_NUMBER 10
 #define SHOP_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define SHOP_NAME "Magasin"
 
@@ -95,7 +103,7 @@ typedef unsigned int p_uint;
 #define MANUFACTORY_IMAGE_COLS 10
 #define MANUFACTORY_FRAME_WIDTH 120
 #define MANUFACTORY_FRAME_HEIGHT 130
-#define MANUFACTORY_FRAME_NUMBER 10
+#define MANUFACTORY_FRAME_NUMBER 11
 #define MANUFACTORY_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define MANUFACTORY_NAME "Usine"
 
@@ -108,7 +116,7 @@ typedef unsigned int p_uint;
 #define FARM_IMAGE_COLS 10
 #define FARM_FRAME_WIDTH 120
 #define FARM_FRAME_HEIGHT 130
-#define FARM_FRAME_NUMBER 2
+#define FARM_FRAME_NUMBER 12
 #define FARM_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define FARM_NAME "Exploitation agricole"
 

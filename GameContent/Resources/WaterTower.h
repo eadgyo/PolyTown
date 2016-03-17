@@ -1,6 +1,8 @@
 #ifndef WATER_TOWER_H
 #define WATER_TOWER_H
 
+#include "../Displayable.h"
+
 class WaterTower
 {
 public:

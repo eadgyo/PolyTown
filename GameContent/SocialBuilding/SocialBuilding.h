@@ -2,8 +2,9 @@
 #define SOCIAL_BUILDING_H
 
 #include "../Constant.h"
+#include "../Displayable.h"
 
-class SocialBuilding
+class SocialBuilding : public virtual Displayable
 {
 public:
     SocialBuilding(p_uint score, float ratio, float radius);

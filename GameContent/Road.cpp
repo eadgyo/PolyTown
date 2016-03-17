@@ -270,6 +270,21 @@ std::set<QTEntity*> Road::getEntConnected() const
 	return entConnected;
 }
 
+bool Road::removeRoad(Road* road)
+{
+	unsigned i = 0;
+	while(i < connected.size() && road != connected[i])
+	{
+		i++;
+	}
+	if (i < connected.size())
+	{
+		connected.erase(connected.begin() + i);
+		return true;
+	}
+	return false;
+}
+
 std::vector<QTEntity*> Road::getEntConnectedVec() const
 {
 	// Deprecated

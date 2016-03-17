@@ -49,6 +49,7 @@ public:
 
 	inline bool addRoad(Road* road) { connected.push_back(road); };
 	inline bool removeRoad(unsigned i) { connected.erase(connected.begin() + i); };
+	bool removeRoad(Road* road);
 
 	// Setter
 	void setStart(const Vector3D& center, float minHeight);

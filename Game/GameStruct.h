@@ -30,4 +30,18 @@ struct GameStruct
 	// Roads
 	std::map<int, int> roadsConnex;
 
+
+	//
+
+	std::set<QTEntity*> noElecGen;
+	std::set<QTEntity*> noWaterGen;
+
+
+	// CreatorManager
+	int topConnexitude = 0;
+	std::vector<int> fConnexitudes;
+
+	QTEntity* lastSelected;
+	Form* possibleForm;
+	bool isLastMakable;
 };

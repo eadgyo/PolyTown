@@ -31,8 +31,14 @@ public:
 	LayerNs::LayerEvent virtual handleEvent(Input& input);
 	
 	bool stillConnected(Road* start, Road* end);
+	int getConnexitude();
+	void freeConnexitude(int n);
+	void setConnexitude(Road* start, int n);
+
 
 protected:
+	int topConnexitude;
+	std::vector<int> fConnexitudes;
 	QTEntity* lastSelected;
 	Form* possibleForm;
 	bool isLastMakable;

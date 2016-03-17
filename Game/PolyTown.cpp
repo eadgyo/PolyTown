@@ -13,9 +13,11 @@
 
 using namespace std;
 
-PolyTown::PolyTown() :
-    HUD()
+PolyTown::PolyTown()
 {
+	FileManager& fileM = FileManager::getInstance();
+	g = new Graphics();
+	
     cout << "PolyTown : Construction" << endl;
     running = false;
 }
@@ -38,6 +40,28 @@ bool PolyTown::init()
     return 0;
 }
 
+void PolyTown::initialize(std::string name, int width, int height)
+{
+	// Création de la fenetre
+	g->init(name, width, height);
+	g->initGL(width, height);
+
+	// Création de toutes les interfaces
+	// Menu
+	interfaces.push_back(new Menu());
+	interfaces.push_back(new NewGame());
+	interfaces.push_back(new Game());
+
+	// Initialisation des boutons
+	for (unsigned i = 0; i < interfaces.size(); i++)
+	{
+		interfaces[i]->initialize(width, height);
+	}
+
+	// On initialise la pile en ajoutant le Menu
+	iStack.push_back(interfaces[0]);
+}
+
 void PolyTown::mainLoop()
 {
     cout << "Game is running" << endl;
@@ -47,7 +71,7 @@ void PolyTown::mainLoop()
         input.update();
         //input.display();
 
-        HUD::clear();
+        clear();
 
         house->render();
         building->render();
@@ -55,9 +79,9 @@ void PolyTown::mainLoop()
         manufactory->render();
         farm->render();
 
-		HUD::render();
-        HUD::swap();
-		HUD::checkEvent();
+		render();
+        swap();
+		checkEvent();
 
         SDL_Delay(500);
 
@@ -74,10 +98,36 @@ void PolyTown::exit()
     cout << "Game ended" << endl;
 }
 
-void PolyTown::update()
+void PolyTown::update(float dt)
 {
+	checkStack();
 
+	iStack.back()->update(dt);
 }
+
+// Changement d'interface
+void PolyTown::checkEvent()
+{
+	checkStack();
+	HudNs::HudEvent result = iStack.back()->handleEvent(input);
+
+	if (result % HudNs::NEW_GAME)
+	{
+		iStack.push_back(interfaces[1]);
+	}
+	if (result % HudNs::LOAD_GAME)
+	{
+
+	}
+}
+
+
+void PolyTown::checkStack()
+{
+	if (iStack.size() == 0)
+		std::cerr << "Error: HUD Stack is empty !! Bitches ain't my type.";
+}
+
 
 // Temporaire
 
@@ -85,3 +135,25 @@ bool PolyTown::wantQuit()
 {
     return input.getQuit();
 }
+
+
+// Graphique
+void PolyTown::clear()
+{
+	// On reset l'écran
+	g->clear();
+}
+
+void PolyTown::render()
+{
+	checkStack();
+	// On rend le dernier élément
+	iStack.back()->render(g);
+}
+
+void PolyTown::swap()
+{
+	// Swap buffer
+	g->swapGL();
+}
+

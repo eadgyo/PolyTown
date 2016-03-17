@@ -40,9 +40,9 @@ public:
 	bool isColliding(Form& form, Vector3D& push, float& t);
 	inline unsigned sizeEnt() const { return entConnected.size(); };
 	QTEntity* getEnt(unsigned n) const;
-	inline Road* getLast() { if (connected.size > 0) return connected[0]; };
-	inline Road* getNext() { if (connected.size > 1) return connected[1]; };
-	inline int getConnec() const { return connex; };
+	inline Road* getLast() { if (connected.size() > 0) return connected[0]; else return NULL; };
+	inline Road* getNext() { if (connected.size() > 1) return connected[1]; else return NULL; };
+	inline int getConnexitude() const { return connex; };
 
 	inline unsigned sizeConnected() const { return connected.size(); };
 	inline Road* getConnected(unsigned n) const { return connected[n]; };
@@ -59,7 +59,7 @@ public:
 	void erase(unsigned i);
 	void addEntity(QTEntity* entity);
 	void addAllEntities(std::vector<QTEntity*> entities);
-	void setConnext(int connex) { this->connex = connex; };
+	inline void setConnexitude(int connex) { this->connex = connex; };
 
 protected:
 	int connex;

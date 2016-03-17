@@ -10,6 +10,7 @@
 CreatorManager::CreatorManager()
 {
 	gameStruct = NULL;
+	topConnexitude = 0;
 }
 
 CreatorManager::~CreatorManager()
@@ -27,6 +28,9 @@ void CreatorManager::setGameStruct(GameStruct * gameStruct)
 	this->gameStruct = gameStruct;
 }
 
+// Test si une route est constructible
+// roadsGood représente les routes en collision qui doivent être gérer
+// sides représente le type de collision
 bool CreatorManager::isMakableRoad(Road * road, std::vector<Road*> roadsGood, std::vector<int> sides)
 {
 	if (road->getHeight() < MIN_HEIGHT_ROAD)
@@ -169,6 +173,9 @@ bool CreatorManager::isMakableRoad(Road * road, std::vector<Road*> roadsGood, st
 	return true;
 }
 
+// Test si un qtEntity est faisable
+// Pushes représente liste de vecteurs de poussée normalisés
+// ts le facteur du vecteur pousée
 bool CreatorManager::isMakable(QTEntity * qtEntity, float minDif,  std::vector<QTEntity*> entitiesNear, std::vector<Vector3D> pushes, std::vector<float> ts)
 {
 	// On récupère juste l'ensemble des entités qui peuvent possiblement être en collision
@@ -205,6 +212,8 @@ bool CreatorManager::isMakable(QTEntity * qtEntity, float minDif,  std::vector<Q
 
 void CreatorManager::remove(QTEntity * qtEntity)
 {
+	// Si pollution ...
+
 	this->gameStruct->QTCollision.erase(qtEntity);
 	/*
 	if(GENEAU)
@@ -222,12 +231,10 @@ void CreatorManager::remove(QTEntity * qtEntity)
 		removeRoad(road);
 	/*
 	Habitation...
-
-	Pollution...
 	*/
-
-	
 }
+
+
 
 void CreatorManager::add(QTEntity * qtEntity)
 {
@@ -246,27 +253,87 @@ LayerNs::LayerEvent CreatorManager::handleEvent(Input & input)
 
 void CreatorManager::removeRoad(Road * road)
 {
-	// Set connexité
-	
-	int *tab = new int[road->sizeConnected()];
+	// On commence par copier l'ensemble des roads connected
+	std::deque<Road*> roads;
 
-	int minNumber = 0; // Ajout d'un min
-
-	for (unsigned i = 0; i < road->sizeConnected(); i++)
+	for (unsigned i = 0; road->sizeConnected(); i++)
 	{
-		tab[i] = -1;
+		roads.push_back(road->getConnected(i));
 	}
 
+	// Au départ on crée autant de groupe qu'
 	for (unsigned i = 0; i < road->sizeConnected(); i++)
 	{
 		for (unsigned j = i+1; j < road->sizeConnected(); j++)
 		{
-			// minNumber++;
-
+			// Si on a une connection entre les 2 routes, il suffit d'enlever l'une des deux
+			// On sait que lorsqu'on changera l'id connex de la premiere route on retombera sur la deuxieme
+			if (stillConnected(roads[i], roads[j]))
+			{
+				// Suppression de la seconde route
+				roads.erase(roads.begin() + j); 
+				j--;
+			}
 		}
 	}
 
-	// Set pour toutes les routes
+	if (roads.size() < 2) // La suppression n'a rien changé, ou plus de route
+		return;
+
+	// On laisse la topConnexitude au premier groupe d'élément
+	for (unsigned i = 0; i < roads.size(); i++)
+	{
+		setConnexitude(roads[i], getConnexitude());
+	}
+
+	// Il reste encore à checker si les générateurs connectés sont connecter à des éléments avec un autre id
+}
+
+// Récupération de l'id connex le plus haut
+int CreatorManager::getConnexitude()
+{
+	if (fConnexitudes.size() > 0)
+	{
+		int fConnex = fConnexitudes[fConnexitudes.size() - 1];
+		fConnexitudes.pop_back();
+		return fConnex;
+	}
+
+	return topConnexitude++;
+}
+
+// Libération d'un id connexe
+void CreatorManager::freeConnexitude(int n)
+{
+	fConnexitudes.push_back(n);
+}
+
+// Change l'id d'un groupe de routes à partir de son départ
+void CreatorManager::setConnexitude(Road* start, int connex)
+{
+	//bst
+	std::set<Road*> alreadyDone;
+	std::set<Road*> toDo;
+
+	alreadyDone.insert(start);
+	toDo.insert(start);
+
+	while (toDo.size() != 0)
+	{
+		Road* current = (*toDo.begin());
+		toDo.erase(toDo.begin());
+
+		current->setConnexitude(connex);
+		// On ajoute les éléments encore à faire
+		for (unsigned i = 0; i < current->sizeConnected(); i++)
+		{
+			if (alreadyDone.find(current->getConnected(i)) != alreadyDone.end())
+			{
+				alreadyDone.insert(current->getConnected(i));
+				toDo.insert(current->getConnected(i));
+			}
+		}
+	}
 }
 
 bool CreatorManager::stillConnected(Road* start, Road* end)

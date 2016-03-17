@@ -2,7 +2,7 @@
 #define RESOURCES_H
 
 #include "../Constant.h"
-#include "Housing.h"
+#include "Displayable.h"
 
 #include <vector>
 
@@ -12,7 +12,7 @@ public:
     Resources();
 
 protected:
-    std::vector<Housing> m_housings;
+    std::vector<Displayable> m_connected;
 };
 
 #endif // !RESOURCES_H

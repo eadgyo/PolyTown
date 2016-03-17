@@ -1,15 +1,9 @@
 #include "Farm.h"
 
-Farm::Farm(Image& image, myRectangle& rect) :
-    m_output_rate(),
-    m_water_tower(NULL),
-    m_water_pollution_area(NULL)
-{
-}
-
-Farm::Farm(std::string name, Image& image, myRectangle& rect) :
-    m_output_rate(),
-    m_water_tower(NULL),
-    m_water_pollution_area(NULL)
+Farm::Farm(Graphics* graphics, int x, int y) :
+    Displayable(FARM_RECTANGLE(x, y), new Image(graphics, FARM_FRAME_WIDTH, FARM_FRAME_HEIGHT, FARM_FRAME_NUMBER, FARM_IMAGE_COLS, FARM_IMAGE_NAME), x, y),
+    Factory(FARM_MAX_WORKERS, FARM_INCOME_RATE),
+    Water(FARM_ENERGY_NEEDS),
+    m_output_rate(FARM_OUTPUT_RATE)
 {
 }

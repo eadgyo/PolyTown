@@ -5,6 +5,9 @@
 
 #include "../GameContent/Housing/House.h"
 #include "../GameContent/Housing/Building.h"
+#include "../GameContent/Factory/Shop.h"
+#include "../GameContent/Factory/Manufactory.h"
+#include "../GameContent/Factory/Farm.h"
 
 class PolyTown : public HUD
 {
@@ -24,6 +27,9 @@ private:
 
     House* house;
     Building* building;
+    Shop* shop;
+    Manufactory* manufactory;
+    Farm* farm;
 };
 
 #endif // !POLYTOWN_H

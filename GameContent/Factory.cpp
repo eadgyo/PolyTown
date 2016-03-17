@@ -1,5 +1,13 @@
 #include "Factory.h"
 
+Factory::Factory() : m_workers(0), m_max_workers(0), m_income_rate(0)
+{
+}
+
+Factory::Factory(p_uint max_workers, p_uint income_rate) : m_workers(0), m_max_workers(max_workers), m_income_rate(income_rate)
+{
+}
+
 // ----- GETTER ----- //
 p_uint Factory::getIncome() const
 {

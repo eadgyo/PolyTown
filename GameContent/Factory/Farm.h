@@ -2,24 +2,16 @@
 #define FARM_H
 
 #include "../Factory.h"
-#include "../Resources/WaterTower.h"
-#include "../PollutionArea.h"
 
-#include "../Graphics/Image.h"
-#include "../Maths/myRectangle.h"
+#include "../Water.h"
 
-#include <string>
-
-class Farm final : public Factory
+class Farm final : public virtual Factory, public virtual Water
 {
 public:
-    Farm(Image& image, myRectangle& rect);
-    Farm(std::string name, Image& image, myRectangle& rect);
+    Farm(Graphics* graphics, int x, int y);
 
 private:
     p_uint m_output_rate;
-    WaterTower* m_water_tower;
-    PollutionArea* m_water_pollution_area;
 };
 
 #endif // FARM_H

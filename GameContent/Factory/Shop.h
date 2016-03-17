@@ -2,21 +2,16 @@
 #define SHOP_H
 
 #include "../Factory.h"
-#include "../Resources/PowerPlant.h"
 
-#include "../Graphics/Image.h"
-#include "../Maths/myRectangle.h"
+#include "../Energy.h"
 
-#include <string>
-
-class Shop final : Factory
+class Shop final : public virtual Factory, public virtual Energy
 {
 public:
-    Shop(Image& image, myRectangle& rect);
-    Shop(std::string name, Image& image, myRectangle& rect);
+    Shop(Graphics* graphics, int x, int y);
 
 private:
-    PowerPlant* m_power_plant;
+
 };
 
 #endif // !SHOP_H

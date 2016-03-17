@@ -3,12 +3,12 @@
 
 #include "../Constant.h"
 
-#include "../Graphics/Image.h"
-#include "../Quadtree/QTEntity.h"
-#include "../Maths/myRectangle.h"
-#include "../Maths/Vector3D.h"
+#include "Displayable.h"
 
-class Housing : public virtual QTEntity, public virtual Image
+#include "Energy.h"
+#include "Water.h"
+
+class Housing : public virtual Displayable, public virtual Energy, public virtual Water
 {
 public:
     // ----- GETTER ----- //
@@ -29,13 +29,12 @@ public:
     void upgrade(p_uint water_needs, p_uint energy_needs);
 
 protected:
-    Housing(p_uint max_inhabitants, p_uint water_needs, p_uint energy_needs);
+    Housing();
+    Housing(p_uint max_inhabitants);
 
     p_uint m_inhabitants;
     p_uint m_max_inhabitants;
     static const p_uint m_food_needs;
-    p_uint m_water_needs;
-    p_uint m_energy_needs;
 
     bool m_hasFood;
     bool m_hasWater; // pointeur

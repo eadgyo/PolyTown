@@ -2,14 +2,11 @@
 
 const p_uint Housing::m_food_needs = HOUSING_FOOD_NEEDS;
 
-Housing::Housing(p_uint max_inhabitants, p_uint water_needs, p_uint energy_needs)
-    : m_inhabitants(0),
-    m_max_inhabitants(max_inhabitants),
-    m_water_needs(water_needs),
-    m_energy_needs(energy_needs),
-    m_hasFood(false),
-    m_hasWater(false),
-    m_hasEnergy(false)
+Housing::Housing() : m_inhabitants(0), m_max_inhabitants(0)
+{
+}
+
+Housing::Housing(p_uint max_inhabitants) : m_inhabitants(0), m_max_inhabitants(max_inhabitants)
 {
 }
 

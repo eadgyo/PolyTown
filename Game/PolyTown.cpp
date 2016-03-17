@@ -24,7 +24,10 @@ bool PolyTown::init()
 	
 	// Création des ressources
     house = new House(g, 60, 65);
-    building = new Building(g, 180, 65);
+    building = new Building(g, 180, 70);
+    shop = new Shop(g, 300, 75);
+    manufactory = new Manufactory(g, 420, 80);
+    farm = new Farm(g, 540, 85);
 
     running = true;
 
@@ -43,8 +46,13 @@ void PolyTown::mainLoop()
         //input.display();
 
         HUD::clear();
-        house->draw();
-        building->draw();
+
+        house->render();
+        building->render();
+        shop->render();
+        manufactory->render();
+        farm->render();
+
 		HUD::render();
         HUD::swap();
 		HUD::checkEvent();

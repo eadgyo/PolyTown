@@ -6,7 +6,6 @@
 class Building final : public Housing
 {
 public:
-    Building(Graphics* graphics);
     Building(Graphics* graphics, int x, int y);
     Building(Graphics* graphics, int x, int y, p_uint floor);
     Building(Graphics* graphics, int x, int y, p_uint water_needs, p_uint energy_needs);

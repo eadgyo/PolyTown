@@ -3,7 +3,9 @@
 
 #include "../Constant.h"
 
-class Factory
+#include "Displayable.h"
+
+class Factory : public virtual Displayable
 {
 public:
     // ----- GETTER ----- //
@@ -14,6 +16,9 @@ public:
     p_uint delWorkers(p_uint n);
 
 protected:
+    Factory();
+    Factory(p_uint max_workers, p_uint income_rate);
+
     p_uint m_workers;
     p_uint m_max_workers;
     p_uint m_income_rate;

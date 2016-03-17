@@ -18,29 +18,27 @@ class PolyTown
 {
 public:
 	PolyTown();
-    bool init();
+    virtual ~PolyTown() { std::cout << "PolyTown : Destruction" << std::endl; };
+
+    bool init(std::string name, int width, int height);
     void mainLoop();
     void exit();
 
-    bool wantQuit();
+    unsigned int delay(unsigned int lastFrame);
 
-    virtual ~PolyTown() { std::cout << "PolyTown : Destruction" << std::endl; };
 
-	
-	// Partie graphique
-	// Création de la fenetre et des graphics
-	void initialize(std::string name, int width, int height);
-	// Rendu sur la fenetre
+    // Mise à jour graphique
+    void update(float dt);
+    // Détection des events Souris/Clavier
+    void checkEvent();
+    // Détection du stack empty
+    void checkStack();
+
+	// ----- UPDATE WINDOW ----- //
 	void clear();
 	void render();
 	void swap();
-	// Mise à jour graphique
-	void update(float dt);
-	// Détection des events Souris/Clavier
-	void checkEvent();
-	// Détection du stack empty
-	void checkStack();
-	
+
 private:
     bool running;
 

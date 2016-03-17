@@ -47,10 +47,7 @@ void Menu::render(Graphics* g)
 	}
 
 }
-void Menu::update(float dt)
-{
 
-}
 HudNs::HudEvent Menu::handleEvent(Input& input)
 {
 	if (input.getMousePressed(0))

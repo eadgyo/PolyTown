@@ -13,8 +13,6 @@ public:
 	void virtual resize(int width, int height) = 0;
 	// Rendu sur la fenetre
 	void virtual render(Graphics* g) = 0;
-	// Mise à jour graphique
-	void virtual update(float dt) = 0;
 protected:
 	bool isInitialized;
 };

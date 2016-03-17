@@ -5,7 +5,6 @@
 #include "../Maths/Vector3D.h"
 
 #include <SDL2/SDL.h>
-#include <string>
 
 class Input
 {
@@ -15,6 +14,7 @@ public:
     void update();
     
     // ----- GETTER ----- //
+    bool exit() const;
 
     // Keyboard
     bool isKeyDown() const;
@@ -54,10 +54,9 @@ public:
     // ----- DEBUG ----- //
     void display();
 
-    // ----- TEMP ----- //
-    bool getQuit();
-
 private:
+    bool quit;
+
     // Mouse state
     bool mouseMoves;
     int mousePos[2] = {0};
@@ -67,14 +66,11 @@ private:
     bool mouseButtonsPressed[2] = {false};
 
     // Keyboard state
-    int keysCode[NUMBER_OF_KEYS];
+    int keysCode[NUMBER_OF_KEYS] = {0};
     bool keyDown;
     bool keysDown[NUMBER_OF_KEYS] = {false};
     bool keyPressed;
     bool keysPressed[NUMBER_OF_KEYS] = {false};
-
-    // ----- TEMP ----- //
-    bool quit;
 };
 
 #endif // !INPUT_H

@@ -94,6 +94,11 @@ void Input::update()
 
 // ----- GETTER ----- //
 
+bool Input::exit() const
+{
+    return quit;
+}
+
 // Keyboard
 
 bool Input::isKeyDown() const
@@ -254,11 +259,4 @@ void Input::display()
     }
 
     cout << endl << endl;
-}
-
-// ----- TEMP ----- //
-
-bool Input::getQuit()
-{
-    return quit;
 }

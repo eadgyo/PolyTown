@@ -13,26 +13,38 @@
 
 using namespace std;
 
-PolyTown::PolyTown()
+PolyTown::PolyTown() : running(false), g(new Graphics)
 {
 	FileManager& fileM = FileManager::getInstance();
-	g = new Graphics();
 	
     cout << "PolyTown : Construction" << endl;
-    running = false;
 }
 
-bool PolyTown::init()
+bool PolyTown::init(string name, int width, int height)
 {
-    initialize("PolyTown Alpha 0.1", SCREEN_WIDTH, SCREEN_HEIGHT);
-	
+    // Création de la fenetre
+    g->init(name, width, height);
+    g->initGL(width, height);
+
+    // Création des interfaces
+    interfaces.push_back(new Menu());
+    interfaces.push_back(new NewGame());
+    interfaces.push_back(new Game());
+
+    // Initialisation des boutons
+    for (unsigned i = 0; i < interfaces.size(); i++) {
+        interfaces[i]->initialize(width, height);
+    }
+
+    iStack.push_back(interfaces[0]);
+
 	// Création des ressources
     house = StructFactory::newHouse(g, 60, 65);
     building = new Building(g, 180, 70);
     shop = new Shop(g, 300, 75);
     manufactory = new Manufactory(g, 420, 80);
     farm = new Farm(g, 540, 85);
-
+    
     running = true;
 
     cout << "Game initialized" << endl;
@@ -40,62 +52,36 @@ bool PolyTown::init()
     return 0;
 }
 
-void PolyTown::initialize(std::string name, int width, int height)
-{
-	// Création de la fenetre
-	g->init(name, width, height);
-	g->initGL(width, height);
-
-	// Création de toutes les interfaces
-	// Menu
-	interfaces.push_back(new Menu());
-	interfaces.push_back(new NewGame());
-	interfaces.push_back(new Game());
-
-	// Initialisation des boutons
-	for (unsigned i = 0; i < interfaces.size(); i++)
-	{
-		interfaces[i]->initialize(width, height);
-	}
-
-	// On initialise la pile en ajoutant le Menu
-	iStack.push_back(interfaces[0]);
-}
-
 void PolyTown::mainLoop()
 {
     cout << "Game is running" << endl;
 
-    unsigned int dt;
+    cout << (32 | 1) << endl;
+
     unsigned int lastFrame = 0;
 
     while (running) {
+        // INPUT
         input.update();
-        //input.display();
 
+        // INTERFACE(input)
+
+        // CLEAR WINDOW
         clear();
 
-        house->render();
-        building->render();
-        shop->render();
-        manufactory->render();
-        farm->render();
+        // RENDER WINDOW
+        render();
 
-		render();
+        // SWAP WINDOW
         swap();
+
 		checkEvent();
 
-        if (wantQuit()) {
-            running = false;
-        }
+        // EXTI GAME ?
+        running = !input.exit();
 
-        dt = SDL_GetTicks() - lastFrame;
-        if (dt < 1000/FPS) {
-            SDL_Delay(1000 / FPS - dt);
-        }
-
-        cout << SDL_GetTicks() - lastFrame << endl;
-        lastFrame = SDL_GetTicks();
+        // DELAY
+        lastFrame = delay(lastFrame);
     }
 }
 
@@ -104,11 +90,13 @@ void PolyTown::exit()
     cout << "Game ended" << endl;
 }
 
-void PolyTown::update(float dt)
+unsigned int PolyTown::delay(unsigned int lastFrame)
 {
-	checkStack();
-
-	iStack.back()->update(dt);
+    unsigned int dt = SDL_GetTicks() - lastFrame;
+    if (dt < 1000 / FPS) {
+        SDL_Delay(1000 / FPS - dt);
+    }
+    return SDL_GetTicks();
 }
 
 // Changement d'interface
@@ -127,7 +115,6 @@ void PolyTown::checkEvent()
 	}
 }
 
-
 void PolyTown::checkStack()
 {
 	if (iStack.size() == 0)
@@ -135,15 +122,7 @@ void PolyTown::checkStack()
 }
 
 
-// Temporaire
-
-bool PolyTown::wantQuit()
-{
-    return input.getQuit();
-}
-
-
-// Graphique
+// ----- UPDATE WINDOW ----- //
 void PolyTown::clear()
 {
 	// On reset l'écran
@@ -152,6 +131,13 @@ void PolyTown::clear()
 
 void PolyTown::render()
 {
+    house->render();
+    house->translate(10, 10);
+    building->render();
+    shop->render();
+    manufactory->render();
+    farm->render();
+
 	checkStack();
 	// On rend le dernier élément
 	iStack.back()->render(g);
@@ -162,4 +148,3 @@ void PolyTown::swap()
 	// Swap buffer
 	g->swapGL();
 }
-

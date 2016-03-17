@@ -49,7 +49,7 @@ bool CreatorManager::isMakableRoad(Road * road, std::vector<Road*> roadsGood, st
 		Road * cast = dynamic_cast<Road*>(test);
 		if (cast == NULL)
 		{
-			if (entities[i]->getForm() != NULL && road->getRect().isColliding(*(entities[i]->getForm())))
+			if (entities[i]->getForm() != NULL && road->getForm()->isColliding(*(entities[i]->getForm())))
 			{
 				return false; // Y a une collision
 			}
@@ -169,14 +169,64 @@ bool CreatorManager::isMakableRoad(Road * road, std::vector<Road*> roadsGood, st
 	return true;
 }
 
-bool CreatorManager::isMakable(QTEntity * qtEntity)
+bool CreatorManager::isMakable(QTEntity * qtEntity, float minDif,  std::vector<QTEntity*> entitiesNear, std::vector<Vector3D> pushes, std::vector<float> ts)
 {
+	// On récupère juste l'ensemble des entités qui peuvent possiblement être en collision
+	// On test si y a une collision 
+	std::vector<QTEntity*> entities;
+
+	gameStruct->QTCollision.retrieve(qtEntity->getBounds(), entities);
+	for (unsigned i = 0; i < entities.size(); i++)
+	{
+		if (entities[i]->getForm() != NULL)
+		{
+			Vector3D push;
+			float t;
+			if (qtEntity->getForm()->isColliding(*(entities[i]->getForm()), push, t))
+			{
+				if (t < minDif)
+				{
+					return false;
+				}
+				else
+				{
+					// En collision mais on peut un peu bouger
+					entitiesNear.push_back(entities[i]);
+					pushes.push_back(push);
+					ts.push_back(t);
+				}
+			}
+		}
+	}
+
 	return false;
 }
 
 
 void CreatorManager::remove(QTEntity * qtEntity)
 {
+	this->gameStruct->QTCollision.erase(qtEntity);
+	/*
+	if(GENEAU)
+		this->gameStruct->QTWaterGen.erase(qtEntity); // + RemoveGen...
+	else if(EAURES)
+		this->gameStruct->QTWaterRes.erase(qtEntity); // + RemoveRes...
+	
+	if(GENELEC)
+		this->gameStruct->QTWaterGen.erase(qtEntity);
+	else if(RESELEC)
+		this->gameStruct->QTWaterRes.erase(qtEntity);
+	*/
+	Road * road = dynamic_cast<Road*>(qtEntity);
+	if (road != NULL)
+		removeRoad(road);
+	/*
+	Habitation...
+
+	Pollution...
+	*/
+
+	
 }
 
 void CreatorManager::add(QTEntity * qtEntity)
@@ -196,8 +246,77 @@ LayerNs::LayerEvent CreatorManager::handleEvent(Input & input)
 
 void CreatorManager::removeRoad(Road * road)
 {
+	// Set connexité
+	
+	int *tab = new int[road->sizeConnected()];
+
+	int minNumber = 0; // Ajout d'un min
+
+	for (unsigned i = 0; i < road->sizeConnected(); i++)
+	{
+		tab[i] = -1;
+	}
+
+	for (unsigned i = 0; i < road->sizeConnected(); i++)
+	{
+		for (unsigned j = i+1; j < road->sizeConnected(); j++)
+		{
+			// minNumber++;
+
+		}
+	}
+
+	// Set pour toutes les routes
 }
+
+bool CreatorManager::stillConnected(Road* start, Road* end)
+{
+	//std::set<Road*> closedList;
+	std::set<Road*> openListBst;
+	std::map<float, Road*> openList;
+	// Initilisation
+	float dist = (end->getCenter() - start->getCenter()).getMagnitude();
+	openList[dist] = start;
+	openListBst.insert(start);
+
+	bool isFound = false;
+	while (openList.size() != 0 && !isFound)
+	{
+		// On ajoute dans l'openList les éléments liés à cette road
+		// On commence par regarder si c'est un connecteur ou seulement une route
+		
+		// On récupère celui avec la plus faible valeur
+		Road* current = (openList.begin()->second);
+		openList.erase(openList.begin());
+
+		for (unsigned i = 0; i < current->sizeConnected(); i++)
+		{
+			Road* adding = current->getConnected(i);
+			if (adding != end)
+			{
+				// Si pas déjà dans déjà traitée ou déjà prévu (openListBst)
+				if (openListBst.find(adding) != openListBst.end())
+				{
+					dist = (end->getCenter() - adding->getCenter()).getMagnitude();
+					openList[dist] = adding;
+					openListBst.insert(adding);
+				}
+			}
+			else
+			{
+				isFound = true;
+				break;
+			}
+		}
+	}
+	return isFound;
+}
+
 
 void CreatorManager::addRoad(Road * road)
 {
+	// Ajout entités en collision avec une boite de collision
 }
+
+
+// Bien penser à tous les ajouts GenRes... + PollutionMaker

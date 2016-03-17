@@ -1,10 +1,10 @@
 #pragma once
 
 #include "../Quadtree/QTEntity.h"
-#include "../GameContent/Road.h"
 #include "../HUD/Input.h"
 #include "../Layers/Layer.h"
 #include "GameStruct.h"
+#include "../GameContent/Road.h"
 
 class CreatorManager : public Layer
 {
@@ -17,7 +17,7 @@ public:
 
 	// isPossibleToMake
 	bool isMakableRoad(Road* road, std::vector<Road*> roadsGood, std::vector<int> side);
-	bool isMakable(QTEntity* qtEntity);
+	bool isMakable(QTEntity* qtEntity, float minDif, std::vector<QTEntity*> entitiesNear, std::vector<Vector3D> pushes, std::vector<float> ts);
 
 	// Remove ressources
 	void removeRoad(Road* road);
@@ -30,6 +30,8 @@ public:
 	void render(Graphics * g, const Vector3D translation);
 	LayerNs::LayerEvent virtual handleEvent(Input& input);
 	
+	bool stillConnected(Road* start, Road* end);
+
 protected:
 	QTEntity* lastSelected;
 	Form* possibleForm;

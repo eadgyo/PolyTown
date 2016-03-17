@@ -40,9 +40,15 @@ public:
 	bool isColliding(Form& form, Vector3D& push, float& t);
 	inline unsigned sizeEnt() const { return entConnected.size(); };
 	QTEntity* getEnt(unsigned n) const;
-	inline Road* getLast() { return last; };
-	inline Road* getNext() { return next; };
+	inline Road* getLast() { if (connected.size > 0) return connected[0]; };
+	inline Road* getNext() { if (connected.size > 1) return connected[1]; };
 	inline int getConnec() const { return connex; };
+
+	inline unsigned sizeConnected() const { return connected.size(); };
+	inline Road* getConnected(unsigned n) const { return connected[n]; };
+
+	inline bool addRoad(Road* road) { connected.push_back(road); };
+	inline bool removeRoad(unsigned i) { connected.erase(connected.begin() + i); };
 
 	// Setter
 	void setStart(const Vector3D& center, float minHeight);
@@ -58,6 +64,5 @@ public:
 protected:
 	int connex;
 	std::set<QTEntity*> entConnected;
-	Road* last;
-	Road* next;
+	std::vector<Road*> connected;
 };

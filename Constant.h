@@ -10,6 +10,8 @@ typedef unsigned int p_uint;
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 
+#define FPS 2
+
 // ----- Keyboard ----- //
 #define NUMBER_OF_KEYS 2
 

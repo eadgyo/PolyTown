@@ -66,8 +66,10 @@ void PolyTown::mainLoop()
 {
     cout << "Game is running" << endl;
 
+    unsigned int dt;
+    unsigned int lastFrame = 0;
+
     while (running) {
-		
         input.update();
         //input.display();
 
@@ -83,11 +85,17 @@ void PolyTown::mainLoop()
         swap();
 		checkEvent();
 
-        SDL_Delay(500);
-
         if (wantQuit()) {
             running = false;
         }
+
+        dt = SDL_GetTicks() - lastFrame;
+        if (dt < 1000/FPS) {
+            SDL_Delay(1000 / FPS - dt);
+        }
+
+        cout << SDL_GetTicks() - lastFrame << endl;
+        lastFrame = SDL_GetTicks();
     }
 }
 

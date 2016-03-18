@@ -2,17 +2,26 @@
 
 Road::Road()
 {
+	connex = -1;
 	initRectangle();
 }
 
 Road::Road(const Vector3D& center, const Vector3D& length)
 {
+	connex = -1;
 	initRectangle(center, length);
 }
 
 Road::Road(const Vector3D& center, const Vector3D& length, float theta)
 {
+	connex = -1;
 	initRectangle(center, length, theta);
+}
+
+Road::Road(const Vector3D& center, float width, float height, float theta)
+{
+	connex = -1;
+	initRectangle(center, width, height, theta);
 }
 
 Road Road::create2points(const Vector3D& A, const Vector3D& B, float width)
@@ -270,20 +279,7 @@ std::set<QTEntity*> Road::getEntConnected() const
 	return entConnected;
 }
 
-bool Road::removeRoad(Road* road)
-{
-	unsigned i = 0;
-	while(i < connected.size() && road != connected[i])
-	{
-		i++;
-	}
-	if (i < connected.size())
-	{
-		connected.erase(connected.begin() + i);
-		return true;
-	}
-	return false;
-}
+
 
 std::vector<QTEntity*> Road::getEntConnectedVec() const
 {
@@ -306,15 +302,7 @@ QTEntity* Road::getEnt(unsigned n) const
 }
 
 
-bool Road::isColliding(Form& form)
-{
-	return form.collisionSat(*(this->form));
-}
 
-bool Road::isColliding(Form& form, Vector3D& push, float& t)
-{
-	return form.collisionSat(*(this->form), Vector3D(false), Vector3D(false), push, t);
-}
 
 
 // Setter

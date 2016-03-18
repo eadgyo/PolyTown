@@ -1,4 +1,5 @@
 #pragma once
+class Road;
 #include "../Maths/myRectangle.h"
 #include "../Maths/sRectangle.h"
 #include "../Maths/Circle.h"
@@ -40,13 +41,27 @@ public:
 	void set(const Vector3D& center, const Vector3D length);
 	void set(const Vector3D& center, float radius);
 
+
+	unsigned sizeConnected() const;
+	Road* getConnected(unsigned n) const;
+
+	void addRoad(Road* road);
+	void removeRoad(unsigned i);
+	bool removeRoad(Road* road);
+
+	bool isColliding(Form& form);
+	bool isColliding(Form& form, Vector3D& push, float& t);
+	bool isColliding(QTEntity& qtEntity);
+	bool isColliding(QTEntity& qtEntity, Vector3D& push, float& t);
+
 protected:
 	void initRectangle(const Vector3D& center, const Vector3D& length);
 	void initRectangle(const Vector3D& center, const Vector3D& length, float theta);
+	void initRectangle(const Vector3D& center, float width, float height, float theta);
 	void initRectangle();
 	void initCircle(const Vector3D& center, float radius);
 
 	Form* form;
 	std::string name;
-
+	std::vector<Road*> connected;
 };

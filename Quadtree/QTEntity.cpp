@@ -1,4 +1,5 @@
 #include "QTEntity.h"
+#include "../GameContent/Road.h"
 
 QTEntity::QTEntity(std::string name, const Form& form)
 {
@@ -57,6 +58,14 @@ void QTEntity::initRectangle(const Vector3D& center, const Vector3D& length, flo
 	if (!form)
 	{
 		form = new myRectangle(center, length, theta);
+	}
+}
+
+void QTEntity::initRectangle(const Vector3D & center, float width, float height, float theta)
+{
+	if (!form)
+	{
+		form = new myRectangle(center, width, height, theta);
 	}
 }
 
@@ -151,6 +160,26 @@ void QTEntity::set(const Vector3D& center, float radius)
 	}
 }
 
+unsigned QTEntity::sizeConnected() const
+{
+	return connected.size();
+}
+
+Road * QTEntity::getConnected(unsigned n) const
+{
+	return connected[n];
+}
+
+void QTEntity::addRoad(Road * road)
+{
+	connected.push_back(road);
+}
+
+void QTEntity::removeRoad(unsigned i)
+{
+	connected.erase(connected.begin() + i);
+}
+
 
 sRectangle *QTEntity::castSRectangle()
 {
@@ -176,4 +205,39 @@ const myRectangle *QTEntity::castMyRectangleConst() const
 const Circle *QTEntity::castCircleConst() const 
 {
 	return dynamic_cast<Circle*>(form);
+}
+
+bool QTEntity::removeRoad(Road* road)
+{
+	unsigned i = 0;
+	while (i < connected.size() && road != connected[i])
+	{
+		i++;
+	}
+	if (i < connected.size())
+	{
+		connected.erase(connected.begin() + i);
+		return true;
+	}
+	return false;
+}
+
+bool QTEntity::isColliding(Form& form)
+{
+	return form.collisionSat(*(this->form));
+}
+
+bool QTEntity::isColliding(Form& form, Vector3D& push, float& t)
+{
+	return form.collisionSat(*(this->form), Vector3D(false), Vector3D(false), push, t);
+}
+
+bool QTEntity::isColliding(QTEntity & qtEntity)
+{
+	return isColliding(*qtEntity.getForm());
+}
+
+bool QTEntity::isColliding(QTEntity & qtEntity, Vector3D & push, float & t)
+{
+	return isColliding(*qtEntity.getForm(), push, t);
 }

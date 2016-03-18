@@ -6,7 +6,11 @@
 
 #define MIN_HEIGHT_ROAD 5.0f
 #define MIN_ANGLE2D 0.25f
+// Distance max pour le snapp
 #define MIN_DIF_QTEntity 10.0f
+// Agrandissement 
+#define AGG_FORM 1.2f
+
 
 CreatorManager::CreatorManager()
 {
@@ -25,22 +29,125 @@ void CreatorManager::initialize(GameStruct * gameStruct)
 
 // Fonction d'ajout ou de suppression à appeler
 // Penser à appeler isMakableSnapp avant
-bool CreatorManager::add(QTEntity * qtEntity)
+void CreatorManager::add(QTEntity * qtEntity)
 {
 	// Link road + Gen
 	gameStruct->QTCollision.insert(qtEntity);
 	
-	return true;
+	// Link road
+	// On récupère les routes en collision
+	std::vector<QTEntity*> entities;
+	// On agrandit la form d'un certain facteur pour avoir les éléments autour
+	// On considère que le rayon d'action est un peu plus grand
+
+	Form formAgrand = qtEntity->getForm()->clone();
+	formAgrand.scaleF(1.2f, formAgrand.getCenter());
+	gameStruct->QTRoads.retrieve(formAgrand.getBound(), entities);
+
+
+	// On a les routes possiblement en collision
+	// On cherche les routes en collision
+	for (unsigned i = 0; i < entities.size(); i++)
+	{
+		if (formAgrand.isColliding((*entities[i]->getForm())))
+		{
+			Road * cast = dynamic_cast<Road*>(entities[i]);
+			assert(cast != NULL); // Mauvaise gestion
+			// Ajout de la route dans qtEntity
+			qtEntity->addRoad(cast);
+		}
+	}
 }
 
-bool CreatorManager::addRoad(Road * road)
+void CreatorManager::addRoad(Road * road)
 {
 	// Link road, reAdd QTEntity
 	gameStruct->QTCollision.insert(road);
 	gameStruct->QTRoads.insert(road);
 
-	return true;
+	// On récupère l'ancienne isMakable resultats
+	// On traite juste les cas suivants
+	// 2 à gauche
+	// 3 à droite
+	// 4 travers
+	int minI = -1;
+	bool differentIndex = false;
+	std::map<float, Road*> myRoad;
+	myRoad[0] = road;
+	std::vector<Road*> roads;
+	for (unsigned i = 0; i < roadsGood.size(); i++)
+	{
+		if (roadsGood[i]->getConnexitude() != -1)
+		{
+			if (roadsGood[i]->getConnexitude() != minI && minI != -1)
+			{
+				differentIndex = true;
+			}
+			if (roadsGood[i]->getConnexitude() < minI || minI == -1)
+			{
+				minI = roadsGood[i]->getConnexitude();
+			}
+		}
+		else
+		{
+			// Quand même bizarre
+			differentIndex = true;
+		}
+
+		if (side[i] == 2)
+		{
+			// Il faut determiner avant quel bout de rout est concerné
+			// Car suite à la création de route 
+			handleStartRoad(road, roadsGood[i], roads, myRoad);
+			replaceRoad(roadsGood[i]);
+			// Problème 
+			Road* r1 = roads[roads.size() - 1];
+			Road* r2 = roads[roads.size() - 2];
+			Road* r3 = roads[roads.size() - 3];
+			
+			
+		}
+		else if (side[i] == 3)
+		{
+			handleEndRoad(road, roadsGood[i], roads, myRoad);
+			Road* r1 = roads[roads.size() - 1];
+			Road* r2 = roads[roads.size() - 2];
+			Road* r3 = roads[roads.size() - 3];
+		}
+		else if (side[i] == 4)
+		{
+			handleCrossingRoad(road, roadsGood[i], roads, myRoad);
+			Road* r1 = roads[roads.size() - 1];
+			Road* r2 = roads[roads.size() - 2];
+			Road* r3 = roads[roads.size() - 3];
+		}
+		else
+		{
+			roads.push_back(roadsGood[i]);
+		}
+	}
+
+	if (minI == -1)
+	{
+		minI = getConnexitude();
+		setConnexitude(myRoad[0], minI);
+	}
+	else
+	{
+		if (differentIndex)
+		{
+			setConnexitude(myRoad[0], minI);
+		}
+		else
+		{
+			for (unsigned i = 0; i < myRoad.size(); i++)
+				myRoad[i]->setConnexitude(minI);
+		}
+	}
+	
 }
+
+
 
 bool CreatorManager::isMakableRoadSnapp(Road * road)
 {	
@@ -133,13 +240,17 @@ void CreatorManager::remove(QTEntity * qtEntity)
 	*/
 }
 
+void CreatorManager::replaceRoad(Road * road)
+{
+}
+
 void CreatorManager::removeRoad(Road * road)
 {
 	for (unsigned i = 0; i < road->sizeConnected(); i++)
 	{
 		road->getConnected(i)->removeRoad(road);
 	}
-	recalculate(road);
+	recalculateAfterRemove(road);
 }
 
 void CreatorManager::removeRoad(Road* road, const Vector3D& center, float dist)
@@ -154,12 +265,12 @@ void CreatorManager::setGameStruct(GameStruct * gameStruct)
 	this->gameStruct = gameStruct;
 }
 
-bool CreatorManager::snappRoad(Road * road, std::vector<Road*> roadsGood, std::vector<int> side)
+bool CreatorManager::snappRoad(Road * road, std::vector<Road*>& roadsGood, std::vector<int>& side)
 {
 	return false;
 }
 
-bool CreatorManager::snapp(QTEntity * qtEntity, float minDif, std::vector<QTEntity*> entitiesColliding, std::vector<Vector3D> pushes, std::vector<float> ts)
+bool CreatorManager::snapp(QTEntity * qtEntity, float minDif, std::vector<QTEntity*>& entitiesColliding, std::vector<Vector3D>& pushes, std::vector<float>& ts)
 {
 	return false;
 }
@@ -169,7 +280,7 @@ bool CreatorManager::snapp(QTEntity * qtEntity, float minDif, std::vector<QTEnti
 // Test si une route est constructible
 // roadsGood représente les routes en collision qui doivent être gérer
 // sides représente le type de collision
-bool CreatorManager::preIsMakableRoadSnapp(Road * road, std::vector<Road*> roadsGood, std::vector<int> sides)
+bool CreatorManager::preIsMakableRoadSnapp(Road * road, std::vector<Road*>& roadsGood, std::vector<int>& sides)
 {
 	if (road->getHeight() < MIN_HEIGHT_ROAD)
 		return false;
@@ -291,30 +402,31 @@ bool CreatorManager::preIsMakableRoadSnapp(Road * road, std::vector<Road*> roads
 		{
 			return false;
 		}
+		roadsGood.push_back(roadsColliding[i]);
+
 		if (isInStart)
 		{
-			roadsGood.push_back(roadsColliding[i]);
-			sides.push_back(2);
+			sides.push_back(2); // A gauche
 		}
 		else if (isInEnd)
 		{
-			roadsGood.push_back(roadsColliding[i]);
-			sides.push_back(3);
+			sides.push_back(3); // A droite
 		}
 		else
 		{
-			roadsGood.push_back(roadsColliding[i]);
-			sides.push_back(4);
+			sides.push_back(4); // traversant
 		}
 	}
 
 	return true;
+
+	// Ce qui change par rapport à l'autre fonction est seulement -> un recangle de collision plus grand
 }
 
 // Test si un qtEntity est faisable
 // Pushes représente liste de vecteurs de poussée normalisés
 // ts le facteur du vecteur pousée
-bool CreatorManager::preIsMakableSnapp(QTEntity * qtEntity, float minDif,  std::vector<QTEntity*> entitiesNear, std::vector<Vector3D> pushes, std::vector<float> ts)
+bool CreatorManager::preIsMakableSnapp(QTEntity * qtEntity, float minDif,  std::vector<QTEntity*>& entitiesNear, std::vector<Vector3D>& pushes, std::vector<float>& ts)
 {
 	// On récupère juste l'ensemble des entités qui peuvent possiblement être en collision
 	// On test si y a une collision 
@@ -347,7 +459,7 @@ bool CreatorManager::preIsMakableSnapp(QTEntity * qtEntity, float minDif,  std::
 	return false;
 }
 
-bool CreatorManager::preIsMakableRoad(Road * road, std::vector<Road*> roadsGood, std::vector<int> sides)
+bool CreatorManager::preIsMakableRoad(Road * road, std::vector<Road*>& roadsGood, std::vector<int>& sides)
 {
 	if (road->getHeight() < MIN_HEIGHT_ROAD)
 		return false;
@@ -469,20 +581,19 @@ bool CreatorManager::preIsMakableRoad(Road * road, std::vector<Road*> roadsGood,
 		{
 			return false;
 		}
+		roadsGood.push_back(roadsColliding[i]);
 		if (isInStart)
 		{
-			roadsGood.push_back(roadsColliding[i]);
-			sides.push_back(2);
+			
+			sides.push_back(2); // à gauche
 		}
 		else if (isInEnd)
 		{
-			roadsGood.push_back(roadsColliding[i]);
-			sides.push_back(3);
+			sides.push_back(3); // à droite
 		}
 		else
 		{
-			roadsGood.push_back(roadsColliding[i]);
-			sides.push_back(4);
+			sides.push_back(4); // traverse
 		}
 	}
 
@@ -526,6 +637,187 @@ void CreatorManager::addRoadGameStruct(Road * road)
 	gameStruct->QTRoads.insert(road);
 }
 
+void CreatorManager::handleStartRoad(Road * road, Road * roadSnapp, std::vector<Road*>& roads, std::map<float, Road*>& myRoad)
+{
+	// Il faut récupérer les 4 positions des éléments
+	// Pour le moment c'est un rectangle
+	// On verra après si on passe en form
+
+	// Récupération du premier vecteur directeur
+	Vector3D director1 = road->getDirectorVec();
+	Vector3D director2 = roadSnapp->getDirectorVec();
+
+	// On a déjà la première taille
+	Vector3D roadSnappStart = roadSnapp->getStart();
+	Vector3D roadSnappEnd = roadSnapp->getEnd();
+	float widthRoadSnapp = roadSnapp->getWidth();
+	float scalarStart1 = director1*roadSnappStart;
+	float scalarEnd1 = director1*roadSnappEnd;
+
+	// Pour avoir la l'autre taille
+	Vector3D roadStart = road->getStart();
+	Vector3D roadEnd = road->getEnd();
+	float widthRoad = road->getWidth();
+	float scalarStart2 = director2*roadStart;
+	float scalarEnd2 = director2*roadEnd;
+
+	Vector3D pEnd2 = director2*scalarStart2;
+	Vector3D pStart2 = director2*scalarEnd2;
+
+
+	Vector3D center = (pEnd2 + pStart2)*0.5f;
+
+	float width = (float)abs(scalarStart1 - scalarEnd1);
+	float height = (float)abs(scalarStart2 - scalarEnd2);
+	// Pour le moment rectangle on verra après pour la suite
+	Road *connector = new Road(center, width, height, road->getAngle2D());
+
+	Road *road2 = new Road();
+	Road *road3 = new Road();
+	Road *road4 = new Road();
+
+	// On ajoute un par un chaque route
+	// On remplace le start
+	if (roadSnappStart < roadSnappEnd)
+	{
+		Vector3D pStart1 = director1*((float) max(scalarStart1, scalarEnd1));
+		road2->set2points(pStart1, roadSnappEnd, widthRoadSnapp);
+	}
+	else
+	{
+		Vector3D pStart1 = director1*((float)min(scalarStart1, scalarEnd1));
+		road2->set2points(pStart1, roadSnappEnd, widthRoadSnapp);
+	}
+	
+
+	road3->set2points(roadStart, pEnd2, widthRoad);
+	road4->set2points(pStart2, roadEnd, widthRoad);
+
+	roads.push_back(connector);
+	roads.push_back(road2);
+	roads.push_back(road3);
+	roads.push_back(road4);
+}
+
+void CreatorManager::handleEndRoad(Road * road, Road * roadSnapp, std::vector<Road*>& roads, std::map<float, Road*>& myRoad)
+{
+	// Il faut récupérer les 4 positions des éléments
+	// Pour le moment c'est un rectangle
+	// On verra après si on passe en form
+
+	// Récupération du premier vecteur directeur
+	Vector3D director1 = road->getDirectorVec();
+	Vector3D director2 = roadSnapp->getDirectorVec();
+
+	// On a déjà la première taille
+	Vector3D roadSnappStart = roadSnapp->getStart();
+	Vector3D roadSnappEnd = roadSnapp->getEnd();
+	float widthRoadSnapp = roadSnapp->getWidth();
+	float scalarStart1 = director1*roadSnappStart;
+	float scalarEnd1 = director1*roadSnappEnd;
+
+	// Pour avoir la l'autre taille
+	Vector3D roadStart = road->getStart();
+	Vector3D roadEnd = road->getEnd();
+	float widthRoad = road->getWidth();
+	float scalarStart2 = director2*roadStart;
+	float scalarEnd2 = director2*roadEnd;
+
+	Vector3D pEnd2 = director2*scalarStart2;
+	Vector3D pStart2 = director2*scalarEnd2;
+
+
+	Vector3D center = (pEnd2 + pStart2)*0.5f;
+
+	float width = (float)abs(scalarStart1 - scalarEnd1);
+	float height = (float)abs(scalarStart2 - scalarEnd2);
+	// Pour le moment rectangle on verra après pour la suite
+	Road *connector = new Road(center, width, height, road->getAngle2D());
+
+	Road *road2 = new Road();
+	Road *road3 = new Road();
+	Road *road4 = new Road();
+
+	// On ajoute un par un chaque route
+	// On remplace le end
+	if (roadSnappEnd < roadSnappStart) // Attention au sens
+	{
+		Vector3D pStart1 = director1*((float)max(scalarStart1, scalarEnd1));
+		road2->set2points(pStart1, roadSnappEnd, widthRoadSnapp);
+	}
+	else
+	{
+		Vector3D pStart1 = director1*((float)min(scalarStart1, scalarEnd1));
+		road2->set2points(pStart1, roadSnappEnd, widthRoadSnapp);
+	}
+
+
+	road3->set2points(roadStart, pEnd2, widthRoad);
+	road4->set2points(pStart2, roadEnd, widthRoad);
+
+	roads.push_back(connector);
+	roads.push_back(road2);
+	roads.push_back(road3);
+	roads.push_back(road4);
+}
+
+void CreatorManager::handleCrossingRoad(Road * road, Road * roadSnapp, std::vector<Road*>& roads, std::map<float, Road*>& myRoad)
+{
+	// Il faut récupérer les 4 positions des éléments
+	// Pour le moment c'est un rectangle
+	// On verra après si on passe en form
+	
+	// Récupération du premier vecteur directeur
+	Vector3D director1 = road->getDirectorVec();
+	Vector3D director2 = roadSnapp->getDirectorVec();
+
+	// On a déjà la première taille
+	Vector3D roadSnappStart = roadSnapp->getStart();
+	Vector3D roadSnappEnd = roadSnapp->getEnd();
+	float widthRoadSnapp = roadSnapp->getWidth();
+	float scalarStart1 = director1*roadSnappStart;
+	float scalarEnd1 = director1*roadSnappEnd;
+	
+	// Pour avoir la l'autre taille
+	Vector3D roadStart = road->getStart();
+	Vector3D roadEnd = road->getEnd();
+	float widthRoad = road->getWidth();
+	float scalarStart2 = director2*roadStart;
+	float scalarEnd2 = director2*roadEnd;
+	
+	Vector3D pEnd1 = director1*scalarStart1;
+	Vector3D pStart1 = director1*scalarEnd1;
+	Vector3D pEnd2 = director2*scalarStart2;
+	Vector3D pStart2 = director2*scalarEnd2;
+
+
+	Vector3D center = (pEnd1 + pStart1)*0.5f;
+
+	float width = (float)abs(scalarStart1 - scalarEnd1);
+	float height = (float)abs(scalarStart2 - scalarEnd2);
+	// Pour le moment rectangle on verra après pour la suite
+	Road *connector = new Road(center, width, height, road->getAngle2D());
+	Road *road1 = new Road();
+	Road *road2 = new Road();
+	Road *road3 = new Road();
+	Road *road4 = new Road();
+
+	// On ajoute un par un chaque route
+	road1->set2points(roadSnappStart, pEnd1, widthRoadSnapp);
+	road2->set2points(pStart1, roadSnappEnd, widthRoadSnapp);
+
+	road3->set2points(roadStart, pEnd2, widthRoad);
+	road4->set2points(pStart2, roadEnd, widthRoad);
+
+	roads.push_back(connector);
+	roads.push_back(road1);
+	roads.push_back(road2);
+	roads.push_back(road3);
+	roads.push_back(road4);
+}
+
+
+
 
 
 void CreatorManager::render(Graphics * g, const Vector3D translation)
@@ -539,7 +831,7 @@ LayerNs::LayerEvent CreatorManager::handleEvent(Input & input)
 	return LayerNs::LayerEvent();
 }
 
-void CreatorManager::recalculate(Road* road)
+void CreatorManager::recalculateAfterRemove(Road* road)
 {
 	// On commence par copier l'ensemble des roads connected
 	std::deque<Road*> roads;

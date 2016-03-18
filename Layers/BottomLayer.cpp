@@ -5,6 +5,11 @@ BottomLayer::BottomLayer()
 
 }
 
+BottomLayer::BottomLayer(Graphics* g)
+{
+
+}
+
 void BottomLayer::initialize(float x, float y, int width, int height)
 {
 	translate.set(x, y, 0, 0);
@@ -17,6 +22,7 @@ void BottomLayer::initialize(float x, float y, int width, int height)
 	int sizeBH = addX / 2;
 	// Routes
 	Bouton *routesB = new Bouton("R", posX, posY, sizeBW, sizeBH);
+    //Bouton *routesB = new BoutonImage(new Image(), 400, 100, 100, 100);
 	posX += addX;
 	boutons.push_back(routesB);
 	// Zones

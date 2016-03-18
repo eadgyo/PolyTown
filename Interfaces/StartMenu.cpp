@@ -1,14 +1,14 @@
-#include "Menu.h"
+#include "StartMenu.h"
 
-Menu::Menu()
+StartMenu::StartMenu()
 {
 }
 
-Menu::~Menu()
+StartMenu::~StartMenu()
 {
 }
 
-void Menu::initialize(int width, int height)
+void StartMenu::initialize(int width, int height)
 {
 	if (isInitialized)
 		return;
@@ -34,11 +34,11 @@ void Menu::initialize(int width, int height)
 	// Si besoin de Boutons spéciaux, cette méthode est à modifier
 	isInitialized = true;
 }
-void Menu::reset()
+void StartMenu::reset()
 {
 
 }
-void Menu::render(Graphics* g)
+void StartMenu::render(Graphics* g)
 {
 	// On affiche les boutons
 	for (unsigned i = 0; i < boutons.size(); i++)
@@ -48,7 +48,7 @@ void Menu::render(Graphics* g)
 
 }
 
-HudNs::HudEvent Menu::handleEvent(Input& input)
+HudNs::HudEvent StartMenu::handleEvent(Input& input)
 {
 	if (input.getMousePressed(0))
 	{
@@ -81,6 +81,6 @@ HudNs::HudEvent Menu::handleEvent(Input& input)
 	return HudNs::OK;
 }
 
-void Menu::resize(int width, int height)
+void StartMenu::resize(int width, int height)
 {
 }

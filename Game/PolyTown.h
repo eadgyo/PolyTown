@@ -1,18 +1,23 @@
 #ifndef POLYTOWN_H
 #define POLYTOWN_H
 
+// TEMP
 #include "../GameContent/Housing/House.h"
 #include "../GameContent/Housing/Building.h"
 #include "../GameContent/Factory/Shop.h"
 #include "../GameContent/Factory/Manufactory.h"
 #include "../GameContent/Factory/Farm.h"
+
 #include <deque>
 #include <vector>
-#include "../Interfaces/Interface.h"
-#include "../Interfaces/Menu.h"
-#include "../Interfaces/NewGame.h"
+
 #include "../Graphics/Graphics.h"
+
+#include "../Interfaces/Interface.h"
+#include "../Interfaces/StartMenu.h"
 #include "../Interfaces/Game.h"
+
+#include "../Interfaces/NewGame.h"
 
 class PolyTown
 {
@@ -26,9 +31,6 @@ public:
 
     unsigned int delay(unsigned int lastFrame);
 
-
-    // Mise à jour graphique
-    void update(float dt);
     // Détection des events Souris/Clavier
     void checkEvent();
     // Détection du stack empty

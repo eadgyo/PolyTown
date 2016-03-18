@@ -1,11 +1,13 @@
 #pragma once
 
 #include "Layer.h"
+#include "../GameElements/BoutonImage.h"
 
 class BottomLayer : public Layer
 {
 public:
-	BottomLayer();
+    BottomLayer();
+	BottomLayer(Graphics* g);
 	void initialize(float x, float y, int width, int height);
 	void initialize(int width, int height) { initialize(0, 0, width, height); };
 	void reset();

@@ -27,9 +27,14 @@ bool PolyTown::init(string name, int width, int height)
     g->initGL(width, height);
 
     // Création des interfaces
-    interfaces.push_back(new Menu());
-    interfaces.push_back(new NewGame());
+    // Menu principal
+    interfaces.push_back(new StartMenu());
+    // Menu InGame
     interfaces.push_back(new Game());
+    // Menu Pause
+
+    //interfaces.push_back(new NewGame());
+    
 
     // Initialisation des boutons
     for (unsigned i = 0; i < interfaces.size(); i++) {
@@ -47,14 +52,14 @@ bool PolyTown::init(string name, int width, int height)
     
     running = true;
 
-    cout << "Game initialized" << endl;
+    cout << "PolyTown initialized" << endl;
 
     return 0;
 }
 
 void PolyTown::mainLoop()
 {
-    cout << "Game is running" << endl;
+    cout << "PolyTown is running" << endl;
 
     unsigned int lastFrame = 0;
 
@@ -85,7 +90,7 @@ void PolyTown::mainLoop()
 
 void PolyTown::exit()
 {
-    cout << "Game ended" << endl;
+    cout << "PolyTown ended" << endl;
 }
 
 unsigned int PolyTown::delay(unsigned int lastFrame)
@@ -130,7 +135,7 @@ void PolyTown::clear()
 void PolyTown::render()
 {
     house->render();
-    house->translate(10, 10);
+    house->translate(1, 1);
     building->render();
     shop->render();
     manufactory->render();

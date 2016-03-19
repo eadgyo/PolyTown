@@ -835,7 +835,10 @@ void CreatorManager::recalculateAfterRemove(Road* road)
 {
 	// On commence par copier l'ensemble des roads connected
 	std::deque<Road*> roads;
-
+	
+	if(road->sizeConnected() == 0)
+		freeConnexitude(road.getConnexitude());
+	
 	for (unsigned i = 0; road->sizeConnected(); i++)
 	{
 		roads.push_back(road->getConnected(i));

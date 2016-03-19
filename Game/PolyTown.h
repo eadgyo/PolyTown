@@ -7,6 +7,7 @@
 #include "../GameContent/Factory/Shop.h"
 #include "../GameContent/Factory/Manufactory.h"
 #include "../GameContent/Factory/Farm.h"
+//
 
 #include <deque>
 #include <vector>

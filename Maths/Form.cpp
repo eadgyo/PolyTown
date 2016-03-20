@@ -317,6 +317,23 @@ sRectangle Form::getBound() const
 	return sRectangle(width*0.5f + minX, height*0.5f + minY, width, height);
 }
 
+// On renvoie un carrée qui comprend tous les points
+sRectangle Form::getBoundMax() const
+{
+	float maxDist = FLT_MAX;
+	Vector3D center = getCenter();
+	for (unsigned i = 0; i < points.size(); i++)
+	{
+		float dist = (points[i] - center).getSqMagnitude();
+		if (dist < maxDist)
+		{
+			maxDist = dist;
+		}
+	}
+	maxDist = (float) sqrt(maxDist);
+	return sRectangle(center.x(), center.y(), maxDist, maxDist);
+}
+
 // Penser à liberer lorsque fin d'utilisation du tableau
 std::vector<Vector3D> Form::getVectorsSatLocal() const
 {

@@ -49,7 +49,9 @@ public:
 
 	// Setter
 	void setStart(const Vector3D& center, float minHeight);
+	void setStart(const Vector3D& start);
 	void setEnd(const Vector3D& center, float minHeight);
+	void setEnd(const Vector3D& center);
 	void setStartMove(const Vector3D& center);
 	void setEndMove(const Vector3D& center);
 	void erase(QTEntity* entity);
@@ -58,8 +60,14 @@ public:
 	void addAllEntities(std::vector<QTEntity*> entities);
 	inline void setConnexitude(int connex) { this->connex = connex; };
 
+	Road* next = NULL;
+	Road* prec = NULL;
+	bool isConnector = false;
+
 protected:
 	int connex;
 	std::set<QTEntity*> entConnected;
+
+	const float MIN_HEIGHT = 10.0f;
 	
 };

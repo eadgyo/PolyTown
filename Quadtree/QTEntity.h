@@ -21,9 +21,16 @@ public:
 	
 
 	// Getter
+	float getAngle2D() const;
+	Vector3D getDirectorVec() const;
+
+
 	inline std::string getName() const { return name; };
 	inline sRectangle getBounds() const { return form->getBound(); };
+	inline sRectangle getBoundsMax() const { return form->getBoundMax(); };
 	inline Form* getForm() { return form; };
+	inline Vector3D getCenter() { assert(form != NULL);  return form->getCenter(); };
+	
 
 	sRectangle* castSRectangle();
 	myRectangle* castMyRectangle();
@@ -34,12 +41,18 @@ public:
 
 	// Setter
 	inline void setName(std::string name) { this->name = name; };
+	inline void setCenter(const Vector3D center) { assert(form != NULL); this->form->setPos(center); }
 
 	void set2points(const Vector3D& A, const Vector3D& B, float width);
 	void set2points(const Vector3D& A, const Vector3D& B, const Vector3D& length);
 	void set(const Vector3D& center, const Vector3D length, float theta);
 	void set(const Vector3D& center, const Vector3D length);
 	void set(const Vector3D& center, float radius);
+	
+
+	// Transformations
+	inline void setRadians(float theta) { form->setRadians(theta); };
+	inline void translate(const Vector3D& vec) { form->translate(vec); };
 
 
 	unsigned sizeConnected() const;

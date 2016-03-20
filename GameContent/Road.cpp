@@ -324,6 +324,12 @@ void Road::setStart(const Vector3D& start, float minHeight)
 	}
 }
 
+// Setter
+void Road::setStart(const Vector3D& start)
+{
+	setStart(start, MIN_HEIGHT);
+}
+
 void Road::setEnd(const Vector3D& end, float minHeight)
 {
 	// il faut vérifier que c'est possible
@@ -340,6 +346,10 @@ void Road::setEnd(const Vector3D& end, float minHeight)
 		assert(rec != NULL); // Pas de form
 		set2points(start, end, getWidth());
 	}
+}
+void Road::setEnd(const Vector3D& end)
+{
+	setEnd(end, MIN_HEIGHT);
 }
 
 void Road::setStartMove(const Vector3D& start)

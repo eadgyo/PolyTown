@@ -79,6 +79,7 @@ public:
 	Vector3D transform(const Vector3D& vertex, const Vector3D& p, const Vector3D& v, const Matrix4& orientation, float& t) const;
 	Vector3D handleEdgePoint(const Vector3D& PA, const Vector3D& PB, const Vector3D& PB2) const;
 	sRectangle getBound() const;
+	sRectangle getBoundMax() const;
 	Vector3D& operator[](int i);
 	void updateCenter();
 	void updateOrientation();

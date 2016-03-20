@@ -1,31 +1,32 @@
 #pragma once
-
-#include "../Constant.h"
-#include "GameStruct.h"
-#include "../Quadtree/QTEntity.h"
+#include "../GameContent/Road.h"
+#include "../Game/GameStruct.h"
 
 class UpdateManager
 {
 public:
-    UpdateManager();
+	UpdateManager();
     UpdateManager(GameStruct* game_struct);
 
-    // ----- SETTER ----- //
-    void setGameStruct(GameStruct* game_struct);
+	void initialize(GameStruct* gameStruct);
 
+	// ----- SETTER ----- //
+    void setGameStruct(GameStruct* game_struct);
+	
 	// Links automatiquement faits
 	void add(QTEntity* qtEntity);
 	void addRoad(QTEntity* qtEntity);
 	void remove(QTEntity* qtEntity);
 	void removeRoad(Road* road); // Suppresion des connectors...
 
+	void linkRoadGuess(Road* r1, Road* connector);
 	void linkRoadNext(Road* r1, Road* connector); // Road Connector
-	void linkRoadPrev(Road* r1, Road* connector);
-	void linkRoadNextPrev(Road* r1, Road* r2);
-	void linkRoadPrevPrev(Road* r1, Road* r2);
+	void linkRoadLast(Road* r1, Road* connector);
+	void linkRoadNextLast(Road* r1, Road* r2);
+	void linkRoadLastLast(Road* r1, Road* r2);
 	void linkRoadNextNext(Road* r1, Road* r2);
-	void linkRoadPrevNext(Road* r1, Road* r2);
+	void linkRoadLastNext(Road* r1, Road* r2);
 
 private:
-    GameStruct* gs;
+	GameStruct* gameStruct;
 };

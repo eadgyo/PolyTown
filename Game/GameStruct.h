@@ -1,10 +1,28 @@
 #pragma once
+
+#include "../Constant.h"
+
 // Contient les information nécessaires pour le jeu
 #include "../Quadtree/QTEntity.h"
 #include "../Quadtree/QuadTree.h"
 
 struct GameStruct
 {
+    // Scores
+    p_uint score_dd;
+    p_uint score_soc;
+    p_uint score_eco;
+    p_uint score_env;
+
+    // Stats variables
+    p_uint money = START_MONEY_AMOUNT;
+    p_uint inhabitants = 0;
+    p_uint workers = 0;
+
+    // Ratio
+    float unemployment;
+
+
 	// Gérer collisions et affichages
 	// Autre que les routes
 	QuadTree QTCollision;

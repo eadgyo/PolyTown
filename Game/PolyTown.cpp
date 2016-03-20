@@ -13,7 +13,7 @@
 
 using namespace std;
 
-PolyTown::PolyTown() : running(false), g(new Graphics)
+PolyTown::PolyTown() : running(false), g(new Graphics), gs(NULL)
 {
 	FileManager& fileM = FileManager::getInstance();
 	
@@ -111,6 +111,8 @@ void PolyTown::checkEvent()
 	if (result % HudNs::NEW_GAME)
 	{
 		iStack.push_back(interfaces[1]);
+        gs = (GameStruct*) malloc(sizeof(GameStruct));
+        gs = new GameStruct();
 	}
 	if (result % HudNs::LOAD_GAME)
 	{

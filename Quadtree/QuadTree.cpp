@@ -1,6 +1,12 @@
 #include "QuadTree.h"
 
+QuadTree::QuadTree()
+{
+    this->level = 2;
+    this->rect.set(myRectangle(Vector3D(0, 0), 10, 10));
 
+    nodes = NULL;
+}
 
 QuadTree::QuadTree(int level, const sRectangle & rec)
 {

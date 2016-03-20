@@ -22,6 +22,9 @@ typedef unsigned int p_uint;
 
 // Sprites
 
+// Game
+#define START_MONEY_AMOUNT 10000
+
 // Housing
 #define HOUSING_FOOD_NEEDS 10
 

@@ -17,6 +17,7 @@ public:
 	Road(const Vector3D& center, float width, float height, float theta);
 	~Road() {};
 	static Road create2points(const Vector3D& A, const Vector3D& B, float width);
+	static Road* create2pointsP(const Vector3D& A, const Vector3D& B, float width);
 	static Road createLeft(const Vector3D& left, const Vector3D& length);
 
 	// Getter
@@ -41,8 +42,8 @@ public:
 	std::vector<QTEntity*> getEntConnectedVec() const;
 	inline unsigned sizeEnt() const { return entConnected.size(); };
 	QTEntity* getEnt(unsigned n) const;
-	inline Road* getLast() { if (connected.size() > 0) return connected[0]; else return NULL; };
-	inline Road* getNext() { if (connected.size() > 1) return connected[1]; else return NULL; };
+	inline Road* getLast() { return prec; };
+	inline Road* getNext() { return next; };
 	inline int getConnexitude() const { return connex; };
 
 
@@ -59,15 +60,19 @@ public:
 	void addEntity(QTEntity* entity);
 	void addAllEntities(std::vector<QTEntity*> entities);
 	inline void setConnexitude(int connex) { this->connex = connex; };
+	inline void setLast(Road* next) { this->next = next; };
+	inline void setNext(Road* last) { this->last = last; };
 
-	Road* next = NULL;
-	Road* prec = NULL;
-	bool isConnector = false;
+	bool getIsConnector() { return isConnector; };
 
 protected:
+	Road* next = NULL;
+	Road* last = NULL;
+
 	int connex;
 	std::set<QTEntity*> entConnected;
 
 	const float MIN_HEIGHT = 10.0f;
-	
+	bool isConnector = false;
+
 };

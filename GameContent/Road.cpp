@@ -32,6 +32,14 @@ Road Road::create2points(const Vector3D& A, const Vector3D& B, float width)
 	return road;
 }
 
+Road* Road::create2pointsP(const Vector3D& A, const Vector3D& B, float width)
+{
+	Road *road = new Road;
+	float height = (A - B).getMagnitude();
+	road->set2points(A, B, Vector3D(width, height));
+	return road;
+}
+
 Road Road::createLeft(const Vector3D& left, const Vector3D& length)
 {
 	Vector3D center = left + length*0.5f;
@@ -161,7 +169,7 @@ Vector3D Road::getCenter() const
 	return form->getCenter();
 }
 
-myRectangle Road::getStartColl(float defWidth, float defHeight) const
+myRectangle Road::getStartColl(float addWidth, float defHeight) const
 {
 	const myRectangle* rec = castMyRectangleConst();
 	assert(rec != NULL); // La forme n'existe pas
@@ -171,10 +179,10 @@ myRectangle Road::getStartColl(float defWidth, float defHeight) const
 	getLength(width, height);
 
 	Vector3D start = getStart();
-	return myRectangle(start, defWidth, defHeight, getAngle2D());
+	return myRectangle(start, addWidth + width, defHeight, getAngle2D());
 }
 
-myRectangle Road::getEndColl(float defWidth, float defHeight) const
+myRectangle Road::getEndColl(float addWidth, float defHeight) const
 {
 	const myRectangle* rec = castMyRectangleConst();
 	assert(rec != NULL); // La forme n'existe pas
@@ -184,7 +192,7 @@ myRectangle Road::getEndColl(float defWidth, float defHeight) const
 	getLength(width, height);
 
 	Vector3D end = getEnd();
-	return myRectangle(end, defWidth, defHeight, getAngle2D());
+	return myRectangle(end, addWidth + width, defHeight, getAngle2D());
 }
 
 myRectangle Road::getRect() const

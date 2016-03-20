@@ -6,7 +6,6 @@
 class QuadTree
 {
 public:
-    QuadTree();
 	QuadTree(int level, const sRectangle& rec);
 	~QuadTree();
 

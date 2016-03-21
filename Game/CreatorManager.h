@@ -6,7 +6,7 @@
 #include "../GameContent/Connector.h"
 #include "GameStruct.h"
 #include "../GameContent/Road.h"
-#include "UpdateManager.h"
+#include "LinkManager.h"
 #include "../GameContent/Road.h"
 
 // Readme

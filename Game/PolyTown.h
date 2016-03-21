@@ -3,7 +3,6 @@
 
 #include "GameStruct.h"
 //#include "CreatorManager.h"
-#include "UpdateManager.h"
 
 // TEMP
 #include "../GameContent/Housing/House.h"

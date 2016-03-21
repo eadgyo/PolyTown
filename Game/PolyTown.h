@@ -2,15 +2,8 @@
 #define POLYTOWN_H
 
 #include "GameStruct.h"
-//#include "CreatorManager.h"
-
-// TEMP
-#include "../GameContent/Housing/House.h"
-#include "../GameContent/Housing/Building.h"
-#include "../GameContent/Factory/Shop.h"
-#include "../GameContent/Factory/Manufactory.h"
-#include "../GameContent/Factory/Farm.h"
-//
+#include "CreatorManager.h"
+#include "UpdateManager.h"
 
 #include <deque>
 #include <vector>
@@ -45,16 +38,15 @@ public:
 	void render();
 	void swap();
 
+    // ----- In GAME
+    void startGame();
+
 private:
     bool running;
 
     GameStruct* gs;
-
-    House* house;
-    Building* building;
-    Shop* shop;
-    Manufactory* manufactory;
-    Farm* farm;
+    CreatorManager* creator_m;
+    UpdateManager* update_m;
 	
 	// Graphique et input
 	std::deque<Interface*> iStack;

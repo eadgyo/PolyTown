@@ -1,7 +1,7 @@
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
-#include "../Constant.h"
+#include "../../Constant.h"
 #include "../Displayable.h"
 
 #include <vector>

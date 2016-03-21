@@ -12,10 +12,15 @@ public:
 	GameStruct()
 	{
 
-	};
+	}
+
+    void display()
+    {
+        std::cout << score_dd << std::endl;
+    }
 
     // Scores
-    p_uint score_dd;
+    p_uint score_dd = 0;
     p_uint score_soc;
     p_uint score_eco;
     p_uint score_env;

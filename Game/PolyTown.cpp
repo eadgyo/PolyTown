@@ -62,6 +62,13 @@ void PolyTown::mainLoop()
 
         // INTERFACE(input)
 
+        // UPDATE MANAGER
+        if (gs) {
+            gs->display();
+        }
+
+        // CREATOR MANAGER
+
         // CLEAR WINDOW
         clear();
 
@@ -104,7 +111,7 @@ void PolyTown::checkEvent()
 	if (result % HudNs::NEW_GAME)
 	{
 		iStack.push_back(interfaces[1]);
-        gs = new GameStruct();
+        startGame();
 	}
 	if (result % HudNs::LOAD_GAME)
 	{
@@ -137,4 +144,11 @@ void PolyTown::swap()
 {
 	// Swap buffer
 	g->swapGL();
+}
+
+// In GAME
+void PolyTown::startGame()
+{
+    gs = new GameStruct();
+    creator_m = new CreatorManager();
 }

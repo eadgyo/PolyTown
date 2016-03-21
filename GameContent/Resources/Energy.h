@@ -1,7 +1,7 @@
 #ifndef ENERGY_H
 #define ENERGY_H
 
-#include "../Constant.h"
+#include "../../Constant.h"
 
 class Energy
 {

@@ -123,6 +123,12 @@ Vector3D myRectangle::getVecWorld() const
 	return orientation*vec;
 }
 
+Vector3D myRectangle::getVecWorldNormal() const
+{
+	Vector3D vec = Vector3D::sub(points.at(0), points.at(1));
+	return orientation*vec;
+}
+
 float myRectangle::getAngle(const Vector3D& vec) const
 {
 	Vector3D l_vec1 = getVecWorld();

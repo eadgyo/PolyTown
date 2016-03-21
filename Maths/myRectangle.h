@@ -28,6 +28,7 @@ public:
 	// Getter
 	Vector3D getVecLocal() const;
 	Vector3D getVecWorld() const;
+	Vector3D getVecWorldNormal() const;
 	inline Vector3D getLeft() const { return get(0); };
 	inline Vector3D getLength() const { return length; };
 	inline float getWidth() const { return length.x(); };

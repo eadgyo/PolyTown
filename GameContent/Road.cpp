@@ -49,32 +49,12 @@ Road Road::createLeft(const Vector3D& left, const Vector3D& length)
 
 Vector3D Road::getStart() const
 {
-	// On prend le coté dont la taille est la plus petite
-	float side0 = (get(0) - get(1)).getMagnitude();
-	float side1 = (get(1) - get(2)).getMagnitude();
-	if (side0 < side1)
-	{
-		return (get(0) + get(1))*0.5f;
-	}
-	else
-	{
-		return (get(3) + get(0))*0.5f;
-	}
+	return (get(0) + get(3))*0.5f;
 }
 
 Vector3D Road::getEnd() const
 {
-	// On prend le coté dont la taille est la plus petite
-	float side0 = (get(0) - get(1)).getMagnitude();
-	float side1 = (get(1) - get(2)).getMagnitude();
-	if (side0 < side1)
-	{
-		return (get(2) + get(3))*0.5f;
-	}
-	else
-	{
-		return (get(1) + get(2))*0.5f;
-	}
+	return (get(1) + get(2))*0.5f;
 }
 
 Vector3D Road::get(unsigned n) const
@@ -85,40 +65,19 @@ Vector3D Road::get(unsigned n) const
 Vector3D Road::getDirectorVec() const
 {
 	// On retourne juste la distance entre 2 points Start End
-	Vector3D director = getEnd() - getStart();
-	director.normalize();
+	Vector3D director = (get(0) - get(1)).getNormalize();
 	return director;
 }
 
 Vector3D Road::getLeftCenter() const
 {
-	// On prend le coté dont la taille est la plus grande
-	float side0 = (get(0) - get(1)).getMagnitude();
-	float side1 = (get(1) - get(2)).getMagnitude();
-	if (side0 > side1)
-	{
-		return (get(0) + get(1))*0.5f;
-	}
-	else
-	{
-		return (get(3) + get(0))*0.5f;
-	}
+	return (get(0) + get(1))*0.5f;
 }
 
 
 Vector3D Road::getRightCenter() const
 {
-	// On prend le coté dont la taille est la plus grande
-	float side0 = (get(0) - get(1)).getMagnitude();
-	float side1 = (get(1) - get(2)).getMagnitude();
-	if (side0 > side1)
-	{
-		return (get(2) + get(3))*0.5f;
-	}
-	else
-	{
-		return (get(1) + get(2))*0.5f;
-	}
+	return (get(2) + get(3))*0.5f;
 }
 
 float Road::getAngle2D() const
@@ -147,21 +106,9 @@ Vector3D Road::getLength() const
 
 void Road::getLength(float& width, float& height) const
 {
-	float side0 = (get(0) - get(1)).getMagnitude();
-	float side1 = (get(1) - get(2)).getMagnitude();
-
-	// Width est la largeur
-	// Height est la longueur
-	if (side0 < side1)
-	{
-		width = side0;
-		height = side1;
-	}
-	else
-	{
-		width = side1;
-		height = side0;
-	}
+	const myRectangle *rec = castMyRectangleConst();
+	width = rec->getWidth();
+	height = rec->getHeight();
 }
 
 Vector3D Road::getCenter() const
@@ -204,20 +151,8 @@ myRectangle Road::getRect() const
 
 myRectangle Road::getBigRectangle(float defWidth, float defHeight) const
 {
-	float width, height;
-	float side0 = (get(0) - get(1)).getMagnitude();
-	float side1 = (get(1) - get(2)).getMagnitude();
-	bool inf = side0 < side1;
-	if (inf)
-	{
-		width = side0 + defWidth;
-		height = side1 + defHeight;
-	}
-	else
-	{
-		width = side1 + defWidth;
-		height = side0 + defHeight;
-	}
+	float width = getWidth() + defWidth;
+	float height = defHeight;
 	return myRectangle(getCenter(), width, height, getAngle2D());
 }
 
@@ -226,20 +161,8 @@ myRectangle Road::getBigRectangle(float defWidth, float defHeight) const
 std::vector<myRectangle> Road::getMidColl(float defHeight) const
 {
 	std::vector<myRectangle> midColl;
-	float width, height;
-	float side0 = (get(0) - get(1)).getMagnitude();
-	float side1 = (get(1) - get(2)).getMagnitude();
-	bool inf = side0 < side1;
-	if (inf)
-	{
-		width = side0;
-		height = side1;
-	}
-	else
-	{
-		width = side1;
-		height = side0;
-	}
+	float width = getWidth();
+	float height = getHeight();
 	assert(height > defHeight);
 
 
@@ -247,37 +170,18 @@ std::vector<myRectangle> Road::getMidColl(float defHeight) const
 	{
 		// On a 2 rectangles
 		Vector3D center = getCenter();
-		
-		if (inf)
-		{
-			side1 -= defHeight;
-		}
-		else
-		{
-			side0 -= defHeight;
-		}
 		Vector3D director = getDirectorVec();
-		Vector3D length(side0, side1);
+
 		// Un premier rectangle avec le center
 		float theta = getAngle2D();
-		midColl.push_back(myRectangle(center - director*defHeight, length, theta));
-		midColl.push_back(myRectangle(center + director*defHeight, length, theta));
+		midColl.push_back(myRectangle(center - director*defHeight, width, height-defHeight, theta));
+		midColl.push_back(myRectangle(center + director*defHeight, width, height-defHeight, theta));
 	}
 	else
 	{
-		// Un seul rectangle
-		Vector3D center = getCenter();
 		// On a juste à raccourcir le rectangle en enlevant 2 fois defHeight
-		if (inf)
-		{
-			side1 -= defHeight * 2;
-		}
-		else
-		{
-			side0 -= defHeight * 2;
-		}
-		Vector3D length(side0, side1);
-		midColl.push_back(myRectangle(center, length, getAngle2D()));
+		Vector3D center = getCenter();
+		midColl.push_back(myRectangle(center, width, height-defHeight*2, getAngle2D()));
 	}
 	return midColl;
 }

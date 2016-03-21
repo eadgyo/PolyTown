@@ -1,11 +1,7 @@
 #include "QTEntity.h"
 #include "../GameContent/Road.h"
 
-QTEntity::QTEntity(std::string name, const Form& form)
-{
-	this->name = name;
-	this->form = new Form(form);
-}
+
 QTEntity::QTEntity(const Form& form)
 {
 	this->form = new Form(form);
@@ -160,26 +156,6 @@ void QTEntity::set(const Vector3D& center, float radius)
 	}
 }
 
-unsigned QTEntity::sizeConnected() const
-{
-	return connected.size();
-}
-
-Road * QTEntity::getConnected(unsigned n) const
-{
-	return connected[n];
-}
-
-void QTEntity::addRoad(Road * road)
-{
-	connected.push_back(road);
-}
-
-void QTEntity::removeRoad(unsigned i)
-{
-	connected.erase(connected.begin() + i);
-}
-
 
 Vector3D QTEntity::getDirectorVec() const
 {
@@ -221,20 +197,7 @@ const Circle *QTEntity::castCircleConst() const
 	return dynamic_cast<Circle*>(form);
 }
 
-bool QTEntity::removeRoad(Road* road)
-{
-	unsigned i = 0;
-	while (i < connected.size() && road != connected[i])
-	{
-		i++;
-	}
-	if (i < connected.size())
-	{
-		connected.erase(connected.begin() + i);
-		return true;
-	}
-	return false;
-}
+
 
 bool QTEntity::isColliding(Form& form)
 {

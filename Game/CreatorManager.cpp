@@ -1,5 +1,10 @@
 #include "CreatorManager.h"
 
+//--- A faire
+//--> Gestion ajout Connector lors du Add
+//--> Gestion snapp sur un Connector
+
+
 CreatorManager::CreatorManager()
 {
 	gameStruct = NULL;
@@ -35,6 +40,16 @@ void CreatorManager::addRoad(Road * road)
 
 	handleAllStart(cRoadStruct, myRoad.begin()->second);
 	handleAllEnd(cRoadStruct, (--myRoad.end())->second);
+
+	// On recherche le plus petit index
+	int minIndex = updateManager.computeRoadIndex(myRoad);
+	if (minIndex == -1)
+	{
+		minIndex = updateManager.getConnexitude();
+	}
+
+	// Nous pourrions utilisé un modèle optimisé
+	updateManager.setConnexitude(myRoad.begin()->second, minIndex);
 }
 
 void CreatorManager::handleAllStart(CRoadStruct& cRoadStruct, Road* startR)

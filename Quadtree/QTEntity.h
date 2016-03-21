@@ -7,9 +7,7 @@ class Road;
 class QTEntity
 {
 public:
-	QTEntity() { form = NULL; name = ""; };
-	QTEntity(std::string name) { form = NULL; this->name = name; };
-	QTEntity(std::string name, const Form& form);
+	QTEntity() { form = NULL; };
 	QTEntity(const Form& form);
 	QTEntity(const myRectangle& rectangle);
 	QTEntity(const Circle& circle);
@@ -25,7 +23,7 @@ public:
 	Vector3D getDirectorVec() const;
 
 
-	inline std::string getName() const { return name; };
+	
 	inline sRectangle getBounds() const { return form->getBound(); };
 	inline sRectangle getBoundsMax() const { return form->getBoundMax(); };
 	inline Form* getForm() { return form; };
@@ -40,7 +38,6 @@ public:
 	const Circle* castCircleConst() const;
 
 	// Setter
-	inline void setName(std::string name) { this->name = name; };
 	inline void setCenter(const Vector3D center) { assert(form != NULL); this->form->setPos(center); }
 
 	void set2points(const Vector3D& A, const Vector3D& B, float width);
@@ -55,13 +52,6 @@ public:
 	inline void translate(const Vector3D& vec) { form->translate(vec); };
 
 
-	unsigned sizeConnected() const;
-	Road* getConnected(unsigned n) const;
-
-	void addRoad(Road* road);
-	void removeRoad(unsigned i);
-	bool removeRoad(Road* road);
-
 	bool isColliding(Form& form);
 	bool isColliding(Form& form, Vector3D& push, float& t);
 	bool isColliding(QTEntity& qtEntity);
@@ -75,6 +65,6 @@ protected:
 	void initCircle(const Vector3D& center, float radius);
 
 	Form* form;
-	std::string name;
-	std::vector<Road*> connected;
+
+	
 };

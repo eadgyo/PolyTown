@@ -26,15 +26,29 @@ public:
 
 	};
 
-
-	inline void setLast(Road* next) { assert(false); }; // Mauvaise utilisation
-	inline void setNext(Road* last) { assert(false); }; // Mauvaise utilisation
+	inline Road* getNext() { assert(false); return NULL; };
+	inline Road* getLast() { assert(false); return NULL; };
+	inline void setLast(Road* last) { assert(false); }; // Mauvaise utilisation
+	inline void setNext(Road* next) { assert(false); }; // Mauvaise utilisation
 
 	inline void addConnectedRoad(Road* road)
 	{
 		connectedRoads.push_back(road);
 	}
-	inline void removeConnectedRoad(Road* road)
+	inline int sizeConnectedRoad()
+	{
+		return connectedRoads.size();
+	}
+	inline Road* getConnectedRoad(unsigned i)
+	{
+		return connectedRoads[i];
+	}
+
+	inline void removeConnectedRoad(unsigned i)
+	{
+		connectedRoads.erase(connectedRoads.begin() + i);
+	}
+	void removeConnectedRoad(Road* road)
 	{
 		unsigned i = 0;
 		while (i < connectedRoads.size() && road != connectedRoads[i])

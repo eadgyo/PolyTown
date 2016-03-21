@@ -1,6 +1,6 @@
 #include "Water.h"
 
-Water::Water() : m_water_needs(0)
+Water::Water() : m_water_needs(0), m_water_tower(NULL)
 {
 }
 

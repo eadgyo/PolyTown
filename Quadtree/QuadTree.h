@@ -24,6 +24,8 @@ public:
 	void erase(QTEntity*);
 	void erase(QTEntity* qtEntity, const sRectangle& sRectangle);
 
+
+
 private:
 	static const int MAX_OBJECTS = 5;
 	static const int MAX_LEVELS = 50;

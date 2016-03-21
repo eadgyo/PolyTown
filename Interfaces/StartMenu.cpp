@@ -63,7 +63,6 @@ HudNs::HudEvent StartMenu::handleEvent(Input& input)
 		switch (i)
 		{
 		case 0: // Nouvelle partie
-			std::cout << "Ok";
 			return HudNs::NEW_GAME | HudNs::RESET;
 		case 1:
 			return HudNs::LOAD_GAME | HudNs::RESET;

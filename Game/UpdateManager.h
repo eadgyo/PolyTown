@@ -13,6 +13,10 @@ public:
 
     // ----- UPDATE ----- //
     void update();
+    void updateScoreDD();
+    void updateScoreSoc();
+    void updateScoreEco();
+    void updateScoreEnv();
 
 private:
     GameStruct* gs;

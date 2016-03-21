@@ -9,30 +9,41 @@
 class GameStruct
 {
 public:
-	GameStruct()
-	{
-
-	}
+    GameStruct() :
+        score_dd(0),
+        score_soc(0),
+        score_eco(0),
+        score_env(0),
+        money(START_MONEY_AMOUNT),
+        inhabitants(0),
+        workers(0)
+    {
+    }
 
     void display()
     {
-        std::cout << score_dd << std::endl;
+        std::cout << score_dd << ' ';
+        std::cout << score_soc << ' ';
+        std::cout << score_eco << ' ';
+        std::cout << score_env << std::endl;
     }
 
     // Scores
-    p_uint score_dd = 0;
+    p_uint score_dd;
     p_uint score_soc;
     p_uint score_eco;
     p_uint score_env;
 
     // Stats variables
     p_uint money = START_MONEY_AMOUNT;
-    p_uint inhabitants = 0;
-    p_uint workers = 0;
+    p_uint inhabitants;
+    p_uint workers;
 
     // Ratio
     float unemployment;
 
+    // Compteur des structures alimentées
+    unsigned int struct_counter[5] = {0}; // Housing | Social | Manufactory | Energy | Water
 
 	// Gérer collisions et affichages
 	// Autre que les routes

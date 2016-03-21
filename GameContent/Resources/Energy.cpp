@@ -1,6 +1,6 @@
 #include "Energy.h"
 
-Energy::Energy() : m_energy_needs(0)
+Energy::Energy() : m_energy_needs(0), m_power_plant(NULL)
 {
 }
 

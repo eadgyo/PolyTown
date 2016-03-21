@@ -6,7 +6,7 @@
 class NewGame : public Interface
 {
 public:
-	NewGame();
+	NewGame(Graphics* g);
 	~NewGame();
 	void initialize(int width, int height);
 	void virtual reset();

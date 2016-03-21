@@ -10,9 +10,10 @@ class Interface;
 class Interface : public GraphicsObject
 {
 public:
-	Interface() { isInitialized = false; };
-	Interface(int, int) { isInitialized = false; };
+	Interface(Graphics* g) : graphics(g) { isInitialized = false; };
+	Interface(Graphics* g, int, int) : graphics(g) { isInitialized = false; };
 
 	// Détection des collisions 
 	HudNs::HudEvent virtual handleEvent(Input& input) = 0;
+	Graphics *graphics;
 };

@@ -6,11 +6,10 @@
 #define SIZE_BW 200
 #define SIZE_BH 70
 
-class StartMenu :
-	public Interface
+class StartMenu : public Interface
 {
 public:
-	StartMenu();
+	StartMenu(Graphics* g);
 	~StartMenu();
 
 	void initialize(int, int);

@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game()
+Game::Game(Graphics* g) : Interface(g), bottomLayer(g)
 {
 }
 

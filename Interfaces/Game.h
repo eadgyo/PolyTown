@@ -7,7 +7,7 @@ class Game :
 {
 
 public:
-	Game();
+	Game(Graphics* g);
 	~Game();
 
 	void initialize(int width, int height);

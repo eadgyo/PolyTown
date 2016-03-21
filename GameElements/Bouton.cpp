@@ -2,7 +2,7 @@
 
 
 
-Bouton::Bouton(int x, int y, int width, int height)
+Bouton::Bouton(Graphics* graphics, int x, int y, int width, int height) : graphics(graphics)
 {
 	r = 1;
 	g = 1;
@@ -13,7 +13,7 @@ Bouton::Bouton(int x, int y, int width, int height)
 	rectangle.set((float) x, (float) y, (float) width, (float) height);
 }
 
-Bouton::Bouton(std::string text, int x, int y, int width, int height)
+Bouton::Bouton(Graphics* graphics, std::string text, int x, int y, int width, int height) : graphics(graphics)
 {
 	r = 1;
 	g = 1;
@@ -24,7 +24,7 @@ Bouton::Bouton(std::string text, int x, int y, int width, int height)
 	rectangle.set((float) x, (float) y, (float) width, (float) height);
 }
 
-Bouton::Bouton(std::string text, unsigned int size, int x, int y, int width, int height)
+Bouton::Bouton(Graphics* graphics, std::string text, unsigned int size, int x, int y, int width, int height) : graphics(graphics)
 {
 	r = 1;
 	g = 1;

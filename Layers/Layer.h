@@ -9,7 +9,7 @@
 class Layer : public GraphicsObject
 {
 public:
-	Layer() { isInitialized = false; };
+	Layer(Graphics* graphics) : graphics(graphics) { isInitialized = false;  };
 	~Layer() {};
 	Layer(int, int) { isInitialized = false; };
 	Layer(int, int, int, int) { isInitialized = false; };
@@ -21,4 +21,5 @@ public:
 protected:
 	bool isInitialized;
 	Vector3D translate;
+	Graphics* graphics;
 };

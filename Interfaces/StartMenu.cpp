@@ -1,6 +1,6 @@
 #include "StartMenu.h"
 
-StartMenu::StartMenu()
+StartMenu::StartMenu(Graphics *g) : Interface(g)
 {
 }
 
@@ -24,7 +24,7 @@ void StartMenu::initialize(int width, int height)
 	unsigned i = 0;
 	while(boutonsTexte[i].compare("") != 0)
 	{
-		Bouton* bouton = new Bouton(boutonsTexte[i], posX, startY, SIZE_BW, SIZE_BH);
+		Bouton* bouton = new Bouton(graphics, boutonsTexte[i], posX, startY, SIZE_BW, SIZE_BH);
 		bouton->setColor(1.0f, 0, 0, 1);
 		boutons.push_back(bouton);
 		startY += (int) (SIZE_BH*1.2f);
@@ -63,6 +63,7 @@ HudNs::HudEvent StartMenu::handleEvent(Input& input)
 		switch (i)
 		{
 		case 0: // Nouvelle partie
+			std::cout << "Ok";
 			return HudNs::NEW_GAME | HudNs::RESET;
 		case 1:
 			return HudNs::LOAD_GAME | HudNs::RESET;

@@ -28,9 +28,9 @@ bool PolyTown::init(string name, int width, int height)
 
     // Création des interfaces
     // Menu principal
-    interfaces.push_back(new StartMenu());
+    interfaces.push_back(new StartMenu(g));
     // Menu InGame
-    interfaces.push_back(new Game());
+    interfaces.push_back(new Game(g));
     // Menu Pause
 
     //interfaces.push_back(new NewGame());

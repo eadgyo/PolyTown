@@ -2,7 +2,7 @@
 
 
 
-NewGame::NewGame()
+NewGame::NewGame(Graphics *g) : Interface(g)
 {	
 }
 

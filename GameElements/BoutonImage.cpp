@@ -1,7 +1,7 @@
 #include "BoutonImage.h"
 
-BoutonImage::BoutonImage(Image* image, int x, int y, int width, int height) :
-    Bouton(x, y, width, height),
+BoutonImage::BoutonImage(Graphics* graphics, Image* image, int x, int y, int width, int height) :
+    Bouton(graphics, x, y, width, height),
     m_image(image)
 {
 }

@@ -1,11 +1,6 @@
 #include "BottomLayer.h"
 
-BottomLayer::BottomLayer()
-{
-
-}
-
-BottomLayer::BottomLayer(Graphics* g)
+BottomLayer::BottomLayer(Graphics* g) : Layer(g)
 {
 
 }
@@ -21,28 +16,31 @@ void BottomLayer::initialize(float x, float y, int width, int height)
 	int sizeBW = addX / 2;
 	int sizeBH = addX / 2;
 	// Routes
-	Bouton *routesB = new Bouton("R", posX, posY, sizeBW, sizeBH);
+	Image* roadI = new Image();
+	roadI->initialize(graphics, 128, 128, 0, 2, "BottomLayer.png");
+
+	Bouton *routesB = new BoutonImage(graphics, roadI, posX, posY, sizeBW, sizeBH);
     //Bouton *routesB = new BoutonImage(new Image(), 400, 100, 100, 100);
 	posX += addX;
 	boutons.push_back(routesB);
 	// Zones
-	Bouton *zonesB = new Bouton("Z", posX, posY, sizeBW, sizeBH);
+	Bouton *zonesB = new Bouton(graphics, "Z", posX, posY, sizeBW, sizeBH);
 	posX += addX;
 	boutons.push_back(zonesB);
 	// Energies
-	Bouton *energB = new Bouton("En", posX, posY, sizeBW, sizeBH);
+	Bouton *energB = new Bouton(graphics, "En", posX, posY, sizeBW, sizeBH);
 	posX += addX;
 	boutons.push_back(energB);
 	// Traitement des déchets
-	Bouton *dechB = new Bouton("D", posX, posY, sizeBW, sizeBH);
+	Bouton *dechB = new Bouton(graphics, "D", posX, posY, sizeBW, sizeBH);
 	posX += addX;
 	boutons.push_back(dechB);
 	// Traitement et stockage des eaux
-	Bouton *eauxB = new Bouton("Ea", posX, posY, sizeBW, sizeBH);
+	Bouton *eauxB = new Bouton(graphics, "Ea", posX, posY, sizeBW, sizeBH);
 	posX += addX;
 	boutons.push_back(eauxB);
 	// Etablissement
-	Bouton *etablB = new Bouton("Et", posX, posY, sizeBW, sizeBH);
+	Bouton *etablB = new Bouton(graphics, "Et", posX, posY, sizeBW, sizeBH);
 	posX += addX;
 	boutons.push_back(etablB);
 	// Destruction

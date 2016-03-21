@@ -42,13 +42,6 @@ bool PolyTown::init(string name, int width, int height)
     }
 
     iStack.push_back(interfaces[0]);
-
-	// Création des ressources
-    house = StructFactory::newHouse(g, 60, 65);
-    building = new Building(g, 180, 70);
-    shop = new Shop(g, 300, 75);
-    manufactory = new Manufactory(g, 420, 80);
-    farm = new Farm(g, 540, 85);
     
     running = true;
 
@@ -135,13 +128,6 @@ void PolyTown::clear()
 
 void PolyTown::render()
 {
-    house->render();
-    house->translate(1, 1);
-    building->render();
-    shop->render();
-    manufactory->render();
-    farm->render();
-
 	checkStack();
 	// On rend le dernier élément
 	iStack.back()->render(g);

@@ -4,7 +4,7 @@ UpdateManager::UpdateManager() {}
 
 UpdateManager::UpdateManager(GameStruct* game_struct)
 {
-    setGameStruct(game_struct);
+    initialize(game_struct);
 }
 
 

@@ -1,0 +1,10 @@
+License
+=======
+
+You are free to use this program as you see fit, however an Email or Postcard would be nice.
+
+Lupas Rename may be freely distributed as long as the files in this archive are unchanged and no fee is charged for its distribution. No part of this program may be reverse engineered, dissasembled, decompiled, or be used as part of another program.
+
+Lupas Rename is provided "as is" and without any warranty. The author cannot be held responsible for anything that happens to you or your equipment. Use it at your own risk.
+
+By using Lupas Rename, you agree to the terms of this license.

@@ -42,10 +42,9 @@ public:
 	std::vector<QTEntity*> getEntConnectedVec() const;
 	inline unsigned sizeEnt() const { return entConnected.size(); };
 	QTEntity* getEnt(unsigned n) const;
-	inline Road* getLast() { return prec; };
+	inline Road* getLast() { return last; };
 	inline Road* getNext() { return next; };
 	inline int getConnexitude() const { return connex; };
-
 
 
 	// Setter

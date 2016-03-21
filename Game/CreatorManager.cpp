@@ -96,7 +96,7 @@ void CreatorManager::handleAllEnd(CRoadStruct& cRoadStruct, Road* endR)
 
 		// On copie les anciens liens
 		updateManager.linkRoadCopyLast(road, l_road.begin()->second);
-		updateManager.linkRoadCopyNext(road, (--l_road.end())->second);
+		updateManager.linkRoadCopyNext(road, (--(l_road.end()))->second);
 		updateManager.removeRoad(road);
 
 		linkMapRoad(l_road);

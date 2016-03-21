@@ -47,5 +47,6 @@ public:
 		}
 	}
 
+private:
 	std::vector<Road*> connectedRoads;
 };

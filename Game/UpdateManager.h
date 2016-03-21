@@ -1,5 +1,6 @@
 #pragma once
 #include "../GameContent/Road.h"
+#include "../GameContent/Connector.h"
 #include "../Game/GameStruct.h"
 
 class UpdateManager
@@ -27,6 +28,9 @@ public:
 	void linkRoadNextNext(Road* r1, Road* r2);
 	void linkRoadLastNext(Road* r1, Road* r2);
 
+
+	void linkRoadCopyNext(Road* source, Road* dest);
+	void linkRoadCopyLast(Road* source, Road* dest);
 private:
 	GameStruct* gameStruct;
 };

@@ -6,8 +6,14 @@
 #include "../Quadtree/QTEntity.h"
 #include "../Quadtree/QuadTree.h"
 
-struct GameStruct
+class GameStruct
 {
+public:
+	GameStruct()
+	{
+
+	};
+
     // Scores
     p_uint score_dd;
     p_uint score_soc;

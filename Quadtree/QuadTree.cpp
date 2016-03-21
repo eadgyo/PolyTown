@@ -15,6 +15,12 @@ QuadTree::~QuadTree()
 	delete[] nodes;
 }
 
+void QuadTree::set(int level, const sRectangle & rec)
+{
+	this->level = level;
+	rect.set(rec);
+}
+
 void QuadTree::setRect(const sRectangle & rec)
 {
 	rect.set(rec);

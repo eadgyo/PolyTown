@@ -81,7 +81,7 @@ public:
 	Road* createConnectorFromMap(Road* actualRoad, Road* roadi, std::map<float, Road*>& myRoad, const Vector3D& start, const Vector3D& director, float width, float theta);
 	void linkMapRoad(std::map<float, Road*> myRoad);
 
-	void add(QTEntity* qtEntity);
+	void add(QTEntityBuild* qtEntity);
 	
 	bool isMakableSnappRoad(Road* road);
 	bool isMakableSnappRoad(Road* road, CRoadStruct& cRoadStrcut);
@@ -89,7 +89,7 @@ public:
 	bool isMakable(QTEntity* qtEntity);
 
 	void removeRoad(Road* road);
-	void remove(QTEntity* qtEntity);
+	void remove(QTEntityBuild* qtEntity);
 
 
 	// Add road functions

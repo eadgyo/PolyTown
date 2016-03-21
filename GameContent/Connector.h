@@ -35,7 +35,7 @@ public:
 	{
 		connectedRoads.push_back(road);
 	}
-	inline int sizeConnectedRoad()
+	inline unsigned sizeConnectedRoad()
 	{
 		return connectedRoads.size();
 	}

@@ -4,11 +4,11 @@
 #include "../Game/GameStruct.h"
 #include "../Quadtree/QTEntityBuild.h"
 
-class UpdateManager
+class LinkManager
 {
 public:
-	UpdateManager();
-    UpdateManager(GameStruct* game_struct);
+	LinkManager();
+    LinkManager(GameStruct* game_struct);
 
 	void initialize(GameStruct* gameStruct);
 

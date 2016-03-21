@@ -122,7 +122,7 @@ public:
 
 private:
 	GameStruct *gameStruct;
-	UpdateManager updateManager;
+	LinkManager updateManager;
 	
 	// Nombre d'essais max pour isMakableSnapp
 	const int MAX_TRY_SNAPP_QTENTITY = 10;

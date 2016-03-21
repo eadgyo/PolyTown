@@ -1,19 +1,19 @@
 #include "UpdateManager.h"
 
-UpdateManager::UpdateManager() {}
+LinkManager::LinkManager() {}
 
-UpdateManager::UpdateManager(GameStruct* game_struct)
+LinkManager::LinkManager(GameStruct* game_struct)
 {
     initialize(game_struct);
 }
 
 
-void UpdateManager::initialize(GameStruct * gameStruct)
+void LinkManager::initialize(GameStruct * gameStruct)
 {
 	this->gameStruct = gameStruct;
 }
 
-void UpdateManager::linkRoadGuess(Road * r1, Road * connector)
+void LinkManager::linkRoadGuess(Road * r1, Road * connector)
 {
 	if (r1->getLast() == NULL)
 		linkRoadLast(r1, connector);
@@ -23,7 +23,7 @@ void UpdateManager::linkRoadGuess(Road * r1, Road * connector)
 		std::cout << "Problème HandleStartDivisions: route connector ou non libre";
 }
 
-void UpdateManager::linkRoadNext(Road * r1, Road * connector)
+void LinkManager::linkRoadNext(Road * r1, Road * connector)
 {
 	r1->setNext(connector);
 	Connector* cast = dynamic_cast<Connector*>(connector);
@@ -31,7 +31,7 @@ void UpdateManager::linkRoadNext(Road * r1, Road * connector)
 	cast->addConnectedRoad(r1);
 }
 
-void UpdateManager::linkRoadLast(Road * r1, Road * connector)
+void LinkManager::linkRoadLast(Road * r1, Road * connector)
 {
 	r1->setLast(connector);
 	Connector* cast = dynamic_cast<Connector*>(connector);
@@ -39,58 +39,58 @@ void UpdateManager::linkRoadLast(Road * r1, Road * connector)
 	cast->addConnectedRoad(r1);
 }
 
-void UpdateManager::linkRoadNextLast(Road * r1, Road * r2)
+void LinkManager::linkRoadNextLast(Road * r1, Road * r2)
 {
 	r1->setNext(r2);
 	r2->setLast(r1);
 }
 
-void UpdateManager::linkRoadLastLast(Road * r1, Road * r2)
+void LinkManager::linkRoadLastLast(Road * r1, Road * r2)
 {
 	r1->setLast(r2);
 	r2->setLast(r1);
 }
 
-void UpdateManager::linkRoadNextNext(Road * r1, Road * r2)
+void LinkManager::linkRoadNextNext(Road * r1, Road * r2)
 {
 	r1->setNext(r2);
 	r2->setNext(r1);
 }
 
-void UpdateManager::linkRoadLastNext(Road * r1, Road * r2)
+void LinkManager::linkRoadLastNext(Road * r1, Road * r2)
 {
 	r1->setLast(r2);
 	r2->setNext(r1);
 }
 
-void UpdateManager::linkRoadCopyNext(Road * source, Road * dest)
+void LinkManager::linkRoadCopyNext(Road * source, Road * dest)
 {
 	dest->setNext(source->getNext());
 }
 
-void UpdateManager::linkRoadCopyLast(Road * source, Road * dest)
+void LinkManager::linkRoadCopyLast(Road * source, Road * dest)
 {
 	dest->setLast(source->getLast());
 }
 
 // ----- SETTER ----- //
-void UpdateManager::setGameStruct(GameStruct* game_struct)
+void LinkManager::setGameStruct(GameStruct* game_struct)
 {
     this->gameStruct = game_struct;
 }
 
-void UpdateManager::add(QTEntityBuild * qtEntity)
+void LinkManager::add(QTEntityBuild * qtEntity)
 {
 	gameStruct->QTCollision.insert(qtEntity);
 }
 
-void UpdateManager::addRoad(QTEntity * qtEntity)
+void LinkManager::addRoad(QTEntity * qtEntity)
 {
 	gameStruct->QTCollision.insert(qtEntity);
 	gameStruct->QTRoads.insert(qtEntity);
 }
 
-int UpdateManager::computeRoadIndex(std::map<float, Road*> myRoad)
+int LinkManager::computeRoadIndex(std::map<float, Road*> myRoad)
 {
 	int minIndex = -1;
 
@@ -181,7 +181,7 @@ void UpdateManager::setConnexitudeOptimized(std::map<float, Road*> myRoad, int c
 
 }*/
 
-void UpdateManager::remove(QTEntityBuild * qtEntity)
+void LinkManager::remove(QTEntityBuild * qtEntity)
 {
 	gameStruct->QTCollision.erase(qtEntity);
 
@@ -195,7 +195,7 @@ void UpdateManager::remove(QTEntityBuild * qtEntity)
 	// Après ...
 }
 
-void UpdateManager::removeRoad(Road * road)
+void LinkManager::removeRoad(Road * road)
 {
 	gameStruct->QTCollision.erase(road);
 	gameStruct->QTRoads.erase(road);
@@ -205,7 +205,7 @@ void UpdateManager::removeRoad(Road * road)
 
 // Connexitude
 // Récupération de l'id connex le plus haut
-int UpdateManager::getConnexitude()
+int LinkManager::getConnexitude()
 {
 	if (gameStruct->fConnexitudes.size() > 0)
 	{
@@ -217,12 +217,12 @@ int UpdateManager::getConnexitude()
 	return gameStruct->topConnexitude++;
 }
 
-void UpdateManager::freeConnexitude(int n)
+void LinkManager::freeConnexitude(int n)
 {
 	gameStruct->fConnexitudes.push_back(n);
 }
 
-void UpdateManager::recalculateAfterRemove(Road * road)
+void LinkManager::recalculateAfterRemove(Road * road)
 {
 	// On commence par copier l'ensemble des roads connected
 	std::deque<Road*> roads;
@@ -278,7 +278,7 @@ void UpdateManager::recalculateAfterRemove(Road * road)
 	// Il reste encore à checker si les générateurs connectés sont connecter à des éléments avec un autre id
 }
 
-void UpdateManager::setConnexitude(Road * start, int connex)
+void LinkManager::setConnexitude(Road * start, int connex)
 {
 
 	//bst
@@ -325,7 +325,7 @@ void UpdateManager::setConnexitude(Road * start, int connex)
 	}
 }
 
-bool UpdateManager::stillConnected(Road * start, Road * end)
+bool LinkManager::stillConnected(Road * start, Road * end)
 {
 	//std::set<Road*> closedList;
 	std::set<Road*> openListBst;

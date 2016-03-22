@@ -11,7 +11,7 @@ public:
     UpdateManager(GameStruct* game_struct);
 
     // ----- GETTER ----- //
-    std::vector<QTEntity*> getEntities(QuadTree);
+    std::vector<QTEntity*> getEntities(QuadTree) const;
 
     // ----- SETTER ----- //
     void setGameStruct(GameStruct* game_struct);
@@ -23,7 +23,9 @@ public:
     void updateScoreEco();
     void updateScoreEnv();
 
+    void updateInhabitants();
+    void updateWorkers();
+
 private:
     GameStruct* gs;
-
 };

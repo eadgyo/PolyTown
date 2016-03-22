@@ -1,7 +1,13 @@
-#ifndef CONSTANT_H
-#define CONSTANT_H
+#pragma once
 
 #define NULL 0
+
+namespace Constant
+{
+    // ----- Screen ----- //
+    const unsigned int SCREEN_WIDTH = 800;
+    const unsigned int SCREEN_HEIGHT = 600;
+}
 
 // ----- Typedef ----- //
 typedef unsigned int p_uint;
@@ -166,5 +172,3 @@ typedef unsigned int p_uint;
 #define FARM_INCOME_RATE 0
 #define FARM_ENERGY_NEEDS 0
 #define FARM_OUTPUT_RATE 0
-
-#endif // !CONSTANT_H

@@ -7,6 +7,7 @@ class Factory : public virtual Displayable
 {
 public:
     // ----- GETTER ----- //
+    p_uint getWorkers() const;
     p_uint getIncome() const;
 
     // ----- SETTER ----- //

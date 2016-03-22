@@ -34,7 +34,7 @@ public:
     p_uint score_eco;
     p_uint score_env;
 
-    // Stats variables
+    // Stats
     p_uint money;
     p_uint inhabitants;
     p_uint workers;
@@ -61,7 +61,7 @@ public:
 
     // Gestion des routes
     QuadTree QTRoads;
-    QuadTree QTHabitations;
+    QuadTree QTHabitations; // Toutes les habitations
 
     QuadTree QTPollutionWater;
     QuadTree QTPollutionAir;

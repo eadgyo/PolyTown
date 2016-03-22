@@ -9,6 +9,11 @@ Factory::Factory(p_uint max_workers, p_uint income_rate) : m_workers(0), m_max_w
 }
 
 // ----- GETTER ----- //
+p_uint Factory::getWorkers() const
+{
+    return m_workers;
+}
+
 p_uint Factory::getIncome() const
 {
     return m_workers * m_income_rate;

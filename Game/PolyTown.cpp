@@ -154,4 +154,5 @@ void PolyTown::startGame()
     update_m = new UpdateManager(gs);
 
     gs->QTHabitations.insert(StructFactory::newHouse(g, 10, 10));
+    gs->QTHabitations.insert(StructFactory::newHouse(g, 100, 100));
 }

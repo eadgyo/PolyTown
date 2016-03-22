@@ -1,6 +1,8 @@
 #include "Game/PolyTown.h"
 #include "FileManager\FileManager.h"
 
+//using namespace Constant;
+
 int main(int argc, char *argv[])
 {
 

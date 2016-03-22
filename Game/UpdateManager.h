@@ -8,6 +8,8 @@ public:
     UpdateManager();
     UpdateManager(GameStruct* game_struct);
 
+    // ----- GETTER ----- //
+
     // ----- SETTER ----- //
     void setGameStruct(GameStruct* game_struct);
 

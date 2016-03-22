@@ -1744,14 +1744,14 @@ std::vector<Form> Form::triangulateMonotone()
 
 	std::vector<Form> forms;
 	int sizeV = size();
-	int* v = new int[sizeV];
+
 	std::deque<int> l;
 
 	if(edges.size() < 3)
 	{
 		return std::vector<Form>();
 	}
-
+	int* v = new int[sizeV];
 	std::set<PointType*> lChain;
 	//1) on range par ordre croissant suivant Y les points
 	sortPointsY(edges, v, sizeV);

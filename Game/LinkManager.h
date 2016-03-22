@@ -8,12 +8,12 @@ class LinkManager
 {
 public:
 	LinkManager();
-    LinkManager(GameStruct* game_struct);
+	LinkManager(GameStruct* game_struct);
 
 	void initialize(GameStruct* gameStruct);
 
 	// ----- SETTER ----- //
-    void setGameStruct(GameStruct* game_struct);
+	void setGameStruct(GameStruct* game_struct);
 	
 	// Links automatiquement faits
 	void add(QTEntityBuild* qtEntity);
@@ -28,7 +28,7 @@ public:
 	void linkRoadLastLast(Road* r1, Road* r2);
 	void linkRoadNextNext(Road* r1, Road* r2);
 	void linkRoadLastNext(Road* r1, Road* r2);
-
+	void linkMapRoad(std::map<float, Road*> myRoad);
 
 	void linkRoadCopyNext(Road* source, Road* dest);
 	void linkRoadCopyLast(Road* source, Road* dest);

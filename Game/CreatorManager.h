@@ -74,13 +74,6 @@ public:
 	void initialize(GameStruct* gameStruct);
 
 	void addRoad(Road* road);
-
-	void handleAllStart(CRoadStruct& cRoadStruct, Road* startR);
-	void handleAllEnd(CRoadStruct& cRoadStruct, Road* endR);
-	void handleAllMid(CRoadStruct& cRoadStruct, std::map<float, Road*>& myRoad, const Vector3D& start, const Vector3D& director, float width, float theta);
-	Road* createConnectorFromMap(Road* actualRoad, Road* roadi, std::map<float, Road*>& myRoad, const Vector3D& start, const Vector3D& director, float width, float theta);
-	void linkMapRoad(std::map<float, Road*> myRoad);
-
 	void add(QTEntityBuild* qtEntity);
 	
 	bool isMakableSnappRoad(Road* road);
@@ -91,6 +84,11 @@ public:
 	void removeRoad(Road* road);
 	void remove(QTEntityBuild* qtEntity);
 
+	// Handle 
+	void handleAllStart(CRoadStruct& cRoadStruct, Road* startR);
+	void handleAllEnd(CRoadStruct& cRoadStruct, Road* endR);
+	void handleAllMid(CRoadStruct& cRoadStruct, std::map<float, Road*>& myRoad, const Vector3D& start, const Vector3D& director, float width, float theta);
+	Road* createConnectorFromMap(Road* actualRoad, Road* roadi, std::map<float, Road*>& myRoad, const Vector3D& start, const Vector3D& director, float width, float theta);
 
 	// Add road functions
 	void handleStartDivision(Road* actualRoad, Road* colliding, Road* connector);
@@ -116,6 +114,7 @@ public:
 
 	void getColliding(QTEntity* qtEntity, std::vector<QTEntity*>& colliding);
 	void getColliding(QTEntity* qtEntity, std::vector<QTEntity*>& colliding, Vector3D& push);
+	QTEntity* getCollidingPushMax(QTEntity* qtEntity, std::vector<QTEntity*>& colliding, Vector3D& push, float& t_max);
 
 	float getMaxOfMin(const Vector3D& center, const Vector3D& director, const Form& form);
 	float getMinOfMax(const Vector3D& center, const Vector3D& director, const Form& form);

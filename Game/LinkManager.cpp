@@ -4,7 +4,7 @@ LinkManager::LinkManager() {}
 
 LinkManager::LinkManager(GameStruct* game_struct)
 {
-    initialize(game_struct);
+	initialize(game_struct);
 }
 
 
@@ -62,6 +62,27 @@ void LinkManager::linkRoadLastNext(Road * r1, Road * r2)
 	r1->setLast(r2);
 	r2->setNext(r1);
 }
+
+void LinkManager::linkMapRoad(std::map<float, Road*> myRoad)
+{
+	std::map<float, Road*>::iterator it, next;
+	it = myRoad.begin();
+	next = it;
+	next++;
+	addRoad(it->second);
+	while (next != myRoad.end())
+	{
+		// On linke toutes les routes crées
+		if (!(it->second->getIsConnector()))
+			linkRoadNext(it->second, next->second);
+		else
+			linkRoadLast(next->second, it->second);
+		addRoad(next->second); // Ajout de la route
+		it++;
+		next++;
+	}
+}
+
 
 void LinkManager::linkRoadCopyNext(Road * source, Road * dest)
 {

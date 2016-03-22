@@ -9,6 +9,10 @@ UpdateManager::UpdateManager(GameStruct* game_struct)
     gs = game_struct;
 }
 
+// ----- GETTER ----- //
+
+
+// ----- SETTER ----- //
 void UpdateManager::setGameStruct(GameStruct* game_struct)
 {
     gs = game_struct;
@@ -28,8 +32,6 @@ void UpdateManager::updateScoreDD()
 void UpdateManager::updateScoreSoc()
 {
     p_uint score = 0;
-
-    for ()
 }
 
 void UpdateManager::updateScoreEco()

@@ -50,15 +50,19 @@ public:
 	mySurface* createMySurface(GLuint texture, SDL_Surface* image);
 	void loadSurface(SDL_Surface* image, std::string name);
 	void loadAllSurfaces();
+	void freeTexture(std::string name);
+	void freeAllSurfaces();
 	
 	// Fonts
 	void renderText(std::string path, std::string text, const Vector3D & pos, unsigned size);
 	void renderTextCentered(std::string path, std::string text, const Vector3D & pos, unsigned size);
-	TTF_Font* getFont(std::string name);
+	TTF_Font* getFont(std::string name, unsigned size);
+	bool isAlreadyPresent(std::string fontName, unsigned size);
 	void pushFont(std::string name, std::string path, unsigned size);
 	void pushFontTTF(std::string name, std::string path, unsigned size);
-	void freeFont(std::string name);
-	Image* createImageFromFont(std::string name, std::string text);
+	void pushFontTTF(std::string name, unsigned size);
+	void freeFont(std::string name, unsigned size);
+	Image* createImageFromFont(std::string name, unsigned size, std::string text);
 	Image* createImageFromFont(TTF_Font* font, std::string text);
 
 	// Draw forms
@@ -74,8 +78,7 @@ public:
 private:
 	SDL_Window *screen;
 	SDL_GLContext* context;
-	std::vector<mySurface*> surfaces;
-	std::map<std::string, int> names;
+	std::map<std::string, mySurface*> names;
 	std::map<std::string, TTF_Font*> fontNames;
 	bool isInitialized;
 };

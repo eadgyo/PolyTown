@@ -4,6 +4,8 @@ BoutonImage::BoutonImage(Graphics* graphics, Image* image, int x, int y, int wid
     Bouton(graphics, x, y, width, height),
     m_image(image)
 {
+	m_image->setX((float) x);
+	m_image->setY((float) y);
 }
 
 void BoutonImage::render(Graphics * graphics)

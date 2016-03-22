@@ -11,8 +11,8 @@ public:
 	QTEntity(const Form& form);
 	QTEntity(const myRectangle& rectangle);
 	QTEntity(const Circle& circle);
-	QTEntity(const Vector3D& center, const Vector3D& length);
-	QTEntity(const Vector3D& center, const Vector3D& length, float theta);
+	QTEntity(const Vector3D& center, float width, float height);
+	QTEntity(const Vector3D& center, float width, float height, float theta);
 	QTEntity(const Vector3D& center, float radius);
 	virtual ~QTEntity();
 
@@ -41,9 +41,9 @@ public:
 	inline void setCenter(const Vector3D center) { assert(form != NULL); this->form->setPos(center); }
 
 	void set2points(const Vector3D& A, const Vector3D& B, float width);
-	void set2points(const Vector3D& A, const Vector3D& B, const Vector3D& length);
-	void set(const Vector3D& center, const Vector3D length, float theta);
-	void set(const Vector3D& center, const Vector3D length);
+	void set2points(const Vector3D& A, const Vector3D& B, float width, float heigth);
+	void set(const Vector3D& center, float witdh, float height, float theta);
+	void set(const Vector3D& center, float witdh, float height);
 	void set(const Vector3D& center, float radius);
 	
 
@@ -58,8 +58,7 @@ public:
 	bool isColliding(QTEntity& qtEntity, Vector3D& push, float& t);
 
 protected:
-	void initRectangle(const Vector3D& center, const Vector3D& length);
-	void initRectangle(const Vector3D& center, const Vector3D& length, float theta);
+	void initRectangle(const Vector3D& center, float width, float height);
 	void initRectangle(const Vector3D& center, float width, float height, float theta);
 	void initRectangle();
 	void initCircle(const Vector3D& center, float radius);

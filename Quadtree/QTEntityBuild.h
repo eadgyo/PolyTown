@@ -9,8 +9,8 @@ public:
 	QTEntityBuild(const Form& form);
 	QTEntityBuild(const myRectangle& rectangle);
 	QTEntityBuild(const Circle& circle);
-	QTEntityBuild(const Vector3D& center, const Vector3D& length);
-	QTEntityBuild(const Vector3D& center, const Vector3D& length, float theta);
+	QTEntityBuild(const Vector3D& center, float width, float height);
+	QTEntityBuild(const Vector3D& center, float width, float height, float theta);
 	QTEntityBuild(const Vector3D& center, float radius);
 	~QTEntityBuild() {};
 

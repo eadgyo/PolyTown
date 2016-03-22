@@ -1,7 +1,8 @@
 #pragma once
 #include "Interface.h"
-#include "../GameElements/Bouton.h"
+#include "../GameElements/BoutonImage.h"
 #include "../HUD/Input.h"
+#include "../GameElements/BoutonText.h"
 
 #define SIZE_BW 200
 #define SIZE_BH 70
@@ -16,6 +17,7 @@ public:
 	void reset();
 	void render(Graphics* g);
 	HudNs::HudEvent handleEvent(Input& input);
+	HudNs::HudEvent update(float dt) { return HudNs::OK; };
 	void resize(int width, int height);
 
 private:

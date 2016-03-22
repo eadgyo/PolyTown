@@ -30,9 +30,10 @@ public:
 	bool isFileExisting(std::string directory);
 	std::vector<std::string> getAllFilesName(std::string directory, bool isInternal);
 	int type(std::string directory, bool isInternal);
-	unsigned sizeSurfaces() { return surfaces.size(); };
-	SDL_Surface* getSurface(int i) { return surfaces[i]; };
-	std::string getNameSurface(int i) { return namesStr[i]; };
+	unsigned sizeSurfaces() { return names.size(); };
+
+	inline std::map<std::string, SDL_Surface*>::iterator mapBegin() { return names.begin();};
+	inline std::map<std::string, SDL_Surface*>::iterator mapEnd() { return names.end(); };
 
 private:
 	void initialize();
@@ -48,9 +49,7 @@ private:
 	const std::string textureFolder = binFolder + "/" + "pic";
 	const std::string ttfFolder = binFolder + "/" + "ttf";
 
-	std::vector<SDL_Surface*> surfaces;
-	std::vector<std::string> namesStr;
-	std::map<std::string, int> names;
+	std::map<std::string, SDL_Surface*> names;
 
 	bool isInitilialized;
 	static FileManager& INSTANCE;

@@ -119,7 +119,7 @@ void Graphics::initGL3D(float width, float height)
 
 
 void Graphics::clear()
-{
+{	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -175,32 +175,35 @@ void Graphics::render(Image& image)
 
 void Graphics::render(Image& image, const Vector3D& translation)
 {
-	assert(isInitialized);
 	glPushMatrix();
 
 	const myRectangle rec = image.getRectangle();
 	SpriteData* spriteData = image.getSpriteData();
-	glTranslatef(translation.x() + rec.getCenterX() + ((int)rec.getWidth())*((spriteData->flipH)?1:0),
-				translation.y() + rec.getCenterY() + ((int)rec.getHeight())*((spriteData->flipV)?1:0),
-				0.0f);
+	glTranslatef(translation.x() + rec.getCenterX() + ((int)rec.getWidth())*((spriteData->flipH) ? 1 : 0),
+		translation.y() + rec.getCenterY() + ((int)rec.getHeight())*((spriteData->flipV) ? 1 : 0),
+		0.0f);
 
-	glScalef(rec.getWidth()/spriteData->rect->getWidth()*((spriteData->flipH)?-1.0f:1.0f),
-			rec.getHeight()/spriteData->rect->getHeight()*((spriteData->flipV)?-1.0f:1.0f),
-			0.0f);
+	glScalef(rec.getWidth() / spriteData->rect->getWidth()*((spriteData->flipH) ? -1.0f : 1.0f),
+		rec.getHeight() / spriteData->rect->getHeight()*((spriteData->flipV) ? -1.0f : 1.0f),
+		0.0f);
 
-	float rot = -rec.getAngle() + ((spriteData->flipH)?(float) PI:0);
-	if(std::abs(rot) > 0.001f && std::abs(rot - PI*2) > 0.001f)
+	float rot = -rec.getAngle(); //+ ((spriteData->flipH)?PI:0);
+	if (std::abs(rot) > 0.001f && std::abs(rot - PI * 2) > 0.001f)
 		glRotatef(rot, 0, 0, 1.0f);
 
-	glTranslatef(-spriteData->rect->getWidth()*(0.5f - ((spriteData->flipH)?1.0f:0.0f)),
-				-spriteData->rect->getHeight()*(0.5f - ((spriteData->flipV)?1.0f:0.0f)),
-				0.0f);
+	glTranslatef(-spriteData->rect->getWidth()*(0.5f - ((spriteData->flipH) ? 1.0f : 0.0f)),
+		-spriteData->rect->getHeight()*(0.5f - ((spriteData->flipV) ? 1.0f : 0.0f)),
+		0.0f);
+
 
 	SDL_Rect sdlRec = spriteData->rect->getSDLRect();
-	SDL_Rect destRect = spriteData->rect->getSDLRect(); //spriteData->flipH, spriteData->flipV);
-	//SDL_RenderCopy(renderer, spriteData->texture, &sdlRec, &destRect);
+	glTranslatef((float)-sdlRec.x, (float)-sdlRec.y, 0.0f);
+	SDL_Rect destRect = spriteData->rect->getSDLRectDest(); //spriteData->flipH, spriteData->flipV);
+
+															// Changement de couleur
 	setColor(image.getColor());
 	renderCopy(spriteData->texture, sdlRec);
+
 	glPopMatrix();
 }
 
@@ -210,28 +213,32 @@ void Graphics::render(Image& image, const Vector3D& translation, float scale)
 	
 	myRectangle rec(image.getRectangle());
 	rec.scaleF(scale, Vector3D(true));
-
 	SpriteData* spriteData = image.getSpriteData();
-	glTranslatef(translation.x() + rec.getCenterX() + ((int)rec.getWidth())*((spriteData->flipH)?1:0),
-				translation.y() + rec.getCenterY() + ((int)rec.getHeight())*((spriteData->flipV)?1:0),
-				0.0f);
+	glTranslatef(translation.x() + rec.getCenterX() + ((int)rec.getWidth())*((spriteData->flipH) ? 1 : 0),
+		translation.y() + rec.getCenterY() + ((int)rec.getHeight())*((spriteData->flipV) ? 1 : 0),
+		0.0f);
 
-	glScalef(rec.getWidth()/spriteData->rect->getWidth()*((spriteData->flipH)?-1.0f:1.0f),
-			rec.getHeight()/spriteData->rect->getHeight()*((spriteData->flipV)?-1.0f:1.0f),
-			0.0f);
+	glScalef(rec.getWidth() / spriteData->rect->getWidth()*((spriteData->flipH) ? -1.0f : 1.0f),
+		rec.getHeight() / spriteData->rect->getHeight()*((spriteData->flipV) ? -1.0f : 1.0f),
+		0.0f);
 
-	float rot = -rec.getAngle() + ((spriteData->flipH)?(float) PI:0);
-	if(std::abs(rot) > 0.001f && std::abs(rot - PI*2.0f) > 0.001f)
+	float rot = -rec.getAngle(); //+ ((spriteData->flipH)?PI:0);
+	if (std::abs(rot) > 0.001f && std::abs(rot - PI * 2) > 0.001f)
 		glRotatef(rot, 0, 0, 1.0f);
 
-	glTranslatef(-spriteData->rect->getWidth()*(0.5f - ((spriteData->flipH)?1.0f:0.0f)),
-				-spriteData->rect->getHeight()*(0.5f - ((spriteData->flipV)?1.0f:0.0f)),
-				0.0f);
+	glTranslatef(-spriteData->rect->getWidth()*(0.5f - ((spriteData->flipH) ? 1.0f : 0.0f)),
+		-spriteData->rect->getHeight()*(0.5f - ((spriteData->flipV) ? 1.0f : 0.0f)),
+		0.0f);
+
 
 	SDL_Rect sdlRec = spriteData->rect->getSDLRect();
-	SDL_Rect destRect = spriteData->rect->getSDLRect();
+	glTranslatef((float)-sdlRec.x, (float)-sdlRec.y, 0.0f);
+	SDL_Rect destRect = spriteData->rect->getSDLRectDest(); //spriteData->flipH, spriteData->flipV);
+
+															// Changement de couleur
 	setColor(image.getColor());
 	renderCopy(spriteData->texture, sdlRec);
+
 	glPopMatrix();
 }
 
@@ -267,12 +274,12 @@ mySurface* Graphics::getTexture(std::string textureName)
 	if (!textureName.compare(""))
 		return NULL;
 
-	std::map<std::string, int>::iterator it;
+	std::map<std::string, mySurface*>::iterator it;
 
 	it = names.find(textureName);
 	assert(it != names.end());
-	int i = it->second;
-	return surfaces[i];
+
+	return it->second;
 }
 
 void Graphics::loadSurface(SDL_Surface* image, std::string name)
@@ -280,8 +287,7 @@ void Graphics::loadSurface(SDL_Surface* image, std::string name)
 	GLuint textures = loadSurfaceGL(image);
 	mySurface *surface = createMySurface(textures, image);
 	
-	names[name] = surfaces.size();
-	surfaces.push_back(surface);
+	names[name] = surface;
 }
 mySurface* Graphics::createMySurface(GLuint texture, SDL_Surface* image)
 {
@@ -326,34 +332,88 @@ GLuint Graphics::loadSurfaceGL(SDL_Surface* image)
 void Graphics::loadAllSurfaces()
 {
 	FileManager& fileM = FileManager::getInstance();
-	for (unsigned i = 0; i < fileM.sizeSurfaces(); i++)
+	std::map<std::string, SDL_Surface*>::iterator it = fileM.mapBegin();
+	std::map<std::string, SDL_Surface*>::iterator end = fileM.mapEnd();
+	while(it != end)
 	{
-		loadSurface(fileM.getSurface(i), fileM.getNameSurface(i));
+		loadSurface(it->second, it->first);
+		it++;
 	}
+}
+
+void Graphics::freeTexture(std::string name)
+{
+	std::map<std::string, mySurface*>::iterator it;
+	it = names.find(name);
+	if (it != names.end())
+	{
+		// Libération de la texture
+		glDeleteTextures(1, &(it->second->texture));
+		names.erase(it);
+	}
+}
+
+void Graphics::freeAllSurfaces()
+{
+	std::map<std::string, mySurface*>::iterator it;
+	it = names.begin();
+	while (it != names.end())
+	{
+		// Libération de la texture
+		glDeleteTextures(1, &(it->second->texture));
+		it++;
+	}
+
+	// On vide la map
+	names.clear();
 }
 
 void Graphics::pushFont(std::string name, std::string path, unsigned size)
 {
 	TTF_Font* font = TTF_OpenFont(path.c_str(), size);
 	assert(font != NULL); // Echec initialisation
-	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(name);
-	assert(it != fontNames.end()); // Déjà dans la liste
-	fontNames[name] = font;
+
+	std::string fontName = name + std::to_string(size);
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(fontName);
+	if (it == fontNames.end())
+	{
+		fontNames[fontName] = font;
+	}
 }
 
+// Prend juste le nom du fichier présent dans /bin/ttf -> exemple test.ttf
 void Graphics::pushFontTTF(std::string name, std::string path, unsigned size)
 {
 	TTF_Font* font = FileManager::getInstance().loadFont(path, size);
 	assert(font != NULL); // Echec initialisation
-	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(name);
-	assert(it != fontNames.end()); // Déjà dans la liste
-	fontNames[name] = font;
+
+	std::string fontName = name + std::to_string(size);
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(fontName);
+	if (it == fontNames.end())
+	{
+		fontNames[fontName] = font;
+	}
+}
+
+// Prise en compte directe du TTF
+void Graphics::pushFontTTF(std::string name, unsigned size)
+{
+	TTF_Font* font = FileManager::getInstance().loadFont(name + ".ttf", size);
+	assert(font != NULL); // Echec initialisation
+
+	std::string fontName = name + std::to_string(size);
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(fontName);
+	if (it == fontNames.end())
+	{
+		fontNames[fontName] = font;
+	}
 }
 
 
-TTF_Font* Graphics::getFont(std::string name)
+TTF_Font* Graphics::getFont(std::string name, unsigned size)
 {
-	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(name);
+	std::string fontName = name + std::to_string(size);
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(fontName);
 	if (it != fontNames.end())
 	{
 		return it->second;
@@ -361,18 +421,25 @@ TTF_Font* Graphics::getFont(std::string name)
 	return NULL;
 }
 
-void Graphics::freeFont(std::string name)
+bool Graphics::isAlreadyPresent(std::string fontName, unsigned size)
 {
-	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(name);
+	return false;
+}
+
+void Graphics::freeFont(std::string name, unsigned size)
+{
+	std::string fontName = name + std::to_string(size);
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(fontName);
 	if (it != fontNames.end())
 	{
 		TTF_CloseFont(it->second);
 	}
 }
 
-Image* Graphics::createImageFromFont(std::string name, std::string text)
+Image* Graphics::createImageFromFont(std::string name, unsigned size, std::string text)
 {
-	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(name);
+	std::string fontName = name + std::to_string(size);
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(fontName);
 	if (it != fontNames.end())
 	{
 		return createImageFromFont(it->second, text);

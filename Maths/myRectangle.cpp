@@ -2,12 +2,14 @@
 
 myRectangle::myRectangle() : Form(4)
 {
-	set(Vector3D(true), Vector3D(true), 0);
+	width = 0;
+	height = 0;
 }
 
 myRectangle::myRectangle(const myRectangle& rectangle) : Form(rectangle)
 {
-	length.set(rectangle.getLength());
+	width = rectangle.getWidth();
+	height = rectangle.getHeight();
 }
 
 myRectangle::myRectangle(const Form& form) : Form(form)
@@ -19,22 +21,12 @@ myRectangle::myRectangle(const Form& form) : Form(form)
 	orientation.setPos(points.at(0) + vec * 0.5f);
 
 	Vector3D side = Vector3D::sub(points.at(0), points.at(1));
-	length[0] = side.getMagnitude();
+	width = side.getMagnitude();
 
 	side.set(points.at(0), points.at(1));
-	length[1] = side.getMagnitude();
+	height = side.getMagnitude();
 }
 
-myRectangle::myRectangle(const Vector3D& center, const Vector3D& length) : Form(4)
-{
-	set(center, length, 0);
-}
-
-myRectangle::myRectangle(const Vector3D& center, const Vector3D& length,
-		float omega) : Form(4)
-{
-	set(center, length, omega);
-}
 myRectangle::myRectangle(const Vector3D& center, float width, float height, float omega) : Form(4)
 {
 	set(center, width, height, omega);
@@ -58,25 +50,17 @@ myRectangle myRectangle::clone()
 	return myRectangle((*this));
 }
 
-void myRectangle::set(const Vector3D& center, const Vector3D& length, float omega)
+void myRectangle::set(const Vector3D& center, float width, float height)
 {
-	clearTransformations();
-	orientation.setPos(center);
-	this->length.set(length);
-
-	points.at(0).set2D(- 0.5f*length.x(),- 0.5f*length.y());
-	points.at(1).set2D(- 0.5f*length.x(),+ 0.5f*length.y());
-	points.at(2).set2D(+ 0.5f*length.x(),+ 0.5f*length.y());
-	points.at(3).set2D(+ 0.5f*length.x(),- 0.5f*length.y());
-
-	rotateRadians(omega, center);
+	set(center, width, height, 0);
 }
 
 void myRectangle::set(const Vector3D& center, float width, float height, float omega)
 {
 	clearTransformations();
 	orientation.setPos(center);
-	this->length.set(width, height, 0, false);
+	this->width = width;
+	this->height = height;
 
 	points.at(0).set2D(-0.5f*width, -0.5f*height);
 	points.at(1).set2D(-0.5f*width, +0.5f*height);
@@ -88,7 +72,7 @@ void myRectangle::set(const Vector3D& center, float width, float height, float o
 
 void myRectangle::set(const myRectangle& rec)
 {
-	set(rec.getCenter(), rec.getLength(), rec.getAngle());
+	set(rec.getCenter(), rec.getWidth(), rec.getHeight(), rec.getAngle());
 	setInit(rec);
 }
 
@@ -104,10 +88,10 @@ void myRectangle::set(const Form& form)
 	orientation.setPos(form.getLocal(0) + vec*0.5f);
 
 	Vector3D side = Vector3D::sub(form.getLocal(0), form.getLocal(1));
-	length[0] = side.getMagnitude();
+	width = side.getMagnitude();
 
 	side.set(form.getLocal(0), form.getLocal(3));
-	length[1] = side.getMagnitude();
+	height = side.getMagnitude();
 
 	setInit(form);
 }
@@ -145,5 +129,6 @@ float myRectangle::getAngle() const
 void myRectangle::scaleF(float factor, const Vector3D& center)
 {
 	Form::scaleF(factor, center);
-	length *= factor;
+	width *= factor;
+	height *= factor;
 }

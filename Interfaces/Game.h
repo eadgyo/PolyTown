@@ -14,7 +14,7 @@ public:
 	void reset();
 	void resize(int width, int height);
 	void render(Graphics* g);
-	void update(float dt);
+	HudNs::HudEvent update(float dt);
 	HudNs::HudEvent handleEvent(Input& input);
 
 protected:

@@ -21,6 +21,7 @@ public:
 	Image();
 	Image(Image& image);
     Image(Graphics* graphics, float width, float height, int currentFrame, int cols, std::string textureName);
+	Image(Graphics* graphics, float width, float height, int currentFrame, std::string textureName);
 	virtual ~Image();
 	Image clone();
 	void reset();
@@ -101,10 +102,10 @@ public:
 	void clearTexture();
 	void loadTexture();
 
-	void initialize(Graphics* graphics, float width, float height, int cols,
+	void initialize(Graphics* graphics, float width, float height, int currentFrame,
 		mySurface* texture, std::string textureName);
-	void initialize(Graphics* graphics, float width, float height, int cols,
-			std::string textureName);
+	void initialize(Graphics* graphics, float width, float height, int currentFrame,
+		std::string textureName);
 	void initialize(Graphics* graphics, float width, float height, int currentFrame, int cols,
 			std::string textureName);
 	void initialize(Graphics* graphics,	std::string textureName);

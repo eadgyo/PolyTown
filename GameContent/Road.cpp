@@ -6,16 +6,10 @@ Road::Road()
 	initRectangle();
 }
 
-Road::Road(const Vector3D& center, const Vector3D& length)
+Road::Road(const Vector3D& center, float width, float height)
 {
 	connex = -1;
-	initRectangle(center, length);
-}
-
-Road::Road(const Vector3D& center, const Vector3D& length, float theta)
-{
-	connex = -1;
-	initRectangle(center, length, theta);
+	initRectangle(center, width, height);
 }
 
 Road::Road(const Vector3D& center, float width, float height, float theta)
@@ -28,7 +22,7 @@ Road Road::create2points(const Vector3D& A, const Vector3D& B, float width)
 {
 	Road road;
 	float height = (A - B).getMagnitude();
-	road.set2points(A, B, Vector3D(width, height));
+	road.set2points(A, B, width, height);
 	return road;
 }
 
@@ -36,15 +30,15 @@ Road* Road::create2pointsP(const Vector3D& A, const Vector3D& B, float width)
 {
 	Road *road = new Road;
 	float height = (A - B).getMagnitude();
-	road->set2points(A, B, Vector3D(width, height));
+	road->set2points(A, B, width, height);
 	return road;
 }
 
-Road Road::createLeft(const Vector3D& left, const Vector3D& length)
+Road Road::createLeft(const Vector3D& left, float width, float height)
 {
-	Vector3D center = left + length*0.5f;
+	Vector3D center = Vector3D(left.x() + width*0.5f, left.x() + height*0.5f);
 	center.setW(1.0f);
-	return Road(center, length, 0);
+	return Road(center, width, height, 0);
 }
 
 Vector3D Road::getStart() const

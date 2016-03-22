@@ -6,15 +6,15 @@ QTEntity::QTEntity(const Form& form)
 {
 	this->form = new Form(form);
 }
-QTEntity::QTEntity(const Vector3D& center, const Vector3D& length)
+QTEntity::QTEntity(const Vector3D& center, float width, float height)
 {
 	form = NULL;
-	initRectangle(center, length);
+	initRectangle(center, width, height);
 }
-QTEntity::QTEntity(const Vector3D& center, const Vector3D& length, float theta)
+QTEntity::QTEntity(const Vector3D& center, float width, float height, float theta)
 {
 	form = NULL;
-	initRectangle(center, length, theta);
+	initRectangle(center, width, height, theta);
 }
 QTEntity::QTEntity(const Vector3D& center, float radius)
 {
@@ -41,19 +41,11 @@ QTEntity::~QTEntity()
 	}
 }
 
-void QTEntity::initRectangle(const Vector3D& center, const Vector3D& length)
+void QTEntity::initRectangle(const Vector3D& center, float width, float height)
 {
-	if (!form)
+	if (form)
 	{
-		form = new myRectangle(center, length);
-	}
-}
-
-void QTEntity::initRectangle(const Vector3D& center, const Vector3D& length, float theta)
-{
-	if (!form)
-	{
-		form = new myRectangle(center, length, theta);
+		form = new myRectangle(center, width, height);
 	}
 }
 
@@ -67,7 +59,7 @@ void QTEntity::initRectangle(const Vector3D & center, float width, float height,
 
 void QTEntity::initRectangle()
 {
-	initRectangle(Vector3D(true), Vector3D(true));
+	initRectangle(Vector3D(true), 0, 0);
 }
 
 void QTEntity::initCircle(const Vector3D& center, float radius)
@@ -81,10 +73,10 @@ void QTEntity::initCircle(const Vector3D& center, float radius)
 void QTEntity::set2points(const Vector3D& A, const Vector3D& B, float width)
 {
 	float height = (A - B).getMagnitude();
-	set2points(A, B, Vector3D(width, height));
+	set2points(A, B, width, height);
 }
 
-void QTEntity::set2points(const Vector3D& A, const Vector3D& B, const Vector3D& length)
+void QTEntity::set2points(const Vector3D& A, const Vector3D& B, float width, float height)
 {
 	// A start Middle, B end middle
 
@@ -92,10 +84,10 @@ void QTEntity::set2points(const Vector3D& A, const Vector3D& B, const Vector3D& 
 	Vector3D center = (A + B)*0.5f;
 	Vector3D vec = (B - A).getNormalize();
 	float theta = vec.getAngle2D(Vector3D(1, 0, 0, false));
-	set(center, length, theta);
+	set(center, width, height, theta);
 }
 
-void QTEntity::set(const Vector3D & center, const Vector3D length, float theta)
+void QTEntity::set(const Vector3D & center, float width, float height, float theta)
 {
 	Form *testForm = form;
 	if (form)
@@ -103,7 +95,7 @@ void QTEntity::set(const Vector3D & center, const Vector3D length, float theta)
 		myRectangle* castmyRectangle = dynamic_cast<myRectangle*>(testForm);
 		if (castmyRectangle != NULL)
 		{
-			castmyRectangle->set(center, length, theta);
+			castmyRectangle->set(center, width, height, theta);
 		}
 		else
 		{
@@ -113,7 +105,7 @@ void QTEntity::set(const Vector3D & center, const Vector3D length, float theta)
 	}
 }
 
-void QTEntity::set(const Vector3D & center, const Vector3D length)
+void QTEntity::set(const Vector3D & center, float width, float height)
 {
 	Form *testForm = form;
 	if (form)
@@ -122,13 +114,13 @@ void QTEntity::set(const Vector3D & center, const Vector3D length)
 		sRectangle* castsRectangle = dynamic_cast<sRectangle*>(testForm);
 		if (castmyRectangle != NULL)
 		{
-			castmyRectangle->set(center, length, 0);
+			castmyRectangle->set(center, width, height);
 			return;
 		}
 
 		if (castsRectangle != NULL)
 		{
-			castsRectangle->set(center, length);
+			castsRectangle->set(center, width, height);
 		}
 		else
 		{

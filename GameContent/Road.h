@@ -12,13 +12,12 @@ class Road : public QTEntity
 {
 public:
 	Road();
-	Road(const Vector3D& center, const Vector3D& length);
-	Road(const Vector3D& center, const Vector3D& length, float theta);
+	Road(const Vector3D& center, float width, float height);
 	Road(const Vector3D& center, float width, float height, float theta);
 	~Road() {};
 	static Road create2points(const Vector3D& A, const Vector3D& B, float width);
 	static Road* create2pointsP(const Vector3D& A, const Vector3D& B, float width);
-	static Road createLeft(const Vector3D& left, const Vector3D& length);
+	static Road createLeft(const Vector3D& left, float width, float height);
 
 	// Getter
 	myRectangle getBigRectangle(float width, float height) const;
@@ -42,8 +41,8 @@ public:
 	std::vector<QTEntity*> getEntConnectedVec() const;
 	inline unsigned sizeEnt() const { return entConnected.size(); };
 	QTEntity* getEnt(unsigned n) const;
-	inline Road* getLast() { return last; };
-	inline Road* getNext() { return next; };
+	virtual inline Road* getLast() { return last; };
+	virtual inline Road* getNext() { return next; };
 	inline int getConnexitude() const { return connex; };
 
 
@@ -59,8 +58,8 @@ public:
 	void addEntity(QTEntity* entity);
 	void addAllEntities(std::vector<QTEntity*> entities);
 	inline void setConnexitude(int connex) { this->connex = connex; };
-	inline void setLast(Road* next) { this->next = next; };
-	inline void setNext(Road* last) { this->last = last; };
+	virtual inline void setNext(Road* next) { this->next = next; };
+	virtual inline void setLast(Road* last) { this->last = last; };
 
 	bool getIsConnector() { return isConnector; };
 

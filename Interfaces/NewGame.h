@@ -12,7 +12,7 @@ public:
 	void virtual reset();
 	void virtual resize(int width, int height);
 	void virtual render(Graphics* g);
-	void virtual update(float dt);
+	HudNs::HudEvent virtual update(float dt);
 	HudNs::HudEvent virtual handleEvent(Input& input);
 
 };

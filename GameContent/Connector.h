@@ -9,11 +9,8 @@ public:
 	{
 		isConnector = true;
 	};
-	Connector(const Vector3D& center, const Vector3D& length) : Road(center, length)
-	{
-		isConnector = true;
-	};
-	Connector(const Vector3D& center, const Vector3D& length, float theta) : Road(center, length, theta)
+
+	Connector(const Vector3D& center, float width, float height) : Road(center, width, height)
 	{
 		isConnector = true;
 	};

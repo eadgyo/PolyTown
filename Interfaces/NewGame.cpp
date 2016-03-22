@@ -36,8 +36,9 @@ void NewGame::render(Graphics * g)
 {
 }
 
-void NewGame::update(float dt)
+HudNs::HudEvent NewGame::update(float dt)
 {
+	return HudNs::OK;
 }
 
 HudNs::HudEvent NewGame::handleEvent(Input & input)

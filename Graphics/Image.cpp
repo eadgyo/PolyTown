@@ -58,6 +58,19 @@ Image::Image(Graphics* graphics, float width, float height, int currentFrame, in
 	initialize(graphics, width, height, currentFrame, cols, textureName);
 }
 
+Image::Image(Graphics * graphics, float width, float height, int currentFrame, std::string textureName)
+{
+	startFrame = 0;
+	endFrame = 0;
+	isDisplayingRec = false;
+	spriteData = new SpriteData();
+	setColorFilter(0, 0, 0, 0);
+	setColor(1.0f, 1.0f, 1.0f, 1.0f);
+	deletion = false;
+
+	initialize(graphics, width, height, currentFrame, textureName);
+}
+
 Image::~Image()
 {
 	if (deletion)
@@ -78,7 +91,7 @@ void Image::reset()
 	setFlipV(false);
 	setFlipH(false);
 	setVisible(1);
-	rec.set(Vector3D(true), Vector3D(spriteData->rect->getWidth(), spriteData->rect->getHeight()), 0);
+	rec.set(Vector3D(true), spriteData->rect->getWidth(), spriteData->rect->getHeight(), 0);
 }
 
 ///////////////////
@@ -117,12 +130,12 @@ int Image::getOrigHeight() const
 
 float Image::getWidth() const
 {
-	return rec.getLength().getX();
+	return rec.getWidth();
 }
 
 float Image::getHeight() const
 {
-	return rec.getLength().getY();
+	return rec.getHeight();
 }
 
 float Image::getX() const
@@ -234,9 +247,8 @@ void Image::set(Image& image)
 {
 	SpriteData* l_spriteData = image.getSpriteData();
 	initialize(image.getGraphics(), l_spriteData->rect->getWidth(), l_spriteData->rect->getHeight(),
-			image.getCols(), l_spriteData->texture, image.getTextureName());
+			image.getCols(), image.getCurrentFrame(), image.getTextureName());
 	isDisplayingRec = image.getIsRectDisplaying();
-	setCurrentFrame(image.getCurrentFrame());
 	rec.set(image.getRectangle());
 	setColorFilter(image.getColorFilter());
 	setColor(image.getColor());
@@ -436,38 +448,34 @@ void Image::loadTexture()
 		this->spriteData->texture = graphics->getTexture(spriteData->textureName);
 }
 
-void Image::initialize(Graphics* graphics, float width, float height, int cols,
+void Image::initialize(Graphics* graphics, float width, float height, int currentFrame,
 	mySurface* texture, std::string textureName)
 {
+	this->currentFrame = currentFrame;
 	this->graphics = graphics;
 	spriteData->texture = texture;
-	if(cols == 0)
-		this->cols = 1;
-	else
-		this->cols = cols;
+	this->cols = spriteData->texture->image->w / (int) width;
 	spriteData->rect->setLeft((currentFrame % this->cols)*width,
 			(currentFrame / this->cols)*height,
 			width,
 			height);
-	this->rec.set(Vector3D(width*0.5f,  height*0.5f), Vector3D(width, height), 0);
+	this->rec.set(Vector3D(width*0.5f,  height*0.5f), width, height, 0);
 	spriteData->textureName = textureName;
 	isInitialized = true;
 }
 
-void Image::initialize(Graphics* graphics, float width, float height, int cols,
-		std::string textureName)
+void Image::initialize(Graphics * graphics, float width, float height, int currentFrame, std::string textureName)
 {
+	this->currentFrame = currentFrame;
 	this->graphics = graphics;
 	spriteData->texture = graphics->getTexture(textureName);
-	if(cols == 0)
-		this->cols = 1;
-	else
-		this->cols = cols;
+	// Guess number of cols
+	this->cols = spriteData->texture->image->w / (int) width;
 	spriteData->rect->setLeft((currentFrame % this->cols)*width,
-			(currentFrame / this->cols)*height,
-			width,
-			height);
-	this->rec.set(Vector3D(width*0.5f,  height*0.5f), Vector3D(width, height), 0);
+		(currentFrame / this->cols)*height,
+		width,
+		height);
+	this->rec.set(Vector3D(width*0.5f, height*0.5f), width, height, 0);
 	spriteData->textureName = textureName;
 	isInitialized = true;
 }
@@ -486,7 +494,7 @@ void Image::initialize(Graphics* graphics, float width, float height, int curren
 			(currentFrame / this->cols)*height,
 			width,
 			height);
-	this->rec.set(Vector3D(width*0.5f,  height*0.5f), Vector3D(width, height), 0);
+	this->rec.set(Vector3D(width*0.5f,  height*0.5f), width, height, 0);
 	spriteData->textureName = textureName;
 	isInitialized = true;
 }
@@ -497,7 +505,7 @@ void Image::initialize(Graphics* graphics, std::string textureName)
 	spriteData->texture = graphics->getTexture(textureName);
 	this->cols = 1;
 	spriteData->rect->setLeft(0, 0, (float) spriteData->texture->image->w, (float) spriteData->texture->image->h);
-	this->rec.set(Vector3D(spriteData->texture->image->w*0.5f, spriteData->texture->image->h*0.5f), Vector3D((float) spriteData->texture->image->w, (float) spriteData->texture->image->h), 0);
+	this->rec.set(Vector3D(spriteData->texture->image->w*0.5f, spriteData->texture->image->h*0.5f), (float) spriteData->texture->image->w, (float) spriteData->texture->image->h, 0);
 	spriteData->textureName = textureName;
 	isInitialized = true;
 }
@@ -508,7 +516,7 @@ void Image::initialize(Graphics* graphics, mySurface* surface, std::string text)
 	spriteData->texture = surface;
 	this->cols = 1;
 	spriteData->rect->setLeft(0, 0, (float) spriteData->texture->image->w, (float) spriteData->texture->image->h);
-	this->rec.set(Vector3D(spriteData->texture->image->w*0.5f, spriteData->texture->image->h*0.5f), Vector3D((float) spriteData->texture->image->w, (float) spriteData->texture->image->h), 0);
+	this->rec.set(Vector3D(spriteData->texture->image->w*0.5f, spriteData->texture->image->h*0.5f), (float) spriteData->texture->image->w, (float) spriteData->texture->image->h, 0);
 	spriteData->textureName = text;
 	spriteData->isText = true;
 	isInitialized = true;

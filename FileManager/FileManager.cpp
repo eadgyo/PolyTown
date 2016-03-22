@@ -78,12 +78,11 @@ SDL_Surface* FileManager::getDefTexture(std::string textureName)
 	if(!textureName.compare(""))
 		return NULL;
 
-	std::map<std::string, int>::iterator it;
+	std::map<std::string, SDL_Surface*>::iterator it;
 
 	it = names.find(textureName);
 	assert(it != names.end());
-	int i = it->second;
-	return surfaces[i];
+	return it->second;
 }
 
 void FileManager::loadDefTextures()
@@ -92,12 +91,10 @@ void FileManager::loadDefTextures()
 	int j=0;
 	for(unsigned i=0; i<names.size(); i++)
 	{
-		SDL_Surface* texture = loadTexture(textureFolder + "/" + names[i], false);
-		if(texture != NULL)
+		SDL_Surface* surface = loadTexture(textureFolder + "/" + names[i], false);
+		if(surface != NULL)
 		{
-			surfaces.push_back(texture);
-			namesStr.push_back(names[i]);
-			this->names[names[i]] = j;
+			this->names[names[i]] = surface;
 			j++;
 		}
 	}

@@ -26,8 +26,9 @@ void Game::render(Graphics * g)
 	bottomLayer.render(g);
 }
 
-void Game::update(float dt)
+HudNs::HudEvent Game::update(float dt)
 {
+	return HudNs::OK;
 }
 
 HudNs::HudEvent Game::handleEvent(Input & input)

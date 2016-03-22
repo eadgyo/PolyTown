@@ -10,8 +10,6 @@ public:
 	myRectangle();
 	myRectangle(const myRectangle& rectangle);
 	myRectangle(const Form& form);
-	myRectangle(const Vector3D& center, const Vector3D& length);
-	myRectangle(const Vector3D& center, const Vector3D& length, float omega);
 	myRectangle(const Vector3D& center, float width, float height, float omega);
 	myRectangle(float x, float y, float width, float height, float omega);
 	myRectangle(const Vector3D& center, float width, float height);
@@ -20,7 +18,7 @@ public:
 	myRectangle clone();
 
 	// Setter
-	void set(const Vector3D& center, const Vector3D& length, float omega);
+	void set(const Vector3D& center, float width, float height);
 	void set(const Vector3D& center, float width, float height, float omega);
 	void set(const myRectangle& rec);
 	void set(const Form& form);
@@ -30,9 +28,8 @@ public:
 	Vector3D getVecWorld() const;
 	Vector3D getVecWorldNormal() const;
 	inline Vector3D getLeft() const { return get(0); };
-	inline Vector3D getLength() const { return length; };
-	inline float getWidth() const { return length.x(); };
-	inline float getHeight() const { return length.y(); };
+	inline float getWidth() const { return width; };
+	inline float getHeight() const { return height; };
 
 	float getAngle(const Vector3D& vec) const;
 	float getAngle() const;
@@ -41,7 +38,8 @@ public:
 
 	inline virtual unsigned getType() { return 2; };
 private:
-	Vector3D length;
+	float width;
+	float height;
 
 };
 

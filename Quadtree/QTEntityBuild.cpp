@@ -8,15 +8,15 @@ QTEntityBuild::QTEntityBuild(const Form& form)
 {
 	this->form = new Form(form);
 }
-QTEntityBuild::QTEntityBuild(const Vector3D& center, const Vector3D& length)
+QTEntityBuild::QTEntityBuild(const Vector3D& center, float width, float height)
 {
 	form = NULL;
-	initRectangle(center, length);
+	initRectangle(center, width, height);
 }
-QTEntityBuild::QTEntityBuild(const Vector3D& center, const Vector3D& length, float theta)
+QTEntityBuild::QTEntityBuild(const Vector3D& center, float width, float height, float theta)
 {
 	form = NULL;
-	initRectangle(center, length, theta);
+	initRectangle(center, width, height, theta);
 }
 QTEntityBuild::QTEntityBuild(const Vector3D& center, float radius)
 {

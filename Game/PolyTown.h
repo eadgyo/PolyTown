@@ -19,7 +19,7 @@
 class PolyTown
 {
 public:
-	PolyTown();
+    PolyTown();
     virtual ~PolyTown() { std::cout << "PolyTown : Destruction" << std::endl; };
 
     bool init(std::string name, int width, int height);
@@ -33,10 +33,10 @@ public:
     // Détection du stack empty
     void checkStack();
 
-	// ----- UPDATE WINDOW ----- //
-	void clear();
-	void render();
-	void swap();
+    // ----- UPDATE WINDOW ----- //
+    void clear();
+    void render();
+    void swap();
 
     // ----- In GAME
     void startGame();
@@ -47,12 +47,12 @@ private:
     GameStruct* gs;
     CreatorManager* creator_m;
     UpdateManager* update_m;
-	
-	// Graphique et input
-	std::deque<Interface*> iStack;
-	std::vector<Interface*> interfaces;
-	Graphics* g;
-	Input input;
+
+    // Graphique et input
+    std::deque<Interface*> iStack;
+    std::vector<Interface*> interfaces;
+    Graphics* g;
+    Input input;
 };
 
 #endif // !POLYTOWN_H

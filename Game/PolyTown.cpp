@@ -15,8 +15,8 @@ using namespace std;
 
 PolyTown::PolyTown() : running(false), g(new Graphics), gs(NULL)
 {
-	FileManager& fileM = FileManager::getInstance();
-	
+    FileManager& fileM = FileManager::getInstance();
+
     cout << "PolyTown : Construction" << endl;
 }
 
@@ -34,7 +34,7 @@ bool PolyTown::init(string name, int width, int height)
     // Menu Pause
 
     //interfaces.push_back(new NewGame());
-    
+
 
     // Initialisation des boutons
     for (unsigned i = 0; i < interfaces.size(); i++) {
@@ -42,7 +42,7 @@ bool PolyTown::init(string name, int width, int height)
     }
 
     iStack.push_back(interfaces[0]);
-    
+
     running = true;
 
     cout << "PolyTown initialized" << endl;
@@ -64,7 +64,8 @@ void PolyTown::mainLoop()
 
         // UPDATE MANAGER
         if (gs) {
-            gs->display();
+            //gs->display();
+            update_m->update();
         }
 
         // CREATOR MANAGER
@@ -78,7 +79,7 @@ void PolyTown::mainLoop()
         // SWAP WINDOW
         swap();
 
-		checkEvent();
+        checkEvent();
 
         // EXTI GAME ?
         running = !input.exit();
@@ -105,50 +106,52 @@ unsigned int PolyTown::delay(unsigned int lastFrame)
 // Changement d'interface
 void PolyTown::checkEvent()
 {
-	checkStack();
-	HudNs::HudEvent result = iStack.back()->handleEvent(input);
+    checkStack();
+    HudNs::HudEvent result = iStack.back()->handleEvent(input);
 
-	if (result % HudNs::NEW_GAME)
-	{
-		iStack.push_back(interfaces[1]);
+    if (result % HudNs::NEW_GAME) {
+        iStack.push_back(interfaces[1]);
         startGame();
-	}
-	if (result % HudNs::LOAD_GAME)
-	{
+    }
+    if (result % HudNs::LOAD_GAME) {
 
-	}
+    }
 }
 
 void PolyTown::checkStack()
 {
-	if (iStack.size() == 0)
-		std::cerr << "Error: HUD Stack is empty !! Bitches ain't my type.";
+    if (iStack.size() == 0)
+        std::cerr << "Error: HUD Stack is empty !! Bitches ain't my type.";
 }
-
 
 // ----- UPDATE WINDOW ----- //
 void PolyTown::clear()
 {
-	// On reset l'écran
-	g->clear();
+    // On reset l'écran
+    g->clear();
 }
 
 void PolyTown::render()
 {
-	checkStack();
-	// On rend le dernier élément
-	iStack.back()->render(g);
+    checkStack();
+    // On rend le dernier élément
+    iStack.back()->render(g);
 }
 
 void PolyTown::swap()
 {
-	// Swap buffer
-	g->swapGL();
+    // Swap buffer
+    g->swapGL();
 }
 
 // In GAME
 void PolyTown::startGame()
 {
+    cout << "Game started" << endl;
+
     gs = new GameStruct();
     creator_m = new CreatorManager();
+    update_m = new UpdateManager(gs);
+
+    gs->QTHabitations.insert(StructFactory::newHouse(g, 10, 10));
 }

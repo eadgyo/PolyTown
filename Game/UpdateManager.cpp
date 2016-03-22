@@ -1,5 +1,7 @@
 #include "UpdateManager.h"
 
+using namespace std;
+
 UpdateManager::UpdateManager() : gs(NULL)
 {
 }
@@ -10,7 +12,16 @@ UpdateManager::UpdateManager(GameStruct* game_struct)
 }
 
 // ----- GETTER ----- //
+std::vector<QTEntity*> UpdateManager::getEntities(QuadTree qt)
+{
+    vector<QTEntity*> entities;
 
+    qt.addEntities(entities);
+
+    cout << "A : " << entities.size() << endl;
+
+    return entities;
+}
 
 // ----- SETTER ----- //
 void UpdateManager::setGameStruct(GameStruct* game_struct)
@@ -21,7 +32,7 @@ void UpdateManager::setGameStruct(GameStruct* game_struct)
 // ----- UPDATE ----- //
 void UpdateManager::update()
 {
-
+    vector<QTEntity*> entities = getEntities(gs->QTHabitations);
 }
 
 void UpdateManager::updateScoreDD()

@@ -35,7 +35,7 @@ public:
     p_uint score_env;
 
     // Stats variables
-    p_uint money = START_MONEY_AMOUNT;
+    p_uint money;
     p_uint inhabitants;
     p_uint workers;
 
@@ -45,43 +45,43 @@ public:
     // Compteur des structures alimentées
     unsigned int struct_counter[5] = {0}; // Housing | Social | Manufactory | Energy | Water
 
-	// Gérer collisions et affichages
-	// Autre que les routes
-	QuadTree QTCollision;
+    // Gérer collisions et affichages
+    // Autre que les routes
+    QuadTree QTCollision;
 
-	// Gestion des ressources
-	
-	// Gestion de l'eau
-	QuadTree QTWaterGen;
-	QuadTree QTWaterRes;
+    // Gestion des ressources
 
-	// Gestion de l'électricité
-	QuadTree QTElecGen;
-	QuadTree QTElecRes;
+    // Gestion de l'eau
+    QuadTree QTWaterGen;
+    QuadTree QTWaterRes;
 
-	// Gestion des routes
-	QuadTree QTRoads;
-	QuadTree QTHabitations;
+    // Gestion de l'électricité
+    QuadTree QTElecGen;
+    QuadTree QTElecRes;
 
-	QuadTree QTPollutionWater;
-	QuadTree QTPollutionAir;
+    // Gestion des routes
+    QuadTree QTRoads;
+    QuadTree QTHabitations;
 
-
-	// Roads
-	std::map<int, int> roadsConnex;
+    QuadTree QTPollutionWater;
+    QuadTree QTPollutionAir;
 
 
-	//
-
-	std::set<QTEntity*> noElecGen;
-	std::set<QTEntity*> noWaterGen;
+    // Roads
+    std::map<int, int> roadsConnex;
 
 
-	// CreatorManager
-	int topConnexitude = 0;
-	std::vector<int> fConnexitudes;
+    //
 
-	QTEntity* lastSelected;
-	Form* possibleForm;
-	bool isLastMakable;
+    std::set<QTEntity*> noElecGen;
+    std::set<QTEntity*> noWaterGen;
+
+
+    // CreatorManager
+    int topConnexitude = 0;
+    std::vector<int> fConnexitudes;
+
+    QTEntity* lastSelected;
+    Form* possibleForm;
+    bool isLastMakable;
 };

@@ -2,6 +2,8 @@
 
 #include "GameStruct.h"
 
+#include <vector>
+
 class UpdateManager
 {
 public:
@@ -9,6 +11,7 @@ public:
     UpdateManager(GameStruct* game_struct);
 
     // ----- GETTER ----- //
+    std::vector<QTEntity*> getEntities(QuadTree);
 
     // ----- SETTER ----- //
     void setGameStruct(GameStruct* game_struct);

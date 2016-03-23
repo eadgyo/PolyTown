@@ -2,9 +2,24 @@
 
 #include "../Constant.h"
 
+#include "../GameContent/Housing/House.h"
+#include "../GameContent/Housing/Building.h"
+
+#include "../GameContent/SocialBuilding/SocialBuilding.h"
+#include "../GameContent/SocialBuilding/FireStation.h"
+
+#include "../GameContent/Resources/PowerPlant.h"
+#include "../GameContent/Resources/WaterTower.h"
+
+#include "../GameContent/Factory/Farm.h"
+#include "../GameContent/Factory/Shop.h"
+#include "../GameContent/Factory/Manufactory.h"
+
 // Contient les information nécessaires pour le jeu
 #include "../Quadtree/QTEntity.h"
 #include "../Quadtree/QuadTree.h"
+
+#include <iomanip>
 
 class GameStruct
 {
@@ -22,10 +37,14 @@ public:
 
     void display()
     {
-        std::cout << score_dd << ' ';
+        /*std::cout << score_dd << ' ';
         std::cout << score_soc << ' ';
         std::cout << score_eco << ' ';
-        std::cout << score_env << std::endl;
+        std::cout << score_env << std::endl;*/
+
+        std::cout << "H : " << inhabitants << " ";
+        std::cout << "W : " << workers << " ";
+        std::cout << "U% : " << unemployment << std::endl;
     }
 
     // Scores
@@ -38,12 +57,19 @@ public:
     p_uint money;
     p_uint inhabitants;
     p_uint workers;
+    p_uint food_production;
+    p_uint food_consumption;
 
     // Ratio
     float unemployment;
 
     // Compteur des structures alimentées
     unsigned int struct_counter[5] = {0}; // Housing | Social | Manufactory | Energy | Water
+
+    // ----- ENTITIES ----- //
+    std::vector<Housing*> housing; // Habitations
+    std::vector<Factory*> factory; // Bâtiments économiques
+    std::vector<SocialBuilding*> social; // Bâtiments sociaux
 
     // Gérer collisions et affichages
     // Autre que les routes

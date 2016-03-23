@@ -1,7 +1,8 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
-#include "../Displayable.h"
+#include "../Constant.h"
+#include "../QuadTree/QTEntity.h"
 
 class Factory : public virtual QTEntity
 {

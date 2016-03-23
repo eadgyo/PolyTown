@@ -25,6 +25,8 @@ public:
 
     void updateInhabitants();
     void updateWorkers();
+    void updateUnemployment();
+    void updateMoney();
 
 private:
     GameStruct* gs;

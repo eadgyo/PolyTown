@@ -35,8 +35,6 @@ protected:
     static const p_uint m_food_needs;
 
     bool m_hasFood;
-    bool m_hasWater; // pointeur
-    bool m_hasEnergy; // pointeur
 
     // social_score
     // eco_score

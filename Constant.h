@@ -16,7 +16,7 @@ typedef unsigned int p_uint;
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 
-#define FPS 5
+#define FPS 2
 
 // ----- Keyboard ----- //
 #define NUMBER_OF_KEYS 2
@@ -42,7 +42,7 @@ typedef unsigned int p_uint;
 #define HOUSE_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define HOUSE_NAME "Maison"
 
-#define HOUSE_MAX_INHAB 1
+#define HOUSE_MAX_INHAB 5
 #define HOUSE_WATER_NEEDS 10
 #define HOUSE_ENERGY_NEEDS 10
 
@@ -168,7 +168,7 @@ typedef unsigned int p_uint;
 #define FARM_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define FARM_NAME "Exploitation agricole"
 
-#define FARM_MAX_WORKERS 0
+#define FARM_MAX_WORKERS 5
 #define FARM_INCOME_RATE 0
 #define FARM_ENERGY_NEEDS 0
 #define FARM_OUTPUT_RATE 0

@@ -62,10 +62,16 @@ void PolyTown::mainLoop()
 
         // INTERFACE(input)
 
+        // LINK MANAGER
+
         // UPDATE MANAGER
         if (gs) {
-            //gs->display();
             update_m->update();
+            gs->display();
+            //gs->housing.at(0)->addInhabitants(1);
+            //gs->housing[0]->delInhabitants(1);
+
+            gs->factory[0]->addWorkers(1);
         }
 
         // CREATOR MANAGER
@@ -153,6 +159,9 @@ void PolyTown::startGame()
     //creator_m = new CreatorManager();
     update_m = new UpdateManager(gs);
 
-    //gs->QTHabitations.insert(StructFactory::newHouse(g, 10, 10));
-    //gs->QTHabitations.insert(StructFactory::newHouse(g, 100, 100));
+    gs->housing.push_back(StructFactory::newHouse(10, 10));
+    gs->housing.push_back(StructFactory::newHouse(100, 100));
+    gs->housing[0]->addInhabitants(10);
+
+    gs->factory.push_back(StructFactory::newFarm(0, 0));
 }

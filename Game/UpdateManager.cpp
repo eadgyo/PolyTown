@@ -36,6 +36,7 @@ void UpdateManager::update()
 {
     updateInhabitants();
     updateWorkers();
+    updateUnemployment();
 }
 
 void UpdateManager::updateScoreDD()
@@ -57,11 +58,10 @@ void UpdateManager::updateScoreEnv()
 
 void UpdateManager::updateInhabitants()
 {
-    vector<QTEntity*> entities = getEntities(gs->QTHabitations);
     p_uint inhabitants = 0;
 
-    for (unsigned i = 0; i < entities.size(); i++) {
-        inhabitants += (dynamic_cast<Housing*> (entities[i]))->getInhabitants();
+    for (unsigned i = 0; i < gs->housing.size(); i++) {
+        inhabitants += gs->housing[i]->getInhabitants();
     }
 
     gs->inhabitants = inhabitants;
@@ -69,16 +69,21 @@ void UpdateManager::updateInhabitants()
 
 void UpdateManager::updateWorkers()
 {
-    vector<QTEntity*> entities = getEntities(gs->QTElecRes);
-    Factory* factory = NULL;
     p_uint workers = 0;
 
-    for (unsigned i = 0; i < entities.size(); i++) {
-        factory = dynamic_cast<Factory*> (entities[i]);
-        if (factory) {
-            workers += factory->getWorkers();
-        }
+    for (unsigned i = 0; i < gs->factory.size(); i++) {
+        workers += gs->factory[i]->getWorkers();
     }
 
     gs->workers = workers;
+}
+
+void UpdateManager::updateUnemployment()
+{
+    gs->unemployment = (float) (gs->inhabitants - gs->workers) / (float) (gs->inhabitants);
+}
+
+void UpdateManager::updateMoney()
+{
+    gs->money += 0;
 }

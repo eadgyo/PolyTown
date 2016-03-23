@@ -28,7 +28,6 @@ p_uint Factory::addWorkers(p_uint n)
         m_workers = m_max_workers;
         return n;
     } else {
-        m_workers += n;
         return 0;
     }
 }

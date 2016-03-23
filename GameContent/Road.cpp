@@ -316,4 +316,5 @@ bool Road::removeConnectedRoad(Road* road)
 	}
 	// Probleme ?
 	std::cout << "No road found";
+	return false;
 }

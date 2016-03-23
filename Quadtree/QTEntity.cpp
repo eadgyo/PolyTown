@@ -5,32 +5,38 @@
 QTEntity::QTEntity(const Form& form)
 {
 	this->form = new Form(form);
+    m_name = "";
 }
 QTEntity::QTEntity(const Vector3D& center, float width, float height)
 {
 	form = NULL;
 	initRectangle(center, width, height);
+    m_name = "";
 }
 QTEntity::QTEntity(const Vector3D& center, float width, float height, float theta)
 {
 	form = NULL;
 	initRectangle(center, width, height, theta);
+    m_name = "";
 }
 QTEntity::QTEntity(const Vector3D& center, float radius)
 {
 	form = NULL;
 	initCircle(center, radius);
+    m_name = "";
 }
 
 QTEntity::QTEntity(const myRectangle& rectangle)
 {
 	form = NULL;
 	form = new myRectangle(rectangle);
+    m_name = "";
 }
 QTEntity::QTEntity(const Circle& circle)
 {
 	form = NULL;
 	form = new Circle(circle);
+    m_name = "";
 }
 
 QTEntity::~QTEntity()
@@ -146,6 +152,11 @@ void QTEntity::set(const Vector3D& center, float radius)
 			assert(0);
 		}
 	}
+}
+
+void QTEntity::setName(std::string name)
+{
+    m_name = name;
 }
 
 

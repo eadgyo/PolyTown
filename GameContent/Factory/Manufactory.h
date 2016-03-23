@@ -9,7 +9,7 @@
 class Manufactory final : public virtual Factory, public virtual Energy, public virtual Water
 {
 public:
-    Manufactory(Graphics* graphics, int x, int y);
+    Manufactory(int x, int y);
 
 private:
 

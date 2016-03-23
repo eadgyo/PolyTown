@@ -6,10 +6,10 @@
 class Building final : public Housing
 {
 public:
-    Building(Graphics* graphics, int x, int y);
-    Building(Graphics* graphics, int x, int y, p_uint floor);
-    Building(Graphics* graphics, int x, int y, p_uint water_needs, p_uint energy_needs);
-    Building(Graphics* graphics, int x, int y, p_uint floor, p_uint water_needs, p_uint energy_needs);
+    Building(int x, int y);
+    Building(int x, int y, p_uint floor);
+    Building(int x, int y, p_uint water_needs, p_uint energy_needs);
+    Building(int x, int y, p_uint floor, p_uint water_needs, p_uint energy_needs);
 
     // ----- GETTER ----- //
     p_uint getFloors() const;

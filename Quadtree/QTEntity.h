@@ -46,6 +46,7 @@ public:
 	void set(const Vector3D& center, float witdh, float height);
 	void set(const Vector3D& center, float radius);
 	
+    void setName(std::string name);
 
 	// Transformations
 	inline void setRadians(float theta) { form->setRadians(theta); };
@@ -64,6 +65,6 @@ protected:
 	void initCircle(const Vector3D& center, float radius);
 
 	Form* form;
-
+    std::string m_name;
 	
 };

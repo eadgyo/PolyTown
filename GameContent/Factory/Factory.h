@@ -3,7 +3,7 @@
 
 #include "../Displayable.h"
 
-class Factory : public virtual Displayable
+class Factory : public virtual QTEntity
 {
 public:
     // ----- GETTER ----- //

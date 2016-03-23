@@ -6,7 +6,7 @@
 class WaterTower : public virtual Resources
 {
 public:
-    WaterTower(Graphics* graphics, int x, int y);
+    WaterTower(int x, int y);
 
 private:
 

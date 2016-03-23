@@ -22,25 +22,25 @@ public:
     // ----- GETTER ----- //
 
     // Housing
-    static House* newHouse(Graphics* graphics, int x, int y);
-    static House* newLowImpactHouse(Graphics* graphics, int x, int y);
-    static Building* newBuilding(Graphics* graphics, int x, int y);
-    static Building* newLowImpactBuilding(Graphics* graphics, int x, int y);
+    static House* newHouse(int x, int y);
+    static House* newLowImpactHouse(int x, int y);
+    static Building* newBuilding(int x, int y);
+    static Building* newLowImpactBuilding(int x, int y);
 
     // SocialBuilding
-    static SocialBuilding* newSchool(Graphics* graphics, int x, int y);
-    static SocialBuilding* newHospital(Graphics* graphics, int x, int y);
-    static FireStation* newFireStation(Graphics* graphics, int x, int y);
-    static SocialBuilding* newPoliceStation(Graphics* graphics, int x, int y);
+    static SocialBuilding* newSchool(int x, int y);
+    static SocialBuilding* newHospital(int x, int y);
+    static FireStation* newFireStation(int x, int y);
+    static SocialBuilding* newPoliceStation(int x, int y);
 
     // Resources
-    static PowerPlant* newPowerPlant(Graphics* graphics, int x, int y);
-    static WaterTower* newWaterTower(Graphics* graphics, int x, int y);
+    static PowerPlant* newPowerPlant(int x, int y);
+    static WaterTower* newWaterTower(int x, int y);
 
     // Factory
-    static Farm* newFarm(Graphics* graphics, int x, int y);
-    static Shop* newShop(Graphics* graphics, int x, int y);
-    static Manufactory* newManufactory(Graphics* graphics, int x, int y);
+    static Farm* newFarm(int x, int y);
+    static Shop* newShop(int x, int y);
+    static Manufactory* newManufactory(int x, int y);
 
 private:
     StructFactory();

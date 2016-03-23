@@ -150,9 +150,9 @@ void PolyTown::startGame()
     cout << "Game started" << endl;
 
     gs = new GameStruct();
-    creator_m = new CreatorManager();
+    //creator_m = new CreatorManager();
     update_m = new UpdateManager(gs);
 
-    gs->QTHabitations.insert(StructFactory::newHouse(g, 10, 10));
-    gs->QTHabitations.insert(StructFactory::newHouse(g, 100, 100));
+    //gs->QTHabitations.insert(StructFactory::newHouse(g, 10, 10));
+    //gs->QTHabitations.insert(StructFactory::newHouse(g, 100, 100));
 }

@@ -7,7 +7,7 @@
 class FireStation : public virtual SocialBuilding, public virtual Water
 {
 public:
-    FireStation(Graphics* graphics, int x, int y);
+    FireStation(int x, int y);
 
 private:
 

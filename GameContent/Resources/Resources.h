@@ -2,11 +2,11 @@
 #define RESOURCES_H
 
 #include "../../Constant.h"
-#include "../Displayable.h"
+#include "../Quadtree/QTEntity.h"
 
 #include <vector>
 
-class Resources : public virtual Displayable
+class Resources : public virtual QTEntity
 {
 public:
 
@@ -14,7 +14,7 @@ protected:
     Resources();
 
 
-    std::vector<Displayable> m_connected; // Connected
+    std::vector<QTEntity*> m_connected; // Connected
 };
 
 #endif // !RESOURCES_H

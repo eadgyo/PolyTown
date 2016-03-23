@@ -8,7 +8,7 @@
 class Farm final : public virtual Factory, public virtual Water
 {
 public:
-    Farm(Graphics* graphics, int x, int y);
+    Farm(int x, int y);
 
 private:
     p_uint m_output_rate;

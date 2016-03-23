@@ -8,7 +8,7 @@
 class Shop final : public virtual Factory, public virtual Energy
 {
 public:
-    Shop(Graphics* graphics, int x, int y);
+    Shop(int x, int y);
 
 private:
 

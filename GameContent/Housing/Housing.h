@@ -1,12 +1,12 @@
 #ifndef HOUSING_H
 #define HOUSING_H
 
-#include "../Displayable.h"
+#include "../Quadtree/QTEntity.h"
 
 #include "../Resources/Energy.h"
 #include "../Resources/Water.h"
 
-class Housing : public virtual Displayable, public virtual Energy, public virtual Water
+class Housing : public virtual QTEntity, public virtual Energy, public virtual Water
 {
 public:
     // ----- GETTER ----- //

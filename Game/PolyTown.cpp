@@ -102,11 +102,18 @@ void PolyTown::exit()
 
 unsigned int PolyTown::delay(unsigned int lastFrame)
 {
-    unsigned int dt = SDL_GetTicks() - lastFrame;
-    if (dt < 1000 / FPS) {
-        SDL_Delay(1000 / FPS - dt);
+    unsigned delta = SDL_GetTicks() - lastFrame;
+    if (delta < 1000 / FPS) {
+        SDL_Delay(1000 / FPS - delta);
     }
-    return SDL_GetTicks();
+    if (delta > 1050 / FPS) {
+        dt = 0;
+        return SDL_GetTicks();
+    } else {
+        unsigned int time = SDL_GetTicks();
+        dt = time - lastFrame;
+        return time;
+    }
 }
 
 // Changement d'interface

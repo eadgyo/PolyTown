@@ -44,6 +44,8 @@ public:
 private:
     bool running;
 
+    unsigned int dt;
+
     GameStruct* gs;
     //CreatorManager* creator_m;
     UpdateManager* update_m;

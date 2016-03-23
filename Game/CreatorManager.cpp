@@ -14,9 +14,10 @@ CreatorManager::~CreatorManager()
 {
 }
 
-void CreatorManager::initialize(GameStruct * gameStruct)
+void CreatorManager::initialize(GameStruct * gameStruct, LinkManager* linkManager)
 {
 	this->gameStruct = gameStruct;
+	this->linkManager = linkManager;
 }
 
 void CreatorManager::addRoad(Road * road)
@@ -36,27 +37,27 @@ void CreatorManager::addRoad(Road * road)
 	handleAllMid(cRoadStruct, myRoad, start, director, width, theta);
 	
 	// On lie tous les bouts de routes
-	updateManager.linkMapRoad(myRoad);
+	linkManager->linkMapRoad(myRoad);
 
 	handleAllStart(cRoadStruct, myRoad.begin()->second);
 	handleAllEnd(cRoadStruct, (--myRoad.end())->second);
 
 	// On recherche le plus petit index
-	int minIndex = updateManager.computeRoadIndex(myRoad);
+	int minIndex = linkManager->computeRoadIndex(myRoad);
 	if (minIndex == -1)
 	{
-		minIndex = updateManager.getConnexitude();
+		minIndex = linkManager->getConnexitude();
 	}
 
 	// Nous pourrions utilisé un modèle optimisé
-	updateManager.setConnexitude(myRoad.begin()->second, minIndex);
+	linkManager->setConnexitude(myRoad.begin()->second, minIndex);
 }
 
 void CreatorManager::add(QTEntityBuild* qtEntity)
 {
 	if (isMakableSnapp(qtEntity))
 	{
-		updateManager.add(qtEntity);
+		linkManager->add(qtEntity);
 	}
 }
 
@@ -71,12 +72,12 @@ bool CreatorManager::isMakable(QTEntity* qtEntity)
 
 void CreatorManager::removeRoad(Road * road)
 {
-	updateManager.removeRoad(road);
+	linkManager->removeRoad(road);
 }
 
 void CreatorManager::remove(QTEntityBuild * qtEntity)
 {
-	updateManager.remove(qtEntity);
+	linkManager->remove(qtEntity);
 }
 
 bool CreatorManager::isMakableSnappRoad(Road * road)
@@ -292,24 +293,24 @@ void CreatorManager::handleAllStart(CRoadStruct& cRoadStruct, Road* startR)
 		handleDoubleDivision(road, startR, connector);
 
 		// On copie les anciens liens
-		updateManager.linkRoadCopyLast(road, l_road.begin()->second);
-		updateManager.linkRoadCopyNext(road, (--l_road.end())->second);
-		updateManager.removeRoad(road);
+		linkManager->linkRoadCopyLast(road, l_road.begin()->second);
+		linkManager->linkRoadCopyNext(road, (--l_road.end())->second);
+		linkManager->removeRoad(road);
 
-		updateManager.linkMapRoad(l_road);
+		linkManager->linkMapRoad(l_road);
 	}
 
 	// Pour le moment pas de gestion de collision avec d'autres connecteurs
 	for (unsigned i = 0; i < cRoadStruct.startRoads1.size(); i++)
 	{
 		// Connexion debut/début
-		updateManager.linkRoadLastLast(startR, cRoadStruct.startRoads1[i]);
+		linkManager->linkRoadLastLast(startR, cRoadStruct.startRoads1[i]);
 	}
 
 	for (unsigned i = 0; i < cRoadStruct.startRoads2.size(); i++)
 	{
 		// Connexion debut/fin
-		updateManager.linkRoadLastNext(startR, cRoadStruct.startRoads2[i]);
+		linkManager->linkRoadLastNext(startR, cRoadStruct.startRoads2[i]);
 	}
 }
 
@@ -331,24 +332,24 @@ void CreatorManager::handleAllEnd(CRoadStruct& cRoadStruct, Road* endR)
 		handleDoubleDivision(actualRoad, endR, connector);
 
 		// On copie les anciens liens
-		updateManager.linkRoadCopyLast(road, l_road.begin()->second);
-		updateManager.linkRoadCopyNext(road, (--(l_road.end()))->second);
-		updateManager.removeRoad(road);
+		linkManager->linkRoadCopyLast(road, l_road.begin()->second);
+		linkManager->linkRoadCopyNext(road, (--(l_road.end()))->second);
+		linkManager->removeRoad(road);
 
-		updateManager.linkMapRoad(l_road);
+		linkManager->linkMapRoad(l_road);
 	}
 
 	// Pour le moment pas de gestion de collision avec d'autres connecteurs
 	for (unsigned i = 0; i < cRoadStruct.endRoads1.size(); i++)
 	{
 		// Connexion fin/début
-		updateManager.linkRoadNextLast(endR, cRoadStruct.endRoads1[i]);
+		linkManager->linkRoadNextLast(endR, cRoadStruct.endRoads1[i]);
 	}
 
 	for (unsigned i = 0; i < cRoadStruct.endRoads2.size(); i++)
 	{
 		// Connexion fin/fin
-		updateManager.linkRoadNextNext(endR, cRoadStruct.endRoads2[i]);
+		linkManager->linkRoadNextNext(endR, cRoadStruct.endRoads2[i]);
 	}
 
 }
@@ -405,7 +406,7 @@ void CreatorManager::handleStartDivision(Road* actualRoad, Road* colliding, Road
 
 	colliding->set2points(start, end, width);
 
-	updateManager.linkRoadGuess(colliding, connector);
+	linkManager->linkRoadGuess(colliding, connector);
 	
 }
 
@@ -422,7 +423,7 @@ void CreatorManager::handleEndDivision(Road* actualRoad, Road* colliding, Road* 
 
 	colliding->set2points(start, end, width);
 
-	updateManager.linkRoadGuess(colliding, connector);
+	linkManager->linkRoadGuess(colliding, connector);
 }
 
 void CreatorManager::handleDoubleDivision(Road* actualRoad, Road* colliding, Road* connector)
@@ -453,14 +454,14 @@ void CreatorManager::handleDoubleDivision(Road* actualRoad, Road* colliding, Roa
 	/// ----------------------------------------------------------------
 	if (last != NULL)
 	{
-		updateManager.linkRoadNextLast(last, road1);
+		linkManager->linkRoadNextLast(last, road1);
 	}
-		updateManager.linkRoadNext(road1, connector);
-		updateManager.linkRoadLast(road2, connector);
+		linkManager->linkRoadNext(road1, connector);
+		linkManager->linkRoadLast(road2, connector);
 	
 	if (next != NULL)
 	{
-		updateManager.linkRoadLastNext(next, road2);
+		linkManager->linkRoadLastNext(next, road2);
 	}
 }
 

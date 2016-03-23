@@ -71,7 +71,7 @@ public:
 	CreatorManager();
 	~CreatorManager();
 
-	void initialize(GameStruct* gameStruct);
+	void initialize(GameStruct* gameStruct, LinkManager* linkManager);
 
 	void addRoad(Road* road);
 	void add(QTEntityBuild* qtEntity);
@@ -121,7 +121,7 @@ public:
 
 private:
 	GameStruct *gameStruct;
-	LinkManager updateManager;
+	LinkManager *linkManager;
 	
 	// Nombre d'essais max pour isMakableSnapp
 	const int MAX_TRY_SNAPP_QTENTITY = 10;
@@ -134,7 +134,7 @@ private:
 	// Angrandissement des rectangles Debut/Fin
 	const float DEF_WIDTH_ROAD = 10.0f;
 	const float DEF_HEIGHT_ROAD = 10.0f;
-	// Taille à partir de laquelle on considère que l'élément est trop petit
+	// Taille à pupdateManagerartir de laquelle on considère que l'élément est trop petit
 	// Pour MidColls
 	const float LESS_HEIGHT_MID_ROAD = 40.0f;
 	// Taille de route considérée comme trop petite

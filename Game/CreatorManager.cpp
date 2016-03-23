@@ -36,7 +36,7 @@ void CreatorManager::addRoad(Road * road)
 	handleAllMid(cRoadStruct, myRoad, start, director, width, theta);
 	
 	// On lie tous les bouts de routes
-	linkMapRoad(myRoad);
+	updateManager.linkMapRoad(myRoad);
 
 	handleAllStart(cRoadStruct, myRoad.begin()->second);
 	handleAllEnd(cRoadStruct, (--myRoad.end())->second);
@@ -157,39 +157,45 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 	// Parmis tous les objets en collision, on cherche l'élément qui est le plus en collision
 	QTEntity* nearEntity = getCollidingPushMax(qtEntity, colliding, push, t);
 		// On tente une rotation puis une translation
-	if(nearEntity != NULL && nearEntity->getAngle2D() != 0)
+	if(nearEntity != NULL)
 	{
-		qtEntity->setRadians(nearEntity->getAngle2D());
-		Vector3D l_push;
-
-		// On calcule le vecteur de poussée avec la nouvelle rotation
-		getColliding(qtEntity, colliding, l_push);
-		qtEntity->translate(l_push);
-
-		// On reteste la collision
-		colliding.clear();
-		getColliding(qtEntity, colliding);
-		if (colliding.size() != 0)
+		if (nearEntity->getAngle2D() != 0)
 		{
-			// La rotation + translation a crée au moins une autre collision
-			// On revient en arrière
+			qtEntity->setRadians(nearEntity->getAngle2D());
+			Vector3D l_push;
+
+			// On calcule le vecteur de poussée avec la nouvelle rotation
+			getColliding(qtEntity, colliding, l_push);
+			qtEntity->translate(l_push);
+
+			// On reteste la collision
+			colliding.clear();
+			getColliding(qtEntity, colliding);
+			if (colliding.size() != 0)
+			{
+				// La rotation + translation a crée au moins une autre collision
+				// On revient en arrière
+				qtEntity->setRadians(0);
+				qtEntity->setCenter(pos);
+			}
+		}
+
+		int numberOfTry = 0;
+		while (colliding.size() != 0 && numberOfTry < MAX_TRY_SNAPP_QTENTITY)
+		{
+			qtEntity->translate(push);
+			colliding.clear();
+			getColliding(qtEntity, colliding, push);
+		}
+		if (colliding.size() != 0 || (qtEntity->getCenter() - pos).getMagnitude() > DISTANCE_MAX_SNAPP)
+		{
+			// Si pas satisfait, on revient à la pos de départ
 			qtEntity->setRadians(0);
 			qtEntity->setCenter(pos);
+			return false;
 		}
 	}
-	int numberOfTry = 0;
-	while (colliding.size() != 0 && numberOfTry < MAX_TRY_SNAPP_QTENTITY)
-	{
-		qtEntity->translate(push);
-		colliding.clear();
-		getColliding(qtEntity, colliding, push);
-	}
-	if (colliding.size() != 0 || (qtEntity->getCenter() - pos).getMagnitude() > DISTANCE_MAX_SNAPP)
-	{
-		// Si pas satisfait, on revient à la pos de départ
-		qtEntity->setCenter(pos);
-		return false;
-	}
+
 	return true;
 }
 
@@ -255,9 +261,9 @@ QTEntity* CreatorManager::getCollidingPushMax(QTEntity* qtEntity, std::vector<QT
 			push += l_push*t;
 
 			// On cherche l'entité avec la force de poussée max
-			if (l_push > t_max)
+			if (t > t_max)
 			{
-				t_max = l_push;
+				t_max = t;
 				maxColliding = possibleCollisions[i];
 			}
 		}
@@ -471,9 +477,9 @@ Road* CreatorManager::divide(Road* actual, std::map<float, Road*>& myRoad, float
 	Road* connector = new Connector(p2, width, width2, theta);
 	Road* r2 = Road::create2pointsP(p2, p3, width);
 	
-	myRoad[scalar] = r1;
-	myRoad[scalar + MIN_DIFF_CONNECTOR] = r1;
-	myRoad[scalar] = r1;
+	myRoad[scalar + width2*0.5f] = r1;
+	myRoad[scalar + width2*0.5f + MIN_DIFF_CONNECTOR] = connector;
+	myRoad[scalar + width2 + r2->getHeight()] = r2;
 	return connector;
 }
 
@@ -787,14 +793,25 @@ bool CreatorManager::setTypeMidColliding(Road* roadi, float scalarStartR, float 
 
 	if (isInStart )
 	{
+		if (roadi->getIsConnector() || roadi->getLast() != NULL)
+			return false;
+
 		cRoadStruct.midRoads1.push_back(roadi);
 	}
 	else if (isInEnd)
 	{
+		if (roadi->getIsConnector() || roadi->getNext() != NULL)
+			return false;
+
 		cRoadStruct.midRoads2.push_back(roadi);
 	}
 	else
 	{
+		// Doit on gérer la division d'un connecteur
+		// Pour le moment non
+		if (roadi->getIsConnector())
+			return false;
+
 		cRoadStruct.midRoads0.push_back(roadi);
 	}
 	return true;

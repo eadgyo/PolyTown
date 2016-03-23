@@ -13,6 +13,26 @@ void LinkManager::initialize(GameStruct * gameStruct)
 	this->gameStruct = gameStruct;
 }
 
+void LinkManager::linkRoad(Road * r1, Road * r2, bool isLastR1, bool isLastR2)
+{
+	if (isLastR1 && isLastR2)
+	{
+		linkRoadLastLast(r1, r2);
+	}
+	else if (isLastR1 && !isLastR2)
+	{
+		linkRoadLastNext(r1, r2);
+	}
+	else if (!isLastR1 && isLastR2)
+	{
+		linkRoadNextLast(r1, r2);
+	}
+	else
+	{
+		linkRoadNextNext(r1, r2);
+	}
+}
+
 void LinkManager::linkRoadGuess(Road * r1, Road * connector)
 {
 	if (r1->getLast() == NULL)
@@ -92,6 +112,115 @@ void LinkManager::linkRoadCopyNext(Road * source, Road * dest)
 void LinkManager::linkRoadCopyLast(Road * source, Road * dest)
 {
 	dest->setLast(source->getLast());
+}
+
+void LinkManager::unlinkWCleaning(Road * road, Road * connected)
+{
+	std::set<Road*> alreadyDone;
+	alreadyDone.insert(road);
+	cleanNearConnector(alreadyDone, connected);
+}
+
+// Nettoyage des connecteurs inutiles
+void LinkManager::cleanNearConnector(std::set<Road*>& alreadyDone, Road * connected)
+{
+	if (alreadyDone.find(connected) != alreadyDone.end())
+		return;
+	else
+		alreadyDone.insert(connected);
+
+	// On regarde le type de la route connectée
+	Connector* cast = dynamic_cast<Connector*>(connected);
+	if (cast != NULL)
+	{
+		if (cast->sizeConnectedRoad() < 3)
+		{
+			// On doit supprimer le connecteur
+			// Car après la deletion de l'autre route
+			// On aura:
+			// soit deux routes co
+			// soit une seule route co
+			// soit aucune co
+
+			std::vector<Road*> copy = cast->copyConnectedRoads();
+			for (unsigned i = 0; i < copy.size(); i++)
+			{
+				// On nettoye les autres branches
+				cleanNearConnector(alreadyDone, copy[i]);
+			}
+		
+			if (cast->sizeConnectedRoad() == 2)
+			{
+				
+				Road* r1 = cast->getConnectedRoad(0);
+				Road* r2 = cast->getConnectedRoad(1);
+				assert(r1 != r2);
+
+				Connector* cast1 = dynamic_cast<Connector*>(r1);
+				Connector* cast2 = dynamic_cast<Connector*>(r2);
+				if (cast1 != NULL || cast2 != NULL)
+				{
+					// On libère juste les deux routes
+					unlinkRoad(cast, r1);
+					unlinkRoad(cast, r2);
+				}
+				else
+				{
+					// On bouge les deux routes
+					moveAfterCleaning(r1, cast);
+					moveAfterCleaning(r2, cast);
+
+					// On libère les deux routes en récupérant les liens
+					bool isLastR1 = unlinkRoad1(r1, cast);
+					bool isLastR2 = unlinkRoad1(r1, cast);
+
+					// On lie les 2 routes en fonction des liens précédents
+					linkRoad(r1, r2, isLastR1, isLastR2);
+				}
+			}
+			else if (cast->sizeConnectedRoad() == 1)
+			{
+				// On doit juste supprimer le lien
+				Road* r1 = cast->getConnectedRoad(0);
+				unlinkRoad(cast, r1);
+			}
+
+			removeRoadLight(cast);
+		}
+	}
+}
+
+void LinkManager::moveAfterCleaning(Road * road, Road * removed)
+{
+	// On projete juste le centre de la route enlevée
+	// On cherche le bon coté
+	if (road->getLast() == removed)
+	{
+		Vector3D director = -road->getDirectorVec();
+		float l_scalar = director*(removed->getCenter() - road->getStart());
+		Vector3D l_start = road->getStart() + director*l_scalar;
+		road->setStart(l_start);
+	}
+	else
+	{
+		Vector3D director = road->getDirectorVec();
+		float l_scalar = director*(removed->getCenter() - road->getEnd());
+		Vector3D l_end = road->getEnd() + director*l_scalar;
+		road->setEnd(l_end);
+	}
+	
+}
+
+void LinkManager::unlinkRoad(Road * r1, Road * r2)
+{
+	r1->removeConnectedRoad(r2);
+	r2->removeConnectedRoad(r1);
+}
+
+bool LinkManager::unlinkRoad1(Road * r1, Road * r2)
+{
+	r2->removeConnectedRoad(r1);
+	return r1->removeConnectedRoad(r2);
 }
 
 // ----- SETTER ----- //
@@ -218,10 +347,42 @@ void LinkManager::remove(QTEntityBuild * qtEntity)
 
 void LinkManager::removeRoad(Road * road)
 {
+	removeRoadLight(road);
+	
+	// Enlève les liens
+	Connector* cast = dynamic_cast<Connector*>(road);
+	if (cast == NULL)
+	{
+		// C'est juste une route
+		if (road->getLast() != NULL)
+		{
+			unlinkWCleaning(road, road->getLast());
+			unlinkRoad(road, road->getLast());
+		}
+		if (road->getNext() != NULL)
+		{
+			unlinkWCleaning(road, road->getNext());
+			unlinkRoad(road, road->getNext());
+		}
+	}
+	else
+	{
+		for (unsigned i = 0; i < cast->sizeConnectedRoad(); i++)
+		{
+			unlinkWCleaning(cast, cast->getConnectedRoad(i));
+			unlinkRoad(cast, cast->getConnectedRoad(i));
+		}
+	}
+}
+
+void LinkManager::removeRoadLight(Road * road)
+{
+	// Suppression dans GameStruct
 	gameStruct->QTCollision.erase(road);
 	gameStruct->QTRoads.erase(road);
-
 }
+
+
 
 
 // Connexitude

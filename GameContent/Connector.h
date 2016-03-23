@@ -45,7 +45,7 @@ public:
 	{
 		connectedRoads.erase(connectedRoads.begin() + i);
 	}
-	void removeConnectedRoad(Road* road)
+	virtual bool removeConnectedRoad(Road* road)
 	{
 		unsigned i = 0;
 		while (i < connectedRoads.size() && road != connectedRoads[i])
@@ -55,8 +55,18 @@ public:
 		if (i < connectedRoads.size())
 		{
 			connectedRoads.erase(connectedRoads.begin() + i);
+			return true;
 		}
+		std::cout << "Road not found in connector";
+		return false;
 	}
+	std::vector<Road*> copyConnectedRoads()
+	{
+		std::vector<Road*> copy;
+		copy.insert(copy.end(), connectedRoads.begin(), connectedRoads.end());
+		return copy;
+	}
+
 
 private:
 	std::vector<Road*> connectedRoads;

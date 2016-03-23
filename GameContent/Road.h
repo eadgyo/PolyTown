@@ -57,6 +57,7 @@ public:
 	void erase(unsigned i);
 	void addEntity(QTEntity* entity);
 	void addAllEntities(std::vector<QTEntity*> entities);
+	virtual bool removeConnectedRoad(Road* road);
 	inline void setConnexitude(int connex) { this->connex = connex; };
 	virtual inline void setNext(Road* next) { this->next = next; };
 	virtual inline void setLast(Road* last) { this->last = last; };

@@ -20,7 +20,9 @@ public:
 	void addRoad(QTEntity* qtEntity);
 	void remove(QTEntityBuild* qtEntity);
 	void removeRoad(Road* road); // Suppresion des connectors...
+	void removeRoadLight(Road* road);
 
+	void linkRoad(Road* r1, Road* r2, bool isLastR1, bool isLastR2);
 	void linkRoadGuess(Road* r1, Road* connector);
 	void linkRoadNext(Road* r1, Road* connector); // Road Connector
 	void linkRoadLast(Road* r1, Road* connector);
@@ -32,6 +34,13 @@ public:
 
 	void linkRoadCopyNext(Road* source, Road* dest);
 	void linkRoadCopyLast(Road* source, Road* dest);
+
+	// Unlink
+	void unlinkWCleaning(Road* road, Road* connected);
+	void cleanNearConnector(std::set<Road*>& alreadyDone, Road* connected);
+	void moveAfterCleaning(Road* road, Road* removed);
+	void unlinkRoad(Road* r1, Road* r2);
+	bool unlinkRoad1(Road* r1, Road* r2);
 
 	// Connexitude
 	int computeRoadIndex(std::map<float, Road*> myRoad);

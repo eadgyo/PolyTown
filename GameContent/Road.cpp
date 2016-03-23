@@ -301,3 +301,19 @@ void Road::addAllEntities(std::vector<QTEntity*> entities)
 		addEntity(entities[i]);
 	}
 }
+
+bool Road::removeConnectedRoad(Road* road)
+{
+	if (last == road)
+	{
+		last = NULL;
+		return true;
+	}
+	if (next == road)
+	{
+		next = NULL;
+		return false;
+	}
+	// Probleme ?
+	std::cout << "No road found";
+}

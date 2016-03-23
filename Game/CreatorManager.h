@@ -84,19 +84,24 @@ public:
 	void removeRoad(Road* road);
 	void remove(QTEntityBuild* qtEntity);
 
-	// Handle 
+	// Handle 	
+	// Pour détecter les types
 	void handleAllStart(CRoadStruct& cRoadStruct, Road* startR);
 	void handleAllEnd(CRoadStruct& cRoadStruct, Road* endR);
 	void handleAllMid(CRoadStruct& cRoadStruct, std::map<float, Road*>& myRoad, const Vector3D& start, const Vector3D& director, float width, float theta);
 	Road* createConnectorFromMap(Road* actualRoad, Road* roadi, std::map<float, Road*>& myRoad, const Vector3D& start, const Vector3D& director, float width, float theta);
 
 	// Add road functions
+	// Pour la création de la route finale
 	void handleStartDivision(Road* actualRoad, Road* colliding, Road* connector);
 	void handleEndDivision(Road* actualRoad, Road* colliding, Road* connector);
 	void handleDoubleDivision(Road* actualRoad, Road* colliding, Road* connector);
 	Road* divide(Road* actual, std::map<float, Road*>& myRoad, float scalar,
 		const Vector3D& start, const Vector3D& director, float width, float width2, float thetat);
 	
+
+
+
 	// IsMakableRoadSnapp function
 	bool moveStart(Road* road, const Vector3D& director, float width, Vector3D end, CRoadStruct& cRoadStruct);
 	bool moveEnd(Road* road, const Vector3D& director, float width, Vector3D start, CRoadStruct& cRoadStruct);
@@ -108,6 +113,11 @@ public:
 	bool setTypeStartColliding(Road* roadi, myRectangle& coll, CRoadStruct& cRoadStruct);
 	bool setTypeEndColliding(Road* roadi, myRectangle& coll, CRoadStruct& cRoadStruct);
 	bool setTypeMidColliding(Road* roadi, float scalarStartR, float scalarEndR, const Vector3D normalDirector, CRoadStruct& cRoadStruct);
+
+	// Gestion des connecteurs
+	int alreadyIn(Road* road, std::vector<Road*>& roads);
+	void alreadyInAndDelete(Connector* connector, std::vector<Road*>& roads);
+	//void addIfPossible(Road* road, Road* co, std::vector<Road*>& roads);
 
 	bool getRoadColliding(Form form, std::vector<Road*>& roads);
 	bool getIsCollidingEntity(Road* road);

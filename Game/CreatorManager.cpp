@@ -673,6 +673,7 @@ bool CreatorManager::setTypeStartColliding(Road* roadi, myRectangle& coll, CRoad
 	bool isLinkingStart1 = l_startColl.isColliding(coll);
 	bool isLinkingStart2 = l_endColl.isColliding(coll);
 	
+	Connector* cast = dynamic_cast<Connector*>(roadi);
 
 	if (isLinkingStart1 && isLinkingStart2)
 	{
@@ -680,15 +681,23 @@ bool CreatorManager::setTypeStartColliding(Road* roadi, myRectangle& coll, CRoad
 		float distStart = (l_startColl.getCenter() - coll.getCenter()).getMagnitude();
 		float distEnd = (l_endColl.getCenter() - coll.getCenter()).getMagnitude();
 
+		
 		if (distStart < distEnd)
 		{
-			// ----
-			// Pour le moment
-			// ----
-			if (roadi->getIsConnector() || roadi->getLast() != NULL)
-				return false;
-
-			cRoadStruct.startRoads1.push_back(roadi);
+			if (cast != NULL)
+			{
+				alreadyInAndDelete(cast, cRoadStruct.startRoads1);
+				cRoadStruct.startRoads1.push_back(roadi);
+			}
+			if (roadi->getLast() != NULL)
+			{
+				if(alreadyIn(roadi->getLast(), cRoadStruct.startRoads1) != -1)
+					cRoadStruct.startRoads1.push_back(roadi);
+			}
+			else
+			{
+				cRoadStruct.startRoads1.push_back(roadi);
+			}
 		}
 		else
 		{
@@ -818,6 +827,33 @@ bool CreatorManager::setTypeMidColliding(Road* roadi, float scalarStartR, float 
 	return true;
 }
 
+
+int CreatorManager::alreadyIn(Road * road, std::vector<Road*>& roads)
+{
+	for (unsigned i = 0; i < roads.size(); i++)
+	{
+		if (road == roads[i])
+			return i;
+	}
+	return -1;
+}
+
+void CreatorManager::alreadyInAndDelete(Connector * connector, std::vector<Road*>& roads)
+{
+	// C'est un connecteur
+	// On verifie juste qu'un autre n'est pas présent
+	for (unsigned i1 = 0; i1 < connector->sizeConnectedRoad(); i1++)
+	{
+		for (unsigned i2 = 0; i2 < roads.size(); i2++)
+		{
+			if (connector->getConnectedRoad(i1) == roads[i2])
+			{
+				roads.erase(roads.begin() + i2);
+				i2--;
+			}
+		}
+	}
+}
 
 bool CreatorManager::getRoadColliding(Form form, std::vector<Road*>& roads)
 {

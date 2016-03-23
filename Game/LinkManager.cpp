@@ -356,21 +356,21 @@ void LinkManager::removeRoad(Road * road)
 		// C'est juste une route
 		if (road->getLast() != NULL)
 		{
-			unlinkRoad(road, road->getLast());
 			unlinkWCleaning(road, road->getLast());
+			unlinkRoad(road, road->getLast());
 		}
 		if (road->getNext() != NULL)
 		{
-			unlinkRoad(road, road->getNext());
 			unlinkWCleaning(road, road->getNext());
+			unlinkRoad(road, road->getNext());
 		}
 	}
 	else
 	{
 		for (unsigned i = 0; i < cast->sizeConnectedRoad(); i++)
 		{
-			unlinkRoad(cast, cast->getConnectedRoad(i));
 			unlinkWCleaning(cast, cast->getConnectedRoad(i));
+			unlinkRoad(cast, cast->getConnectedRoad(i));
 		}
 	}
 }

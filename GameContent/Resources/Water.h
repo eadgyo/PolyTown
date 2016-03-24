@@ -10,6 +10,9 @@ public:
     Water();
     Water(p_uint water_needs);
 
+    // ----- GETTER ----- //
+    bool hasWater() const;
+
 protected:
     p_uint m_water_needs;
     WaterTower* m_water_tower;

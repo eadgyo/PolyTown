@@ -10,6 +10,9 @@ class Shop final : public virtual Factory, public virtual Energy
 public:
     Shop(int x, int y);
 
+    // ----- GETTER ----- //
+    bool isWorking() const;
+
 private:
 
 };

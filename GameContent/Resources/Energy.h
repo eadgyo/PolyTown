@@ -10,6 +10,9 @@ public:
     Energy();
     Energy(p_uint energy_needs);
 
+    // ----- GETTER ----- //
+    bool hasEnergy() const;
+
 protected:
     p_uint m_energy_needs;
     PowerPlant* m_power_plant;

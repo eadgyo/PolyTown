@@ -8,3 +8,9 @@ Farm::Farm(int x, int y) :
 {
     setName(FARM_NAME);
 }
+
+// ----- GETTER ----- //
+bool Farm::isWorking() const
+{
+    return (m_water_tower != NULL);
+}

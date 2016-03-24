@@ -8,3 +8,9 @@ Manufactory::Manufactory(int x, int y) :
 {
     setName(MANUFACTORY_NAME);
 }
+
+// ----- GETTER ----- //
+bool Manufactory::isWorking() const
+{
+    return (m_power_plant != NULL && m_water_tower != NULL);
+}

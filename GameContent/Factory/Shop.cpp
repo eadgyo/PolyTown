@@ -7,3 +7,9 @@ Shop::Shop(int x, int y) :
 {
     setName(SHOP_NAME);
 }
+
+// ----- GETTER ----- //
+bool Shop::isWorking() const
+{
+    return (m_power_plant != NULL);
+}

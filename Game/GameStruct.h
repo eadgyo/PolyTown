@@ -27,13 +27,19 @@ class GameStruct
 public:
     GameStruct() :
         time(0),
+        
         score_dd(0),
         score_soc(0),
         score_eco(0),
         score_env(0),
+        
         money(START_MONEY_AMOUNT),
         inhabitants(0),
-        workers(0)
+        workers(0),
+
+        unemployment(0),
+        taxation_inhab(START_TAXATION_INHAB),
+        taxation_work(START_TAXATION_WORK)
     {
     }
 
@@ -44,12 +50,11 @@ public:
         std::cout << score_eco << ' ';
         std::cout << score_env << std::endl;*/
 
-        std::cout << "H : " << inhabitants << " ";
-        std::cout << "W : " << workers << " ";
-        std::cout << "U% : " << unemployment << " ";
-        std::cout << "M : " << money << " ";
-        std::cout << "T : " << time << std::endl;
-        std::cout << getDate() << std::endl;
+        std::cout << getDate() << " : ";
+        std::cout << "H = " << inhabitants << " ";
+        std::cout << "W = " << workers << " ";
+        std::cout << "U% = " << unemployment << " ";
+        std::cout << "M = " << money << " " << std::endl;
     }
 
     std::string getDate() const
@@ -57,13 +62,20 @@ public:
         std::string date = "";
         unsigned int t = time;
         
-        date += std::to_string(2016 + t / (360 * 1000 / GAME_SPEED));
+        date += std::to_string(2016 + GAME_SPEED * t / (360 * 1000));
         t = t % (360 * 1000 / GAME_SPEED);
-        date += '/';
-        date += std::to_string(1 + t /(30 * 1000 / GAME_SPEED));
+        std::string months = std::to_string(1 + GAME_SPEED * t / (30 * 1000));
         t = t % (30 * 1000 / GAME_SPEED);
-        date += '/';
-        date += std::to_string(1 + t / (1000 / GAME_SPEED));
+        if (months.size() == 1) {
+            months = '0' + months;
+        }
+        date = months + '/' + date;
+        std::string days = std::to_string(1 + GAME_SPEED * t / 1000);
+        if (days.size() == 1) {
+            days = '0' + days;
+        }
+        date = days + '/' + date;
+
         return date;
     }
 
@@ -85,6 +97,8 @@ public:
 
     // Ratio
     float unemployment;
+    float taxation_inhab;
+    float taxation_work;
 
     // Compteur des structures alimentées
     unsigned int struct_counter[5] = {0}; // Housing | Social | Manufactory | Energy | Water

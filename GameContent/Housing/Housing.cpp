@@ -41,16 +41,6 @@ bool Housing::hasFood() const
     return m_hasFood;
 }
 
-bool Housing::hasWater() const
-{
-    return (m_water_tower != NULL);
-}
-
-bool Housing::hasEnergy() const
-{
-    return (m_power_plant != NULL);
-}
-
 // ----- SETTER ----- //
 
 p_uint Housing::addInhabitants(p_uint n)

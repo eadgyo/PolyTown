@@ -11,6 +11,9 @@ class Manufactory final : public virtual Factory, public virtual Energy, public 
 public:
     Manufactory(int x, int y);
 
+    // ----- GETTER ----- //
+    bool isWorking() const;
+
 private:
 
 };

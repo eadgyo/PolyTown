@@ -2,13 +2,6 @@
 
 #define NULL 0
 
-namespace Constant
-{
-    // ----- Screen ----- //
-    const unsigned int SCREEN_WIDTH = 800;
-    const unsigned int SCREEN_HEIGHT = 600;
-}
-
 // ----- Typedef ----- //
 typedef unsigned int p_uint;
 
@@ -32,9 +25,12 @@ typedef unsigned int p_uint;
 #define GAME_SPEED 6 // Days per second
 #define UPDATE_TIME 3 // Days
 #define START_MONEY_AMOUNT 10000
+#define START_TAXATION_INHAB 0.2f
+#define START_TAXATION_WORK 0.2f
 
 // Housing
 #define HOUSING_FOOD_NEEDS 10
+#define HOUSING_INCOME 1000
 
 #define HOUSE_IMAGE_NAME "link_sprites.png"
 #define HOUSE_IMAGE_COLS 10
@@ -171,6 +167,6 @@ typedef unsigned int p_uint;
 #define FARM_NAME "Exploitation agricole"
 
 #define FARM_MAX_WORKERS 5
-#define FARM_INCOME_RATE 0
+#define FARM_INCOME_RATE 1000
 #define FARM_ENERGY_NEEDS 0
 #define FARM_OUTPUT_RATE 0

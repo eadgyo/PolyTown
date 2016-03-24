@@ -17,8 +17,6 @@ public:
 
     bool isFull() const;
     bool hasFood() const;
-    bool hasWater() const;
-    bool hasEnergy() const;
 
     // ----- SETTER ----- //
     p_uint addInhabitants(p_uint n);

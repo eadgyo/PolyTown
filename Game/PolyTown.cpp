@@ -69,8 +69,6 @@ void PolyTown::mainLoop()
             update_m->update(dt);
             //gs->housing.at(0)->addInhabitants(1);
             //gs->housing[0]->delInhabitants(1);
-
-            gs->factory[0]->addWorkers(1);
         }
 
         // CREATOR MANAGER
@@ -169,7 +167,8 @@ void PolyTown::startGame()
 
     gs->housing.push_back(StructFactory::newHouse(10, 10));
     gs->housing.push_back(StructFactory::newHouse(100, 100));
-    gs->housing[0]->addInhabitants(10);
+    gs->housing[0]->addInhabitants(5);
 
     gs->factory.push_back(StructFactory::newFarm(0, 0));
+    gs->factory[0]->addWorkers(3);
 }

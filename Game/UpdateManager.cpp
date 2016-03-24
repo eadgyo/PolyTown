@@ -34,8 +34,8 @@ void UpdateManager::setGameStruct(GameStruct* game_struct)
 // ----- UPDATE ----- //
 void UpdateManager::update(unsigned int dt)
 {
-    updateFast(dt);
     updateSlow(dt);
+    updateFast(dt);
     updateTime(dt);
 }
 
@@ -43,8 +43,8 @@ void UpdateManager::updateFast(unsigned int dt)
 {
     static unsigned int time = 0;
     time += dt;
-    if (time > 1000 / GAME_SPEED) {
-        time -= 1000 / GAME_SPEED;
+    if (time > 1000 * UPDATE_TIME / GAME_SPEED) {
+        time -= 1000 * UPDATE_TIME / GAME_SPEED;
         gs->display();
         updateInhabitants();
         updateWorkers();
@@ -56,8 +56,8 @@ void UpdateManager::updateSlow(unsigned int dt)
 {
     static unsigned int time = 0;
     time += dt;
-    if (time > 10 * 1000 / GAME_SPEED) {
-        time -= 10 * 1000 / GAME_SPEED;
+    if (time > 10 * 1000 * UPDATE_TIME / GAME_SPEED) {
+        time -= 10 * 1000 * UPDATE_TIME / GAME_SPEED;
         updateMoney();
     }
 }
@@ -113,5 +113,15 @@ void UpdateManager::updateUnemployment()
 
 void UpdateManager::updateMoney()
 {
-    gs->money += 0;
+    p_uint money = gs->inhabitants * HOUSING_INCOME * gs->taxation_inhab;
+
+    p_uint tva = 0;
+    for (unsigned i = 0; i < gs->factory.size(); i++) {
+        if (gs->factory[i]->isWorking()) {
+            tva += gs->factory[i]->getIncome();
+        }
+    }
+    money += tva * gs->taxation_work;
+
+    gs->money += money;
 }

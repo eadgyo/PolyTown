@@ -11,6 +11,8 @@ public:
     p_uint getWorkers() const;
     p_uint getIncome() const;
 
+    virtual bool isWorking() const = 0;
+
     // ----- SETTER ----- //
     p_uint addWorkers(p_uint n);
     p_uint delWorkers(p_uint n);

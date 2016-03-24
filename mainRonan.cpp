@@ -13,80 +13,31 @@
 
 int main(int argc, char* args[])
 {
-	
-	/*FileManager& fileM = FileManager::getInstance();
-	
-	// Création du module de gestion rendu openGL
-	SDL_GLContext context = SDL_GL_CreateContext(g->init("Affichage forme", WIDTH, HEIGHT));
-	g->initGL(context, WIDTH, HEIGHT);
-	
+	/*
+	Test Forme
+	*/
 	Form form;
-	form.addPoint(Vector3D(10, 10));
-	form.addPoint(Vector3D(70, 5));
-	form.addPoint(Vector3D(200, 30));
-	//form.addPoint(Vector3D(100, 70));
-	form.addPoint(Vector3D(150, 140));
-	form.addPoint(Vector3D(10, 100));
-
 	Form form1;
-	form1.addPoint(Vector3D(10, 10));
-	form1.addPoint(Vector3D(70, 60));
-	//form1.addPoint(Vector3D(200, 30));
-	//form1.addPoint(Vector3D(100, 70));
-	form1.addPoint(Vector3D(150, 140));
-	form1.addPoint(Vector3D(10, 100));
-	form1.translateX(60);
+	form.addPoint(Vector3D(574, 53));
+	form.addPoint(Vector3D(430, 42));
+	form.addPoint(Vector3D(288, 99));
+	form.addPoint(Vector3D(215, 249));
+	form.addPoint(Vector3D(497, 364));
+	form.rotateDegrees(30.0f, Vector3D(15, 30));
+	form.scaleF(2.0f, Vector3D(55, 3));
 
-	bool result = form.collisionSatFree(form1, Vector3D(true), Vector3D(true));
-	std::cout << result << "\n";
+	form.getOrientation().display();
 
-	form.triangulate();
-	glColor4f(1.0, 0, 0, 0.0);
-	std::vector<Form> forms = form.getConvexForms();
-	g->drawLines(form);
-	g->drawLines(form1);
+	form1.addPoint(Vector3D(390, 232));
+	form1.addPoint(Vector3D(168, 121));
+	form1.addPoint(Vector3D(52, 253));
+	form1.addPoint(Vector3D(134, 466));
+	form1.rotateDegrees(5.0f, Vector3D(-15, 30));
 
-	g->swapGL();
-	SDL_Delay(2000);
-	/*
-	Image image;
-	image.initialize(g, 250, 250, 2, "a.png");
-	image.setCurrentFrame(3);
-	//image.flipH(Vector3D(true));
-	image.scale(1.0f, Vector3D(true));
-	image.setPositionX(500);
-	image.setPositionY(500);
+	Vector3D push(0, 0);
+	float t = 0;
+	bool isA = form1.collisionSatA(form, Vector3D(0, 0), Vector3D(0, 0), push, t);
 	
-	image.draw();
-	g->render(image);
-	glColor4f(1.0, 0, 0, 0.0);
-	g->drawLines(form);
-	g->swapGL();
-
-	SDL_Delay(2000);
-	
-	image.setCurrentFrame(1);
-	image.draw();
-	glColor4f(1.0, 0, 0, 0.0);
-	g->drawLines(form);
-	g->swapGL();
-	SDL_Delay(2000);
-	*/
-
-	// Libère les éléments
-	/*
-	SDL_GL_DeleteContext(context);
-	SDL_Quit();*/
-
-	// Création de la fenetre
-	/*HUD hud;
-	hud.initialize("Test", 800, 600);
-	hud.render();
-	*/
-	PolyTown game;
-	game.init();
-	game.mainLoop();
-	SDL_Delay(2000);
 
     return 0;
 }

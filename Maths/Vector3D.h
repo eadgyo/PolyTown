@@ -33,6 +33,7 @@ public:
 	Vector3D(float, float);
 	Vector3D(float, float, float);
 	Vector3D(float, float, float, bool);
+	Vector3D(float, float, float, float);
 
 	static Vector3D sub(const Vector3D&, const Vector3D&);
 
@@ -59,7 +60,7 @@ public:
 	inline float getZ() const { return coor[2]; };
 	inline float getW() const { return coor[3]; };
 	inline const float* getCoor() const { return coor; };
-	inline Vector3D getPerpendicular2D() const { return Vector3D(-y(), x(), 0, true); };
+	inline Vector3D getPerpendicular2D() const { return Vector3D(-y(), x(), 0, w()); };
 	Vector3D getProjection2D(const Vector3D& vec, const Vector3D& p) const;
 	bool computeIntersection2D(const Vector3D& v1, const Vector3D& v2, const Vector3D& p1, const Vector3D& p2);
 

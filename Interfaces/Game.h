@@ -1,7 +1,8 @@
 #pragma once
 #include "Interface.h"
 #include "../Layers/BottomLayer.h"
-
+#include "../Game/GameStruct.h"
+#include "../Game/CreatorManager.h"
 class Game :
 	public Interface
 {
@@ -20,6 +21,10 @@ public:
 protected:
 	BottomLayer bottomLayer;
 
+	/*Test Début*/
+	GameStruct gameStruct;
+	CreatorManager creatorManager;
+	/* Test fin*/
 };
 
 

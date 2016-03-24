@@ -186,9 +186,11 @@ void Matrix4::setTranspose(const Matrix4& m4)
 void Matrix4::setOrientation(const Quaternion& q5)
 {
 	float n = q5.getMagnitude();
-	if(std::abs(n) < 0.000001f)
+	if (std::abs(n) < 0.000001f)
+	{
 		setIdentity();
 		return;
+	}
 
 	Quaternion q = q5*((float) sqrt(1.0f/n));
 	float i2 = q.i*q.i;
@@ -247,7 +249,7 @@ void Matrix4::setOrientation(float omega, float scale, bool flipH, bool flipV, c
 }
 void Matrix4::setOrientation(float omega, float scale, bool flipH, bool flipV)
 {
-	Quaternion qZ(Vector3D(true), omega);
+	Quaternion qZ(Vector3D(0, 0, 1, false), omega);
 	setOrientation(qZ, scale);
 	if(flipH)
 		flipX();
@@ -403,13 +405,17 @@ void Matrix4::rotateRadiansZFree(float omega, const Vector3D& center)
 	Vector3D pos = getPos();
 	Matrix4 rotation = createRotateZ(omega);
 	rotation.setPos(center);
+	// Ne pas oublier de faire d'abord une translation
+	pos -= center;
+	pos.setW(1.0f);
 	setPos(rotation*pos);
 }
 void Matrix4::scale(float factor, const Vector3D& center)
 {
 	Matrix4 l_scale = createIdentity(factor);
 	l_scale.setPos(center);
-	(*this) *= l_scale;
+	translate(-center);
+	(*this) = l_scale*(*this);
 }
 void Matrix4::scale(float factor)
 {
@@ -420,28 +426,32 @@ void Matrix4::flipX(const Vector3D& center)
 	Matrix4 l_flipH = createIdentity();
 	l_flipH.get(0, 0) = -1.0f;
 	l_flipH.setPos(center);
-	(*this) *= l_flipH;
+	translate(-center);
+	(*this) = l_flipH*(*this);
 }
 void Matrix4::flipY(const Vector3D& center)
 {
 	Matrix4 l_flipV = createIdentity();
 	l_flipV.get(1, 1) = -1.0f;
 	l_flipV.setPos(center);
-	(*this) *= l_flipV;
+	translate(-center);
+	(*this) = l_flipV*(*this);
 }
 void Matrix4::flipZ(const Vector3D& center)
 {
 	Matrix4 l_flipZ = createIdentity();
 	l_flipZ.get(2, 2) = -1.0f;
 	l_flipZ.setPos(center);
-	(*this) *= l_flipZ;
+	translate(-center);
+	(*this) = l_flipZ*(*this);
 }
 void Matrix4::flipW(const Vector3D& center)
 {
 	Matrix4 l_flipW = createIdentity();
 	l_flipW.get(3, 3) = -1.0f;
 	l_flipW.setPos(center);
-	(*this) *= l_flipW;
+	translate(-center);
+	(*this) = l_flipW*(*this);
 }
 
 //====================================================
@@ -478,7 +488,7 @@ Matrix4 Matrix4::createRotateY(float theta)
 Matrix4 Matrix4::createRotateZ(float theta)
 {
 	float tab[] = { (float) cos(theta), (float) -sin(theta), 0, 0,
-					(float)sin(theta), (float) cos(theta), 0, 0,
+					(float) sin(theta), (float) cos(theta), 0, 0,
 					0, 0, 1.0f, 0,
 					0, 0, 0, 1.0f};
 	return Matrix4(tab);
@@ -500,10 +510,10 @@ Matrix4 Matrix4::createRotate(const Vector3D& v, float theta)
 
 Vector3D Matrix4::getPos() const
 {
-	return Vector3D(m[3], m[7], m[11], m[15] == 0);
+	return Vector3D(m[3], m[7], m[11], m[15] != 0);
 }
 
-void Matrix4::display()
+void Matrix4::display() const
 {
 	for(int i=0; i<LINE; i++)
 	{

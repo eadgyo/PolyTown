@@ -103,7 +103,7 @@ public:
 	static Matrix4 createRotateZ(float theta);
 	static Matrix4 createRotate(const Vector3D& v, float theta);
 
-	void display();
+	void display() const;
 
 private:
 	float m[SIZE_M];

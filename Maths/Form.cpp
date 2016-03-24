@@ -341,6 +341,7 @@ std::vector<Vector3D> Form::getVectorsSatLocal() const
 	for(unsigned j=points.size()-1, i=0; i<points.size(); j=i, i++)
 	{
 		Vector3D v = Vector3D::sub(points.at(j), points.at(i));
+		v.setW(0); // C'est un vecteur
 		l_vectors.push_back(v.getPerpendicular2D());
 	}
 
@@ -371,6 +372,7 @@ Vector3D* Form::getVectorsLocal() const
 	for(unsigned j=size()-1, i=0; i<size(); j=i, i++)
 	{
 		new (l_vectors + i) Vector3D(Vector3D::sub(points.at(j), points.at(i)));
+		l_vectors[i].setW(0);
 	}
 	return l_vectors;
 }
@@ -391,6 +393,17 @@ Vector3D* Form::getPointsLocal() const
 	for(unsigned i=0; i<size(); i++)
 	{
 		new (l_vectors + i) Vector3D(getLocal(i));
+	}
+	return l_vectors;
+}
+
+Vector3D* Form::getPointsLocalAsVec() const
+{
+	Vector3D* l_vectors = new Vector3D[size()];
+	for (unsigned i = 0; i<size(); i++)
+	{
+		new (l_vectors + i) Vector3D(getLocal(i));
+		l_vectors[i].setW(0);
 	}
 	return l_vectors;
 }
@@ -630,7 +643,7 @@ bool Form::isColliding(Form & form)
 	return collisionSat(form);
 }
 
-bool Form::isColliding(Form & form, const Vector3D & push, float & t)
+bool Form::isColliding(Form & form, Vector3D & push, float & t)
 {
 	// push représente la direction normalisée dans laquelle il faut pousser
 	// t est la norme de push
@@ -659,7 +672,7 @@ bool Form::collisionSat(Form& form)
 }
 
 bool Form::collisionSat(Form& form, const Vector3D& VA,
-		const Vector3D& VB, const Vector3D& push, float& t)
+		const Vector3D& VB, Vector3D& push, float& t)
 {
 	if(convexForms.size() == 0)
 		updateConvexForms();
@@ -698,8 +711,8 @@ bool Form::collisionSatFree(const Form& B, const Vector3D& VA,
 	Vector3D relPos = OBi*(PA-PB);
 	Vector3D relVel = OBi*(VA-VB);
 
-	Vector3D* pointsA = getPointsLocal();
-	Vector3D* pointsB = B.getPointsLocal();
+	Vector3D* pointsA = getPointsLocalAsVec();
+	Vector3D* pointsB = B.getPointsLocalAsVec();
 
 	std::vector<Vector3D> axisA = getVectorsSatLocal();
 	std::vector<Vector3D> axisB = B.getVectorsSatLocal();
@@ -762,7 +775,7 @@ bool Form::intervalIntersectionFree(const Vector3D& axis,
 }
 
 bool Form::collisionSatA(const Form& B, const Vector3D& VA, const Vector3D& VB,
-		const Vector3D& push, float& t) const
+		Vector3D& push, float& t) const
 {
 	// Les vecteurs VA et VB sont exprimés dans le repère world
 	// Les points PA et PB sont exprimés dans le repères world
@@ -781,8 +794,8 @@ bool Form::collisionSatA(const Form& B, const Vector3D& VA, const Vector3D& VB,
 	Vector3D relPos = OBi*(PA-PB);
 	Vector3D relVel = OBi*(VA-VB);
 
-	Vector3D* pointsA = getPointsLocal();
-	Vector3D* pointsB = B.getPointsLocal();
+	Vector3D* pointsA = getPointsLocalAsVec();
+	Vector3D* pointsB = B.getPointsLocalAsVec();
 
 	std::vector<Vector3D> axisA = getVectorsSatLocal();
 	std::vector<Vector3D> axisB = B.getVectorsSatLocal();
@@ -823,6 +836,15 @@ bool Form::collisionSatA(const Form& B, const Vector3D& VA, const Vector3D& VB,
 			return false;
 		}
 	}
+	
+
+	getPushVector(axesSat, push, t);
+
+	//On s'assurre que les objets s'Ã©loignent l'un de l'autre
+	if (relPos * push< 0)
+		push *= -1;
+
+	push.set(OB*push);
 	delete[] pointsA; delete[] pointsB;
 	return true;
 }
@@ -838,7 +860,7 @@ bool Form::intervalIntersection(const Vector3D& axis, const Vector3D* pointsA,
 	float h = relPos*axis;
 	minMaxA.addX(h);
 	minMaxA.addY(h);
-
+	
 	// On calcule les distances pour determiner le chevauchement
 	float d0 = minMaxA.x() - minMaxB.y();
 	float d1 = minMaxB.x() - minMaxA.y();
@@ -890,7 +912,7 @@ Vector3D Form::getInterval(const Vector3D& axis, const Vector3D* points, unsigne
 	return minMax;
 }
 
-void Form::getPushVector(AxesSat& axesSat, Vector3D& push, float& t)
+void Form::getPushVector(AxesSat& axesSat, Vector3D& push, float& t) const
 {
 	t = 0;
 	bool found = false;

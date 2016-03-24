@@ -48,6 +48,13 @@ Vector3D::Vector3D(float x, float y, float z, bool isPoint)
 	else
 		coor[3] = 0;
 }
+Vector3D::Vector3D(float x, float y, float z, float w)
+{
+	coor[0] = x;
+	coor[1] = y;
+	coor[2] = z;
+	coor[3] = w;
+}
 
 
 Vector3D Vector3D::copy() const

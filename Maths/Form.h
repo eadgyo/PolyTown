@@ -75,6 +75,7 @@ public:
 	Vector3D* getVectorsLocal() const;
 	Vector3D* getVectorsWorld() const;
 	Vector3D* getPointsLocal() const;
+	Vector3D* getPointsLocalAsVec() const;
 	Vector3D* getPointsWorld() const;
 	Vector3D transform(const Vector3D& vertex, const Vector3D& p, const Vector3D& v, const Matrix4& orientation, float& t) const;
 	Vector3D handleEdgePoint(const Vector3D& PA, const Vector3D& PB, const Vector3D& PB2) const;
@@ -112,24 +113,24 @@ public:
 
 	// Collisions detection
 	bool isColliding(Form& form);
-	bool isColliding(Form& form, const Vector3D& push, float& t);
+	bool isColliding(Form& form, Vector3D& push, float& t);
 
 	// Pas à utiliser directement
 	bool collisionSat(Form& form);
 	bool collisionSat(Form& form, const Vector3D& VA,
-			const Vector3D& VB, const Vector3D& push, float& t);
+			const Vector3D& VB, Vector3D& push, float& t);
 	bool collisionSatFree(const Form& B, const Vector3D& VA, const Vector3D& VB);
 	bool intervalIntersectionFree(const Vector3D& axis, const Vector3D* pointsA, unsigned sizeA,
 			const Vector3D* pointsB, unsigned sizeB, const Vector3D& relPos, const Vector3D& relVel, const Matrix4& orientI) const;
 
-	bool collisionSatA(const Form& B, const Vector3D& VA, const Vector3D& VB, const Vector3D& push, float& t) const;
+	bool collisionSatA(const Form& B, const Vector3D& VA, const Vector3D& VB, Vector3D& push, float& t) const;
 
 	bool intervalIntersection(const Vector3D& axis, const Vector3D* pointsA, unsigned sizeA,
 			const Vector3D* pointsB, unsigned sizeB, const Vector3D& relPos, const Vector3D& relVel, const Matrix4& orientI,
 			AxesSat& axes, float& t) const;
 
 	Vector3D getInterval(const Vector3D& axis, const Vector3D* points, unsigned size) const;
-	void getPushVector(AxesSat& axesSat, Vector3D& push, float& t);
+	void getPushVector(AxesSat& axesSat, Vector3D& push, float& t) const;
 
 	std::vector<Form> splitUnsecured(int p0, int p1, std::vector< std::set<int> >& bst, std::vector<std::vector<int> >& vectPos, int actual);
 	

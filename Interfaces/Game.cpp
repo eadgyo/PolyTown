@@ -2,6 +2,10 @@
 
 Game::Game(Graphics* g) : Interface(g), bottomLayer(g)
 {
+	/* 
+	Test Début
+	*/
+	
 }
 
 Game::~Game()

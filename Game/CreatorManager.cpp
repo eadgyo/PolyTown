@@ -486,8 +486,8 @@ Connector* CreatorManager::createConnector(Road* r1, bool isLast)
 	Connector* connector = new Connector(center, width, width);
 
 	// On raccourcit les deux routes
-	Vector3D director1 = r1->getDirectorVec() * (isLast ? -1 : 1);
-	Vector3D director2 = r2->getDirectorVec() * (isLastR2 ? -1 : 1);
+	Vector3D director1 = r1->getDirectorVec() * (isLast ? -1.0f : 1.0f);
+	Vector3D director2 = r2->getDirectorVec() * (isLastR2 ? -1.0f : 1.0f);
 	Vector3D center1 = r1->getCenter();
 	Vector3D center2 = r2->getCenter();
 	float scalar1 = getMaxOfMin(center1, director1, *(connector->getForm()));

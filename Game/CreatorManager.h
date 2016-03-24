@@ -125,8 +125,6 @@ public:
 
 			return roads;
 		}
-
-
 	};
 
 	CreatorManager();
@@ -191,6 +189,7 @@ public:
 
 	void getColliding(QTEntity* qtEntity, std::vector<QTEntity*>& colliding);
 	void getColliding(QTEntity* qtEntity, std::vector<QTEntity*>& colliding, Vector3D& push);
+	void getCollidingStop(QTEntity* qtEntity, std::vector<QTEntity*>& colliding, Vector3D& push);
 	QTEntity* getCollidingPushMax(QTEntity* qtEntity, std::vector<QTEntity*>& colliding, Vector3D& push, float& t_max);
 
 	float getMaxOfMin(const Vector3D& center, const Vector3D& director, const Form& form);

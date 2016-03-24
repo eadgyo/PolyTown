@@ -163,8 +163,13 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 			Vector3D l_push;
 
 			// On calcule le vecteur de poussée avec la nouvelle rotation
-			getColliding(qtEntity, colliding, l_push);
-			qtEntity->translate(l_push);
+			unsigned i = 0;
+			do
+			{
+				getCollidingStop(qtEntity, colliding, l_push);
+				qtEntity->translate(l_push);
+				i++;
+			} while (colliding.size() != 0 && i < 4);
 
 			// On reteste la collision
 			colliding.clear();
@@ -183,7 +188,7 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 		{
 			qtEntity->translate(push);
 			colliding.clear();
-			getColliding(qtEntity, colliding, push);
+			getCollidingStop(qtEntity, colliding, push);
 		}
 		if (colliding.size() != 0 || (qtEntity->getCenter() - pos).getMagnitude() > DISTANCE_MAX_SNAPP)
 		{
@@ -236,6 +241,28 @@ void CreatorManager::getColliding(QTEntity* qtEntity, std::vector<QTEntity*>& co
 	}
 }
 
+void CreatorManager::getCollidingStop(QTEntity* qtEntity, std::vector<QTEntity*>& colliding, Vector3D& push)
+{
+	push.set(0, 0, 0, 0);
+	assert(qtEntity->getForm() != NULL);
+	std::vector<QTEntity*> possibleCollisions;
+	gameStruct->QTCollision.retrieve(qtEntity->getBounds(), possibleCollisions);
+	for (unsigned i = 0; i < possibleCollisions.size(); i++)
+	{
+		Vector3D l_push(0, 0, 0, false);
+		float t = 0;
+		if (qtEntity->getForm()->isColliding(*(possibleCollisions[i]->getForm()), l_push, t))
+		{
+			// Collision directe entre les deux formes
+			colliding.push_back(possibleCollisions[i]);
+
+			// On ajoute le vecteur de poussé au vecteur globale
+			push += l_push*t;
+			return;
+		}
+	}
+}
+
 QTEntity* CreatorManager::getCollidingPushMax(QTEntity* qtEntity, std::vector<QTEntity*>& colliding, Vector3D& push, float& t_max)
 {
 	push.set(0, 0, 0, 0);
@@ -254,14 +281,12 @@ QTEntity* CreatorManager::getCollidingPushMax(QTEntity* qtEntity, std::vector<QT
 			// Collision directe entre les deux formes
 			colliding.push_back(possibleCollisions[i]);
 
-			// On ajoute le vecteur de poussé au vecteur globale
-			push += l_push*t;
-
 			// On cherche l'entité avec la force de poussée max
 			if (t > t_max)
 			{
 				t_max = t;
 				maxColliding = possibleCollisions[i];
+				push.set(l_push*t);
 			}
 		}
 	}

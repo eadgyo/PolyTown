@@ -17,7 +17,11 @@ public:
     void setGameStruct(GameStruct* game_struct);
 
     // ----- UPDATE ----- //
-    void update();
+    void update(unsigned int dt);
+    void updateFast(unsigned int dt);
+    void updateSlow(unsigned int dt);
+    void updateTime(unsigned int dt);
+
     void updateScoreDD();
     void updateScoreSoc();
     void updateScoreEco();

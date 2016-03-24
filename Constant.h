@@ -16,8 +16,7 @@ typedef unsigned int p_uint;
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 
-#define FPS 2
-#define TIME_ERROR 50
+#define FPS 20
 
 // ----- Keyboard ----- //
 #define NUMBER_OF_KEYS 2
@@ -30,7 +29,8 @@ typedef unsigned int p_uint;
 // Sprites
 
 // Game
-#define GAME_SPEED 6 // Day per second
+#define GAME_SPEED 6 // Days per second
+#define UPDATE_TIME 3 // Days
 #define START_MONEY_AMOUNT 10000
 
 // Housing

@@ -19,12 +19,14 @@
 #include "../Quadtree/QTEntity.h"
 #include "../Quadtree/QuadTree.h"
 
-#include <iomanip>
+#include <iostream>
+#include <string>
 
 class GameStruct
 {
 public:
     GameStruct() :
+        time(0),
         score_dd(0),
         score_soc(0),
         score_eco(0),
@@ -44,8 +46,29 @@ public:
 
         std::cout << "H : " << inhabitants << " ";
         std::cout << "W : " << workers << " ";
-        std::cout << "U% : " << unemployment << std::endl;
+        std::cout << "U% : " << unemployment << " ";
+        std::cout << "M : " << money << " ";
+        std::cout << "T : " << time << std::endl;
+        std::cout << getDate() << std::endl;
     }
+
+    std::string getDate() const
+    {
+        std::string date = "";
+        unsigned int t = time;
+        
+        date += std::to_string(2016 + t / (360 * 1000 / GAME_SPEED));
+        t = t % (360 * 1000 / GAME_SPEED);
+        date += '/';
+        date += std::to_string(1 + t /(30 * 1000 / GAME_SPEED));
+        t = t % (30 * 1000 / GAME_SPEED);
+        date += '/';
+        date += std::to_string(1 + t / (1000 / GAME_SPEED));
+        return date;
+    }
+
+    // Time
+    unsigned int time;
 
     // Scores
     p_uint score_dd;

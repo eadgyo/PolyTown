@@ -66,8 +66,7 @@ void PolyTown::mainLoop()
 
         // UPDATE MANAGER
         if (gs) {
-            update_m->update();
-            gs->display();
+            update_m->update(dt);
             //gs->housing.at(0)->addInhabitants(1);
             //gs->housing[0]->delInhabitants(1);
 
@@ -165,6 +164,8 @@ void PolyTown::startGame()
     gs = new GameStruct();
     //creator_m = new CreatorManager();
     update_m = new UpdateManager(gs);
+
+    gs->money = START_MONEY_AMOUNT;
 
     gs->housing.push_back(StructFactory::newHouse(10, 10));
     gs->housing.push_back(StructFactory::newHouse(100, 100));

@@ -32,11 +32,39 @@ void UpdateManager::setGameStruct(GameStruct* game_struct)
 }
 
 // ----- UPDATE ----- //
-void UpdateManager::update()
+void UpdateManager::update(unsigned int dt)
 {
-    updateInhabitants();
-    updateWorkers();
-    updateUnemployment();
+    updateFast(dt);
+    updateSlow(dt);
+    updateTime(dt);
+}
+
+void UpdateManager::updateFast(unsigned int dt)
+{
+    static unsigned int time = 0;
+    time += dt;
+    if (time > 1000 / GAME_SPEED) {
+        time -= 1000 / GAME_SPEED;
+        gs->display();
+        updateInhabitants();
+        updateWorkers();
+        updateUnemployment();
+    }
+}
+
+void UpdateManager::updateSlow(unsigned int dt)
+{
+    static unsigned int time = 0;
+    time += dt;
+    if (time > 10 * 1000 / GAME_SPEED) {
+        time -= 10 * 1000 / GAME_SPEED;
+        updateMoney();
+    }
+}
+
+void UpdateManager::updateTime(unsigned int dt)
+{
+    gs->time += dt;
 }
 
 void UpdateManager::updateScoreDD()

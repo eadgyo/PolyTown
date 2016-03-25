@@ -3,18 +3,7 @@
 
 #include "../Graphics/Graphics.h"
 
-#include "../GameContent/Housing/House.h"
-#include "../GameContent/Housing/Building.h"
-
-#include "../GameContent/SocialBuilding/SocialBuilding.h"
-#include "../GameContent/SocialBuilding/FireStation.h"
-
-#include "../GameContent/Resources/PowerPlant.h"
-#include "../GameContent/Resources/WaterTower.h"
-
-#include "../GameContent/Factory/Farm.h"
-#include "../GameContent/Factory/Shop.h"
-#include "../GameContent/Factory/Manufactory.h"
+#include "GameContent.h"
 
 class StructFactory
 {
@@ -41,6 +30,10 @@ public:
     static Farm* newFarm(int x, int y);
     static Shop* newShop(int x, int y);
     static Manufactory* newManufactory(int x, int y);
+
+    // Pollution
+    static WaterPollution* newWaterPollution();
+    static AirPollution* newAirPollution();
 
 private:
     StructFactory();

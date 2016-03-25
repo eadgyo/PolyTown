@@ -2,6 +2,8 @@
 #define RESOURCES_H
 
 #include "../../Constant.h"
+#include "../GameContentConstant.h"
+
 #include "../Quadtree/QTEntity.h"
 
 #include <vector>
@@ -12,7 +14,6 @@ public:
 
 protected:
     Resources();
-
 
     std::vector<QTEntity*> m_connected; // Connected
 };

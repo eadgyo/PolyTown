@@ -38,18 +38,40 @@ QTEntity::QTEntity(const Circle& circle)
 	form = new Circle(circle);
     m_name = "";
 }
+QTEntity::QTEntity(const QTEntity& qtEntity)
+{
+	// Il faut déterminer le type
+	myRectangle* castmyRectangle = qtEntity.castMyRectangle();
+	sRectangle* castsRectangle = qtEntity.castSRectangle();
+	Circle* castsCircle = qtEntity.castCircle();
+	if (castmyRectangle != NULL)
+	{
+		form = new myRectangle(*(castmyRectangle));
+	}
+	else if (castsRectangle != NULL)
+	{
+		form = new sRectangle(*(castsRectangle));
+	}
+	else if (castsCircle != NULL)
+	{
+		form = new Circle(*(castsCircle));
+	}
+	
+	m_name = qtEntity.getName();
+}
 
 QTEntity::~QTEntity()
 {
 	if (form)
 	{
 		delete form;
+		form = NULL;
 	}
 }
 
 void QTEntity::initRectangle(const Vector3D& center, float width, float height)
 {
-	if (form)
+	if (!form)
 	{
 		form = new myRectangle(center, width, height);
 	}
@@ -174,15 +196,15 @@ float QTEntity::getAngle2D() const
 	return director.getAngle2D(Vector3D(1, 0, 0, false));
 }
 
-sRectangle *QTEntity::castSRectangle()
+sRectangle *QTEntity::castSRectangle() const
 {
 	return dynamic_cast<sRectangle*>(form);
 }
-myRectangle *QTEntity::castMyRectangle()
+myRectangle *QTEntity::castMyRectangle() const
 {
 	return dynamic_cast<myRectangle*>(form);
 }
-Circle *QTEntity::castCircle()
+Circle *QTEntity::castCircle() const
 {
 	return dynamic_cast<Circle*>(form);
 }

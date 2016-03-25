@@ -14,6 +14,7 @@ public:
 	QTEntity(const Vector3D& center, float width, float height);
 	QTEntity(const Vector3D& center, float width, float height, float theta);
 	QTEntity(const Vector3D& center, float radius);
+	QTEntity(const QTEntity& qtEntity);
 	virtual ~QTEntity();
 
 	
@@ -26,13 +27,13 @@ public:
 	
 	inline sRectangle getBounds() const { return form->getBound(); };
 	inline sRectangle getBoundsMax() const { return form->getBoundMax(); };
-	inline Form* getForm() { return form; };
-	inline Vector3D getCenter() { assert(form != NULL);  return form->getCenter(); };
-	
+	inline Form* getForm() const { return form; };
+	inline Vector3D getCenter() const { assert(form != NULL);  return form->getCenter(); };
+	inline std::string getName() const { return m_name; };
 
-	sRectangle* castSRectangle();
-	myRectangle* castMyRectangle();
-	Circle* castCircle();
+	sRectangle* castSRectangle() const;
+	myRectangle* castMyRectangle() const;
+	Circle* castCircle() const;
 	const sRectangle* castSRectangleConst() const;
 	const myRectangle* castMyRectangleConst() const;
 	const Circle* castCircleConst() const;

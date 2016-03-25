@@ -219,13 +219,14 @@ void Vector3D::set(float a, float b, float c, float w)
 Vector3D Vector3D::operator-() const
 {
 	Vector3D vec;
-	for(int i=0; i<SIZE_V; i++)
+	for(int i=0; i<SIZE_V-1; i++)
 		vec[i] = -coor[i];
+	vec[SIZE_V - 1] = 0;
 	return vec;
 }
 void Vector3D::operator+=(Vector3D const& v)
 {
-	for(int i=0; i<SIZE_V; i++)
+	for(int i=0; i<SIZE_V-1; i++)
 	{
 		coor[i] += v.get(i);
 	}
@@ -233,15 +234,16 @@ void Vector3D::operator+=(Vector3D const& v)
 Vector3D Vector3D::operator+(Vector3D const& v) const
 {
 	Vector3D vec;
-	for(int i=0; i<SIZE_V; i++)
+	for(int i=0; i<SIZE_V-1; i++)
 	{
 		vec[i] = coor[i] + v.get(i);
 	}
+	vec[SIZE_V - 1] = 1.0f;
 	return vec;
 }
 void Vector3D::operator-=(Vector3D const& v)
 {
-	for(int i=0; i<SIZE_V; i++)
+	for(int i=0; i<SIZE_V - 1; i++)
 	{
 		coor[i] -= v.get(i);
 	}
@@ -249,10 +251,11 @@ void Vector3D::operator-=(Vector3D const& v)
 Vector3D Vector3D::operator-(Vector3D const& v) const
 {
 	Vector3D vec;
-	for(int i=0; i<SIZE_V; i++)
+	for(int i=0; i<SIZE_V - 1; i++)
 	{
 		vec[i] = coor[i] - v.get(i);
 	}
+	vec[SIZE_V - 1] = 0;
 	return vec;
 }
 float Vector3D::operator*(Vector3D const& v) const
@@ -267,10 +270,11 @@ float Vector3D::operator*(Vector3D const& v) const
 Vector3D Vector3D::operator*(float const& f) const
 {
 	Vector3D vec;
-	for(int i=0; i<3; i++)
+	for(int i=0; i<SIZE_V - 1; i++)
 	{
 		vec[i] = coor[i]*f;
 	}
+	vec[SIZE_V - 1] = coor[SIZE_V - 1];
 	return vec;
 }
 Vector3D Vector3D::operator*(Matrix4 const& m4) const
@@ -292,10 +296,11 @@ void Vector3D::operator*=(Matrix4 const& m4)
 Vector3D Vector3D::operator/(float const& f) const
 {
 	Vector3D vec;
-	for(int i=0; i<3; i++)
+	for(int i=0; i<SIZE_V - 1; i++)
 	{
 		vec[i] = coor[i]/f;
 	}
+	vec[SIZE_V - 1] = coor[SIZE_V - 1];
 	return vec;
 }
 void Vector3D::operator/=(float const& f)

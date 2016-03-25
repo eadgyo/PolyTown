@@ -11,6 +11,7 @@ public:
 	inline Circle clone() { return Circle((*this)); };
 	void set(const Circle& circle);
 	void set(const Vector3D& center, float radius);
+	void set(float radius);
 	inline float getRadius() const { return radius; };
 
 	inline virtual unsigned getType() { return 1; };

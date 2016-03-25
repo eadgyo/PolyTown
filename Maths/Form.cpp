@@ -53,7 +53,7 @@ Form::Form(const Form& form)
 	points.reserve(form.size());
 	for(unsigned i=0; i<form.size(); i++)
 	{
-		points.push_back(form.get(i).copy());
+		points.push_back(form.getLocal(i));
 	}
 
 	omega = form.getOmega();

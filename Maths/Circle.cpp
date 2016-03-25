@@ -33,6 +33,11 @@ void Circle::set(const Vector3D& center, float radius)
 	this->radius = radius;
 }
 
+void Circle::set(float radius)
+{
+	this->radius = radius;
+}
+
 
 void Circle::scaleF(float factor, Vector3D center)
 {

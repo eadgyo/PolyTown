@@ -80,6 +80,8 @@ void myRectangle::set(const Form& form)
 {
 	assert(form.size() == 4);
 
+	clearTransformations();
+
 	for(int i=0; i<4; i++)
 		points[i].set(form.getLocal(i));
 

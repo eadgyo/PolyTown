@@ -4,7 +4,7 @@
 #include "Factory.h"
 
 #include "../Resources/Water.h"
-#include "../Pollution/PollutionArea.h"
+#include "../Pollution/WaterPollution.h"
 
 class Farm final : public virtual Factory, public virtual Water
 {
@@ -14,9 +14,14 @@ public:
     // ----- GETTER ----- //
     bool isWorking() const;
 
+    // ----- SETTER ----- //
+    void init(WaterPollution* water_pollution);
+    void update();
+
 private:
     p_uint m_output_rate;
 
+    WaterPollution* m_water_pollution;
 };
 
 #endif // FARM_H

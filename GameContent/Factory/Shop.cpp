@@ -13,3 +13,8 @@ bool Shop::isWorking() const
 {
     return (m_power_plant != NULL);
 }
+
+// ----- SETTER ----- //
+void Shop::update()
+{
+}

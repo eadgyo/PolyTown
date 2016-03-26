@@ -9,14 +9,17 @@ Matrix4::Matrix4(const float* m4)
 }
 Matrix4::Matrix4(const Quaternion& q)
 {
+	setIdentity();
 	setOrientation(q);
 }
 Matrix4::Matrix4(const Quaternion& q, const Vector3D& v)
 {
+	setIdentity();
 	setOrientation(q, v);
 }
 Matrix4::Matrix4(const Quaternion& q, const Vector3D& v, float factor)
 {
+	setIdentity();
 	setOrientation(q, v, factor);
 }
 

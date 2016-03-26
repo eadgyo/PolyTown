@@ -14,7 +14,9 @@ public:
 	Road();
 	Road(const Vector3D& center, float width, float height);
 	Road(const Vector3D& center, float width, float height, float theta);
+	Road(const Road& road);
 	~Road() {};
+
 	static Road create2points(const Vector3D& A, const Vector3D& B, float width);
 	static Road* create2pointsP(const Vector3D& A, const Vector3D& B, float width);
 	static Road createLeft(const Vector3D& left, float width, float height);
@@ -41,8 +43,8 @@ public:
 	std::vector<QTEntity*> getEntConnectedVec() const;
 	inline unsigned sizeEnt() const { return entConnected.size(); };
 	QTEntity* getEnt(unsigned n) const;
-	virtual inline Road* getLast() { return last; };
-	virtual inline Road* getNext() { return next; };
+	virtual inline Road* getLast() const { return last; };
+	virtual inline Road* getNext() const { return next; };
 	inline int getConnexitude() const { return connex; };
 
 
@@ -62,7 +64,7 @@ public:
 	virtual inline void setNext(Road* next) { this->next = next; };
 	virtual inline void setLast(Road* last) { this->last = last; };
 
-	bool getIsConnector() { return isConnector; };
+	bool getIsConnector() const { return isConnector; };
 
 protected:
 	Road* next = NULL;

@@ -9,7 +9,13 @@ public:
 	{
 		isConnector = true;
 	};
-
+	Connector(const Connector& connector) : Road(connector)
+	{
+		for (unsigned i = 0; i < connector.sizeConnectedRoad(); i++)
+		{
+			connectedRoads.push_back(connector.getConnectedRoad(i));
+		}
+	}
 	Connector(const Vector3D& center, float width, float height) : Road(center, width, height)
 	{
 		isConnector = true;
@@ -23,8 +29,8 @@ public:
 
 	};
 
-	inline Road* getNext() { assert(false); return NULL; };
-	inline Road* getLast() { assert(false); return NULL; };
+	inline Road* getNext() const { assert(false); return NULL; };
+	inline Road* getLast() const { assert(false); return NULL; };
 	inline void setLast(Road* last) { assert(false); }; // Mauvaise utilisation
 	inline void setNext(Road* next) { assert(false); }; // Mauvaise utilisation
 
@@ -32,11 +38,11 @@ public:
 	{
 		connectedRoads.push_back(road);
 	};
-	inline unsigned sizeConnectedRoad()
+	inline unsigned sizeConnectedRoad() const
 	{
 		return connectedRoads.size();
 	};
-	inline Road* getConnectedRoad(unsigned i)
+	inline Road* getConnectedRoad(unsigned i) const
 	{
 		return connectedRoads[i];
 	};

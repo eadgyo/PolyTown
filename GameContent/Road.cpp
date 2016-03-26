@@ -2,18 +2,33 @@
 
 Road::Road()
 {
+	form = NULL;
 	connex = -1;
 	initRectangle();
 }
 
+Road::Road(const Road& road) : QTEntity(road)
+{
+	next = road.getNext();
+	last = road.getLast();
+	connex = road.getConnexitude();
+	isConnector = road.getIsConnector();
+	for (unsigned i = 0; i < road.sizeEnt(); i++)
+	{
+		entConnected.insert(road.getEnt(i));
+	}
+}
+
 Road::Road(const Vector3D& center, float width, float height)
 {
+	form = NULL;
 	connex = -1;
 	initRectangle(center, width, height);
 }
 
 Road::Road(const Vector3D& center, float width, float height, float theta)
 {
+	form = NULL;
 	connex = -1;
 	initRectangle(center, width, height, theta);
 }

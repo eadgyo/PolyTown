@@ -111,7 +111,7 @@ void QTEntity::set2points(const Vector3D& A, const Vector3D& B, float width, flo
 	// On récupère le milieu des deux points
 	Vector3D center = (A + B)*0.5f;
 	Vector3D vec = (B - A).getNormalize();
-	float theta = vec.getAngle2D(Vector3D(1, 0, 0, false));
+	float theta = Vector3D(0, 1, 0, false).getAngle2D(vec);
 	set(center, width, height, theta);
 }
 

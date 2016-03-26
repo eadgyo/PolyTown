@@ -10,7 +10,9 @@ public:
 
 	virtual ~Bouton();
 
+	void setColor(myColor color);
 	void setColor(float r, float g, float b, float a);
+	myColor getColor();
 
 	virtual void update(float dt);
 	virtual void render(Graphics* g);
@@ -21,7 +23,7 @@ public:
 	bool isColliding(const Vector3D& pos);
 
 protected:
-	float r, g, b, a;
+	myColor color;
 	sRectangle rectangle;
 	Graphics* graphics = NULL;
 };

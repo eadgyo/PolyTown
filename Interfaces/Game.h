@@ -1,6 +1,6 @@
 #pragma once
 #include "Interface.h"
-#include "../Layers/BottomLayer.h"
+#include "../Layers/LeftLayer.h"
 #include "../Game/GameStruct.h"
 #include "../Game/CreatorManager.h"
 class Game :
@@ -19,11 +19,16 @@ public:
 	HudNs::HudEvent handleEvent(Input& input);
 
 protected:
-	BottomLayer bottomLayer;
+	LeftLayer leftLayer;
 
 	/*Test Début*/
 	GameStruct gameStruct;
 	CreatorManager creatorManager;
+	LinkManager linkManager;
+	int a = -1;
+	Vector3D a1;
+	Vector3D a2;
+	Road road;
 	/* Test fin*/
 };
 

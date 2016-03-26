@@ -4,10 +4,10 @@
 #include "../GameElements/BoutonImage.h"
 #include "../GameElements/BoutonText.h"
 
-class BottomLayer : public Layer
+class LeftLayer : public Layer
 {
 public:
-	BottomLayer(Graphics* g);
+	LeftLayer(Graphics* g);
 	void initialize(float x, float y, int width, int height);
 	void initialize(int width, int height) { initialize(0, 0, width, height); };
 	void reset();
@@ -17,6 +17,10 @@ public:
 	void update(float dt);
 	LayerNs::LayerEvent handleEvent(Input& input);
 
+	inline int getState() { return state; };
+	inline int getStateInt() { return stateIn; };
 private:
 	std::vector<Bouton*> boutons;
+	int state;
+	int stateIn;
 };

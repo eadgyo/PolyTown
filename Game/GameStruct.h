@@ -79,6 +79,21 @@ public:
         return date;
     }
 
+	void initialize(float width, float height)
+	{
+		sRectangle rec(width*0.5f, height*0.5f, width, height);
+		QTCollision.setRect(rec);
+		QTWaterGen.setRect(rec);
+		QTWaterRes.setRect(rec);
+		QTElecGen.setRect(rec);
+		QTElecRes.setRect(rec);
+		QTRoads.setRect(rec);
+		QTHabitations.setRect(rec);
+		QTPollutionWater.setRect(rec);
+		QTPollutionAir.setRect(rec);
+	}
+	
+
     // Time
     unsigned int time;
 

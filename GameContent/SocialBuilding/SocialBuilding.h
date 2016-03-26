@@ -2,6 +2,7 @@
 #define SOCIAL_BUILDING_H
 
 #include "../../Constant.h"
+#include "../GameContentConstant.h"
 
 #include "../Quadtree/QTEntity.h"
 

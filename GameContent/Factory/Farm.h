@@ -4,6 +4,7 @@
 #include "Factory.h"
 
 #include "../Resources/Water.h"
+#include "../Pollution/PollutionArea.h"
 
 class Farm final : public virtual Factory, public virtual Water
 {
@@ -15,6 +16,7 @@ public:
 
 private:
     p_uint m_output_rate;
+
 };
 
 #endif // FARM_H

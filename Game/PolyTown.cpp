@@ -160,7 +160,7 @@ void PolyTown::startGame()
     cout << "Game started" << endl;
 
     gs = new GameStruct();
-    //creator_m = new CreatorManager();
+    creator_m = new CreatorManager();
     update_m = new UpdateManager(gs);
 
     gs->money = START_MONEY_AMOUNT;

@@ -1,6 +1,8 @@
 #ifndef HOUSING_H
 #define HOUSING_H
 
+#include "../GameContentConstant.h"
+
 #include "../Quadtree/QTEntity.h"
 
 #include "../Resources/Energy.h"

@@ -12,7 +12,7 @@ class Game :
 {
 
 public:
-	Game(Graphics* g);
+	Game(Graphics* g, GameStruct* gs);
 	~Game();
 
 	void initialize(int width, int height);
@@ -32,7 +32,7 @@ protected:
 	TimeLayer timeLayer;
 
 	/* Test Début */
-	GameStruct gs;
+	GameStruct* gs;
 	CreatorManager creatorManager;
 	LinkManager linkManager;
 

@@ -32,7 +32,8 @@ void LeftLayer::initialize(int x, int y, int width, int height, GameStruct* gs)
 		imageB->setColor(color1[i], color2[i], color3[i]);
 		imageB->initialize(graphics, 128, 128, 0, "LeftLayer.png");
 		imageB->setSize(SIZE_CIRCLE_LL);
-		Bouton *bouton = new Bouton2Images(graphics, image, imageB, posX, posY, SIZE_CIRCLE_LL, SIZE_CIRCLE_LL, false);
+		Bouton *bouton = new Bouton2Images(graphics, image, imageB, posX, posY,
+			SIZE_CIRCLE_LL, SIZE_CIRCLE_LL, false);
 		posY += addY;
 		boutons.push_back(bouton);
 	}
@@ -56,7 +57,8 @@ void LeftLayer::initialize(int x, int y, int width, int height, GameStruct* gs)
 			Vector3D((int) (WIDTH_POPUP_LL*0.5f), STARTY_BUTTON_POPUP),
 			Vector3D(0.0f, (float) ADD_Y_POPUP_LL),
 			textsP[i], color*0.8f,
-			sizeTexts[i], 17,
+			sizeTexts[i],
+			15,
 			"test",
 			myColor(0.0f, 0.0f, 0.0f),
 			gs);

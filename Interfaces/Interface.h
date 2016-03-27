@@ -5,7 +5,7 @@ class Interface;
 #include "../HUD/HudEvent.h"
 #include "../HUD/Input.h"
 #include "../Graphics/GraphicsObject.h"
-
+#include "../Game/GameStruct.h"
 
 class Interface : public GraphicsObject
 {

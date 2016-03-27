@@ -22,6 +22,10 @@ PolyTown::PolyTown() : running(false), g(new Graphics), gs(NULL)
 
 bool PolyTown::init(string name, int width, int height)
 {
+	gs = new GameStruct();
+	creator_m = new CreatorManager();
+	update_m = new UpdateManager(gs);
+
     // Création de la fenetre
     g->init(name, width, height);
     g->initGL(width, height);
@@ -30,7 +34,7 @@ bool PolyTown::init(string name, int width, int height)
     // Menu principal
     interfaces.push_back(new StartMenu(g));
     // Menu InGame
-    interfaces.push_back(new Game(g));
+    interfaces.push_back(new Game(g, gs));
     // Menu Pause
 
     //interfaces.push_back(new NewGame());
@@ -65,7 +69,7 @@ void PolyTown::mainLoop()
         // LINK MANAGER
 
         // UPDATE MANAGER
-        if (gs) {
+        if (gs->isReady) {
             update_m->update(dt);
             //gs->housing.at(0)->addInhabitants(1);
             //gs->housing[0]->delInhabitants(1);
@@ -159,11 +163,7 @@ void PolyTown::startGame()
 {
     cout << "Game started" << endl;
 
-    gs = new GameStruct();
-    creator_m = new CreatorManager();
-    update_m = new UpdateManager(gs);
-
-    gs->money = START_MONEY_AMOUNT;
+	gs->money = START_MONEY_AMOUNT;
 
     gs->housing.push_back(StructFactory::newHouse(10, 10));
     gs->housing.push_back(StructFactory::newHouse(100, 100));
@@ -171,4 +171,6 @@ void PolyTown::startGame()
 
     gs->factory.push_back(StructFactory::newFarm(0, 0));
     gs->factory[0]->addWorkers(3);
+
+	gs->isReady = true;
 }

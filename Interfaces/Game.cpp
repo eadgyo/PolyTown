@@ -1,12 +1,10 @@
 #include "Game.h"
 
-Game::Game(Graphics* g) : Interface(g), leftLayer(g), mapLayer(g)
+Game::Game(Graphics* g) : Interface(g), leftLayer(g), mapLayer(g), scoresLayer(g), mapRecLayer(g), timeLayer(g)
 {
 	/* 
 	Test Début
 	*/
-	a = -1;
-
 }
 
 Game::~Game()
@@ -15,10 +13,24 @@ Game::~Game()
 
 void Game::initialize(int width, int height)
 {
-	leftLayer.initialize(0, 0, (int) (width*0.1f), (int) (height*0.9f));
-	mapLayer.initialize(0, 0, width, height, width, height, 6000, 4000);
-	creatorManager.initialize(&gameStruct, &linkManager);
-	gameStruct.initialize((float) width, (float) height);
+	leftLayer.initialize(0, (height*0.05f), (int) (width*0.1f), (int) (height*0.9f), &gs);
+	mapLayer.initialize(0, 0, width, height, &gs);
+	creatorManager.initialize(&gs, &linkManager);
+	gs.initialize((float) width, (float) height);
+	mapRecLayer.initialize(
+		(int)(POS_X_FACTOR_REC_MAP*width),
+		(int)(POS_Y_FACTOR_REC_MAP*height),
+		width,
+		height,
+		6000,
+		4000,
+		(int)(width*SIZE_FACTOR_REC_MAP),
+		0.9f,
+		&gs);
+	scoresLayer.initialize((int)(0.83f*width), 0, (int)(0.17f*width), 35, "test",
+		20, myColor(1.0f, 1.0f, 1.0f), myColor(0.4f, 0.4f, 0.4f, 0.6f), &gs);
+	timeLayer.initialize((int)(0.5f*width - 35), 0, (int)(0.08f*width), 35, "test",
+		20, myColor(1.0f, 1.0f, 1.0f), myColor(0.4f, 0.4f, 0.4f, 0.6f), &gs);
 }
 
 void Game::reset()
@@ -32,12 +44,11 @@ void Game::resize(int width, int height)
 void Game::render(Graphics * g)
 {
 	std::vector<QTEntity*> entity;
-	
-	g->setColor(1.0f, 0.0f, 0.0f, 1.0f);
-	g->render((*road.getForm()));
-	
-	leftLayer.render(g);
+	timeLayer.render(g);
 	mapLayer.render(g);
+	leftLayer.render(g);
+	mapRecLayer.render(g);
+	scoresLayer.render(g);
 
 
 }
@@ -50,45 +61,26 @@ HudNs::HudEvent Game::update(float dt)
 HudNs::HudEvent Game::handleEvent(Input & input)
 {
 	Vector3D mouse = input.getMousePos();
-	if (a == 0)
+
+	if (input.getMousePressed(1))
 	{
-		//std::cout << "Ok";
-		a1.set(mouse);
-		a2.set(mouse);
+		leftLayer.reset();
 	}
-	else if (a == 1)
-	{
-		a2.set(mouse);
-	}
-	road.set2points(a1, a2, 50);
-	//std::cout << "a1";
-	//a1.display();
 
 	if (leftLayer.isColliding(mouse))
 	{
 		leftLayer.handleEvent(input, Vector3D(false));
 	}
+	else if (mapRecLayer.isColliding(mouse))
+	{
+		mapRecLayer.handleEvent(input, Vector3D(false));
+	}
 	else if (mapLayer.isColliding(mouse))
 	{
 		mapLayer.handleEvent(input, Vector3D(false));
 	}
-	else if (input.getMousePressed(0) && leftLayer.getState() == 0)
-	{
-		if (leftLayer.getState() == 0)
-		{
-			a++;
-			if (a == 1)
-			{
-				a1.set(mouse);
-			}
-			if (a == 2)
-			{
-				a2.set(mouse);
-				road.set2points(a1, a2, 50);
-				
-			}
-		}
-	}
+
+	
 
 	return HudNs::HudEvent();
 }

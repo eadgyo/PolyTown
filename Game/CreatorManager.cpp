@@ -7,16 +7,16 @@
 
 CreatorManager::CreatorManager()
 {
-	gameStruct = NULL;
+	gs = NULL;
 }
 
 CreatorManager::~CreatorManager()
 {
 }
 
-void CreatorManager::initialize(GameStruct * gameStruct, LinkManager* linkManager)
+void CreatorManager::initialize(GameStruct * gs, LinkManager* linkManager)
 {
-	this->gameStruct = gameStruct;
+	this->gs = gs;
 	this->linkManager = linkManager;
 }
 
@@ -150,7 +150,7 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 	// Le cercle est transformé en rectangle pour supporter le QuadTree
 	// Pourquoi un cercle et pas un simple rectangle getBound ?
 	// On va faire des rotations, donc il faut être sur qu'on a tous les objets possiblement en collision
-	gameStruct->QTCollision.retrieve(qtEntity->getBoundsMax(), colliding);
+	gs->QTCollision.retrieve(qtEntity->getBoundsMax(), colliding);
 
 	// Parmis tous les objets en collision, on cherche l'élément qui est le plus en collision
 	QTEntity* nearEntity = getCollidingPushMax(qtEntity, colliding, push, t);
@@ -208,7 +208,7 @@ void CreatorManager::getColliding(QTEntity* qtEntity, std::vector<QTEntity*>& co
 	// Mauvaise initialisation de qtEntity
 	assert(qtEntity->getForm() != NULL);
 	std::vector<QTEntity*> possibleCollisions;
-	gameStruct->QTCollision.retrieve(qtEntity->getBounds(), possibleCollisions);
+	gs->QTCollision.retrieve(qtEntity->getBounds(), possibleCollisions);
 
 	for (unsigned i = 0; i < possibleCollisions.size(); i++)
 	{
@@ -225,7 +225,7 @@ void CreatorManager::getColliding(QTEntity* qtEntity, std::vector<QTEntity*>& co
 	push.set(0, 0, 0, 0);
 	assert(qtEntity->getForm() != NULL);
 	std::vector<QTEntity*> possibleCollisions;
-	gameStruct->QTCollision.retrieve(qtEntity->getBounds(), possibleCollisions);
+	gs->QTCollision.retrieve(qtEntity->getBounds(), possibleCollisions);
 	for (unsigned i = 0; i < possibleCollisions.size(); i++)
 	{
 		Vector3D l_push(0,0,0,false);
@@ -246,7 +246,7 @@ void CreatorManager::getCollidingStop(QTEntity* qtEntity, std::vector<QTEntity*>
 	push.set(0, 0, 0, 0);
 	assert(qtEntity->getForm() != NULL);
 	std::vector<QTEntity*> possibleCollisions;
-	gameStruct->QTCollision.retrieve(qtEntity->getBounds(), possibleCollisions);
+	gs->QTCollision.retrieve(qtEntity->getBounds(), possibleCollisions);
 	for (unsigned i = 0; i < possibleCollisions.size(); i++)
 	{
 		Vector3D l_push(0, 0, 0, false);
@@ -268,7 +268,7 @@ QTEntity* CreatorManager::getCollidingPushMax(QTEntity* qtEntity, std::vector<QT
 	push.set(0, 0, 0, 0);
 	assert(qtEntity->getForm() != NULL);
 	std::vector<QTEntity*> possibleCollisions;
-	gameStruct->QTCollision.retrieve(qtEntity->getBounds(), possibleCollisions);
+	gs->QTCollision.retrieve(qtEntity->getBounds(), possibleCollisions);
 	
 	QTEntity* maxColliding = NULL;
 	t_max = FLT_MIN;
@@ -1082,7 +1082,7 @@ void CreatorManager::alreadyInAndDelete(Connector * connector, std::vector<Road*
 bool CreatorManager::getRoadColliding(Form form, std::vector<Road*>& roads)
 {
 	std::vector<QTEntity*> entities;
-	gameStruct->QTRoads.retrieve(form.getBound(), entities);
+	gs->QTRoads.retrieve(form.getBound(), entities);
 
 	// On convertit les entités en Road
 
@@ -1104,7 +1104,7 @@ bool CreatorManager::getIsCollidingEntity(Road* road)
 		return false;
 	std::vector<QTEntity*> entities;
 
-	gameStruct->QTCollision.retrieve(road->getBounds(), entities);
+	gs->QTCollision.retrieve(road->getBounds(), entities);
 
 	for (unsigned i = 0; i < entities.size(); i++)
 	{

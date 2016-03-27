@@ -558,7 +558,7 @@ void Graphics::setColor(float r, float g, float b)
 
 void Graphics::setColor(myColor color)
 {
-	glColor4f(color.r, color.g, color.g, color.a);
+	glColor4f(color.r, color.g, color.b, color.a);
 }
 
 void Graphics::setColor(float r, float g, float b, float a)

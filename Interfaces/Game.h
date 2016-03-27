@@ -4,6 +4,8 @@
 #include "../Game/GameStruct.h"
 #include "../Game/CreatorManager.h"
 #include "../Layers/MapLayer.h"
+#include "../Layers/scoresLayer.h"
+#include "../Layers/TimeLayer.h"
 
 class Game :
 	public Interface
@@ -21,20 +23,25 @@ public:
 	HudNs::HudEvent handleEvent(Input& input);
 
 protected:
+
+	/* Layers */
 	LeftLayer leftLayer;
 	MapLayer mapLayer;
+	ScoresLayer scoresLayer;
+	MapRecLayer mapRecLayer;
+	TimeLayer timeLayer;
 
-	/*Test Début*/
-	GameStruct gameStruct;
+	/* Test Début */
+	GameStruct gs;
 	CreatorManager creatorManager;
 	LinkManager linkManager;
-	int a = -1;
-	Vector3D a1;
-	Vector3D a2;
-	Road road;
 
 
-	/* Test fin*/
+
+	/* Constantes */
+	const float SIZE_FACTOR_REC_MAP = 0.15f;
+	const float POS_X_FACTOR_REC_MAP = 0.98f - SIZE_FACTOR_REC_MAP;
+	const float POS_Y_FACTOR_REC_MAP = 0.95f - SIZE_FACTOR_REC_MAP;
 };
 
 

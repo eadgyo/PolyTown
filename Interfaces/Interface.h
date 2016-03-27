@@ -13,7 +13,8 @@ public:
 	Interface(Graphics* g) : graphics(g) { isInitialized = false; };
 	Interface(Graphics* g, int, int) : graphics(g) { isInitialized = false; };
 
-	// Détection des collisions 
+	// Détection des collisions
+	virtual void initialize(int width, int height) = 0;
 	HudNs::HudEvent virtual update(float dt) = 0;
 	HudNs::HudEvent virtual handleEvent(Input& input) = 0;
 	Graphics *graphics;

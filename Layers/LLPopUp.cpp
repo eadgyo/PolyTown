@@ -31,9 +31,10 @@ void LLPopUp::initialize(
 	int numberOfTexts,
 	unsigned int size,
 	std::string police,
-	myColor colorText)
+	myColor colorText,
+	GameStruct* gs)
 {
-	Layer::initialize(x, y, width, height);
+	Layer::initialize(x, y, width, height, gs);
 	this->backGround = backGround;
 	round->setColor(backGround);
 	// Initialisation par bouton texte
@@ -77,7 +78,7 @@ void LLPopUp::render(Graphics* g)
 	round->setFlipH(false);
 	round->setLeftPos(Vector3D(0.0f, rec.getHeight() - height));
 	round->draw(g);
-
+	
 	// Maintenant on affiche les rectangles
 	sRectangle rec1(0.0f, height, rec.getWidth(), rec.getHeight() - 2 * height);
 	sRectangle rec2(width, 0.0f, rec.getWidth() - 2 * width, height);
@@ -114,7 +115,7 @@ LayerNs::LayerEvent LLPopUp::handleEvent(Input& input, const Vector3D& translati
 	if (input.getMousePressed(0))
 	{
 		Vector3D mousePos = input.getMousePos();
-		mousePos -= rec.getLeft();
+		mousePos -= rec.getLeft() + translation;
 		for (unsigned i = 0; i < boutons.size(); i++)
 		{
 			if (boutons[i]->isColliding(mousePos))

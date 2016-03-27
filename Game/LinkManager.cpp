@@ -8,9 +8,9 @@ LinkManager::LinkManager(GameStruct* game_struct)
 }
 
 
-void LinkManager::initialize(GameStruct * gameStruct)
+void LinkManager::initialize(GameStruct * gs)
 {
-	this->gameStruct = gameStruct;
+	this->gs = gs;
 }
 
 void LinkManager::linkRoad(Road * r1, Road * r2, bool isLastR1, bool isLastR2)
@@ -226,18 +226,18 @@ bool LinkManager::unlinkRoad1(Road * r1, Road * r2)
 // ----- SETTER ----- //
 void LinkManager::setGameStruct(GameStruct* game_struct)
 {
-    this->gameStruct = game_struct;
+    this->gs = game_struct;
 }
 
 void LinkManager::add(QTEntityBuild * qtEntity)
 {
-	gameStruct->QTCollision.insert(qtEntity);
+	gs->QTCollision.insert(qtEntity);
 }
 
 void LinkManager::addRoad(QTEntity * qtEntity)
 {
-	gameStruct->QTCollision.insert(qtEntity);
-	gameStruct->QTRoads.insert(qtEntity);
+	gs->QTCollision.insert(qtEntity);
+	gs->QTRoads.insert(qtEntity);
 }
 
 int LinkManager::computeRoadIndex(std::map<float, Road*> myRoad)
@@ -333,7 +333,7 @@ void UpdateManager::setConnexitudeOptimized(std::map<float, Road*> myRoad, int c
 
 void LinkManager::remove(QTEntityBuild * qtEntity)
 {
-	gameStruct->QTCollision.erase(qtEntity);
+	gs->QTCollision.erase(qtEntity);
 
 	// On supprime aussi les avec les routes
 
@@ -378,8 +378,8 @@ void LinkManager::removeRoad(Road * road)
 void LinkManager::removeRoadLight(Road * road)
 {
 	// Suppression dans GameStruct
-	gameStruct->QTCollision.erase(road);
-	gameStruct->QTRoads.erase(road);
+	gs->QTCollision.erase(road);
+	gs->QTRoads.erase(road);
 }
 
 
@@ -389,19 +389,19 @@ void LinkManager::removeRoadLight(Road * road)
 // Récupération de l'id connex le plus haut
 int LinkManager::getConnexitude()
 {
-	if (gameStruct->fConnexitudes.size() > 0)
+	if (gs->fConnexitudes.size() > 0)
 	{
-		int fConnex = gameStruct->fConnexitudes[gameStruct->fConnexitudes.size() - 1];
-		gameStruct->fConnexitudes.pop_back();
+		int fConnex = gs->fConnexitudes[gs->fConnexitudes.size() - 1];
+		gs->fConnexitudes.pop_back();
 		return fConnex;
 	}
 
-	return gameStruct->topConnexitude++;
+	return gs->topConnexitude++;
 }
 
 void LinkManager::freeConnexitude(int n)
 {
-	gameStruct->fConnexitudes.push_back(n);
+	gs->fConnexitudes.push_back(n);
 }
 
 void LinkManager::recalculateAfterRemove(Road * road)

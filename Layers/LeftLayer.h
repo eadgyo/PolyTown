@@ -9,7 +9,7 @@ class LeftLayer : public Layer
 {
 public:
 	LeftLayer(Graphics* g);
-	void initialize(int x, int y, int width, int height);
+	void initialize(int x, int y, int width, int height, GameStruct* gs);
 	
 	virtual bool isColliding(const Vector3D& mousePos);
 	void reset();
@@ -18,12 +18,10 @@ public:
 	void update(float dt);
 	LayerNs::LayerEvent handleEvent(Input& input, const Vector3D& translation);
 
-	inline int getState() { return state; };
-	inline int getStateInt() { return stateIn; };
+	inline int getState() { return gs->state; };
+	inline int getStateInt() { return gs->stateIn; };
 private:
 	std::vector<Bouton*> boutons;
-	int state;
-	int stateIn;
 	Image* sideI;
 
 	std::vector<LLPopUp*> popUps;
@@ -49,9 +47,9 @@ private:
 	const int SIZE_CIRCLE_LL = 64;
 	const int NUMBER_OF_TYPES_LL = 8;
 	const int STARTX_POPUP_LL = 105;
-	const int WIDTH_POPUP_LL = 326;
+	const int WIDTH_POPUP_LL = 200;
 	const int SIZE_PER_TEXT_POPUP_LL = 32;
-	const int STARTY_BUTTON_POPUP = 20;
+	const int STARTY_BUTTON_POPUP = 10;
 	const int PAD_Y_POPUP_LL = 5;
 	const int ADD_Y_POPUP_LL = PAD_Y_POPUP_LL + SIZE_PER_TEXT_POPUP_LL;
 	const float FACTOR_SIZE_BOUTON_POPUP_LL = 0.9f;

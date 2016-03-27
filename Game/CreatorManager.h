@@ -2,9 +2,9 @@
 
 #include "../Quadtree/QTEntity.h"
 #include "../HUD/Input.h"
-#include "../Layers/Layer.h"
 #include "../GameContent/Connector.h"
 #include "GameStruct.h"
+#include "../Layers/Layer.h"
 #include "../GameContent/Road.h"
 #include "LinkManager.h"
 #include "../GameContent/Road.h"
@@ -130,7 +130,7 @@ public:
 	CreatorManager();
 	~CreatorManager();
 
-	void initialize(GameStruct* gameStruct, LinkManager* linkManager);
+	void initialize(GameStruct* gs, LinkManager* linkManager);
 
 	void addRoad(Road* road);
 	void add(QTEntityBuild* qtEntity);
@@ -196,7 +196,7 @@ public:
 	float getMinOfMax(const Vector3D& center, const Vector3D& director, const Form& form);
 
 private:
-	GameStruct *gameStruct;
+	GameStruct *gs;
 	LinkManager *linkManager;
 	
 	// Nombre d'essais max pour isMakableSnapp

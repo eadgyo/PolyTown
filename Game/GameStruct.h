@@ -162,4 +162,16 @@ public:
     QTEntity* lastSelected;
     Form* possibleForm;
     bool isLastMakable;
+
+
+	// Séléction Interface
+	int state;
+	int stateIn;
+
+	// Affichage écran
+	// Taille map
+	sRectangle mapRec;
+	// Zone affichage
+	sRectangle zoneToDisplay;
+	
 };

@@ -10,7 +10,7 @@ public:
 	LinkManager();
 	LinkManager(GameStruct* game_struct);
 
-	void initialize(GameStruct* gameStruct);
+	void initialize(GameStruct* gs);
 
 	// ----- SETTER ----- //
 	void setGameStruct(GameStruct* game_struct);
@@ -52,5 +52,5 @@ public:
 	bool stillConnected(Road* start, Road* end);
 
 private:
-	GameStruct* gameStruct;
+	GameStruct* gs;
 };

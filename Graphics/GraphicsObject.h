@@ -6,7 +6,7 @@ public:
 	GraphicsObject() { isInitialized = false; };
 	GraphicsObject(int, int) { isInitialized = false; };
 	// initialisation de l'objet
-	void virtual initialize(int width, int height) = 0;
+	//void virtual initialize(int width, int height) = 0;
 	// Réinitailisation de l'objet
 	void virtual reset() {};
 	// Gestion possible du resize

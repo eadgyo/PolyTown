@@ -1,6 +1,6 @@
 #include "MapLayer.h"
 
-MapLayer::MapLayer(Graphics* g) : Layer(g), mapRecLayer(g)
+MapLayer::MapLayer(Graphics* g) : Layer(g)
 {
 }
 
@@ -8,18 +8,10 @@ MapLayer::~MapLayer()
 {
 }
 
-void MapLayer::initialize(int x, int y, int width, int height, int widthScreen, int heightScreen, int sizeMapX, int sizeMapY)
+void MapLayer::initialize(int x, int y, int width, int height, GameStruct* gs)
 {
-	Layer::initialize(x, y, width, height);
-	mapRecLayer.initialize(
-		(int)(POS_X_FACTOR_REC_MAP*width),
-		(int)(POS_Y_FACTOR_REC_MAP*height),
-		widthScreen,
-		heightScreen,
-		sizeMapX,
-		sizeMapY,
-		(int) (width*SIZE_FACTOR_REC_MAP),
-		0.9f);
+	Layer::initialize(x, y, width, height, gs);
+
 }
 
 void MapLayer::update(float dt)
@@ -28,10 +20,16 @@ void MapLayer::update(float dt)
 
 void MapLayer::render(Graphics * g)
 {
+	g->setColor(myColor(0.2f, 0.6f, 0.2f, 0.3f));
+	g->render(rec);
+
 	g->translate(rec.getLeft());
-	mapRecLayer.render(g);
+	
+	// Rendu des images
+
 	g->translate(-rec.getLeft());
 }
+
 
 LayerNs::LayerEvent MapLayer::handleEvent(Input & input, const Vector3D& translation)
 {
@@ -41,10 +39,7 @@ LayerNs::LayerEvent MapLayer::handleEvent(Input & input, const Vector3D& transla
 		Vector3D mousePos = input.getMousePos();
 		mousePos -= trans;
 
-		if (mapRecLayer.isColliding(mousePos))
-		{
-			mapRecLayer.handleEvent(input, translation);
-		}
+
 	}
 
 	return LayerNs::NOCOLLISION;

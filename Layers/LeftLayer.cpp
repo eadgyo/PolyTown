@@ -2,19 +2,22 @@
 
 LeftLayer::LeftLayer(Graphics* g) : Layer(g)
 {
-	state = -1;
-	stateIn = 1;
+
 	actualI = -1;
 }
 
-void LeftLayer::initialize(int x, int y, int width, int height)
+void LeftLayer::initialize(int x, int y, int width, int height, GameStruct* gs)
 {
-	Layer::initialize(x, y, width, height);
+	Layer::initialize(x, y, width, height, gs);
+
+	gs->state = -1;
+	gs->stateIn = 1;
+	
 	// Création des infrastructures
 	int addY = height / 8;
 	int posX = width / 2;
 	int posY = addY / 2;
-	
+
 	Vector3D left = rec.getLeft();
 
 	sideI = new Image(graphics, 128, 128, 1, "LeftLayer.png");
@@ -46,16 +49,17 @@ void LeftLayer::initialize(int x, int y, int width, int height)
 			STARTX_POPUP_LL,
 			posY,
 			WIDTH_POPUP_LL,
-			(SIZE_PER_TEXT_POPUP_LL)*(sizeTexts[i] + 1) + add,
+			(SIZE_PER_TEXT_POPUP_LL)*(sizeTexts[i] + 0.5f) + add,
 			color,
 			(int) (FACTOR_SIZE_BOUTON_POPUP_LL*WIDTH_POPUP_LL),
 			SIZE_PER_TEXT_POPUP_LL,
 			Vector3D((int) (WIDTH_POPUP_LL*0.5f), STARTY_BUTTON_POPUP),
 			Vector3D(0.0f, (float) ADD_Y_POPUP_LL),
 			textsP[i], color*0.8f,
-			sizeTexts[i], 15,
+			sizeTexts[i], 17,
 			"test",
-			myColor(0.0f, 0.0f, 0.0f));
+			myColor(0.0f, 0.0f, 0.0f),
+			gs);
 		posY += addY;
 		popUps.push_back(popUp);
 	}
@@ -81,7 +85,13 @@ bool LeftLayer::isColliding(const Vector3D & mousePos)
 
 void LeftLayer::reset()
 {
-
+	if (gs->state != -1)
+	{
+		popUps[gs->state]->setState(-1);
+	}
+	actualI = -1;
+	gs->state = -1;
+	gs->stateIn = -1;
 }
 
 void LeftLayer::resize(int width, int height)
@@ -96,7 +106,7 @@ void LeftLayer::render(Graphics * g)
 	{
 		if (actualI != i)
 		{
-			if (state != i)
+			if (gs->state != i)
 			{
 				boutons[i]->render(g);
 			}
@@ -150,15 +160,15 @@ LayerNs::LayerEvent LeftLayer::handleEvent(Input & input, const Vector3D& transl
 			LayerNs::LayerEvent res = popUps[actualI]->handleEvent(input, trans);
 			if (res % LayerNs::UPDATE_STATE)
 			{
-				if (state != -1 && state != actualI)
+				if (gs->state != -1 && gs->state != actualI)
 				{
 					// Reset ancien élément séléctionné
-					popUps[state]->setState(-1);
+					popUps[gs->state]->setState(-1);
 
 				}
 				// On update l'élément
-				state = actualI;
-				stateIn = popUps[actualI]->getState();
+				gs->state = actualI;
+				gs->stateIn = popUps[actualI]->getState();
 				
 			}
 

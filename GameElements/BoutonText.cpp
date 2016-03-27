@@ -7,8 +7,9 @@ BoutonText::BoutonText(Graphics* g, int x, int y, int width, int height) : Bouto
 	creatImage();
 }
 
-BoutonText::BoutonText(Graphics* graphics, std::string text, int x, int y, int width, int height) : Bouton(graphics, x, y, width, height)
+BoutonText::BoutonText(Graphics* graphics, std::string text, myColor colorText, int x, int y, int width, int height) : Bouton(graphics, x, y, width, height)
 {
+	this->colorText = colorText;
 	this->text = text;
 	this->police = POLICE_DEFAULT;
 	this->textSize = SIZE_DEFAULT;
@@ -16,8 +17,9 @@ BoutonText::BoutonText(Graphics* graphics, std::string text, int x, int y, int w
 	creatImage();
 }
 
-BoutonText::BoutonText(Graphics* graphics, std::string text, unsigned int size, int x, int y, int width, int height) : Bouton(graphics, x, y, width, height)
+BoutonText::BoutonText(Graphics* graphics, std::string text, myColor colorText, unsigned int size, int x, int y, int width, int height) : Bouton(graphics, x, y, width, height)
 {
+	this->colorText = colorText;
 	this->text = text;
 	this->police = POLICE_DEFAULT;
 	this->textSize = size;
@@ -25,8 +27,9 @@ BoutonText::BoutonText(Graphics* graphics, std::string text, unsigned int size, 
 	creatImage();
 }
 
-BoutonText::BoutonText(Graphics * graphics, std::string text, unsigned int size, std::string police, int x, int y, int width, int height) : Bouton(graphics, x, y, width, height)
+BoutonText::BoutonText(Graphics * graphics, std::string text, myColor colorText, unsigned int size, std::string police, int x, int y, int width, int height) : Bouton(graphics, x, y, width, height)
 {
+	this->colorText = colorText;
 	this->police = police;
 	this->text = text;
 	this->textSize = size;
@@ -43,7 +46,7 @@ void BoutonText::render(Graphics* graphics)
 	Bouton::render(graphics);
 	if (strcmp(text.c_str(), ""))
 	{
-		graphics->renderTextCentered("test.ttf", text, rectangle.getCenter(), textSize);
+		textImage->draw(graphics);
 	}
 }
 void BoutonText::render(Graphics* graphics, const Vector3D& translation)
@@ -51,7 +54,7 @@ void BoutonText::render(Graphics* graphics, const Vector3D& translation)
 	Bouton::render(graphics, translation);
 	if (strcmp(text.c_str(), ""))
 	{
-		graphics->renderTextCentered("test.ttf", text, rectangle.getCenter() + translation, textSize);
+		textImage->draw(graphics, translation);
 	}
 }
 
@@ -69,7 +72,10 @@ void BoutonText::creatImage()
 	}
 
 	// On crée l'image
+	assert((strcmp(text.c_str(), ""))); // Texte vide
 	textImage = graphics->createImageFromFont(police, textSize, text);
+	textImage->setColor(colorText);
+	textImage->setPos(rectangle.getCenter());
 }
 
 void BoutonText::set(std::string text, unsigned size, std::string fontName)
@@ -107,4 +113,10 @@ std::string BoutonText::getFontName()
 std::string BoutonText::getText()
 {
 	return text;
+}
+
+void BoutonText::setColorText(myColor colorText)
+{
+	this->colorText = colorText;
+	textImage->setColor(colorText);
 }

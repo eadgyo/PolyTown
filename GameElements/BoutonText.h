@@ -5,9 +5,9 @@ class BoutonText : public Bouton
 {
 public:
 	BoutonText(Graphics* graphics, int x, int y, int width, int height);
-	BoutonText(Graphics* graphics, std::string text, int x, int y, int width, int height);
-	BoutonText(Graphics* graphics, std::string text, unsigned int size, int x, int y, int width, int height);
-	BoutonText(Graphics* graphics, std::string text, unsigned int size, std::string police, int x, int y, int width, int height);
+	BoutonText(Graphics* graphics, std::string text, myColor colorText, int x, int y, int width, int height);
+	BoutonText(Graphics* graphics, std::string text, myColor colorText, unsigned int size, int x, int y, int width, int height);
+	BoutonText(Graphics* graphics, std::string text, myColor colorText, unsigned int size, std::string police, int x, int y, int width, int height);
 
 	virtual void update(float dt);
 	virtual void render(Graphics* g);
@@ -26,10 +26,13 @@ public:
 	std::string getFontName();
 	std::string getText();
 
+	void setColorText(myColor colorText);
+
 protected:
 	std::string text;
 	std::string police;
 	unsigned textSize;
+	myColor colorText;
 
 	Image* textImage;
 	const std::string POLICE_DEFAULT = "test";

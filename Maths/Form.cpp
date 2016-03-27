@@ -585,6 +585,18 @@ void Form::flipVF(const Vector3D& center)
 	orientation.flipY(center);
 }
 
+void Form::flipHFree(const Vector3D & center)
+{
+	flipH = !flipH;
+	orientation.flipXFree(center);
+}
+
+void Form::flipVFree(const Vector3D & center)
+{
+	flipV = !flipV;
+	orientation.flipYFree(center);
+}
+
 void Form::setPos(const Vector3D& v)
 {
 	assert(v.getW() != 0); // Ce n'est pas un point mais un vecteur
@@ -634,6 +646,17 @@ void Form::calculateSurface()
 		surface += points.at(i1).x()*(points.at(i2).y()-points.at(i).y()) + points.at(i1).y()*(points.at(i).x()-points.at(i2).x());
 	}
 	surface /= 2;
+}
+
+bool Form::isColliding(const Vector3D& pos)
+{
+	// Pour le moment on crée juste un carré
+	Form form;
+	form.addPoint(Vector3D(pos.x() - 0.5f, pos.y() - 0.5f));
+	form.addPoint(Vector3D(pos.x() - 0.5f, pos.y() + 0.5f));
+	form.addPoint(Vector3D(pos.x() + 0.5f, pos.y() + 0.5f));
+	form.addPoint(Vector3D(pos.x() + 0.5f, pos.y() - 0.5f));
+	return isColliding(form);
 }
 
 bool Form::isColliding(Form & form)

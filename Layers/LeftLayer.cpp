@@ -4,53 +4,63 @@ LeftLayer::LeftLayer(Graphics* g) : Layer(g)
 {
 	state = -1;
 	stateIn = 1;
+	actualI = -1;
 }
 
-void LeftLayer::initialize(float x, float y, int width, int height)
+void LeftLayer::initialize(int x, int y, int width, int height)
 {
-	translate.set(x, y, 0, 0);
+	Layer::initialize(x, y, width, height);
 	// Création des infrastructures
 	int addY = height / 8;
 	int posX = width / 4;
-	int posY = addY;
+	int posY = addY / 2;
 	
-	int sizeBW = addY / 2;
-	int sizeBH = addY / 2;
-	// Routes
-	Image* roadI = new Image();
-	roadI->initialize(graphics, 128, 128, 0, 2, "LeftLayer.png");
-	roadI->setSize(sizeBW);
-
-	Bouton *routesB = new BoutonImage(graphics, roadI, posX, posY, sizeBW, sizeBH);
-	posY += addY;
-	boutons.push_back(routesB);
-	// Zones
-	Image* zoneI = new Image();
-	zoneI->initialize(graphics, 128, 128, 1, 3, "LeftLayer.png");
-	zoneI->setSize(sizeBW);
+	Vector3D left = rec.getLeft();
 	
-	Bouton *zonesB = new BoutonImage(graphics, zoneI, posX, posY, sizeBW, sizeBH);
-	posY += addY;
-	boutons.push_back(zonesB);
-	// Energies
-	Bouton *energB = new BoutonText(graphics, "En", posX, posY, sizeBW, sizeBH);
-	posY += addY;
-	boutons.push_back(energB);
-	// Traitement des déchets
-	Bouton *dechB = new BoutonText(graphics, "D", posX, posY, sizeBW, sizeBH);
-	posY += addY;
-	boutons.push_back(dechB);
-	// Traitement et stockage des eaux
-	Bouton *eauxB = new BoutonText(graphics, "Ea", posX, posY, sizeBW, sizeBH);
-	posY += addY;
-	boutons.push_back(eauxB);
-	// Etablissement
-	Bouton *etablB = new BoutonText(graphics, "Et", posX, posY, sizeBW, sizeBH);
-	posY += addY;
-	boutons.push_back(etablB);
-	// Destruction
+	sideI = new Image(graphics, 128, 128, 1, "LeftLayer.png");
 
+	// Création des boutons
+	for (unsigned i = 0; i < (unsigned) NUMBER_OF_TYPES_LL; i++)
+	{
+		Image* image = new Image();
+		image->initialize(graphics, 128, 128, posImage[i], "LeftLayer.png");
+		image->setSize(SIZE_CIRCLE_LL);
+		Image* imageB = new Image();
+		imageB->setColor(color1[i], color2[i], color3[i]);
+		imageB->initialize(graphics, 128, 128, 0, "LeftLayer.png");
+		imageB->setSize(SIZE_CIRCLE_LL);
+		Bouton *bouton = new Bouton2Images(graphics, image, imageB, posX, posY, SIZE_CIRCLE_LL, SIZE_CIRCLE_LL, false);
+		posY += addY;
+		boutons.push_back(bouton);
+	}
+	
+	posY = addY / 2  - SIZE_CIRCLE_LL*0.5f;
+	// Creation des popUps
+	for (unsigned i = 0; i < (unsigned) NUMBER_OF_TYPES_LL; i++)
+	{
+		LLPopUp* popUp = new LLPopUp(graphics);
+		myColor color(color1[i], color2[i], color3[i]);
+		// Initialisation du popup
+		int add = (sizeTexts[i] > 1 ? PAD_Y_POPUP_LL*(sizeTexts[i] - 1) + PAD_Y_POPUP_LL : PAD_Y_POPUP_LL*sizeTexts[i] + PAD_Y_POPUP_LL);
+		popUp->initialize(
+			STARTX_POPUP_LL,
+			posY,
+			WIDTH_POPUP_LL,
+			(SIZE_PER_TEXT_POPUP_LL)*(sizeTexts[i] + 1) + add,
+			color,
+			(int) (FACTOR_SIZE_BOUTON_POPUP_LL*WIDTH_POPUP_LL),
+			SIZE_PER_TEXT_POPUP_LL,
+			Vector3D((int) (WIDTH_POPUP_LL*0.5f), STARTY_BUTTON_POPUP),
+			Vector3D(0.0f, (float) ADD_Y_POPUP_LL),
+			textsP[i], color*0.8f,
+			sizeTexts[i], 15,
+			"test",
+			myColor(0.0f, 0.0f, 0.0f));
+		posY += addY;
+		popUps.push_back(popUp);
+	}
 
+	
 	for (unsigned i = 0; i < boutons.size(); i++)
 	{
 		boutons[i]->setColor(0.5f, 0.5f, 0.5f, 1.0f);
@@ -70,28 +80,33 @@ void LeftLayer::resize(int width, int height)
 
 void LeftLayer::render(Graphics * g)
 {
-	for (unsigned i = 0; i < boutons.size(); i++)
-	{
-		if(i != state)
-			boutons[i]->render(g, translate);
-		else
-		{
-			myColor color = boutons[i]->getColor();
-			myColor remplacement;
-			remplacement.r = color.r * 1.7f;
-			remplacement.g = color.g * 1.7f;
-			remplacement.b = color.b * 1.7f;
-			remplacement.a = 1.0f;
-			boutons[i]->setColor(remplacement);
-			boutons[i]->render(g, translate);
-			boutons[i]->setColor(color);
-		}
-	}
+	render(g, Vector3D(false));
 }
 
 void LeftLayer::render(Graphics * g, const Vector3D translation)
 {
+	Vector3D trans = translation + rec.getLeft();
+	for (unsigned i = 0; i < boutons.size(); i++)
+	{
+		if(actualI != i)
+			boutons[i]->render(g, trans);
+		else
+		{
+			boutons[i]->setAddColorB(myColor(0.4f, 0.4f, 0.4f, 0.0f));
+			boutons[i]->render(g, trans);
+			boutons[i]->setAddColorB(myColor(0.0f, 0.0f, 0.0f, 0.0f));
+		}
+	}
 
+	if (actualI != -1)
+	{
+		popUps[actualI]->render(g, trans);
+	}
+
+	g->translate(trans);
+	g->setColor(myColor(1.0f, 0.0f, 0.0f));
+	g->drawForm(rec);
+	g->translate(-trans);
 }
 
 void LeftLayer::update(float dt)
@@ -104,13 +119,33 @@ LayerNs::LayerEvent LeftLayer::handleEvent(Input & input)
 	if (input.getMousePressed(0))
 	{
 		Vector3D mousePos = input.getMousePos();
-		mousePos -= translate;
-		for (unsigned i = 0; i < boutons.size(); i++)
+		mousePos -= rec.getLeft();
+
+		// Si y a une collision avec un popUp
+		if (actualI != -1 && popUps[actualI]->isColliding(mousePos))
 		{
-			if (boutons[i]->isColliding(mousePos))
+			LayerNs::LayerEvent res = popUps[actualI]->handleEvent(input);
+			if (res % LayerNs::UPDATE_STATE)
 			{
-				state = i;
-				return LayerNs::COLLISION;
+				// On update l'élément
+				stateIn = popUps[actualI]->getState();
+			}
+
+			if (res % LayerNs::CLOSE)
+			{
+				state = actualI;
+				actualI = -1;
+			}
+		}
+		else
+		{
+			for (unsigned i = 0; i < boutons.size(); i++)
+			{
+				if (boutons[i]->isColliding(mousePos))
+				{
+					actualI = i;
+					return LayerNs::COLLISION;
+				}
 			}
 		}
 	}

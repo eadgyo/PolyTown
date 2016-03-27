@@ -440,6 +440,24 @@ void Matrix4::flipY(const Vector3D& center)
 	translate(-center);
 	(*this) = l_flipV*(*this);
 }
+void Matrix4::flipXFree(const Vector3D & center)
+{
+	Matrix4 l_flipV = createIdentity();
+	Vector3D pos = getPos();
+	l_flipV.get(1, 1) = -1.0f;
+	l_flipV.setPos(center);
+	pos-=center;
+	setPos(l_flipV*pos);
+}
+void Matrix4::flipYFree(const Vector3D & center)
+{
+	Matrix4 l_flipH = createIdentity();
+	Vector3D pos = getPos();
+	l_flipH.get(0, 0) = -1.0f;
+	l_flipH.setPos(center);
+	pos -= center;
+	setPos(l_flipH*pos);
+}
 void Matrix4::flipZ(const Vector3D& center)
 {
 	Matrix4 l_flipZ = createIdentity();

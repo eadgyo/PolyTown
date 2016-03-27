@@ -107,6 +107,16 @@ void sRectangle::setLeft(float x, float y, float width, float height)
 	points.at(3).set2D(+0.5f*width, -0.5f*height);
 }
 
+void sRectangle::setLeft(float x, float y)
+{
+	orientation.setPos(Vector3D(x + width*0.5f, y + height*0.5f));
+}
+
+void sRectangle::setLeft(const Vector3D & left)
+{
+	orientation.setPos(Vector3D(left.x() + width*0.5f, left.y() + height*0.5f));
+}
+
 bool sRectangle::isInside(const sRectangle& rect) const
 {
 	if(rect.getX() > points.at(0).x() && rect.getX(2) < points.at(2).x())

@@ -92,6 +92,8 @@ public:
 	void scale(float factor);
 	void flipX(const Vector3D& center);
 	void flipY(const Vector3D& center);
+	void flipXFree(const Vector3D& center);
+	void flipYFree(const Vector3D& center);
 	void flipZ(const Vector3D& center);
 	void flipW(const Vector3D& center);
 

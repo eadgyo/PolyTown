@@ -66,7 +66,7 @@ public:
 	void setColorFilter(myColor colorFilter) { this->colorFilter.r = colorFilter.r;  this->colorFilter.g = colorFilter.g; this->colorFilter.b = colorFilter.b; this->colorFilter.a = colorFilter.a; };
 	void setColor(float r, float g, float b) { color.r = r; color.g = g; color.b = b; };
 	void setColor(float a, float r, float g, float b) { color.a = a; color.r = r; color.g = g; color.b = b; };
-	void setColor(myColor color) { this->color.r = color.r;  this->color.g = color.g; this->color.b = color.b; this->color.a = color.a; };
+	void setColor(myColor color) { this->color = color; };
 	void set(Image& image);
 	void setCols(int cols);
 	void setIsDisplayingRec(bool isDisplayingRec);
@@ -93,6 +93,8 @@ public:
 	void setColorFilter(myColor& colorFilter);
 	void setFlipH(bool flipHorizontal);
 	void setFlipV(bool flipVertical);
+	void setFlipHFree(bool flipHorizontal);
+	void setFlipVFree(bool flipHorizontal);
 	void setScale(float scale);
 	void setGraphics(Graphics* g);
 	void setSize(int size);

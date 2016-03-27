@@ -22,7 +22,11 @@ public:
 
 	bool isColliding(const Vector3D& pos);
 
+	myColor getAddColorB() const { return m_addColorB; };
+	void setAddColorB(myColor color) { m_addColorB = color; };
+
 protected:
+	myColor m_addColorB;
 	myColor color;
 	sRectangle rectangle;
 	Graphics* graphics = NULL;

@@ -384,13 +384,12 @@ void Graphics::pushFont(std::string name, std::string path, unsigned size)
 // Prend juste le nom du fichier présent dans /bin/ttf -> exemple test.ttf
 void Graphics::pushFontTTF(std::string name, std::string path, unsigned size)
 {
-	TTF_Font* font = FileManager::getInstance().loadFont(path, size);
-	assert(font != NULL); // Echec initialisation
-
 	std::string fontName = name + std::to_string(size);
 	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(fontName);
 	if (it == fontNames.end())
 	{
+		TTF_Font* font = FileManager::getInstance().loadFont(path, size);
+		assert(font != NULL); // Echec initialisation
 		fontNames[fontName] = font;
 	}
 }
@@ -398,13 +397,12 @@ void Graphics::pushFontTTF(std::string name, std::string path, unsigned size)
 // Prise en compte directe du TTF
 void Graphics::pushFontTTF(std::string name, unsigned size)
 {
-	TTF_Font* font = FileManager::getInstance().loadFont(name + ".ttf", size);
-	assert(font != NULL); // Echec initialisation
-
 	std::string fontName = name + std::to_string(size);
 	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(fontName);
 	if (it == fontNames.end())
 	{
+		TTF_Font* font = FileManager::getInstance().loadFont(name + ".ttf", size);
+		assert(font != NULL); // Echec initialisation
 		fontNames[fontName] = font;
 	}
 }
@@ -421,9 +419,11 @@ TTF_Font* Graphics::getFont(std::string name, unsigned size)
 	return NULL;
 }
 
-bool Graphics::isAlreadyPresent(std::string fontName, unsigned size)
+bool Graphics::isAlreadyPresent(std::string name, unsigned size)
 {
-	return false;
+	std::string fontName = name + std::to_string(size);
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(fontName);
+	return (it != fontNames.end());
 }
 
 void Graphics::freeFont(std::string name, unsigned size)

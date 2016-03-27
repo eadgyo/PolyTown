@@ -104,6 +104,8 @@ public:
 	void scaleF(float factor, const Vector3D& center);
 	void flipHF(const Vector3D& center);
 	void flipVF(const Vector3D& center);
+	void flipHFree(const Vector3D& center);
+	void flipVFree(const Vector3D& center);
 	void setPos(const Vector3D& v);
 	void setRadians(float omega);
 	void setScale(float scale);
@@ -112,8 +114,9 @@ public:
 	void calculateSurface();
 
 	// Collisions detection
-	bool isColliding(Form& form);
-	bool isColliding(Form& form, Vector3D& push, float& t);
+	virtual bool isColliding(const Vector3D& pos);
+	virtual bool isColliding(Form& form);
+	virtual bool isColliding(Form& form, Vector3D& push, float& t);
 
 	// Pas à utiliser directement
 	bool collisionSat(Form& form);

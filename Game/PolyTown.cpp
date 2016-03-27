@@ -66,7 +66,7 @@ void PolyTown::mainLoop()
 
         // UPDATE MANAGER
         if (gs) {
-            update_m->update(dt);
+            // update_m->update(dt);
             //gs->housing.at(0)->addInhabitants(1);
             //gs->housing[0]->delInhabitants(1);
         }

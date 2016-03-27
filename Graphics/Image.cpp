@@ -386,7 +386,7 @@ void Image::setFlipH(bool flipHorizontal)
 {
 	if(spriteData->flipH != flipHorizontal)
 	{
-		rec.flipHF(getPos());
+		rec.flipHFree(getPos());
 	}
 	spriteData->flipH = flipHorizontal;
 }
@@ -395,8 +395,18 @@ void Image::setFlipV(bool flipVertical)
 {
 	if(spriteData->flipV != flipVertical)
 	{
-		rec.flipVF(getPos());
+		rec.flipVFree(getPos());
 	}
+	spriteData->flipV = flipVertical;
+}
+
+void Image::setFlipHFree(bool flipHorizontal)
+{
+	spriteData->flipH = flipHorizontal;
+}
+
+void Image::setFlipVFree(bool flipVertical)
+{
 	spriteData->flipV = flipVertical;
 }
 

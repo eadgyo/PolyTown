@@ -15,7 +15,7 @@ Game::~Game()
 
 void Game::initialize(int width, int height)
 {
-	leftLayer.initialize(0, 0, (int) width*0.2f, (int) (height));
+	leftLayer.initialize(0.0f, 0.0f, (int) (width*0.2f), (int) (height));
 	creatorManager.initialize(&gameStruct, &linkManager);
 	gameStruct.initialize((float) width, (float) height);
 }
@@ -79,7 +79,8 @@ HudNs::HudEvent Game::handleEvent(Input & input)
 			if (a == 2)
 			{
 				a2.set(mouse);
-				road.set2points(a1, a2, 30);
+				road.set2points(a1, a2, 50);
+				
 			}
 		}
 	}

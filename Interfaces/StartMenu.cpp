@@ -24,8 +24,8 @@ void StartMenu::initialize(int width, int height)
 	unsigned i = 0;
 	while(boutonsTexte[i].compare("") != 0)
 	{
-		Bouton* bouton = new BoutonText(graphics, boutonsTexte[i], posX, startY, SIZE_BW, SIZE_BH);
-		bouton->setColor(1.0f, 0, 0, 1);
+		Bouton* bouton = new BoutonText(graphics, boutonsTexte[i], myColor(0.0f, 0.1f, 0.1f, 1.0f), posX, startY, SIZE_BW, SIZE_BH);
+		bouton->setColor(0.7f, 0.7f, 0.6f, 1.0f);
 		boutons.push_back(bouton);
 		startY += (int) (SIZE_BH*1.2f);
 		i += 1;

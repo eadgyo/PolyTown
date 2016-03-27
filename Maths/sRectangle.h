@@ -33,19 +33,22 @@ public:
 	void set(const Vector3D& center, float width, float height);
 	void setLeft(const Vector3D& left, float width, float height);
 	void setLeft(float x, float y, float width, float height);
+	void setLeft(float x, float y);
+	void setLeft(const Vector3D& left);
 
 	// Getter
 	inline float getLeftX() const { return getX(0); };
 	inline float getLeftY() const { return getY(0); };
 	inline float getWidth() const { return width; };
 	inline float getHeight() const { return height; };
+	bool isColliding(const Vector3D& pos) { return isInsideBorder(pos); };
 	bool isInside(const sRectangle& rect) const;
 	bool isInside(const Vector3D& p) const;
 	bool isInsideBorder(const sRectangle& rect) const;
 	bool isInsideBorder(const Vector3D& p) const;
 	bool collision(const sRectangle& rect) const;
 	bool collisionBorder(const sRectangle& rect) const;
-	inline const Vector3D& getLeft() const { return points.at(0); };
+	inline Vector3D getLeft() const { return get(0); };
 	SDL_Rect getSDLRect();
 	SDL_Rect getSDLRect(bool flipH, bool flipW);
 	SDL_Rect getSDLRectDest();

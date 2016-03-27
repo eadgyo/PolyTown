@@ -13,16 +13,17 @@ public:
 	~Layer() {};
 	Layer(int, int) { isInitialized = false; };
 	Layer(int, int, int, int) { isInitialized = false; };
-	virtual void update(float dt) {} ;
-	virtual void initialize(int x, int y, int width, int height);
+	
 	void initialize(int width, int height) { initialize(0, 0, width, height); };
 	virtual bool isColliding(const Vector3D& mousePos);
-
 	sRectangle getRectangle() { return rec; };
 	void setTranslate(const Vector3D& translate) { this->rec.setLeft(translate); };
-	void virtual render(Graphics * g, const Vector3D translation) = 0;
-	// Détection des collisions 
-	LayerNs::LayerEvent virtual handleEvent(Input& input) = 0;
+	virtual void render(Graphics * g, const Vector3D translation) { graphics->translate(translation);  render(graphics); graphics->translate(-translation); };
+	
+	virtual void initialize(int x, int y, int width, int height);
+	virtual void update(float dt) {};
+	virtual void render(Graphics* g) = 0;
+	LayerNs::LayerEvent virtual handleEvent(Input& input, const Vector3D& translation) = 0;
 
 protected:
 	bool isInitialized;

@@ -8,9 +8,9 @@ public:
 	// initialisation de l'objet
 	void virtual initialize(int width, int height) = 0;
 	// Réinitailisation de l'objet
-	void virtual reset() = 0;
+	void virtual reset() {};
 	// Gestion possible du resize
-	void virtual resize(int width, int height) = 0;
+	void virtual resize(int width, int height) {};
 	// Rendu sur la fenetre
 	void virtual render(Graphics* g) = 0;
 protected:

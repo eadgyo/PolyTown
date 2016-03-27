@@ -56,18 +56,13 @@ void LLPopUp::update(float dt)
 
 void LLPopUp::render(Graphics* g)
 {
-	render(g, Vector3D(false));
-}
+	graphics->translate(rec.getLeft());
 
-void LLPopUp::render(Graphics * g, const Vector3D translation)
-{
-	Vector3D trans = translation + rec.getLeft();
-	g->translate(trans);
 	// On rend le background
 	// L'affichage du background est légérement différent
 	float width = round->getWidth();
 	float height = round->getHeight();
-	
+
 	// Affichage des rounds
 	round->setFlipH(false);
 	round->setFlipV(false);
@@ -93,7 +88,7 @@ void LLPopUp::render(Graphics * g, const Vector3D translation)
 	g->render(rec1);
 	g->render(rec2);
 	g->render(rec3);
-	
+
 	for (unsigned i = 0; i < boutons.size(); i++)
 	{
 		if (i != state)
@@ -110,12 +105,11 @@ void LLPopUp::render(Graphics * g, const Vector3D translation)
 			boutons[i]->setColor(color);
 		}
 	}
-	
-	g->translate(-trans);
-	
+
+	graphics->translate(-rec.getLeft());
 }
 
-LayerNs::LayerEvent LLPopUp::handleEvent(Input& input)
+LayerNs::LayerEvent LLPopUp::handleEvent(Input& input, const Vector3D& translation)
 {
 	if (input.getMousePressed(0))
 	{

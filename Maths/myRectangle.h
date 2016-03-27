@@ -15,7 +15,7 @@ public:
 	myRectangle(const Vector3D& center, float width, float height);
 	~myRectangle();
 
-	myRectangle clone();
+	myRectangle clone() const;
 
 	// Setter
 	void set(const Vector3D& center, float width, float height);

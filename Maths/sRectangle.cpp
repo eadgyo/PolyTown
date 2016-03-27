@@ -3,7 +3,6 @@
 
 sRectangle::sRectangle() : Form(4)
 {
-
 	set(0, 0, 0, 0);
 }
 
@@ -27,9 +26,22 @@ sRectangle::sRectangle(const Form& form) : Form(form)
 	set(form);
 }
 
+sRectangle::sRectangle(const sRectangle& rec) : Form(rec)
+{
+	width = rec.getWidth();
+	height = rec.getHeight();
+}
+
 sRectangle::~sRectangle()
 {
 
+}
+
+sRectangle sRectangle::clone() const
+{
+	sRectangle rec;
+	rec.set((*this));
+	return rec;
 }
 
 sRectangle sRectangle::createSRectangleCenter(const Vector3D& center,

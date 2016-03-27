@@ -45,7 +45,7 @@ myRectangle::~myRectangle()
 {
 }
 
-myRectangle myRectangle::clone()
+myRectangle myRectangle::clone() const
 {
 	return myRectangle((*this));
 }

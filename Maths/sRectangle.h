@@ -22,7 +22,10 @@ public:
 	sRectangle(int x, int y, int width, int height);
 	sRectangle(float x, float y, float width, float height);
 	sRectangle(const Form& form);
+	sRectangle(const sRectangle& sRec);
 	~sRectangle();
+
+	sRectangle clone() const;
 
 	static sRectangle createSRectangleCenter(const Vector3D& center, float width, float height);
 

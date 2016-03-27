@@ -8,7 +8,7 @@ public:
 	Circle(const Vector3D& center, float radius);
 	~Circle();
 
-	inline Circle clone() { return Circle((*this)); };
+	inline Circle clone() const { return Circle((*this)); };
 	void set(const Circle& circle);
 	void set(const Vector3D& center, float radius);
 	void set(float radius);

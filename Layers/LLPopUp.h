@@ -17,8 +17,7 @@ public:
 
 	virtual void update(float dt);
 	virtual void render(Graphics* g);
-	virtual void render(Graphics * g, const Vector3D translation);
-	LayerNs::LayerEvent handleEvent(Input& input);
+	LayerNs::LayerEvent handleEvent(Input& input, const Vector3D& translation);
 
 	int getState() const { return state; };
 	void setState(int state) { this->state = state; };

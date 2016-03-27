@@ -11,12 +11,12 @@ public:
 	LeftLayer(Graphics* g);
 	void initialize(int x, int y, int width, int height);
 	
+	virtual bool isColliding(const Vector3D& mousePos);
 	void reset();
 	void resize(int width, int height);
 	virtual void render(Graphics* g);
-	virtual void render(Graphics * g, const Vector3D translation);
 	void update(float dt);
-	LayerNs::LayerEvent handleEvent(Input& input);
+	LayerNs::LayerEvent handleEvent(Input& input, const Vector3D& translation);
 
 	inline int getState() { return state; };
 	inline int getStateInt() { return stateIn; };

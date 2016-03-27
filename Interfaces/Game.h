@@ -3,6 +3,8 @@
 #include "../Layers/LeftLayer.h"
 #include "../Game/GameStruct.h"
 #include "../Game/CreatorManager.h"
+#include "../Layers/MapLayer.h"
+
 class Game :
 	public Interface
 {
@@ -20,6 +22,7 @@ public:
 
 protected:
 	LeftLayer leftLayer;
+	MapLayer mapLayer;
 
 	/*Test Début*/
 	GameStruct gameStruct;
@@ -29,6 +32,8 @@ protected:
 	Vector3D a1;
 	Vector3D a2;
 	Road road;
+
+
 	/* Test fin*/
 };
 

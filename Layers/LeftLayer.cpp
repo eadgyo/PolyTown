@@ -34,7 +34,7 @@ void LeftLayer::initialize(int x, int y, int width, int height)
 		boutons.push_back(bouton);
 	}
 	
-	posY = addY / 2  - SIZE_CIRCLE_LL*0.5f;
+	posY = (int) (addY / 2  - SIZE_CIRCLE_LL*0.5f);
 	// Creation des popUps
 	for (unsigned i = 0; i < (unsigned) NUMBER_OF_TYPES_LL; i++)
 	{
@@ -69,6 +69,16 @@ void LeftLayer::initialize(int x, int y, int width, int height)
 	isInitialized = true;
 }
 
+bool LeftLayer::isColliding(const Vector3D & mousePos)
+{
+	bool popUpb = false;
+	if (actualI != -1)
+	{
+		popUpb = popUps[actualI]->isColliding(mousePos - rec.getLeft());
+	}
+	return Layer::isColliding(mousePos) || popUpb;
+}
+
 void LeftLayer::reset()
 {
 
@@ -80,13 +90,8 @@ void LeftLayer::resize(int width, int height)
 
 void LeftLayer::render(Graphics * g)
 {
-	render(g, Vector3D(false));
-}
+	graphics->translate(rec.getLeft());
 
-void LeftLayer::render(Graphics * g, const Vector3D translation)
-{
-	Vector3D trans = translation + rec.getLeft();
-	g->translate(trans);
 	for (unsigned i = 0; i < boutons.size(); i++)
 	{
 		if (actualI != i)
@@ -123,8 +128,7 @@ void LeftLayer::render(Graphics * g, const Vector3D translation)
 		popUps[actualI]->render(g);
 	}
 
-	
-	g->translate(-trans);
+	graphics->translate(-rec.getLeft());
 }
 
 void LeftLayer::update(float dt)
@@ -132,17 +136,18 @@ void LeftLayer::update(float dt)
 
 }
 
-LayerNs::LayerEvent LeftLayer::handleEvent(Input & input)
+LayerNs::LayerEvent LeftLayer::handleEvent(Input & input, const Vector3D& translation)
 {
+	Vector3D trans = translation + rec.getLeft();
 	if (input.getMousePressed(0))
 	{
 		Vector3D mousePos = input.getMousePos();
-		mousePos -= rec.getLeft();
+		mousePos -= trans;
 
 		// Si y a une collision avec un popUp
 		if (actualI != -1 && popUps[actualI]->isColliding(mousePos))
 		{
-			LayerNs::LayerEvent res = popUps[actualI]->handleEvent(input);
+			LayerNs::LayerEvent res = popUps[actualI]->handleEvent(input, trans);
 			if (res % LayerNs::UPDATE_STATE)
 			{
 				if (state != -1 && state != actualI)

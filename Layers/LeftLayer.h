@@ -30,24 +30,24 @@ private:
 	int actualI;
 
 
-	const int posImage[7] = { 4, 5, 2, 3, 6, 7, 8 };
-	const float color1[7] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
-	const float color2[7] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
-	const float color3[7] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+	const int posImage[8] = { 4, 5, 2, 6, 3, 7, 8, 12};
+	const float color1[8] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+	const float color2[8] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+	const float color3[8] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
-	const int sizeTexts[7] = { 1, 4, 6, 4, 3, 4, 3};
-	std::string textsP[7][6] = { {"roads"},
+	const int sizeTexts[8] = { 1, 4, 6, 4, 3, 4, 3, 1};
+	std::string textsP[8][6] = { {"routes"},
 										{"Residentielle", "Industrielle", "Commerciale", "Agricole"},
 										{"Eolienne", "Hydrolienne", "Panneau solaire", "Usine à charbon", "Usine à pétrole", "Centrale Nucléaire"},
 										{"Usine Incinération", "Centre enfouissement", "Centre Méthanisation", "Centre compostage"},
 										{"Traitement Eaux Usées", "Stockage Eau potable", "Traitement Eau Potable"},
 										{"Police", "Pompier", "Ecoles", "Hopitaux"},
-										{"Stades", "Cinémas", "Parcs"}
-										};
+										{"Stades", "Cinémas", "Parcs"},
+									{"Destructor"} };
 
 
 	const int SIZE_CIRCLE_LL = 64;
-	const int NUMBER_OF_TYPES_LL = 7;
+	const int NUMBER_OF_TYPES_LL = 8;
 	const int STARTX_POPUP_LL = 105;
 	const int WIDTH_POPUP_LL = 326;
 	const int SIZE_PER_TEXT_POPUP_LL = 32;

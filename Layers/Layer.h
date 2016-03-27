@@ -18,6 +18,7 @@ public:
 	void initialize(int width, int height) { initialize(0, 0, width, height); };
 	virtual bool isColliding(const Vector3D& mousePos);
 
+	sRectangle getRectangle() { return rec; };
 	void setTranslate(const Vector3D& translate) { this->rec.setLeft(translate); };
 	void virtual render(Graphics * g, const Vector3D translation) = 0;
 	// Détection des collisions 

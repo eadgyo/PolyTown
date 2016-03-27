@@ -43,6 +43,7 @@ void LLPopUp::initialize(
 	{
 		BoutonText* b = new BoutonText(graphics, texts[i], colorText, size,  police, (int) pos.x(), (int) (pos.y() + heightButton*0.5f), widthButton, heightButton);
 		b->setColor(color);
+		b->setDrawRec(true);
 		boutons.push_back(b);
 		pos += add;
 	}
@@ -101,17 +102,16 @@ void LLPopUp::render(Graphics * g, const Vector3D translation)
 		{
 			myColor color = boutons[i]->getColor();
 			myColor remplacement;
-			remplacement = color * 1.7f;
+			remplacement = color * 1.2f;
 			remplacement.a = 1.0f;
 			boutons[i]->setColor(remplacement);
 			boutons[i]->render(g);
+			boutons[i]->setDrawRec(true);
 			boutons[i]->setColor(color);
 		}
 	}
 	
 	g->translate(-trans);
-	g->setColor(myColor(1.0f, 0.0f, 0.0f));
-	g->drawForm(rec);
 	
 }
 

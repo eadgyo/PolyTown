@@ -119,32 +119,32 @@ void sRectangle::setLeft(const Vector3D & left)
 
 bool sRectangle::isInside(const sRectangle& rect) const
 {
-	if(rect.getX() > points.at(0).x() && rect.getX(2) < points.at(2).x())
-		if(rect.getY() > points.at(0).y() &&  rect.getY(2) < points.at(2).y())
+	if(rect.getX() > getX(0) && rect.getX(2) < getX(2))
+		if(rect.getY() > getY(0) && rect.getY(2) < getY(2))
 			return true;
 	return false;
 }
 
 bool sRectangle::isInside(const Vector3D& p) const
 {
-	if(p.x() > points.at(0).x() && p.x() < points.at(2).x())
-		if(p.y() > points.at(0).y() &&  p.y() < points.at(2).y())
+	if(p.x() > getX(0) && p.x() < getX(2))
+		if(p.y() > getY(0) &&  p.y() < getY(2))
 			return true;
 	return false;
 }
 
 bool sRectangle::isInsideBorder(const sRectangle& rect) const
 {
-	if(rect.getX() >= points.at(0).x() && rect.getX(2) <= points.at(2).x())
-		if(rect.getY() >= points.at(0).y() &&  rect.getY(2) <= points.at(2).y())
+	if(rect.getX() >= getX(0) && rect.getX(2) <= getX(2))
+		if(rect.getY() >= getY(0) &&  rect.getY(2) <= getY(2))
 			return true;
 	return false;
 }
 
 bool sRectangle::isInsideBorder(const Vector3D& p) const
 {
-	if(p.x() >= points.at(0).x() && p.x() <= points.at(2).x())
-		if(p.y() >= points.at(0).y() &&  p.y() <= points.at(2).y())
+	if(p.x() >= getX(0) && p.x() <= getX(2))
+		if(p.y() >= getY(0) &&  p.y() <= getY(2))
 			return true;
 	return false;
 }

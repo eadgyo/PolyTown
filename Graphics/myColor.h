@@ -124,4 +124,49 @@ public:
 		assert(false); // Pas de valeur pour i > 3
 		return 1.0f;
 	};
+
+	static myColor RED(float a)
+	{
+		return myColor(1.0f, 0.0f, 0.0f, a);
+	};
+	static myColor RED()
+	{
+		return RED(1.0f);
+	};
+
+	static myColor WHITE(float a)
+	{
+		return myColor(1.0f, 1.0f, 1.0f, a);
+	};
+	static myColor WHITE()
+	{
+		return WHITE(1.0f);
+	};
+
+	static myColor BLUE(float a)
+	{
+		return myColor(0.0f, 0.0f, 1.0f, a);
+	};
+	static myColor BLUE()
+	{
+		return BLUE(1.0f);
+	};
+
+	static myColor GREEN(float a)
+	{
+		return myColor(0.0f, 1.0f, 0.0f, a);
+	};
+	static myColor GREEN()
+	{
+		return GREEN(1.0f);
+	};
+
+	static myColor BLACK(float a)
+	{
+		return myColor(0.0f, 0.0f, 0.0f, a);
+	};
+	static myColor BLACK()
+	{
+		return BLACK(1.0f);
+	};
 };

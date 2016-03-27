@@ -34,7 +34,7 @@ protected:
 	const std::string IMAGE_NAME_LL = "LeftLayer.png";
 	const int POS_IMAGE_ROUND_LL = 1;
 	const int SIZE_SPRITE_LL = 128;
-	const int SIZE_IMAGE_ROUND_LL = 16;
+	const int SIZE_IMAGE_ROUND_LL = 8;
 	
 };
 

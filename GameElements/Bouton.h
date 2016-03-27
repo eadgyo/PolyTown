@@ -11,8 +11,10 @@ public:
 	virtual ~Bouton();
 
 	void setColor(myColor color);
+	void setColorRec(myColor color);
 	void setColor(float r, float g, float b, float a);
 	myColor getColor();
+	myColor getColorRec();
 
 	virtual void update(float dt);
 	virtual void render(Graphics* g);
@@ -24,9 +26,12 @@ public:
 
 	myColor getAddColorB() const { return m_addColorB; };
 	void setAddColorB(myColor color) { m_addColorB = color; };
+	void setDrawRec(bool drawRec) { this->drawRec = drawRec; };
 
 protected:
+	bool drawRec;
 	myColor m_addColorB;
+	myColor color_Rec;
 	myColor color;
 	sRectangle rectangle;
 	Graphics* graphics = NULL;

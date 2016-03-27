@@ -20,11 +20,7 @@ Bouton2Images::Bouton2Images(Graphics * graphics, Image * image, Image * image2,
 
 void Bouton2Images::render(Graphics * graphics)
 {
-	myColor save = m_image->getColor();
-	m_image2->setColor(save + m_addColor2);
-	m_image2->draw(graphics);
-	m_image2->setColor(save);
-	BoutonImage::render(graphics);
+	render(graphics, Vector3D(false));
 }
 
 void Bouton2Images::render(Graphics * graphics, const Vector3D & translation)
@@ -34,6 +30,8 @@ void Bouton2Images::render(Graphics * graphics, const Vector3D & translation)
 	m_image2->draw(graphics, translation);
 	m_image2->setColor(save);
 	BoutonImage::render(graphics, translation);
+	//graphics->setColor(myColor(1.0f, 0.0f, 0.0f));
+	//graphics->drawForm(rectangle);
 }
 
 void Bouton2Images::addColor2(myColor color)

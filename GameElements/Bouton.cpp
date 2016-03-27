@@ -4,8 +4,12 @@
 
 Bouton::Bouton(Graphics* graphics, int x, int y, int width, int height) : graphics(graphics)
 {
+	drawRec = false;
 	color = 1;
+	color_Rec = 0;
+	color_Rec.a = 1.0f;
 	m_addColorB = 0;
+	
 	rectangle.set((float) x, (float) y, (float) width, (float) height);
 }
 
@@ -26,13 +30,27 @@ void Bouton::render(Graphics* graphics)
 	// Si besoin d'améliorations faire un héritage
 	graphics->setColor(color + m_addColorB);
 	graphics->render(rectangle);
+
+	if (drawRec)
+	{
+		graphics->setColor(color_Rec);
+		graphics->drawForm(rectangle);
+	}
 }
 void Bouton::render(Graphics* graphics, const Vector3D& translation)
 {
+	graphics->translate(translation);
 	// Rendu du bouton
 	// Si besoin d'améliorations faire un héritage
 	graphics->setColor(color + m_addColorB);
-	graphics->render(rectangle, translation);
+	graphics->render(rectangle);
+
+	if (drawRec)
+	{
+		graphics->setColor(color_Rec);
+		graphics->drawForm(rectangle);
+	}
+	graphics->translate(-translation);
 }
 
 bool Bouton::isColliding(const Vector3D& pos)
@@ -50,6 +68,11 @@ void Bouton::setColor(myColor color)
 	this->color = color;
 }
 
+void Bouton::setColorRec(myColor color)
+{
+	color_Rec = color;
+}
+
 void Bouton::setColor(float r, float g, float b, float a)
 {
 	color.r = r;
@@ -61,4 +84,9 @@ void Bouton::setColor(float r, float g, float b, float a)
 myColor Bouton::getColor()
 {
 	return color;
+}
+
+myColor Bouton::getColorRec()
+{
+	return color_Rec;
 }

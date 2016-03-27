@@ -12,11 +12,11 @@ void LeftLayer::initialize(int x, int y, int width, int height)
 	Layer::initialize(x, y, width, height);
 	// Création des infrastructures
 	int addY = height / 8;
-	int posX = width / 4;
+	int posX = width / 2;
 	int posY = addY / 2;
 	
 	Vector3D left = rec.getLeft();
-	
+
 	sideI = new Image(graphics, 128, 128, 1, "LeftLayer.png");
 
 	// Création des boutons
@@ -86,26 +86,35 @@ void LeftLayer::render(Graphics * g)
 void LeftLayer::render(Graphics * g, const Vector3D translation)
 {
 	Vector3D trans = translation + rec.getLeft();
+	g->translate(trans);
 	for (unsigned i = 0; i < boutons.size(); i++)
 	{
 		if(actualI != i)
-			boutons[i]->render(g, trans);
+			boutons[i]->render(g);
 		else
 		{
-			boutons[i]->setAddColorB(myColor(0.4f, 0.4f, 0.4f, 0.0f));
-			boutons[i]->render(g, trans);
-			boutons[i]->setAddColorB(myColor(0.0f, 0.0f, 0.0f, 0.0f));
+			Bouton2Images* cast = dynamic_cast<Bouton2Images*>(boutons[i]);
+			if (cast != NULL)
+			{
+				cast->addColor2(myColor(-0.0f, -0.3f, -0.3f, 0.0f));
+				boutons[i]->render(g);
+				cast->addColor2(myColor(0.0f, 0.0f, 0.0f, 0.0f));
+			}
+			else
+			{
+				boutons[i]->setAddColorB(myColor(-0.0f, -0.2f, -0.2f, 0.0f));
+				boutons[i]->render(g);
+				boutons[i]->setAddColorB(myColor(0.0f, 0.0f, 0.0f, 0.0f));
+			}
 		}
 	}
 
 	if (actualI != -1)
 	{
-		popUps[actualI]->render(g, trans);
+		popUps[actualI]->render(g);
 	}
 
-	g->translate(trans);
-	g->setColor(myColor(1.0f, 0.0f, 0.0f));
-	g->drawForm(rec);
+	
 	g->translate(-trans);
 }
 
@@ -127,13 +136,20 @@ LayerNs::LayerEvent LeftLayer::handleEvent(Input & input)
 			LayerNs::LayerEvent res = popUps[actualI]->handleEvent(input);
 			if (res % LayerNs::UPDATE_STATE)
 			{
+				if (state != -1 && state != actualI)
+				{
+					// Reset ancien élément séléctionné
+					popUps[state]->setState(-1);
+
+				}
 				// On update l'élément
+				state = actualI;
 				stateIn = popUps[actualI]->getState();
+				
 			}
 
 			if (res % LayerNs::CLOSE)
 			{
-				state = actualI;
 				actualI = -1;
 			}
 		}
@@ -143,7 +159,14 @@ LayerNs::LayerEvent LeftLayer::handleEvent(Input & input)
 			{
 				if (boutons[i]->isColliding(mousePos))
 				{
-					actualI = i;
+					if (actualI == i)
+					{
+						actualI = -1;
+					}
+					else
+					{
+						actualI = i;
+					}
 					return LayerNs::COLLISION;
 				}
 			}

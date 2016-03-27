@@ -15,7 +15,7 @@ Game::~Game()
 
 void Game::initialize(int width, int height)
 {
-	leftLayer.initialize(0.0f, 0.0f, (int) (width*0.2f), (int) (height));
+	leftLayer.initialize(0.0f, 0.0f, (int) (width*0.1f), (int) (height*0.9f));
 	creatorManager.initialize(&gameStruct, &linkManager);
 	gameStruct.initialize((float) width, (float) height);
 }

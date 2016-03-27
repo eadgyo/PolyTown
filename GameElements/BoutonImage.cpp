@@ -7,7 +7,6 @@ BoutonImage::BoutonImage(Graphics* graphics, Image* image, int x, int y, int wid
 	m_addColor = 0;
 	m_image->setX((float) x);
 	m_image->setY((float) y);
-	drawRec = true;
 }
 
 BoutonImage::BoutonImage(Graphics * graphics, Image * image, int x, int y, int width, int height, bool drawRec) :
@@ -17,7 +16,6 @@ BoutonImage::BoutonImage(Graphics * graphics, Image * image, int x, int y, int w
 	m_addColor = 0;
 	m_image->setX((float)x);
 	m_image->setY((float)y);
-	this->drawRec = drawRec;
 }
 
 void BoutonImage::render(Graphics * graphics)
@@ -27,7 +25,7 @@ void BoutonImage::render(Graphics * graphics)
 	m_image->draw(graphics);
 	m_image->setColor(save);
 	if(drawRec)
-		graphics->render(rectangle);
+		Bouton::render(graphics);
 	
 }
 
@@ -37,8 +35,8 @@ void BoutonImage::render(Graphics * graphics, const Vector3D & translation)
 	m_image->setColor(save + m_addColor);
 	m_image->draw(graphics, translation);
 	m_image->setColor(save);
-	if(drawRec)
-		graphics->render(rectangle, translation);
+	if (drawRec)
+		Bouton::render(graphics, translation);
 	
 }
 

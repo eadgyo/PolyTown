@@ -89,22 +89,31 @@ void LeftLayer::render(Graphics * g, const Vector3D translation)
 	g->translate(trans);
 	for (unsigned i = 0; i < boutons.size(); i++)
 	{
-		if(actualI != i)
-			boutons[i]->render(g);
+		if (actualI != i)
+		{
+			if (state != i)
+			{
+				boutons[i]->render(g);
+			}
+			else
+			{
+				Bouton2Images* cast = dynamic_cast<Bouton2Images*>(boutons[i]);
+				if (cast != NULL)
+				{
+					cast->addColor2(myColor(-0.0f, -0.3f, -0.3f, 0.0f));
+					boutons[i]->render(g);
+					cast->addColor2(myColor(0.0f, 0.0f, 0.0f, 0.0f));
+				}
+			}
+		}
 		else
 		{
 			Bouton2Images* cast = dynamic_cast<Bouton2Images*>(boutons[i]);
 			if (cast != NULL)
 			{
-				cast->addColor2(myColor(-0.0f, -0.3f, -0.3f, 0.0f));
+				cast->addColor2(myColor(-0.0f, -0.5f, -0.5f, 0.0f));
 				boutons[i]->render(g);
 				cast->addColor2(myColor(0.0f, 0.0f, 0.0f, 0.0f));
-			}
-			else
-			{
-				boutons[i]->setAddColorB(myColor(-0.0f, -0.2f, -0.2f, 0.0f));
-				boutons[i]->render(g);
-				boutons[i]->setAddColorB(myColor(0.0f, 0.0f, 0.0f, 0.0f));
 			}
 		}
 	}

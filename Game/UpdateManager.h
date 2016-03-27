@@ -31,6 +31,8 @@ public:
     void updateWorkers();
     void updateUnemployment();
     void updateMoney();
+    void updateFactories();
+    void updatePollution();
 
 private:
     GameStruct* gs;

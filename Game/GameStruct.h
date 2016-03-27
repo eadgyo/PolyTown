@@ -2,25 +2,15 @@
 
 #include "../Constant.h"
 
-#include "../GameContent/Housing/House.h"
-#include "../GameContent/Housing/Building.h"
+#include "../GameContent/GameContent.h"
 
-#include "../GameContent/SocialBuilding/SocialBuilding.h"
-#include "../GameContent/SocialBuilding/FireStation.h"
-
-#include "../GameContent/Resources/PowerPlant.h"
-#include "../GameContent/Resources/WaterTower.h"
-
-#include "../GameContent/Factory/Farm.h"
-#include "../GameContent/Factory/Shop.h"
-#include "../GameContent/Factory/Manufactory.h"
-
-// Contient les information nécessaires pour le jeu
 #include "../Quadtree/QTEntity.h"
 #include "../Quadtree/QuadTree.h"
 
 #include <iostream>
 #include <string>
+
+// Contient les information nécessaires pour le jeu
 
 class GameStruct
 {
@@ -51,6 +41,10 @@ public:
         std::cout << score_env << std::endl;*/
 
         std::cout << getDate() << " : ";
+        std::cout << "DD = " << score_dd << " ";
+        std::cout << "SS = " << score_soc << " ";
+        std::cout << "SM = " << score_eco << " ";
+        std::cout << "SE = " << score_env << " ";
         std::cout << "H = " << inhabitants << " ";
         std::cout << "W = " << workers << " ";
         std::cout << "U% = " << unemployment << " ";
@@ -122,6 +116,7 @@ public:
     std::vector<Housing*> housing; // Habitations
     std::vector<Factory*> factory; // Bâtiments économiques
     std::vector<SocialBuilding*> social; // Bâtiments sociaux
+    std::vector<PollutionArea*> pollution; // Zones de pollution
 
     // Gérer collisions et affichages
     // Autre que les routes

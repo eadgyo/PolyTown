@@ -1,9 +1,5 @@
 #include "UpdateManager.h"
 
-#include "../GameContent/Housing/Housing.h"
-#include "../GameContent/Factory/Factory.h"
-#include "../GameContent/Factory/Shop.h"
-
 using namespace std;
 
 UpdateManager::UpdateManager() : gs(NULL)
@@ -49,6 +45,7 @@ void UpdateManager::updateFast(unsigned int dt)
         updateInhabitants();
         updateWorkers();
         updateUnemployment();
+        updateFactories();
     }
 }
 
@@ -59,6 +56,11 @@ void UpdateManager::updateSlow(unsigned int dt)
     if (time > 10 * 1000 * UPDATE_TIME / GAME_SPEED) {
         time -= 10 * 1000 * UPDATE_TIME / GAME_SPEED;
         updateMoney();
+        updatePollution();
+        updateScoreSoc();
+        updateScoreEco();
+        updateScoreEnv();
+        updateScoreDD();
     }
 }
 
@@ -124,4 +126,16 @@ void UpdateManager::updateMoney()
     money += tva * gs->taxation_work;
 
     gs->money += money;
+}
+
+void UpdateManager::updateFactories()
+{
+
+}
+
+void UpdateManager::updatePollution()
+{
+    for (unsigned i = 0; i < gs->pollution.size(); i++) {
+        gs->pollution[i]->decreasePollution();
+    }
 }

@@ -19,6 +19,8 @@ public:
     p_uint addWorkers(p_uint n);
     p_uint delWorkers(p_uint n);
 
+    virtual void update() = 0;
+
 protected:
     Factory();
     Factory(p_uint max_workers, p_uint income_rate);

@@ -13,6 +13,9 @@ public:
     // ----- GETTER ----- //
     bool isWorking() const;
 
+    // ----- SETTER ----- //
+    void update();
+
 private:
 
 };

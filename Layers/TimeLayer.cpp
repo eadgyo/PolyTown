@@ -29,7 +29,6 @@ void TimeLayer::initialize(int x, int y, int width, int height, std::string poli
 	m_backGroundColor = backgroundColor;
 	round->setColor(backgroundColor);
 
-	
 }
 
 void TimeLayer::update(float dt)
@@ -56,10 +55,9 @@ void TimeLayer::render(Graphics * g)
 	g->render(rec1);
 	g->render(rec2);
 
-	
+	g->renderTextCenteredTTF("test", gs->getDate(), myColor(1.0f, 1.0f, 1.0f, 1.0f),
+		Vector3D(rec.getWidth()*0.5f, rec.getHeight()*0.4f), 14);
 
-	
-	
 	g->translate(-rec.getLeft());
 }
 

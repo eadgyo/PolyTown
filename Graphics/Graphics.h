@@ -57,6 +57,7 @@ public:
 	// Fonts
 	void renderText(std::string path, std::string text, const Vector3D & pos, unsigned size);
 	void renderTextCentered(std::string path, std::string text, const Vector3D & pos, unsigned size);
+	void renderTextCenteredTTF(std::string police, std::string text, myColor textColor, const Vector3D & pos, unsigned size);
 	TTF_Font* getFont(std::string name, unsigned size);
 	bool isAlreadyPresent(std::string fontName, unsigned size);
 	void pushFont(std::string name, std::string path, unsigned size);

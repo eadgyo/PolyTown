@@ -501,6 +501,31 @@ void Graphics::renderTextCentered(std::string path, std::string text, const Vect
 	TTF_CloseFont(Sans);
 }
 
+void Graphics::renderTextCenteredTTF(std::string police, std::string text, myColor textColor, const Vector3D & pos, unsigned size)
+{
+	std::string fontName = police + std::to_string(size);
+	std::map<std::string, TTF_Font*>::iterator it = fontNames.find(fontName);
+	if (it == fontNames.end())
+	{
+		pushFontTTF(police, size);
+	}
+	it = fontNames.find(fontName);
+	if (it != fontNames.end())
+	{
+		SDL_Color color = { (int)(textColor.r * 255), (int)(textColor.g * 255), (int)(textColor.b * 255), (int)(textColor.a * 255) };  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+		SDL_Surface* surfaceMessage = TTF_RenderText_Blended(it->second, text.c_str(), color);
+		GLuint texture = loadSurfaceGL(surfaceMessage);
+		mySurface* surface = createMySurface(texture, surfaceMessage);
+
+		Image image;
+		image.letDeleting(true);
+		
+		image.initialize(this, surface, text);
+		image.setPos(pos);
+		render(image);
+	}
+}
+
 // Draw forms
 void Graphics::drawLine(const Vector3D& p1, const Vector3D& p2)
 {

@@ -174,4 +174,5 @@ public:
 	// Zone affichage
 	sRectangle zoneToDisplay;
 	
+	bool isReady = false;
 };

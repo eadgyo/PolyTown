@@ -13,9 +13,9 @@ MapRecLayer::~MapRecLayer()
 
 void MapRecLayer::initialize(int x, int y, int widthScreen, int heightScreen, int sizeMapX, int sizeMapY, int width, int deltaSide, GameStruct* gs)
 {
-	float factorScreen = width / (float) sizeMapX;
+	float factorScreen = width / (float) (sizeMapX + 2*deltaSide);
 	this->deltaSide = deltaSide;
-	Layer::initialize(x, y, (int) (sizeMapX*factorScreen + 0.5f), (int) (sizeMapY*factorScreen + 0.5f), gs);
+	Layer::initialize(x, y, (int) ((sizeMapX + 2*deltaSide)*factorScreen), (int) ((sizeMapY + 2 * deltaSide)*factorScreen), gs);
 	
 	gs->zoneToDisplay.set((float) x, (float) y, (float) widthScreen, (float) heightScreen);
 	gs->mapRec.set(0, 0, (float) sizeMapX, (float) sizeMapY);

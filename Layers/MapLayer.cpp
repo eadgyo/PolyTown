@@ -8,7 +8,7 @@ MapLayer::~MapLayer()
 {
 }
 
-void MapLayer::initialize(int x, int y, int width, int height, int factorMap, GameStruct* gs)
+void MapLayer::initialize(int x, int y, int width, int height, int deltaSide, GameStruct* gs)
 {
 	Layer::initialize(x, y, width, height, gs);
 	this->deltaSide = deltaSide;
@@ -245,7 +245,7 @@ LayerNs::LayerEvent MapLayer::handleEvent(Input & input, const Vector3D& transla
 
 	if (deltaX != 0 || deltaY != 0)
 	{
-		//translate(Vector3D(deltaX, deltaY, 0, false));
+		translate(Vector3D(deltaX, deltaY, 0, false));
 	}
 
 	if (input.getMousePressed(0))

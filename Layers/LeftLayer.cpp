@@ -151,11 +151,13 @@ void LeftLayer::update(float dt)
 LayerNs::LayerEvent LeftLayer::handleEvent(Input & input, const Vector3D& translation)
 {
 	Vector3D trans = translation + rec.getLeft();
+	Vector3D mousePos = input.getMousePos();
+	mousePos -= trans;
+
+
+	
 	if (input.getMousePressed(0))
 	{
-		Vector3D mousePos = input.getMousePos();
-		mousePos -= trans;
-
 		// Si y a une collision avec un popUp
 		if (actualI != -1 && popUps[actualI]->isColliding(mousePos))
 		{
@@ -178,6 +180,7 @@ LayerNs::LayerEvent LeftLayer::handleEvent(Input & input, const Vector3D& transl
 			{
 				actualI = -1;
 			}
+			return LayerNs::COLLISION;
 		}
 		else
 		{
@@ -198,5 +201,25 @@ LayerNs::LayerEvent LeftLayer::handleEvent(Input & input, const Vector3D& transl
 			}
 		}
 	}
+	else
+	{
+		unsigned i;
+		for (i = 0; i < boutons.size(); i++)
+		{
+			if (boutons[i]->isColliding(mousePos))
+			{
+				break;
+			}
+		}
+
+		if ((actualI != -1 && popUps[actualI]->isColliding(mousePos))
+			|| i != boutons.size())
+		{
+
+			return LayerNs::COLLISION;
+		}
+	}
+
+
 	return LayerNs::NOCOLLISION;
 }

@@ -4,11 +4,11 @@ namespace LayerNs
 {
 	enum LayerEvent
 	{
-		NOCOLLISION = 0,
-		COLLISION = 1 << 0,
-		UPDATE = 1 << 1,
-		UPDATE_STATE = 1 << 2,
-		CLOSE = 1 << 3
+		NOCOLLISION = 1 << 0,
+		COLLISION = 1 << 1,
+		UPDATE = 1 << 2,
+		UPDATE_STATE = 1 << 3,
+		CLOSE = 1 << 4
 	};
 
 	inline LayerEvent operator|(LayerEvent a, LayerEvent b)

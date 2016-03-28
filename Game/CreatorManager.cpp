@@ -67,6 +67,9 @@ bool CreatorManager::add(QTEntityBuild* qtEntity)
 
 bool CreatorManager::isMakable(QTEntity* qtEntity)
 {
+	if (!isInside(qtEntity))
+		return false;
+
 	// Il ne faut aucune collision
 	// Vu qu'on a pas le droit de bouger l'élément
 	std::vector<QTEntity*> collidings;
@@ -92,6 +95,9 @@ bool CreatorManager::isMakableSnappRoad(Road * road)
 
 bool CreatorManager::isMakableSnappRoad(Road * road, CRoadStruct& cRoadStrcut)
 {
+	if (!isInside(road))
+		return false;
+
 	// Clear
 	cRoadStrcut.clear();
 
@@ -142,6 +148,9 @@ bool CreatorManager::isMakableSnappRoad(Road * road, CRoadStruct& cRoadStrcut)
 
 bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 {
+	if (!isInside(qtEntity))
+		return false;
+
 	// Mauvaise initialisation de qtEntity
 	assert(qtEntity->getForm() != NULL);
 	Vector3D pos = qtEntity->getCenter();
@@ -1215,4 +1224,9 @@ float CreatorManager::getMinOfMax(const Vector3D& center, const Vector3D& direct
 	}
 
 	return min(max1, max2);
+}
+
+bool CreatorManager::isInside(QTEntity * qtEntity)
+{
+	return gs->QTCollision.isValid(qtEntity->getBounds());
 }

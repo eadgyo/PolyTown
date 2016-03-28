@@ -35,14 +35,13 @@ void Game::initialize(int width, int height)
 
 	mapLayer.setCreatorManager(&creatorManager);
 
-	
-	gs->QTCollision.insert(StructFactory::newHouse(50, 50));
-	gs->QTCollision.insert(StructFactory::newHouse(150, 150));
-	gs->QTCollision.insert(StructFactory::newHouse(150, 150));
 
-	gs->QTCollision.insert(StructFactory::newHouse(600, 450));
-	gs->QTCollision.insert(StructFactory::newHouse(40, 850));
-	gs->QTCollision.insert(StructFactory::newHouse(50, 350));
+	QTEntity* a = StructFactory::newHouse(600, 450);
+	a->setRadians((float) (PI / 3));
+
+	gs->QTCollision.insert(a);
+	gs->QTCollision.insert(StructFactory::newHouse(400, 850));
+	gs->QTCollision.insert(StructFactory::newHouse(470, 350));
 
 }
 
@@ -72,6 +71,7 @@ HudNs::HudEvent Game::update(float dt)
 HudNs::HudEvent Game::handleEvent(Input & input)
 {
 	Vector3D mouse = input.getMousePos();
+	LayerNs::LayerEvent leftLayRed = LayerNs::NOCOLLISION;
 
 	if (input.getMousePressed(1))
 	{
@@ -80,16 +80,15 @@ HudNs::HudEvent Game::handleEvent(Input & input)
 
 	if (leftLayer.isColliding(mouse))
 	{
-		leftLayer.handleEvent(input, Vector3D(false));
+		leftLayRed = leftLayer.handleEvent(input, Vector3D(false));
 	}
 	else if (mapRecLayer.isColliding(mouse))
 	{
 		mapRecLayer.handleEvent(input, Vector3D(false));
 	}
-	else
-	{
+	if(leftLayRed % LayerNs::NOCOLLISION)
 		mapLayer.handleEvent(input, Vector3D(false));
-	}
+	
 
 	return HudNs::OK;
 }

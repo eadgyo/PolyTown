@@ -195,6 +195,8 @@ public:
 	float getMaxOfMin(const Vector3D& center, const Vector3D& director, const Form& form);
 	float getMinOfMax(const Vector3D& center, const Vector3D& director, const Form& form);
 
+	bool isInside(QTEntity* qtEntity);
+
 private:
 	GameStruct *gs;
 	LinkManager *linkManager;

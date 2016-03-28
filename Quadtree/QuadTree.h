@@ -2,10 +2,12 @@
 
 #include "../Maths/sRectangle.h"
 #include "QTEntity.h"
+#include "../Graphics/Graphics.h"
+
 class QuadTree
 {
 public:
-	QuadTree() { nodes = NULL; level = DEFAULT_LEVEL_NUMBER;   };
+	QuadTree() { level = DEFAULT_LEVEL_NUMBER;   };
 	QuadTree(int level, const sRectangle& rec);
 	~QuadTree();
 
@@ -23,18 +25,18 @@ public:
 	void addEntities(std::vector<QTEntity*>& entities);
 	void erase(QTEntity*);
 	void erase(QTEntity* qtEntity, const sRectangle& sRectangle);
-
-
+	void draw(Graphics* g);
+	bool isValid(const sRectangle& rec) const;
 
 private:
 	static const int MAX_OBJECTS = 5;
 	static const int MAX_LEVELS = 50;
-	const static int DEFAULT_LEVEL_NUMBER = 20;
+	const static int DEFAULT_LEVEL_NUMBER = 0;
 
 	int level;
 	std::vector<QTEntity*> entities;
 	sRectangle rect;
-	QuadTree* nodes;
+	std::vector<QuadTree*> nodes;
 	
 };
 

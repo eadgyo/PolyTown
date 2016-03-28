@@ -75,7 +75,7 @@ public:
 
 	void initialize(float width, float height)
 	{
-		sRectangle rec(width*0.5f, height*0.5f, width, height);
+		sRectangle rec(0.0f, 0.0f, width, height);
 		QTCollision.setRect(rec);
 		QTWaterGen.setRect(rec);
 		QTWaterRes.setRect(rec);

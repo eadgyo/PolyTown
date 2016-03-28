@@ -204,16 +204,18 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 		int numberOfTry = 0;
 		while (colliding.size() != 0 && numberOfTry < MAX_TRY_SNAPP_QTENTITY)
 		{
-			colliding.clear();
-			getCollidingStop(qtEntity, colliding, push);
 			qtEntity->translate(push*1.01f);
 
-			qtEntity->getForm()->getCenter().display();
-			std::cout << std::endl;
+			colliding.clear();
+			getCollidingStop(qtEntity, colliding, push);
+			
 			numberOfTry++;
 		}
-		//colliding.clear();
-		if (colliding.size() != 0) // || (qtEntity->getCenter() - pos).getMagnitude() > DISTANCE_MAX_SNAPP)
+
+		colliding.clear();
+		getColliding(qtEntity, colliding, push);
+		
+		if (colliding.size() != 0 || (qtEntity->getCenter() - pos).getMagnitude() > DISTANCE_MAX_SNAPP)
 		{
 			// Si pas satisfait, on revient à la pos de départ
 			qtEntity->setRadians(0);
@@ -235,7 +237,7 @@ void CreatorManager::getColliding(QTEntity* qtEntity, std::vector<QTEntity*>& co
 
 	for (unsigned i = 0; i < possibleCollisions.size(); i++)
 	{
-		if (qtEntity->getForm()->isColliding(*(possibleCollisions[i]->getForm())))
+		if (qtEntity->isColliding(*(possibleCollisions[i])))
 		{
 			// Collision directe entre les deux formes
 			colliding.push_back(possibleCollisions[i]);
@@ -253,7 +255,7 @@ void CreatorManager::getColliding(QTEntity* qtEntity, std::vector<QTEntity*>& co
 	{
 		Vector3D l_push(0,0,0,false);
 		float t = 0;
-		if (qtEntity->getForm()->isColliding(*(possibleCollisions[i]->getForm()), l_push, t))
+		if (qtEntity->isColliding(*(possibleCollisions[i]), l_push, t))
 		{
 			// Collision directe entre les deux formes
 			colliding.push_back(possibleCollisions[i]);
@@ -274,9 +276,17 @@ void CreatorManager::getCollidingStop(QTEntity* qtEntity, std::vector<QTEntity*>
 	{
 		Vector3D l_push(0, 0, 0, false);
 		float t = 0;
+		bool a = qtEntity->isColliding(*(possibleCollisions[i]));
+		bool b = qtEntity->isColliding(*(possibleCollisions[i]), l_push, t);
+
+		if (a != b)
+		{
+			std::cout << "False";
+		}
+
 		if (qtEntity->isColliding(*(possibleCollisions[i]), l_push, t))
 		{
-			bool a = qtEntity->isColliding(*(possibleCollisions[i]));
+			
 
 			// Collision directe entre les deux formes
 			colliding.push_back(possibleCollisions[i]);

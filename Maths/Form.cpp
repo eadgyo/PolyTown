@@ -314,7 +314,8 @@ sRectangle Form::getBound() const
 	float maxY = getMaxY();
 	float width = maxX - minX;
 	float height = maxY - minY;
-	return sRectangle(width*0.5f + minX, height*0.5f + minY, width, height);
+	return sRectangle::createSRectangleCenter(Vector3D(width*0.5f + minX, height*0.5f + minY),
+		width, height);
 }
 
 // On renvoie un carrée qui comprend tous les points

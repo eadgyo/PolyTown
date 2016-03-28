@@ -202,7 +202,7 @@ private:
 	// Nombre d'essais max pour isMakableSnapp
 	const int MAX_TRY_SNAPP_QTENTITY = 10;
 	// Distance maximale pour le snapp, isMakableSnapp
-	const float DISTANCE_MAX_SNAPP = 10.0f;
+	const float DISTANCE_MAX_SNAPP = 40.0f;
 	
 	// PreIsMakableSnappRoad
 	// Angle Min entre 2 routes lors de la collision Debut/Fin

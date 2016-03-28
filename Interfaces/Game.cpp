@@ -34,6 +34,16 @@ void Game::initialize(int width, int height)
 
 
 	mapLayer.setCreatorManager(&creatorManager);
+
+	
+	gs->QTCollision.insert(StructFactory::newHouse(50, 50));
+	gs->QTCollision.insert(StructFactory::newHouse(150, 150));
+	gs->QTCollision.insert(StructFactory::newHouse(150, 150));
+
+	gs->QTCollision.insert(StructFactory::newHouse(600, 450));
+	gs->QTCollision.insert(StructFactory::newHouse(40, 850));
+	gs->QTCollision.insert(StructFactory::newHouse(50, 350));
+
 }
 
 void Game::reset()
@@ -76,9 +86,10 @@ HudNs::HudEvent Game::handleEvent(Input & input)
 	{
 		mapRecLayer.handleEvent(input, Vector3D(false));
 	}
-	if (!mapRecLayer.isColliding(mouse))
+	else
+	{
 		mapLayer.handleEvent(input, Vector3D(false));
-	
+	}
 
 	return HudNs::OK;
 }

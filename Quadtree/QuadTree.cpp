@@ -4,14 +4,18 @@
 
 QuadTree::QuadTree(int level, const sRectangle & rec)
 {
-	nodes = NULL;
 	this->level = level;
 	this->rect.set(rec);
 }
 
 QuadTree::~QuadTree()
 {
-	delete[] nodes;
+	for (unsigned i = 0; i < nodes.size(); i++)
+	{
+		delete nodes[i];
+		nodes[i] = NULL;
+	}
+	nodes.clear();
 }
 
 void QuadTree::set(int level, const sRectangle & rec)
@@ -27,29 +31,31 @@ void QuadTree::setRect(const sRectangle & rec)
 
 void QuadTree::split()
 {
-	if (nodes == NULL)
+	if (nodes.size() == 0)
 	{
-		int subWidth = (int)(rect.getWidth() / 2);
-		int subHeight = (int)(rect.getHeight() / 2);
-		int x = (int)rect.getX();
-		int y = (int)rect.getY();
-		std::fill(nodes, nodes + 1, QuadTree(level + 1, sRectangle(x + subWidth, y, subWidth, subHeight)));
-		std::fill(nodes + 1, nodes + 2, QuadTree(level + 1, sRectangle(x, y, subWidth, subHeight)));
-		std::fill(nodes + 2, nodes + 3, QuadTree(level + 1, sRectangle(x, y + subHeight, subWidth, subHeight)));
-		std::fill(nodes + 3, nodes + 4, QuadTree(level + 1, sRectangle(x + subWidth, y + subHeight, subWidth, subHeight)));
+		int subWidth = (int)(rect.getWidth() / 2.0f);
+		int subHeight = (int)(rect.getHeight() / 2.0f);
+		int x = (int)rect.getLeftX();
+		int y = (int)rect.getLeftY();
+		nodes.push_back(new QuadTree(level + 1, sRectangle(x + subWidth, y, subWidth, subHeight)));
+		nodes.push_back(new QuadTree(level + 1, sRectangle(x, y, subWidth, subHeight)));
+		nodes.push_back(new QuadTree(level + 1, sRectangle(x, y + subHeight, subWidth, subHeight)));
+		nodes.push_back(new QuadTree(level + 1, sRectangle(x + subWidth, y + subHeight, subWidth, subHeight)));
 	}
 }
 
 void QuadTree::clear()
 {
 	entities.clear();
-	if (nodes != NULL)
+	if (nodes.size() != 0)
 	{
 		for (unsigned i = 0; i < 4; i++)
 		{
-			nodes[i].clear();
+			nodes[i]->clear();
+			delete nodes[i];
+			nodes[i] = NULL;
 		}
-		nodes = NULL;
+		nodes.clear();
 	}
 }
 
@@ -57,18 +63,27 @@ int QuadTree::getIndex(const sRectangle & rec)
 {
 	int index = -1;
 	Vector3D l_rectCenter((float)(rect.getCenterX()), (float)(rect.getCenterY()));
+	float x0 = rec.getX(0);
+	float x2 = rec.getX(2);
+
+	float y0 = rec.getY(0);
+	float y2 = rec.getY(2);
+
+	Vector3D left = rec.get(0);
+	Vector3D right = rec.get(2);
+	assert(x0 == left.x() && x2 == right.x() && y0 == left.y() && y2 == right.y());
 	if (rec.getX(2) < l_rectCenter.x())
 	{
 		if (rec.getY(2) < l_rectCenter.y())
 			index = 1;
-		else if (rec.getY() > l_rectCenter.y())
+		else if (rec.getY(0) > l_rectCenter.y())
 			index = 2;
 	}
 	else if (rec.getX() > l_rectCenter.x())
 	{
 		if (rec.getY(2) < l_rectCenter.y())
 			index = 0;
-		else if (rec.getY() > l_rectCenter.y())
+		else if (rec.getY(0) > l_rectCenter.y())
 			index = 3;
 	}
 	return index;
@@ -81,19 +96,19 @@ int QuadTree::getIndex(const QTEntity *entity)
 
 void QuadTree::insert(QTEntity * entity, const sRectangle& recEntity)
 {
-	if (nodes != NULL)
+	if (nodes.size() != 0)
 	{
 		int index = getIndex(recEntity);
 		if (index != -1)//si le rectangle rentre dans l'une des quatres cases
 		{
-			nodes[index].insert(entity);
+			nodes[index]->insert(entity);
 			return;
 		}
 	}
 
 	if (entities.size() + 1 > MAX_OBJECTS && level + 1 < MAX_LEVELS)
 	{
-		if (nodes == NULL)
+		if (nodes.size() == 0)
 		{
 			split();
 
@@ -107,7 +122,7 @@ void QuadTree::insert(QTEntity * entity, const sRectangle& recEntity)
 				{
 					QTEntity *q = entities[i];
 					entities.erase(entities.begin() + i);
-					nodes[index].insert(q);
+					nodes[index]->insert(q);
 				}
 				else
 					i++;
@@ -115,7 +130,7 @@ void QuadTree::insert(QTEntity * entity, const sRectangle& recEntity)
 		}
 		int index = getIndex(recEntity);
 		if (index != -1)
-			nodes[index].insert(entity, recEntity);
+			nodes[index]->insert(entity, recEntity);
 		else
 			entities.push_back(entity);
 	}
@@ -123,9 +138,23 @@ void QuadTree::insert(QTEntity * entity, const sRectangle& recEntity)
 		entities.push_back(entity);
 }
 
+bool QuadTree::isValid(const sRectangle& rec) const
+{
+	return rec.getX(0) > rect.getX(0) && rec.getX(2) < rect.getX(2)
+		&& rec.getY(0) > rect.getY(0) && rec.getY(2) < rect.getY(2);
+}
+
 void QuadTree::insert(QTEntity * entity)
 {
-	insert(entity, entity->getBounds());
+	sRectangle rec = entity->getBounds();
+	if (isValid(rec))
+	{
+		insert(entity, rec);
+	}
+	else
+	{
+		std::cout << "QuadTree -> insertion, rec ne rentre pas";
+	}
 }
 
 void QuadTree::inserts(std::vector<QTEntity*>& entities)
@@ -138,40 +167,68 @@ void QuadTree::inserts(std::vector<QTEntity*>& entities)
 
 void QuadTree::retrieve(const QTEntity * entity, std::vector<QTEntity*>& entities)
 {
-	retrieve(entity->getBounds(), entities);
+	sRectangle rec = entity->getBounds();
+	if (isValid(rec))
+	{
+		retrieve(rec, entities);
+	}
+	else
+	{
+		std::cout << "QuadTree -> retrieve, rec ne rentre pas";
+	}
 }
 
 void QuadTree::retrieve(const sRectangle& sRectangle, std::vector<QTEntity*>& entities)
 {
 	int index = getIndex(sRectangle);
-	if (index != -1 && nodes != NULL)
-		nodes[index].retrieve(sRectangle, entities);
-	else if(nodes != NULL)
+	if (index != -1 && nodes.size() != 0)
+		nodes[index]->retrieve(sRectangle, entities);
+	else if (nodes.size() != 0)
 	{
-		for (unsigned i = 0; i < 4; i++)
+		for (unsigned i = 0; i < nodes.size(); i++)
 		{
-			nodes[index].addEntities(entities);
+			nodes[i]->addEntities(entities);
 		}
 	}
-	entities.insert(entities.end(), this->entities.begin(), this->entities.end());
+	for (unsigned i = 0; i < this->entities.size(); i++)
+	{
+		unsigned j;
+		for (j = 0; j < entities.size(); j++)
+		{
+			if (this->entities[i] == entities[j])
+				break;
+		}
+		if(j == entities.size())
+			entities.push_back(this->entities[i]);
+	}
 }
 
 void QuadTree::addEntities(std::vector<QTEntity*>& entities)
 {
-	if (nodes != NULL)
+	if (nodes.size() != 0)
 	{
-		for (unsigned i = 0; i < 4; i++)
-			nodes[i].addEntities(entities);
+		for (unsigned i = 0; i < nodes.size(); i++)
+			nodes[i]->addEntities(entities);
 	}
-	entities.insert(entities.end(), this->entities.begin(), this->entities.end());
+	for (unsigned i = 0; i < this->entities.size(); i++)
+	{
+		unsigned j;
+		for (j = 0; j < entities.size(); j++)
+		{
+			if (this->entities[i] == entities[j])
+				break;
+		}
+		if (j == entities.size())
+			entities.push_back(this->entities[i]);
+	}
 }
 
 void QuadTree::erase(QTEntity* qtEntity, const sRectangle& recEntity)
 {
 	int index = getIndex(qtEntity->getBounds());
 
-	if (index != -1 && nodes != NULL)
-		nodes[index].erase(qtEntity, recEntity);
+	if (index != -1 && nodes.size() != 0)
+		nodes[index]->erase(qtEntity, recEntity);
 	else
 	{	
 		unsigned i = 0;
@@ -190,4 +247,18 @@ void QuadTree::erase(QTEntity* qtEntity, const sRectangle& recEntity)
 void QuadTree::erase(QTEntity* qtEntity)
 {
 	erase(qtEntity, qtEntity->getBounds());
+}
+
+void QuadTree::draw(Graphics* g)
+{
+	g->setColor(myColor::RED());
+	g->drawForm(rect);
+
+	if (nodes.size() != 0)
+	{
+		nodes[0]->draw(g);
+		nodes[1]->draw(g);
+		nodes[2]->draw(g);
+		nodes[3]->draw(g);
+	}
 }

@@ -27,8 +27,13 @@ void MapLayer::render(Graphics * g)
 	
 	// Rendu des images
 	std::vector<QTEntity*> entities;
-	
-	gs->QTCollision.retrieve(gs->zoneToDisplay, entities);
+
+	if (gs->tempEntity != NULL)
+	{
+		gs->tempEntity->getCenter().display();
+		gs->QTCollision.retrieve(gs->tempEntity, entities);
+	}
+	std::cout << entities.size() << std::endl;
 
 	g->translate(-gs->zoneToDisplay.getLeft());
 
@@ -38,7 +43,7 @@ void MapLayer::render(Graphics * g)
 		g->render(*(entities[i]->getForm()));
 
 		g->setColor(myColor::RED());
-		sRectangle test = entities[i]->getBoundsMax();
+		sRectangle test = entities[i]->getBounds();
 		g->drawForm(test);
 	}
 	
@@ -57,6 +62,8 @@ void MapLayer::render(Graphics * g)
 
 
 	}
+
+	gs->QTCollision.draw(g);
 
 	sRectangle recA(0, 0, 100, 100);
 	g->render(recA);

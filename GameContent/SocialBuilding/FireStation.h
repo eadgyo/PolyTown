@@ -9,6 +9,12 @@ class FireStation : public virtual SocialBuilding, public virtual Water
 public:
     FireStation(int x, int y);
 
+    // ----- GETTER ----- //
+    bool isWorking() const;
+
+    // ----- SETTER ----- //
+    void init(PowerPlant* power_plant, WaterTower* water_tower);
+
 private:
 
 };

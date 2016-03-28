@@ -6,3 +6,16 @@ FireStation::FireStation(int x, int y) :
 {
     setName(FIRE_STATION_NAME);
 }
+
+// ----- GETTER ----- //
+bool FireStation::isWorking() const
+{
+    return (SocialBuilding::isWorking() && (m_water_tower != NULL));
+}
+
+// ----- SETTER ----- //
+void FireStation::init(PowerPlant* power_plant, WaterTower* water_tower)
+{
+    SocialBuilding::init(power_plant);
+    m_water_tower = water_tower;
+}

@@ -33,21 +33,21 @@ private:
 	const float color2[8] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 	const float color3[8] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
-	const int sizeTexts[8] = { 1, 4, 6, 4, 3, 4, 3, 1};
-	std::string textsP[8][6] = { {"routes"},
+	const int sizeTexts[8] = { 1, 4, 6, 4, 2, 4, 3, 1};
+	std::string textsP[8][6] = { {"Route"},
 								{"Residentielle", "Industrielle", "Commerciale", "Agricole"},
-								{"Eolienne", "Hydrolienne", "Panneau solaire", "Usine à charbon", "Usine à pétrole", "Centrale Nucléaire"},
-								{"Usine Incinération", "Centre enfouissement", "Centre Méthanisation", "Centre compostage"},
-								{"Traitement Eaux Usées", "Stockage Eau potable", "Traitement Eau Potable"},
-								{"Police", "Pompier", "Ecoles", "Hopitaux"},
-								{"Stades", "Cinémas", "Parcs"},
-								{"Destructor"} };
+								{"Eolienne", "Hydrolienne", "Panneau solaire", "Usine à charbon", "Usine à pétrole", "Centrale nucléaire"},
+								{"Usine d'incinération", "Centre d'enfouissement", "Centre de méthanisation", "Centre de compostage"},
+								{"Stockage de l'eau potable", "Traitement des eaux usées"},
+								{"Commissariat", "Caserne", "École", "Hôpital"},
+								{"Stade", "Cinéma", "Parc"},
+								{"Démolition"} };
 
 
 	const int SIZE_CIRCLE_LL = 64;
 	const int NUMBER_OF_TYPES_LL = 8;
 	const int STARTX_POPUP_LL = 105;
-	const int WIDTH_POPUP_LL = 200;
+	const int WIDTH_POPUP_LL = 240;
 	const int SIZE_PER_TEXT_POPUP_LL = 32;
 	const int STARTY_BUTTON_POPUP = 10;
 	const int PAD_Y_POPUP_LL = 5;

@@ -26,6 +26,8 @@ void Manufactory::init(WaterPollution* water_pollution, AirPollution* air_pollut
 
 void Manufactory::update()
 {
-    m_water_pollution->increasePollution(m_workers);
-    m_air_pollution->increasePollution(m_workers);
+    if (isWorking()) {
+        m_water_pollution->increasePollution(m_workers);
+        m_air_pollution->increasePollution(m_workers);
+    }
 }

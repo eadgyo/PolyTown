@@ -23,5 +23,7 @@ void Farm::init(WaterPollution* water_pollution)
 
 void Farm::update()
 {
-    m_water_pollution->increasePollution(m_workers);
+    if (isWorking()) {
+        m_water_pollution->increasePollution(m_workers);
+    }
 }

@@ -16,6 +16,11 @@ p_uint Housing::getInhabitants() const
     return m_inhabitants;
 }
 
+p_uint Housing::getFreeInhabitants() const
+{
+    return m_max_inhabitants - m_inhabitants;
+}
+
 p_uint Housing::getFoodNeeds() const
 {
     return m_inhabitants * m_food_needs;

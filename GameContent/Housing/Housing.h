@@ -13,6 +13,7 @@ class Housing : public virtual QTEntityBuild, public virtual Energy, public virt
 public:
     // ----- GETTER ----- //
     p_uint getInhabitants() const;
+    p_uint getFreeInhabitants() const;
     p_uint getFoodNeeds() const;
     p_uint getWaterNeeds() const;
     p_uint getEnergyNeeds() const;

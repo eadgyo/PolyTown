@@ -15,3 +15,20 @@ SocialBuilding::SocialBuilding(std::string name, myRectangle rect, int frame_wid
 {
     setName(name);
 }
+
+// ----- GETTER ----- //
+p_uint SocialBuilding::getScore() const
+{
+    return m_score;
+}
+
+bool SocialBuilding::isWorking() const
+{
+    return (m_power_plant != NULL);
+}
+
+// ----- SETTER ----- //
+void SocialBuilding::init(PowerPlant* power_plant)
+{
+    m_power_plant = power_plant;
+}

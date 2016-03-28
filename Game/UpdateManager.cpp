@@ -45,7 +45,6 @@ void UpdateManager::updateFast(unsigned int dt)
         updateInhabitants();
         updateWorkers();
         updateUnemployment();
-        updateFactories();
     }
 }
 
@@ -56,7 +55,9 @@ void UpdateManager::updateSlow(unsigned int dt)
     if (time > 10 * 1000 * UPDATE_TIME / GAME_SPEED) {
         time -= 10 * 1000 * UPDATE_TIME / GAME_SPEED;
         updateMoney();
+        updateFactories();
         updatePollution();
+
         updateScoreSoc();
         updateScoreEco();
         updateScoreEnv();
@@ -76,10 +77,18 @@ void UpdateManager::updateScoreDD()
 
 void UpdateManager::updateScoreSoc()
 {
+    p_uint score = 0;
+    for (unsigned i = 0; i < gs->social.size(); i++) {
+        if (gs->social[i]->isWorking()) {
+            score += gs->social[i]->getScore();
+        }
+    }
+    gs->score_soc = (score + gs->inhabitants) * gs->unemployment;
 }
 
 void UpdateManager::updateScoreEco()
 {
+    gs->score_eco = gs->money * gs->unemployment + gs->money_earned;
 }
 
 void UpdateManager::updateScoreEnv()
@@ -89,12 +98,15 @@ void UpdateManager::updateScoreEnv()
 void UpdateManager::updateInhabitants()
 {
     p_uint inhabitants = 0;
+    p_uint free_inhabitants = 0;
 
     for (unsigned i = 0; i < gs->housing.size(); i++) {
         inhabitants += gs->housing[i]->getInhabitants();
+        free_inhabitants += gs->housing[i]->getFreeInhabitants();
     }
 
     gs->inhabitants = inhabitants;
+    gs->free_inhabitants = free_inhabitants;
 }
 
 void UpdateManager::updateWorkers()
@@ -126,11 +138,14 @@ void UpdateManager::updateMoney()
     money += tva * gs->taxation_work;
 
     gs->money += money;
+    gs->money_earned = money;
 }
 
 void UpdateManager::updateFactories()
 {
-
+    for (unsigned i = 0; i < gs->factory.size(); i++) {
+        gs->factory[i]->update();
+    }
 }
 
 void UpdateManager::updatePollution()

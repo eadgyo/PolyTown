@@ -24,7 +24,9 @@ public:
         score_env(0),
         
         money(START_MONEY_AMOUNT),
+        money_earned(0),
         inhabitants(0),
+        free_inhabitants(0),
         workers(0),
 
         unemployment(0),
@@ -39,7 +41,7 @@ public:
         std::cout << score_soc << ' ';
         std::cout << score_eco << ' ';
         std::cout << score_env << std::endl;*/
-		/*
+		
         std::cout << getDate() << " : ";
         std::cout << "DD = " << score_dd << " ";
         std::cout << "SS = " << score_soc << " ";
@@ -48,7 +50,7 @@ public:
         std::cout << "H = " << inhabitants << " ";
         std::cout << "W = " << workers << " ";
         std::cout << "U% = " << unemployment << " ";
-        std::cout << "M = " << money << " " << std::endl;*/
+        std::cout << "M = " << money << " " << std::endl;
     }
 
     std::string getDate() const
@@ -99,7 +101,9 @@ public:
 
     // Stats
     p_uint money;
+    p_uint money_earned;
     p_uint inhabitants;
+    p_uint free_inhabitants;
     p_uint workers;
     p_uint food_production;
     p_uint food_consumption;

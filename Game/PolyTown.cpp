@@ -9,7 +9,7 @@
 
 #include "../Maths/myRectangle.h"
 
-#include "../GameContent/StructFactory.h"
+//#include "../GameContent/StructFactory.h"
 
 using namespace std;
 
@@ -23,7 +23,6 @@ PolyTown::PolyTown() : running(false), g(new Graphics), gs(NULL)
 bool PolyTown::init(string name, int width, int height)
 {
 	gs = new GameStruct();
-	creator_m = new CreatorManager();
 	update_m = new UpdateManager(gs);
 
     // Création de la fenetre

@@ -1,7 +1,7 @@
 #include "Building.h"
 
 Building::Building(int x, int y) :
-    QTEntity(BUILDING_RECTANGLE(x, y)),
+    QTEntityBuild(BUILDING_RECTANGLE(x, y)),
     Housing(BUILDING_FLOOR * BUILDING_MAX_INHAB_PER_FLOOR),
     Energy(BUILDING_ENERGY_NEEDS),
     Water(BUILDING_WATER_NEEDS)
@@ -11,7 +11,7 @@ Building::Building(int x, int y) :
 }
 
 Building::Building(int x, int y, p_uint floor) :
-    QTEntity(BUILDING_RECTANGLE(x, y)),
+	QTEntityBuild(BUILDING_RECTANGLE(x, y)),
     Housing(floor * BUILDING_MAX_INHAB_PER_FLOOR),
     Energy(BUILDING_ENERGY_NEEDS),
     Water(BUILDING_WATER_NEEDS)
@@ -19,7 +19,7 @@ Building::Building(int x, int y, p_uint floor) :
 }
 
 Building::Building(int x, int y, p_uint water_needs, p_uint energy_needs) :
-    QTEntity(BUILDING_RECTANGLE(x, y)),
+	QTEntityBuild(BUILDING_RECTANGLE(x, y)),
     Housing(BUILDING_FLOOR * BUILDING_MAX_INHAB_PER_FLOOR),
     Energy(BUILDING_ENERGY_NEEDS),
     Water(BUILDING_WATER_NEEDS)
@@ -28,7 +28,7 @@ Building::Building(int x, int y, p_uint water_needs, p_uint energy_needs) :
 }
 
 Building::Building(int x, int y, p_uint floor, p_uint water_needs, p_uint energy_needs) :
-    QTEntity(BUILDING_RECTANGLE(x, y)),
+	QTEntityBuild(BUILDING_RECTANGLE(x, y)),
     Housing(floor * BUILDING_MAX_INHAB_PER_FLOOR),
     Energy(BUILDING_ENERGY_NEEDS),
     Water(BUILDING_WATER_NEEDS)

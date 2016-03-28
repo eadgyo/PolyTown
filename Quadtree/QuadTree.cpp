@@ -4,10 +4,9 @@
 
 QuadTree::QuadTree(int level, const sRectangle & rec)
 {
+	nodes = NULL;
 	this->level = level;
 	this->rect.set(rec);
-
-	nodes = NULL;
 }
 
 QuadTree::~QuadTree()

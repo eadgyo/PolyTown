@@ -132,8 +132,8 @@ public:
 
 	void initialize(GameStruct* gs, LinkManager* linkManager);
 
-	void addRoad(Road* road);
-	void add(QTEntityBuild* qtEntity);
+	bool addRoad(Road* road);
+	bool add(QTEntityBuild* qtEntity);
 	
 	bool isMakableSnappRoad(Road* road);
 	bool isMakableSnappRoad(Road* road, CRoadStruct& cRoadStrcut);

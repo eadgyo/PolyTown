@@ -185,15 +185,15 @@ void QTEntity::setName(std::string name)
 Vector3D QTEntity::getDirectorVec() const
 {
 	if (form->size() > 1)
-		return (form->get(0) - form->get(1)).getNormalize();
+		return (form->get(1) - form->get(0)).getNormalize();
 	else
-		return Vector3D(1, 0, 0, false);
+		return Vector3D(0, 1, 0, false);
 	
 }
 float QTEntity::getAngle2D() const
 {
 	Vector3D director = getDirectorVec();
-	return director.getAngle2D(Vector3D(1, 0, 0, false));
+	return director.getAngle2D(Vector3D(0, 1, 0, false));
 }
 
 sRectangle *QTEntity::castSRectangle() const

@@ -1,5 +1,8 @@
 #pragma once
 
+// Roads
+#include "Connector.h" // Inclus aussi Road.h
+
 // Housing
 #include "Housing/Housing.h"
 #include "Housing/House.h"

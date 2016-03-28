@@ -1,7 +1,8 @@
 #ifndef STRUCT_FACTORY_H
 #define STRUCT_FACTORy_H
 
-#include "../Graphics/Graphics.h"
+class StructFactory;
+
 
 #include "GameContent.h"
 
@@ -9,6 +10,9 @@ class StructFactory
 {
 public:
     // ----- GETTER ----- //
+
+	// Roads
+	static Road* newRoad(int x1, int y1, int x2, int y2, float width);
 
     // Housing
     static House* newHouse(int x, int y);

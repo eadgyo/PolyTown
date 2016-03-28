@@ -320,18 +320,17 @@ sRectangle Form::getBound() const
 // On renvoie un carrée qui comprend tous les points
 sRectangle Form::getBoundMax() const
 {
-	float maxDist = FLT_MAX;
+	float maxDist = -FLT_MAX;
 	Vector3D center = getCenter();
 	for (unsigned i = 0; i < points.size(); i++)
 	{
-		float dist = (points[i] - center).getSqMagnitude();
-		if (dist < maxDist)
+		float dist = (get(i) - center).getMagnitude();
+		if (dist > maxDist)
 		{
 			maxDist = dist;
 		}
 	}
-	maxDist = (float) sqrt(maxDist);
-	return sRectangle(center.x(), center.y(), maxDist, maxDist);
+	return sRectangle::createSRectangleCenter(center, maxDist*2, maxDist*2);
 }
 
 // Penser à liberer lorsque fin d'utilisation du tableau

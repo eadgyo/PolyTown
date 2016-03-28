@@ -42,6 +42,9 @@ protected:
 	const float SIZE_FACTOR_REC_MAP = 0.15f;
 	const float POS_X_FACTOR_REC_MAP = 0.98f - SIZE_FACTOR_REC_MAP;
 	const float POS_Y_FACTOR_REC_MAP = 0.95f - SIZE_FACTOR_REC_MAP;
+
+	const float SIZE_MAP_X = 6000;
+	const float SIZE_MAP_Y = 4000;
 };
 
 

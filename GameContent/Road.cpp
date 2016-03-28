@@ -172,8 +172,6 @@ std::vector<myRectangle> Road::getMidColl(float defHeight) const
 	std::vector<myRectangle> midColl;
 	float width = getWidth();
 	float height = getHeight();
-	assert(height > defHeight);
-
 
 	if (height < 3 * defHeight)
 	{

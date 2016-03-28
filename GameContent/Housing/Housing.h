@@ -3,12 +3,12 @@
 
 #include "../GameContentConstant.h"
 
-#include "../Quadtree/QTEntity.h"
+#include "../Quadtree/QTEntityBuild.h"
 
 #include "../Resources/Energy.h"
 #include "../Resources/Water.h"
 
-class Housing : public virtual QTEntity, public virtual Energy, public virtual Water
+class Housing : public virtual QTEntityBuild, public virtual Energy, public virtual Water
 {
 public:
     // ----- GETTER ----- //

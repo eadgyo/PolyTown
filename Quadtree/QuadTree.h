@@ -5,7 +5,7 @@
 class QuadTree
 {
 public:
-	QuadTree() { level = DEFAULT_LEVEL_NUMBER;  nodes = NULL; };
+	QuadTree() { nodes = NULL; level = DEFAULT_LEVEL_NUMBER;   };
 	QuadTree(int level, const sRectangle& rec);
 	~QuadTree();
 

@@ -47,7 +47,6 @@ private:
     unsigned int dt;
 
     GameStruct* gs;
-    CreatorManager* creator_m;
     UpdateManager* update_m;
 
     // Graphique et input

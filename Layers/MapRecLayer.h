@@ -7,7 +7,7 @@ public:
 	MapRecLayer(Graphics* g);
 	~MapRecLayer();
 
-	void initialize(int x, int y, int widthScreen, int heightScreen, int sizeMapX, int sizeMapY, int width, float factorScreen, GameStruct* gs);
+	void initialize(int x, int y, int widthScreen, int heightScreen, int sizeMapX, int sizeMapY, int width, int deltaSide, GameStruct* gs);
 	virtual void update(float dt);
 	virtual void render(Graphics* g) ;
 	LayerNs::LayerEvent virtual handleEvent(Input& input, const Vector3D& translation);
@@ -16,9 +16,8 @@ public:
 	void setScale(float scale);
 	sRectangle getRectangle() const { return gs->zoneToDisplay; };
 
-
 protected:
 
-	float factorMap;
+	int deltaSide;
 };
 

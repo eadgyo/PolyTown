@@ -21,11 +21,11 @@ void CreatorManager::initialize(GameStruct * gs, LinkManager* linkManager)
 }
 
 
-void CreatorManager::addRoad(Road * road)
+bool CreatorManager::addRoad(Road * road)
 {
 	CRoadStruct cRoadStruct;
 	if (!isMakableSnappRoad(road, cRoadStruct))
-		return;
+		return false;
 
 	std::map<float, Road*> myRoad;
 	myRoad[FLT_MAX] = road;
@@ -52,14 +52,17 @@ void CreatorManager::addRoad(Road * road)
 
 	// Nous pourrions utilisé un modèle optimisé
 	linkManager->setConnexitude(myRoad.begin()->second, minIndex);
+	return true;
 }
 
-void CreatorManager::add(QTEntityBuild* qtEntity)
+bool CreatorManager::add(QTEntityBuild* qtEntity)
 {
 	if (isMakableSnapp(qtEntity))
 	{
 		linkManager->add(qtEntity);
+		return true;
 	}
+	return false;
 }
 
 bool CreatorManager::isMakable(QTEntity* qtEntity)
@@ -152,12 +155,26 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 	// On va faire des rotations, donc il faut être sur qu'on a tous les objets possiblement en collision
 	gs->QTCollision.retrieve(qtEntity->getBoundsMax(), colliding);
 
+	if (colliding.size() != 0)
+	{
+		bool test = false;
+		for (unsigned i = 0; i < colliding.size(); i++)
+		{
+			float t;
+			test = qtEntity->isColliding((*colliding[i]), Vector3D(), t);
+			if (test)
+				std::cout << "Colliding";
+		}
+	}
+
 	// Parmis tous les objets en collision, on cherche l'élément qui est le plus en collision
+	colliding.clear();
 	QTEntity* nearEntity = getCollidingPushMax(qtEntity, colliding, push, t);
 	// On tente une rotation puis une translation
 	if(nearEntity != NULL)
 	{
-		if (nearEntity->getAngle2D() != 0)
+		float theta = nearEntity->getAngle2D();
+		if ((abs(theta) > 0.001f) && (abs(theta - 2*PI) > 0.001f))
 		{
 			qtEntity->setRadians(nearEntity->getAngle2D());
 			Vector3D l_push;
@@ -166,6 +183,7 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 			unsigned i = 0;
 			do
 			{
+				colliding.clear();
 				getCollidingStop(qtEntity, colliding, l_push);
 				qtEntity->translate(l_push);
 				i++;
@@ -186,11 +204,16 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 		int numberOfTry = 0;
 		while (colliding.size() != 0 && numberOfTry < MAX_TRY_SNAPP_QTENTITY)
 		{
-			qtEntity->translate(push);
 			colliding.clear();
 			getCollidingStop(qtEntity, colliding, push);
+			qtEntity->translate(push*1.01f);
+
+			qtEntity->getForm()->getCenter().display();
+			std::cout << std::endl;
+			numberOfTry++;
 		}
-		if (colliding.size() != 0 || (qtEntity->getCenter() - pos).getMagnitude() > DISTANCE_MAX_SNAPP)
+		//colliding.clear();
+		if (colliding.size() != 0) // || (qtEntity->getCenter() - pos).getMagnitude() > DISTANCE_MAX_SNAPP)
 		{
 			// Si pas satisfait, on revient à la pos de départ
 			qtEntity->setRadians(0);
@@ -251,8 +274,10 @@ void CreatorManager::getCollidingStop(QTEntity* qtEntity, std::vector<QTEntity*>
 	{
 		Vector3D l_push(0, 0, 0, false);
 		float t = 0;
-		if (qtEntity->getForm()->isColliding(*(possibleCollisions[i]->getForm()), l_push, t))
+		if (qtEntity->isColliding(*(possibleCollisions[i]), l_push, t))
 		{
+			bool a = qtEntity->isColliding(*(possibleCollisions[i]));
+
 			// Collision directe entre les deux formes
 			colliding.push_back(possibleCollisions[i]);
 
@@ -271,7 +296,7 @@ QTEntity* CreatorManager::getCollidingPushMax(QTEntity* qtEntity, std::vector<QT
 	gs->QTCollision.retrieve(qtEntity->getBounds(), possibleCollisions);
 	
 	QTEntity* maxColliding = NULL;
-	t_max = FLT_MIN;
+	t_max = -FLT_MAX;
 	for (unsigned i = 0; i < possibleCollisions.size(); i++)
 	{
 		Vector3D l_push(0, 0, 0, false);
@@ -1154,8 +1179,8 @@ float CreatorManager::getMaxOfMin(const Vector3D& center, const Vector3D& direct
 
 float CreatorManager::getMinOfMax(const Vector3D& center, const Vector3D& director, const Form& form)
 {
-	float max1 = FLT_MIN;
-	float max2 = FLT_MIN;
+	float max1 = -FLT_MAX;
+	float max2 = -FLT_MAX;
 
 	// Forme non reconnue, peut être un cercle?
 	assert(form.size() != 0);
@@ -1174,7 +1199,7 @@ float CreatorManager::getMinOfMax(const Vector3D& center, const Vector3D& direct
 		}
 	}
 
-	if (max2 == FLT_MIN)
+	if (max2 == -FLT_MAX)
 	{
 		max2 = max1;
 	}

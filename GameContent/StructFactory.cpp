@@ -2,6 +2,12 @@
 
 // ----- GETTER ----- //
 
+// RoadZ
+Road* StructFactory::newRoad(int x1, int y1, int x2, int y2, float width)
+{
+	return Road::create2pointsP(Vector3D(x1, y1), Vector3D(x2, y2), width);
+}
+
 // Housing
 House* StructFactory::newHouse(int x, int y)
 {

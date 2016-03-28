@@ -11,24 +11,29 @@ Game::~Game()
 
 void Game::initialize(int width, int height)
 {
-	leftLayer.initialize(0, (height*0.05f), (int) (width*0.1f), (int) (height*0.9f), gs);
-	mapLayer.initialize(0, 0, width, height, gs);
+	gs->initialize((float) SIZE_MAP_X, (float) SIZE_MAP_Y);
 	creatorManager.initialize(gs, &linkManager);
-	gs->initialize((float) width, (float) height);
+	linkManager.initialize(gs);
+
+	leftLayer.initialize(0, (int) (height*0.05f), (int) (width*0.1f), (int) (height*0.9f), gs);
+	mapLayer.initialize(0, 0, width, height, 200, gs);
 	mapRecLayer.initialize(
 		(int)(POS_X_FACTOR_REC_MAP*width),
 		(int)(POS_Y_FACTOR_REC_MAP*height),
 		width,
 		height,
-		6000,
-		4000,
+		(int) SIZE_MAP_X,
+		(int) SIZE_MAP_Y,
 		(int)(width*SIZE_FACTOR_REC_MAP),
-		0.9f,
+		200,
 		gs);
 	scoresLayer.initialize((int)(0.83f*width), 0, (int)(0.17f*width), 35, "test",
 		20, myColor(1.0f, 1.0f, 1.0f), myColor(0.4f, 0.4f, 0.4f, 0.6f), gs);
 	timeLayer.initialize((int)(0.5f*width - 35), 0, (int)(0.08f*width), 35, "test",
 		20, myColor(1.0f, 1.0f, 1.0f), myColor(0.4f, 0.4f, 0.4f, 0.6f), gs);
+
+
+	mapLayer.setCreatorManager(&creatorManager);
 }
 
 void Game::reset()
@@ -47,8 +52,6 @@ void Game::render(Graphics * g)
 	leftLayer.render(g);
 	mapRecLayer.render(g);
 	scoresLayer.render(g);
-
-
 }
 
 HudNs::HudEvent Game::update(float dt)
@@ -73,12 +76,9 @@ HudNs::HudEvent Game::handleEvent(Input & input)
 	{
 		mapRecLayer.handleEvent(input, Vector3D(false));
 	}
-	else if (mapLayer.isColliding(mouse))
-	{
+	if (!mapRecLayer.isColliding(mouse))
 		mapLayer.handleEvent(input, Vector3D(false));
-	}
-
 	
 
-	return HudNs::HudEvent();
+	return HudNs::OK;
 }

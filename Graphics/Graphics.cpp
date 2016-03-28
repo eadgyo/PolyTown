@@ -512,7 +512,7 @@ void Graphics::renderTextCenteredTTF(std::string police, std::string text, myCol
 	it = fontNames.find(fontName);
 	if (it != fontNames.end())
 	{
-		SDL_Color color = { (int)(textColor.r * 255), (int)(textColor.g * 255), (int)(textColor.b * 255), (int)(textColor.a * 255) };  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+		SDL_Color color = { (Uint8)(textColor.r * 255), (Uint8)(textColor.g * 255), (Uint8)(textColor.b * 255), (Uint8)(textColor.a * 255) };  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 		SDL_Surface* surfaceMessage = TTF_RenderText_Blended(it->second, text.c_str(), color);
 		GLuint texture = loadSurfaceGL(surfaceMessage);
 		mySurface* surface = createMySurface(texture, surfaceMessage);

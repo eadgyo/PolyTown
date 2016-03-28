@@ -1,3 +1,4 @@
+#pragma once
 #include "QTEntity.h"
 
 class QTEntityBuild : public QTEntity

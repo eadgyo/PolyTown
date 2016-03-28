@@ -35,13 +35,13 @@ private:
 
 	const int sizeTexts[8] = { 1, 4, 6, 4, 3, 4, 3, 1};
 	std::string textsP[8][6] = { {"routes"},
-										{"Residentielle", "Industrielle", "Commerciale", "Agricole"},
-										{"Eolienne", "Hydrolienne", "Panneau solaire", "Usine à charbon", "Usine à pétrole", "Centrale Nucléaire"},
-										{"Usine Incinération", "Centre enfouissement", "Centre Méthanisation", "Centre compostage"},
-										{"Traitement Eaux Usées", "Stockage Eau potable", "Traitement Eau Potable"},
-										{"Police", "Pompier", "Ecoles", "Hopitaux"},
-										{"Stades", "Cinémas", "Parcs"},
-									{"Destructor"} };
+								{"Residentielle", "Industrielle", "Commerciale", "Agricole"},
+								{"Eolienne", "Hydrolienne", "Panneau solaire", "Usine à charbon", "Usine à pétrole", "Centrale Nucléaire"},
+								{"Usine Incinération", "Centre enfouissement", "Centre Méthanisation", "Centre compostage"},
+								{"Traitement Eaux Usées", "Stockage Eau potable", "Traitement Eau Potable"},
+								{"Police", "Pompier", "Ecoles", "Hopitaux"},
+								{"Stades", "Cinémas", "Parcs"},
+								{"Destructor"} };
 
 
 	const int SIZE_CIRCLE_LL = 64;

@@ -50,7 +50,7 @@ void LeftLayer::initialize(int x, int y, int width, int height, GameStruct* gs)
 			STARTX_POPUP_LL,
 			posY,
 			WIDTH_POPUP_LL,
-			(SIZE_PER_TEXT_POPUP_LL)*(sizeTexts[i] + 0.5f) + add,
+			(int) ((SIZE_PER_TEXT_POPUP_LL)*(sizeTexts[i] + 0.5f) + add),
 			color,
 			(int) (FACTOR_SIZE_BOUTON_POPUP_LL*WIDTH_POPUP_LL),
 			SIZE_PER_TEXT_POPUP_LL,

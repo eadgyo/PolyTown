@@ -39,7 +39,7 @@ public:
         std::cout << score_soc << ' ';
         std::cout << score_eco << ' ';
         std::cout << score_env << std::endl;*/
-
+		/*
         std::cout << getDate() << " : ";
         std::cout << "DD = " << score_dd << " ";
         std::cout << "SS = " << score_soc << " ";
@@ -48,7 +48,7 @@ public:
         std::cout << "H = " << inhabitants << " ";
         std::cout << "W = " << workers << " ";
         std::cout << "U% = " << unemployment << " ";
-        std::cout << "M = " << money << " " << std::endl;
+        std::cout << "M = " << money << " " << std::endl;*/
     }
 
     std::string getDate() const
@@ -154,14 +154,15 @@ public:
     int topConnexitude = 0;
     std::vector<int> fConnexitudes;
 
-    QTEntity* lastSelected;
-    Form* possibleForm;
-    bool isLastMakable;
-
+    QTEntity* lastSelected = NULL;
+	QTEntity* tempEntity = NULL;
+	Form* possibleForm = NULL;
+    bool isLastMakable = false;
+	int roadState = -1;
 
 	// Séléction Interface
-	int state;
-	int stateIn;
+	int state = -1;
+	int stateIn = -1;
 
 	// Affichage écran
 	// Taille map

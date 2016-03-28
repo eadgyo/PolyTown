@@ -11,6 +11,7 @@ public:
     Shop(int x, int y);
 
     // ----- GETTER ----- //
+    p_uint getEnergyNeeds() const;
     bool isWorking() const;
 
     // ----- SETTER ----- //

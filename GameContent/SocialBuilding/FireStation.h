@@ -10,6 +10,7 @@ public:
     FireStation(int x, int y);
 
     // ----- GETTER ----- //
+    p_uint getWaterNeeds() const;
     bool isWorking() const;
 
     // ----- SETTER ----- //

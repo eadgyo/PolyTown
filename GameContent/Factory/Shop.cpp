@@ -9,6 +9,11 @@ Shop::Shop(int x, int y) :
 }
 
 // ----- GETTER ----- //
+p_uint Shop::getEnergyNeeds() const
+{
+    return m_energy_needs;
+}
+
 bool Shop::isWorking() const
 {
     return (m_power_plant != NULL);

@@ -93,6 +93,11 @@ void UpdateManager::updateScoreEco()
 
 void UpdateManager::updateScoreEnv()
 {
+    p_uint pollution = 0;
+    for (unsigned i = 0; i < gs->pollution.size(); i++) {
+        pollution += gs->pollution[i]->getIntensity(0);
+    }
+    gs->score_env = pollution;
 }
 
 void UpdateManager::updateInhabitants()
@@ -112,12 +117,15 @@ void UpdateManager::updateInhabitants()
 void UpdateManager::updateWorkers()
 {
     p_uint workers = 0;
+    p_uint free_workers = 0;
 
     for (unsigned i = 0; i < gs->factory.size(); i++) {
         workers += gs->factory[i]->getWorkers();
+        free_workers += gs->factory[i]->getFreeWorkers();
     }
 
     gs->workers = workers;
+    gs->free_workers = free_workers;
 }
 
 void UpdateManager::updateUnemployment()
@@ -153,4 +161,22 @@ void UpdateManager::updatePollution()
     for (unsigned i = 0; i < gs->pollution.size(); i++) {
         gs->pollution[i]->decreasePollution();
     }
+}
+
+void UpdateManager::updateFood()
+{
+    p_uint food_needs = 0;
+    for (unsigned i = 0; i < gs->housing.size(); i++) {
+        food_needs += gs->housing[i]->getFoodNeeds();
+    }
+    gs->food_needs = food_needs;
+
+    p_uint food_production = 0;
+    Farm* farm;
+    for (unsigned i = 0; i < gs->factory.size(); i++) {
+        if (farm = dynamic_cast<Farm*> (gs->factory[i])) {
+            food_production += farm->getProdution();
+        }
+    }
+    gs->food_production = food_production;
 }

@@ -33,6 +33,7 @@ public:
     void updateMoney();
     void updateFactories();
     void updatePollution();
+    void updateFood();
 
 private:
     GameStruct* gs;

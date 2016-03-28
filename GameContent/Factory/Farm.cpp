@@ -10,6 +10,21 @@ Farm::Farm(int x, int y) :
 }
 
 // ----- GETTER ----- //
+
+p_uint Farm::getWaterNeeds() const
+{
+    return m_water_needs;
+}
+
+p_uint Farm::getProdution() const
+{
+    if (isWorking()) {
+        return (m_output_rate * m_workers);
+    } else {
+        return 0;
+    }
+}
+
 bool Farm::isWorking() const
 {
     return (m_water_tower != NULL);

@@ -11,6 +11,7 @@ public:
     Water(p_uint water_needs);
 
     // ----- GETTER ----- //
+    virtual p_uint getWaterNeeds() const = 0;
     bool hasWater() const;
 
 protected:

@@ -12,6 +12,24 @@ Manufactory::Manufactory(int x, int y) :
 }
 
 // ----- GETTER ----- //
+p_uint Manufactory::getEnergyNeeds() const
+{
+    if (isWorking()) {
+        return m_workers * m_energy_needs;
+    } else {
+        return 0;
+    }
+}
+
+p_uint Manufactory::getWaterNeeds() const
+{
+    if (isWorking()) {
+        return m_workers * m_water_needs;
+    } else {
+        return 0;
+    }
+}
+
 bool Manufactory::isWorking() const
 {
     return (m_power_plant != NULL && m_water_tower != NULL);

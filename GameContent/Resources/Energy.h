@@ -11,6 +11,7 @@ public:
     Energy(p_uint energy_needs);
 
     // ----- GETTER ----- //
+    virtual p_uint getEnergyNeeds() const = 0;
     bool hasEnergy() const;
 
 protected:

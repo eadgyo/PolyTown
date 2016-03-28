@@ -14,9 +14,19 @@ p_uint Factory::getWorkers() const
     return m_workers;
 }
 
+p_uint Factory::getFreeWorkers() const
+{
+    return (m_max_workers - m_workers);
+}
+
 p_uint Factory::getIncome() const
 {
     return m_workers * m_income_rate;
+}
+
+bool Factory::isFull() const
+{
+    return (m_workers == m_max_workers);
 }
 
 // ----- SETTER ----- //

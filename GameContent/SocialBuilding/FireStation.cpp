@@ -8,6 +8,13 @@ FireStation::FireStation(int x, int y) :
 }
 
 // ----- GETTER ----- //
+p_uint FireStation::getWaterNeeds() const
+{
+    if (isWorking()) {
+        return m_water_needs;
+    }
+}
+
 bool FireStation::isWorking() const
 {
     return (SocialBuilding::isWorking() && (m_water_tower != NULL));

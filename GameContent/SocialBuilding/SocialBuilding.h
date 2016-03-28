@@ -16,6 +16,7 @@ public:
 
     // ---- GETTER ----- //
     p_uint getScore() const;
+    p_uint getEnergyNeeds() const;
     virtual bool isWorking() const;
 
     // ----- SETTER ----- //

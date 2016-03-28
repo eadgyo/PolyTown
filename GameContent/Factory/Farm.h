@@ -12,6 +12,8 @@ public:
     Farm(int x, int y);
 
     // ----- GETTER ----- //
+    p_uint getWaterNeeds() const;
+    p_uint getProdution() const;
     bool isWorking() const;
 
     // ----- SETTER ----- //

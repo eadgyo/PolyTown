@@ -22,6 +22,13 @@ p_uint SocialBuilding::getScore() const
     return m_score;
 }
 
+p_uint SocialBuilding::getEnergyNeeds() const
+{
+    if (isWorking()) {
+        return m_energy_needs;
+    }
+}
+
 bool SocialBuilding::isWorking() const
 {
     return (m_power_plant != NULL);

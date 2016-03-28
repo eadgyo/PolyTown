@@ -15,33 +15,12 @@
 class GameStruct
 {
 public:
-    GameStruct() :
-        time(0),
-        
-        score_dd(0),
-        score_soc(0),
-        score_eco(0),
-        score_env(0),
-        
-        money(START_MONEY_AMOUNT),
-        money_earned(0),
-        inhabitants(0),
-        free_inhabitants(0),
-        workers(0),
-
-        unemployment(0),
-        taxation_inhab(START_TAXATION_INHAB),
-        taxation_work(START_TAXATION_WORK)
+    GameStruct()
     {
     }
 
     void display()
     {
-        /*std::cout << score_dd << ' ';
-        std::cout << score_soc << ' ';
-        std::cout << score_eco << ' ';
-        std::cout << score_env << std::endl;*/
-		
         std::cout << getDate() << " : ";
         std::cout << "DD = " << score_dd << " ";
         std::cout << "SS = " << score_soc << " ";
@@ -57,7 +36,7 @@ public:
     {
         std::string date = "";
         unsigned int t = time;
-        
+
         date += std::to_string(2016 + GAME_SPEED * t / (360 * 1000));
         t = t % (360 * 1000 / GAME_SPEED);
         std::string months = std::to_string(1 + GAME_SPEED * t / (30 * 1000));
@@ -75,43 +54,44 @@ public:
         return date;
     }
 
-	void initialize(float width, float height)
-	{
-		sRectangle rec(0.0f, 0.0f, width, height);
-		QTCollision.setRect(rec);
-		QTWaterGen.setRect(rec);
-		QTWaterRes.setRect(rec);
-		QTElecGen.setRect(rec);
-		QTElecRes.setRect(rec);
-		QTRoads.setRect(rec);
-		QTHabitations.setRect(rec);
-		QTPollutionWater.setRect(rec);
-		QTPollutionAir.setRect(rec);
-	}
-	
+    void initialize(float width, float height)
+    {
+        sRectangle rec(0.0f, 0.0f, width, height);
+        QTCollision.setRect(rec);
+        QTWaterGen.setRect(rec);
+        QTWaterRes.setRect(rec);
+        QTElecGen.setRect(rec);
+        QTElecRes.setRect(rec);
+        QTRoads.setRect(rec);
+        QTHabitations.setRect(rec);
+        QTPollutionWater.setRect(rec);
+        QTPollutionAir.setRect(rec);
+    }
+
 
     // Time
     unsigned int time;
 
     // Scores
-    p_uint score_dd;
-    p_uint score_soc;
-    p_uint score_eco;
-    p_uint score_env;
+    p_uint score_dd = 0;
+    p_uint score_soc = 0;
+    p_uint score_eco = 0;
+    p_uint score_env = 0;
 
     // Stats
-    p_uint money;
-    p_uint money_earned;
-    p_uint inhabitants;
-    p_uint free_inhabitants;
-    p_uint workers;
-    p_uint food_production;
-    p_uint food_consumption;
+    p_uint money = START_MONEY_AMOUNT;
+    p_uint money_earned = 0;
+    p_uint inhabitants = 0;
+    p_uint free_inhabitants = 0;
+    p_uint workers = 0;
+    p_uint free_workers = 0;
+    p_uint food_production = 0;
+    p_uint food_needs = 0;
 
     // Ratio
-    float unemployment;
-    float taxation_inhab;
-    float taxation_work;
+    float unemployment = 0.0f;
+    float taxation_inhab = START_TAXATION_INHAB;
+    float taxation_work = START_TAXATION_WORK;
 
     // Compteur des structures alimentées
     unsigned int struct_counter[5] = {0}; // Housing | Social | Manufactory | Energy | Water
@@ -121,6 +101,11 @@ public:
     std::vector<Factory*> factory; // Bâtiments économiques
     std::vector<SocialBuilding*> social; // Bâtiments sociaux
     std::vector<PollutionArea*> pollution; // Zones de pollution
+
+    Housing* best_house = NULL;
+    Housing* worst_house = NULL;
+    Factory* best_factory = NULL;
+    Factory* worst_factory = NULL;
 
     // Gérer collisions et affichages
     // Autre que les routes
@@ -159,20 +144,20 @@ public:
     std::vector<int> fConnexitudes;
 
     QTEntity* lastSelected = NULL;
-	QTEntity* tempEntity = NULL;
-	Form* possibleForm = NULL;
+    QTEntity* tempEntity = NULL;
+    Form* possibleForm = NULL;
     bool isLastMakable = false;
-	int roadState = -1;
+    int roadState = -1;
 
-	// Séléction Interface
-	int state = -1;
-	int stateIn = -1;
+    // Séléction Interface
+    int state = -1;
+    int stateIn = -1;
 
-	// Affichage écran
-	// Taille map
-	sRectangle mapRec;
-	// Zone affichage
-	sRectangle zoneToDisplay;
-	
-	bool isReady = false;
+    // Affichage écran
+    // Taille map
+    sRectangle mapRec;
+    // Zone affichage
+    sRectangle zoneToDisplay;
+
+    bool isReady = false;
 };

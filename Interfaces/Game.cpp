@@ -32,16 +32,14 @@ void Game::initialize(int width, int height)
 	timeLayer.initialize((int)(0.5f*width - 35), 0, (int)(0.08f*width), 35, "test",
 		20, myColor(1.0f, 1.0f, 1.0f), myColor(0.4f, 0.4f, 0.4f, 0.6f), gs);
 
-
 	mapLayer.setCreatorManager(&creatorManager);
 
-
-	QTEntity* a = StructFactory::newHouse(600, 450);
+	QTEntity* a = StructFactory::newHouse(600, 800);
 	a->setRadians((float) (PI / 3));
-
+	
 	gs->QTCollision.insert(a);
-	gs->QTCollision.insert(StructFactory::newHouse(400, 850));
-	gs->QTCollision.insert(StructFactory::newHouse(470, 350));
+	//gs->QTCollision.insert(StructFactory::newHouse(400, 850));
+	//gs->QTCollision.insert(StructFactory::newHouse(470, 350));
 
 }
 
@@ -56,11 +54,12 @@ void Game::resize(int width, int height)
 void Game::render(Graphics * g)
 {
 	std::vector<QTEntity*> entity;
-	timeLayer.render(g);
+	
 	mapLayer.render(g);
 	leftLayer.render(g);
 	mapRecLayer.render(g);
 	scoresLayer.render(g);
+	timeLayer.render(g);
 }
 
 HudNs::HudEvent Game::update(float dt)
@@ -76,6 +75,7 @@ HudNs::HudEvent Game::handleEvent(Input & input)
 	if (input.getMousePressed(1))
 	{
 		leftLayer.reset();
+		mapLayer.reset();
 	}
 
 	if (leftLayer.isColliding(mouse))

@@ -277,6 +277,8 @@ int LinkManager::computeRoadIndex(std::map<float, Road*> myRoad)
 				}
 			}
 		}
+
+		it++;
 	}
 
 	return minIndex;

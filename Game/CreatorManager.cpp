@@ -31,7 +31,7 @@ bool CreatorManager::addRoad(Road * road)
 	myRoad[FLT_MAX] = road;
 	Vector3D start = road->getStart();
 	Vector3D end = road->getEnd();
-	Vector3D director = end - start;
+	Vector3D director = (end - start).getNormalize();
 	float width = road->getWidth();
 	float theta = road->getAngle2D();
 
@@ -98,6 +98,11 @@ bool CreatorManager::isMakableSnappRoad(Road * road, CRoadStruct& cRoadStrcut)
 	if (!isInside(road))
 		return false;
 
+	std::vector<QTEntity*> entities;
+	getColliding(road, entities);
+	if (entities.size() != 0)
+		return false;
+
 	// Clear
 	cRoadStrcut.clear();
 
@@ -154,6 +159,7 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 	// Mauvaise initialisation de qtEntity
 	assert(qtEntity->getForm() != NULL);
 	Vector3D pos = qtEntity->getCenter();
+	float thetaSave = qtEntity->getAngle2D();
 	std::vector<QTEntity*> colliding;
 	Vector3D push;
 	float t;
@@ -162,19 +168,7 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 	// Le cercle est transformé en rectangle pour supporter le QuadTree
 	// Pourquoi un cercle et pas un simple rectangle getBound ?
 	// On va faire des rotations, donc il faut être sur qu'on a tous les objets possiblement en collision
-	gs->QTCollision.retrieve(qtEntity->getBoundsMax(), colliding);
-
-	if (colliding.size() != 0)
-	{
-		bool test = false;
-		for (unsigned i = 0; i < colliding.size(); i++)
-		{
-			float t;
-			test = qtEntity->isColliding((*colliding[i]), Vector3D(), t);
-			if (test)
-				std::cout << "Colliding";
-		}
-	}
+	//gs->QTCollision.retrieve(qtEntity->getBoundsMax(), colliding);
 
 	// Parmis tous les objets en collision, on cherche l'élément qui est le plus en collision
 	colliding.clear();
@@ -183,30 +177,39 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 	if(nearEntity != NULL)
 	{
 		float theta = nearEntity->getAngle2D();
-		if ((abs(theta) > 0.001f) && (abs(theta - 2*PI) > 0.001f))
+		if ((abs(theta - PI/2) > 0.001f) && (abs(theta + PI/2) > 0.001f))
 		{
-			qtEntity->setRadians(nearEntity->getAngle2D());
+			qtEntity->setRadians(-theta);
+			
+			
 			Vector3D l_push;
-
+			float l_t;
+			std::vector<QTEntity*> l_colliding;
 			// On calcule le vecteur de poussée avec la nouvelle rotation
+			
+			getCollidingPushMax(qtEntity, l_colliding, l_push, l_t);
 			unsigned i = 0;
-			do
+			while (l_colliding.size() != 0 && i < 4)
 			{
-				colliding.clear();
-				getCollidingStop(qtEntity, colliding, l_push);
-				qtEntity->translate(l_push);
+				qtEntity->translate(l_push*1.01f);
+
+				l_colliding.clear();
+				getCollidingPushMax(qtEntity, l_colliding, l_push, l_t);
+				
 				i++;
-			} while (colliding.size() != 0 && i < 4);
+			}
 
 			// On reteste la collision
-			colliding.clear();
-			getColliding(qtEntity, colliding);
-			if (colliding.size() != 0)
+			if (l_colliding.size() != 0)
 			{
 				// La rotation + translation a crée au moins une autre collision
 				// On revient en arrière
-				qtEntity->setRadians(0);
+				qtEntity->setRadians(thetaSave);
 				qtEntity->setCenter(pos);
+			}
+			else
+			{
+				colliding.clear();
 			}
 		}
 
@@ -220,20 +223,24 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 			
 			numberOfTry++;
 		}
-
+		
 		colliding.clear();
 		getColliding(qtEntity, colliding, push);
 		
 		if (colliding.size() != 0 || (qtEntity->getCenter() - pos).getMagnitude() > DISTANCE_MAX_SNAPP)
 		{
 			// Si pas satisfait, on revient à la pos de départ
-			qtEntity->setRadians(0);
+			qtEntity->setRadians(thetaSave);
 			qtEntity->setCenter(pos);
 			return false;
 		}
+
+		return true;
 	}
 
 	return true;
+	
+	
 }
 
 
@@ -264,6 +271,8 @@ void CreatorManager::getColliding(QTEntity* qtEntity, std::vector<QTEntity*>& co
 	{
 		Vector3D l_push(0,0,0,false);
 		float t = 0;
+		bool a = qtEntity->isColliding(*(possibleCollisions[i]));
+
 		if (qtEntity->isColliding(*(possibleCollisions[i]), l_push, t))
 		{
 			// Collision directe entre les deux formes
@@ -301,7 +310,7 @@ void CreatorManager::getCollidingStop(QTEntity* qtEntity, std::vector<QTEntity*>
 			colliding.push_back(possibleCollisions[i]);
 
 			// On ajoute le vecteur de poussé au vecteur globale
-			push += l_push*t;
+			push = l_push*t;
 			return;
 		}
 	}
@@ -315,22 +324,22 @@ QTEntity* CreatorManager::getCollidingPushMax(QTEntity* qtEntity, std::vector<QT
 	gs->QTCollision.retrieve(qtEntity->getBounds(), possibleCollisions);
 	
 	QTEntity* maxColliding = NULL;
-	t_max = -FLT_MAX;
+	t_max = FLT_MIN;
 	for (unsigned i = 0; i < possibleCollisions.size(); i++)
 	{
 		Vector3D l_push(0, 0, 0, false);
 		float t = 0;
-		if (qtEntity->getForm()->isColliding(*(possibleCollisions[i]->getForm()), l_push, t))
+		if (qtEntity->isColliding(*(possibleCollisions[i]), l_push, t))
 		{
 			// Collision directe entre les deux formes
 			colliding.push_back(possibleCollisions[i]);
 
 			// On cherche l'entité avec la force de poussée max
-			if (t > t_max)
+			if (abs(t) > abs(t_max))
 			{
 				t_max = t;
 				maxColliding = possibleCollisions[i];
-				push.set(l_push*t);
+				push = l_push*t;
 			}
 		}
 	}

@@ -202,7 +202,7 @@ private:
 	LinkManager *linkManager;
 	
 	// Nombre d'essais max pour isMakableSnapp
-	const int MAX_TRY_SNAPP_QTENTITY = 10;
+	const int MAX_TRY_SNAPP_QTENTITY = 5;
 	// Distance maximale pour le snapp, isMakableSnapp
 	const float DISTANCE_MAX_SNAPP = 40.0f;
 	

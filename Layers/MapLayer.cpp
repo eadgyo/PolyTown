@@ -14,6 +14,11 @@ void MapLayer::initialize(int x, int y, int width, int height, int deltaSide, Ga
 	this->deltaSide = deltaSide;
 }
 
+void MapLayer::reset()
+{
+	gs->roadState = -1;
+}
+
 void MapLayer::update(float dt)
 {
 }
@@ -28,23 +33,20 @@ void MapLayer::render(Graphics * g)
 	// Rendu des images
 	std::vector<QTEntity*> entities;
 
-	if (gs->tempEntity != NULL)
-	{
-		gs->tempEntity->getCenter().display();
-		gs->QTCollision.retrieve(gs->tempEntity, entities);
-	}
-	std::cout << entities.size() << std::endl;
-
+	gs->QTCollision.retrieve(gs->zoneToDisplay, entities);
+	
 	g->translate(-gs->zoneToDisplay.getLeft());
 
 	for (unsigned i = 0; i < entities.size(); i++)
 	{
 		g->setColor(myColor(0.2f, 0.2f, 0.2f));
 		g->render(*(entities[i]->getForm()));
-
+		//g->drawForm(*(entities[i]->getForm()));
+		/*
 		g->setColor(myColor::RED());
 		sRectangle test = entities[i]->getBounds();
 		g->drawForm(test);
+		*/
 	}
 	
 	// Affichage de l'élément qui peut être dessiner
@@ -52,21 +54,30 @@ void MapLayer::render(Graphics * g)
 	{
 		if (gs->isLastMakable)
 		{
-			g->setColor(myColor::GREEN());
+			g->setColor(myColor::GREEN(0.5f));
 		}
 		else
 		{
-			g->setColor(myColor::RED());
+			g->setColor(myColor::RED(0.5f));
 		}
 		g->render(*(gs->tempEntity->getForm()));
+		g->drawForm(*(gs->tempEntity->getForm()));
+		
+		gs->tempEntity->setRadians(-gs->tempEntity->getAngle2D());
+		for (unsigned i = 0; i < entities.size(); i++)
+		{
+			if (entities[i]->isColliding(*(gs->tempEntity->getForm())))
+			{
+				g->setColor(myColor::RED(0.3f));
+				g->render(*(entities[i]->getForm()));
+			}
+		}
 
-
+		gs->tempEntity->setRadians(-gs->tempEntity->getAngle2D());
 	}
 
 	gs->QTCollision.draw(g);
 
-	sRectangle recA(0, 0, 100, 100);
-	g->render(recA);
 	g->translate(gs->zoneToDisplay.getLeft());
 	
 	g->translate(-rec.getLeft());
@@ -130,9 +141,15 @@ void MapLayer::updateRoad(const Vector3D& mousePos)
 
 void MapLayer::updateEntity(const Vector3D& mousePos)
 {
-	Vector3D l_mousePos = gs->zoneToDisplay.getLeft() + mousePos;
+	Vector3D l_mousePos;
+	
+	if(isUpdating)
+		l_mousePos.set(gs->zoneToDisplay.getLeft() + mousePos);
+	else
+		l_mousePos.set(lastMousePos);
 	if (gs->state != -1 && gs->stateIn != -1)
 	{
+
 		if (gs->roadState == -1 && gs->tempEntity != NULL)
 		{
 			delete gs->tempEntity;
@@ -227,8 +244,15 @@ LayerNs::LayerEvent MapLayer::handleEvent(Input & input, const Vector3D& transla
 
 	updateEntity(mousePos);
 	
-	float facX = 0.15f;
-	float facY = 0.15f;
+	if (input.getKeyPressed(1))
+	{
+		lastMousePos.set(gs->zoneToDisplay.getLeft() + mousePos);
+		isUpdating = !isUpdating;
+	}
+	
+
+	float facX = 0.10f;
+	float facY = 0.10f;
 
 	float deltaX = 0;
 	float deltaY = 0;

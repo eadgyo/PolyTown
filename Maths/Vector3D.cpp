@@ -133,8 +133,12 @@ float Vector3D::getSqMagnitude() const
 }
 float Vector3D::normalize()
 {
+
 	float magn = getMagnitude();
-	(*this)/=magn;
+	if (magn != 0)
+	{
+		(*this) /= magn;
+	}	
 	return magn;
 }
 Vector3D Vector3D::getProjection2D(const Vector3D& vec, const Vector3D& p) const
@@ -341,6 +345,11 @@ bool Vector3D::operator==(Vector3D const& v)
 			return false;
 	}
 	return true;
+}
+
+void Vector3D::operator=(Vector3D const &v)
+{
+	set(v);
 }
 
 void Vector3D::display()

@@ -98,6 +98,7 @@ public:
 	Vector3D operator%(Vector3D const&) const;
 	void operator%=(Vector3D const&);
 	bool operator==(Vector3D const&);
+	void operator=(Vector3D const&);
 	float& operator[](int const&);
 	bool operator<(const Vector3D&) const;
 

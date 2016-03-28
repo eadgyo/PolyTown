@@ -123,8 +123,8 @@ Vector3D Form::getCentroidLocal() const
 
 		const Vector3D* locals = getPointsLocal();
 		std::vector<Vector3D> points(locals, locals + size());
-		return Vector3D((points.at(0).x() + points.at(1).x())/2,
-							(points.at(0).y() + points.at(1).y())/2);
+		return Vector3D((points.at(0).x() + points.at(1).x())*0.5f,
+							(points.at(0).y() + points.at(1).y())*0.5f);
 	}
 	Vector3D center(true);
 	float x0 = 0, y0 = 0, x1 = 0, y1 = 0, signedArea = 0, a = 0;
@@ -444,7 +444,7 @@ Vector3D Form::handleEdgePoint(const Vector3D& PA, const Vector3D& PB1,
 
 Vector3D& Form::operator [](int i)
 {
-	return points[i];
+	return get(i);
 }
 
 void Form::updateCenter()
@@ -606,9 +606,7 @@ void Form::setPos(const Vector3D& v)
 void Form::setRadians(float omega)
 {
 	float f = omega - this->omega;
-	this->omega = omega;
-	orientation.rotateRadiansZFree(f, Vector3D(true));
-	updateOrientation();
+	rotateRadians(f, getCenter());
 }
 
 void Form::setScale(float scale)
@@ -679,11 +677,16 @@ bool Form::isColliding(Form & form, Vector3D & push, float & t)
 
 bool Form::collisionSat(Form& form)
 {
+	/*
 	if(convexForms.size() == 0)
 		updateConvexForms();
 	if(form.getConvexForms().size() == 0)
 		form.updateConvexForms();
-
+	*/
+	Vector3D VA(true);
+	Vector3D VB(true);
+	return collisionSatFree(form, VA, VB);
+	/*
 	for(unsigned i=0; i<convexForms.size(); i++)
 	{
 		Vector3D VA(true);
@@ -691,25 +694,25 @@ bool Form::collisionSat(Form& form)
 		if(convexForms.at(i).collisionSatFree(form, VA, VB))
 			return true;
 	}
-	return false;
+	return false;*/
 }
 
 bool Form::collisionSat(Form& form, const Vector3D& VA,
 		const Vector3D& VB, Vector3D& push, float& t)
 {
+	/*
 	if(convexForms.size() == 0)
 		updateConvexForms();
 	if(form.getConvexForms().size() == 0)
 		form.updateConvexForms();
 
 	for(unsigned i=0; i<convexForms.size(); i++)
-	{
-		Vector3D VA(true);
-		Vector3D VB(true);
-		if(convexForms.at(i).collisionSatA(form, VA, VB, push, t))
-			return true;
-	}
-	return false;
+	{*/
+
+	return collisionSatA(form, VA, VB, push, t);
+
+	/*}
+	return false;*/
 }
 
 bool Form::collisionSatFree(const Form& B, const Vector3D& VA,
@@ -2070,6 +2073,7 @@ const std::vector<Form>& Form::getConvexForms() const
 
 void Form::updateConvexForms()
 {
+	std::cout << "Pas nécessaire";
 	convexForms.clear();
 	if(isConvex())
 	{

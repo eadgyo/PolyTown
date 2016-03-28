@@ -50,7 +50,7 @@ public:
     void setName(std::string name);
 
 	// Transformations
-	inline void setRadians(float theta) { form->setRadians(theta); };
+	void setRadians(float theta);
 	inline void translate(const Vector3D& vec) { form->translate(vec); };
 
 

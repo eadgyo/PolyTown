@@ -14,6 +14,7 @@ public:
 	void render(Graphics* g);
 	LayerNs::LayerEvent handleEvent(Input& input, const Vector3D& translation);
 
+	void reset();
 	bool create();
 	bool isMakable();
 	void updateEntity(const Vector3D& mousePos);
@@ -27,8 +28,7 @@ public:
 protected:
 	CreatorManager* cm;
 	int deltaSide;
-
-	
-
+	bool isUpdating = true;
+	Vector3D lastMousePos;
 };
 

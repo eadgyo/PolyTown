@@ -181,10 +181,15 @@ void QTEntity::setName(std::string name)
     m_name = name;
 }
 
+void QTEntity::setRadians(float theta)
+{
+	form->setRadians(theta);
+}
+
 
 Vector3D QTEntity::getDirectorVec() const
 {
-	if (form->size() > 1)
+	if (form->size() > 1 && (form->get(1) - form->get(0)).getMagnitude() != 0)
 		return (form->get(1) - form->get(0)).getNormalize();
 	else
 		return Vector3D(0, 1, 0, false);

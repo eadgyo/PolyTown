@@ -916,7 +916,14 @@ bool CreatorManager::analyseType(myRectangle& startColl, myRectangle& endColl, s
 	if (isStartColliding || isEndColliding)
 	{
 		// L'angle est il trop faible?
-		if (abs(director.getAngle2D(director1) - MIN_ANGLE2D*PI) < 0 || abs(director.getAngle2D(director1) - MIN_ANGLE2D*PI + 2*PI) < 0)
+		float theta = director.getAngle2D(director1);
+		float theta1 = theta + 2*PI;
+		float theta2 = theta - 2*PI;
+		if (abs(director.getAngle2D(director1)) < MIN_ANGLE2D*PI ||
+			abs(director.getAngle2D(director1) + 2*PI) < MIN_ANGLE2D*PI ||
+			abs(director.getAngle2D(director1) + PI) < MIN_ANGLE2D*PI ||
+			abs(director.getAngle2D(director1) - 2*PI) < MIN_ANGLE2D*PI ||
+			abs(director.getAngle2D(director1) - PI) < MIN_ANGLE2D*PI)
 		{
 			// Est ce que la route est en collision avec tous les midColls
 			bool isColliding = true;

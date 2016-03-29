@@ -210,7 +210,7 @@ private:
 	
 	// PreIsMakableSnappRoad
 	// Angle Min entre 2 routes lors de la collision Debut/Fin
-	const float MIN_ANGLE2D = 0.25f;
+	const float MIN_ANGLE2D = 0.75f;
 	// Angrandissement des rectangles Debut/Fin
 	const float DEF_WIDTH_ROAD = 30.0f;
 	const float DEF_HEIGHT_ROAD = 50.0f;

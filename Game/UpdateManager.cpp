@@ -42,7 +42,14 @@ void UpdateManager::updateFast(unsigned int dt)
     if (time > 1000 * UPDATE_TIME / GAME_SPEED) {
         time -= 1000 * UPDATE_TIME / GAME_SPEED;
         gs->display();
+
+        housingBestWorst();
+        factoryBestWorst();
+        
+        inOutInhabitants();
         updateInhabitants();
+        updateUnemployment();
+        inOutWorkers();
         updateWorkers();
         updateUnemployment();
     }
@@ -88,7 +95,7 @@ void UpdateManager::updateScoreSoc()
 
 void UpdateManager::updateScoreEco()
 {
-    gs->score_eco = gs->money * gs->unemployment + gs->money_earned;
+    gs->score_eco = gs->money / gs->unemployment + gs->money_earned;
 }
 
 void UpdateManager::updateScoreEnv()
@@ -130,7 +137,11 @@ void UpdateManager::updateWorkers()
 
 void UpdateManager::updateUnemployment()
 {
-    gs->unemployment = (float) (gs->inhabitants - gs->workers) / (float) (gs->inhabitants);
+    if (gs->inhabitants != 0) {
+        gs->unemployment = (float) (gs->inhabitants - gs->workers) / (float) (gs->inhabitants);
+    } else {
+        gs->unemployment = 100.0f;
+    }
 }
 
 void UpdateManager::updateMoney()
@@ -179,4 +190,79 @@ void UpdateManager::updateFood()
         }
     }
     gs->food_production = food_production;
+}
+
+// ----- In - Out ----- //
+void UpdateManager::housingBestWorst()
+{
+    Housing* best = NULL;
+    Housing* worst = NULL;
+    p_uint score_max = 0;
+    p_uint score_min = -1; // Infini du pauvre
+
+    for (unsigned i = 0; i < gs->housing.size(); i++) {
+        if (!gs->housing[i]->isFull() && gs->housing[i]->getScore() > score_max) {
+            best = gs->housing[i];
+            score_max = best->getScore();
+        }
+        if (!gs->housing[i]->isEmpty() && gs->housing[i]->getScore() < score_min) {
+            worst = gs->housing[i];
+            score_min = worst->getScore();
+        }
+    }
+
+    gs->best_housing = best;
+    gs->worst_housing = worst;
+}
+
+void UpdateManager::factoryBestWorst()
+{
+    Factory* best = NULL;
+    Factory* worst = NULL;
+    p_uint score_max = 0;
+    p_uint score_min = -1; // Infini du pauvre
+
+    for (unsigned i = 0; i < gs->factory.size(); i++) {
+        if (!gs->factory[i]->isFull() && gs->factory[i]->getFreeWorkers() > score_max) {
+            best = gs->factory[i];
+            score_max = best->getFreeWorkers();
+        }
+        if (!gs->factory[i]->isEmpty() && gs->factory[i]->getFreeWorkers() < score_min) {
+            worst = gs->factory[i];
+            score_min = worst->getFreeWorkers();
+        }
+    }
+
+    gs->best_factory = best;
+    gs->worst_factory = worst;
+}
+
+void UpdateManager::inOutInhabitants()
+{
+    p_uint incoming = gs->free_inhabitants / 2;
+    std::cout << incoming << std::endl;
+    p_uint outgoing = gs->inhabitants * gs->unemployment / 2;
+
+    if (gs->worst_housing) {
+        gs->worst_housing->delInhabitants(outgoing);
+    }
+    if (gs->best_housing) {
+        gs->best_housing->addInhabitants(incoming);
+    }
+}
+
+void UpdateManager::inOutWorkers()
+{
+    p_uint incoming = gs->inhabitants * gs->unemployment / 2;
+
+    if (gs->worst_factory) {
+        if (gs->worst_factory->isWorking()) {
+            gs->worst_factory->delWorkers(1);
+        } else {
+            gs->worst_factory->empty();
+        }
+    }
+    if (gs->best_factory) {
+        gs->best_factory->addWorkers(incoming);
+    }
 }

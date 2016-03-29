@@ -102,8 +102,8 @@ public:
     std::vector<SocialBuilding*> social; // Bâtiments sociaux
     std::vector<PollutionArea*> pollution; // Zones de pollution
 
-    Housing* best_house = NULL;
-    Housing* worst_house = NULL;
+    Housing* best_housing = NULL;
+    Housing* worst_housing = NULL;
     Factory* best_factory = NULL;
     Factory* worst_factory = NULL;
 

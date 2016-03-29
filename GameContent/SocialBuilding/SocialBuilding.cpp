@@ -26,6 +26,8 @@ p_uint SocialBuilding::getEnergyNeeds() const
 {
     if (isWorking()) {
         return m_energy_needs;
+    } else {
+        return 0;
     }
 }
 

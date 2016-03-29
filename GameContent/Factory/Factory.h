@@ -16,10 +16,12 @@ public:
 
     virtual bool isWorking() const = 0;
     bool isFull() const;
+    bool isEmpty() const;
 
     // ----- SETTER ----- //
     p_uint addWorkers(p_uint n);
     p_uint delWorkers(p_uint n);
+    void Factory::empty();
 
     virtual void update() = 0;
 

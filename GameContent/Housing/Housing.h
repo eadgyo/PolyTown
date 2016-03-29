@@ -17,8 +17,10 @@ public:
     p_uint getFoodNeeds() const;
     p_uint getWaterNeeds() const;
     p_uint getEnergyNeeds() const;
+    p_uint getScore() const;
 
     bool isFull() const;
+    bool isEmpty() const;
     bool hasFood() const;
 
     // ----- SETTER ----- //

@@ -18,7 +18,7 @@ p_uint Housing::getInhabitants() const
 
 p_uint Housing::getFreeInhabitants() const
 {
-    return m_max_inhabitants - m_inhabitants;
+    return (m_max_inhabitants - m_inhabitants);
 }
 
 p_uint Housing::getFoodNeeds() const
@@ -36,9 +36,23 @@ p_uint Housing::getEnergyNeeds() const
     return m_inhabitants * m_energy_needs;
 }
 
+p_uint Housing::getScore() const
+{
+    if (m_power_plant && m_water_tower) {
+        return getFreeInhabitants();
+    } else {
+        return 0;
+    }
+}
+
 bool Housing::isFull() const
 {
     return (m_inhabitants == m_max_inhabitants);
+}
+
+bool Housing::isEmpty() const
+{
+    return (m_inhabitants == 0);
 }
 
 bool Housing::hasFood() const

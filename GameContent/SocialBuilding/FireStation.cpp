@@ -12,6 +12,8 @@ p_uint FireStation::getWaterNeeds() const
 {
     if (isWorking()) {
         return m_water_needs;
+    } else {
+        return 0;
     }
 }
 

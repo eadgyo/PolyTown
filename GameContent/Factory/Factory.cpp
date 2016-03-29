@@ -16,7 +16,11 @@ p_uint Factory::getWorkers() const
 
 p_uint Factory::getFreeWorkers() const
 {
-    return (m_max_workers - m_workers);
+    if (isWorking()) {
+        return (m_max_workers - m_workers);
+    } else {
+        return 0;
+    }
 }
 
 p_uint Factory::getIncome() const
@@ -27,6 +31,11 @@ p_uint Factory::getIncome() const
 bool Factory::isFull() const
 {
     return (m_workers == m_max_workers);
+}
+
+bool Factory::isEmpty() const
+{
+    return (m_workers == 0);
 }
 
 // ----- SETTER ----- //
@@ -52,4 +61,9 @@ p_uint Factory::delWorkers(p_uint n)
         m_workers -= n;
         return 0;
     }
+}
+
+void Factory::empty()
+{
+    m_workers = 0;
 }

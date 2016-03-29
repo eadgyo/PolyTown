@@ -162,14 +162,10 @@ void PolyTown::startGame()
 {
     cout << "Game started" << endl;
 
-	gs->money = START_MONEY_AMOUNT;
-
     gs->housing.push_back(StructFactory::newHouse(10, 10));
     gs->housing.push_back(StructFactory::newHouse(100, 100));
-    gs->housing[0]->addInhabitants(5);
 
     gs->factory.push_back(StructFactory::newFarm(0, 0));
-    gs->factory[0]->addWorkers(3);
 
     gs->social.push_back(StructFactory::newSchool(0, 0));
     gs->social.push_back(StructFactory::newFireStation(0, 0));

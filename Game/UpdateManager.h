@@ -35,6 +35,12 @@ public:
     void updatePollution();
     void updateFood();
 
+    // ----- In - Out ----- //
+    void housingBestWorst();
+    void factoryBestWorst();
+    void inOutInhabitants();
+    void inOutWorkers();
+
 private:
     GameStruct* gs;
 };

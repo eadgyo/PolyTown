@@ -408,10 +408,12 @@ void LinkManager::addGeneratorPower(PowerPlant * gen)
 	for (unsigned i = 0; i < needPower.size(); i++)
 	{
 		Energy* energy = dynamic_cast<Energy*>(needPower[i]);
-		if(gen->addConsumer(needPower[i], energy->getEnergyNeeds()))
+		if(gen->addConsumer(needPower[i]))
 			gs->QTElecRes.erase(needPower[i]);
 	}
 
+	// On finit par ajouter ce générateur au QT
+	gs->QTElecGen.insert(gen);
 }
 
 void LinkManager::addGeneratorWater(WaterTower * gen)
@@ -423,7 +425,7 @@ void LinkManager::addGeneratorWater(WaterTower * gen)
 	for (unsigned i = 0; i < needWater.size(); i++)
 	{
 		Water* water = dynamic_cast<Water*>(needWater[i]);
-		if(gen->addConsumer(needWater[i], water->getWaterNeeds()))
+		if(gen->addConsumer(needWater[i]))
 			gs->QTWaterRes.erase(needWater[i]);
 	}
 

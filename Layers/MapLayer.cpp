@@ -258,6 +258,31 @@ void MapLayer::renderConnexitudeBuilding(Graphics* g, std::vector<QTEntity*> ent
 	}
 }
 
+void MapLayer::renderGenResLink(Graphics * g, std::vector<QTEntity*> entities)
+{
+	// Rendu des liens entre générateurs et consommateurs
+	for (unsigned i = 0; i < entities.size(); i++)
+	{
+		// On regarde si c'est un consommateur ou un générateur
+		Energy* energy = dynamic_cast<Energy*>(entities[i]);
+		Water* water = dynamic_cast<Water*>(entities[i]);
+		Resources* res = dynamic_cast<Resources*>(entities[i]);
+
+		if (energy != NULL)
+		{
+
+		}
+		else if (water != NULL)
+		{
+
+		}
+		else if (res != NULL)
+		{
+
+		}
+	}
+}
+
 bool MapLayer::create()
 {
 	QTEntityBuild* castBuild = dynamic_cast<QTEntityBuild*>(gs->tempEntity);

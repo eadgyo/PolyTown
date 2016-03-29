@@ -13,3 +13,13 @@ bool Energy::hasEnergy() const
 {
     return (m_power_plant != NULL);
 }
+
+PowerPlant * Energy::getPowerPlant()
+{
+	return m_power_plant;
+}
+
+void Energy::setPowerPlant(PowerPlant* power_plant)
+{
+	m_power_plant = power_plant;
+}

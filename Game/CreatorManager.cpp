@@ -125,7 +125,7 @@ bool CreatorManager::isMakableSnappRoad(Road * road, CRoadStruct& cRoadStrcut)
 	float width = road->getWidth();
 	
 	// On commencer par regarder si c'est faisable
-	// Ensuite on tente de bouger
+	// Ensuite on tante de bouger
 	// Si le mouvement marche pas on revient en arrière
 	if (!isCorrect(road, cRoadStrcut))
 		return false;
@@ -184,7 +184,7 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 	// Parmis tous les objets en collision, on cherche l'élément qui est le plus en collision
 	colliding.clear();
 	QTEntity* nearEntity = getCollidingPushMax(qtEntity, colliding, push, t);
-	// On tente une rotation puis une translation
+	// On tante une rotation puis une translation
 	if(nearEntity != NULL)
 	{
 		float theta = nearEntity->getAngle2D();

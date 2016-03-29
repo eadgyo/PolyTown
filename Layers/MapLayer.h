@@ -19,6 +19,7 @@ public:
 	void renderConnexitude(Graphics* g, std::vector<QTEntity*> entities);
 	void renderLinkRoad(Graphics * g, std::vector<QTEntity*> entities);
 	void renderConnexitudeBuilding(Graphics* g, std::vector<QTEntity*> entities);
+	void renderGenResLink(Graphics* g, std::vector<QTEntity*> entities);
 
 	LayerNs::LayerEvent handleEvent(Input& input, const Vector3D& translation);
 

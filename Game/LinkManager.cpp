@@ -289,6 +289,8 @@ void LinkManager::add(QTEntityBuild * qtEntity)
 {
 	// Lien de la route à une habitation
 	addConnectedRoad(qtEntity);
+	addConsumer(qtEntity);
+	addGenerator(qtEntity);
 
 	gs->QTCollision.insert(qtEntity);
     Housing* housing = dynamic_cast<Housing*>(qtEntity);
@@ -377,6 +379,108 @@ void LinkManager::removeConnectedEntity(Road * road)
 		{
 			std::cout << "Un non QTEntityBuild";
 			assert(false);
+		}
+	}
+}
+
+void LinkManager::addGenerator(QTEntityBuild * gen)
+{
+	// On doit déterminer si c'est un générateur eau ou elec
+	PowerPlant* powerPlant = dynamic_cast<PowerPlant*>(gen);
+	WaterTower* waterTower = dynamic_cast<WaterTower*>(gen);
+
+	if (powerPlant != NULL)
+	{
+		addGeneratorPower(powerPlant);
+	}
+	else if (waterTower != NULL)
+	{
+		addGeneratorWater(waterTower);
+	}
+}
+
+void LinkManager::addGeneratorPower(PowerPlant * gen)
+{
+	// On récupère les éléments qui n'ont pas d'éléctricité
+	std::vector<QTEntity*> needPower = getEntityColliding(gen, gs->QTElecRes);
+	
+	// On essaye de les ajouter au générateur
+	for (unsigned i = 0; i < needPower.size(); i++)
+	{
+		Energy* energy = dynamic_cast<Energy*>(needPower[i]);
+		if(gen->addConsumer(needPower[i], energy->getEnergyNeeds()))
+			gs->QTElecRes.erase(needPower[i]);
+	}
+
+}
+
+void LinkManager::addGeneratorWater(WaterTower * gen)
+{
+	// On récupère les éléments qui n'ont pas d'eau
+	std::vector<QTEntity*> needWater = getEntityColliding(gen, gs->QTWaterRes);
+
+	// On essaye de les ajouter au générateur
+	for (unsigned i = 0; i < needWater.size(); i++)
+	{
+		Water* water = dynamic_cast<Water*>(needWater[i]);
+		if(gen->addConsumer(needWater[i], water->getWaterNeeds()))
+			gs->QTWaterRes.erase(needWater[i]);
+	}
+
+	// On finit par ajouter ce générateur au QT
+	gs->QTWaterGen.insert(gen);
+}
+
+void LinkManager::addConsumer(QTEntityBuild * cons)
+{
+	addConsumerPower(cons);
+	addConsumerWater(cons);
+}
+
+void LinkManager::addConsumerPower(QTEntityBuild * cons)
+{
+	Energy * cast = dynamic_cast<Energy*>(cons);
+	if (cast != NULL)
+	{
+		// On commence par récupérer les générateurs d'électricité
+		std::vector<Resources*> genPower = getGenColliding(cons, gs->QTElecGen);
+
+		unsigned i = 0;
+		while (i < genPower.size() && !cast->hasEnergy())
+		{
+			// Essayer de s'ajouter au générateur
+			genPower[i]->addConsumer(cons, cast->getEnergyNeeds());
+			i++;
+		}
+
+		// On a pas trouvé de générateur, il faut donc l'ajouter dans le bon QT
+		if (!cast->hasEnergy())
+		{
+			gs->QTElecRes.insert(cons);
+		}
+	}
+}
+
+void LinkManager::addConsumerWater(QTEntityBuild * cons)
+{
+	Water * cast = dynamic_cast<Water*>(cons);
+	if (cast != NULL)
+	{
+		// On commence par récupérer les générateurs d'électricité
+		std::vector<Resources*> genWater = getGenColliding(cons, gs->QTWaterGen);
+
+		unsigned i = 0;
+		while (i < genWater.size() && !cast->hasWater())
+		{
+			// Essayer de s'ajouter au générateur
+			genWater[i]->addConsumer(cons, cast->getWaterNeeds());
+			i++;
+		}
+
+		// On a pas trouvé de générateur, il faut donc l'ajouter dans le bon QT
+		if (!cast->hasWater())
+		{
+			gs->QTWaterRes.insert(cons);
 		}
 	}
 }
@@ -736,6 +840,24 @@ bool LinkManager::stillConnected(Road * start, Road * end)
 	return isFound;
 }
 
+
+std::vector<QTEntity*> LinkManager::getEntityColliding(Resources* res, QuadTree& quadTree)
+{
+	std::vector<QTEntity*> entities;
+	std::vector<QTEntity*> colliding;
+	quadTree.retrieve(res->getBoundsCover(), entities);
+	// On verifie si l'élément est pas trop loin
+	// Le plus simple est de faire la différence avec le centre
+	for (unsigned i = 0; i < entities.size(); i++)
+	{
+		if ((entities[i]->getCenter() - res->getCenter()).getMagnitude() < res->getRadius())
+		{
+			colliding.push_back(entities[i]);
+		}
+	}
+	return colliding;
+}
+
 std::vector<QTEntity*> LinkManager::getEntityColliding(Form& form, QuadTree& quadTree)
 {
 	std::vector<QTEntity*> entities;
@@ -752,7 +874,18 @@ std::vector<QTEntity*> LinkManager::getEntityColliding(Form& form, QuadTree& qua
 	return colliding;
 }
 
-std::vector<QTEntity*> LinkManager::getGenColliding(Form& form, QuadTree& quadTree)
+std::vector<Resources*> LinkManager::getGenColliding(QTEntity* qtEntity, QuadTreeSpecial & quadTree)
 {
-	return std::vector<QTEntity*>();
+	std::vector<Resources*> entities;
+	std::vector<Resources*> colliding;
+	quadTree.retrieve(qtEntity->getBounds(), entities);
+
+	for (unsigned i = 0; i < entities.size(); i++)
+	{
+		if ((entities[i]->getCenter() - qtEntity->getCenter()).getMagnitude() < entities[i]->getRadius())
+		{
+			colliding.push_back(entities[i]);
+		}
+	}
+	return colliding;
 }

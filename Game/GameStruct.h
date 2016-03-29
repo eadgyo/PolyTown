@@ -112,11 +112,11 @@ public:
     // Gestion des ressources
 
     // Gestion de l'eau
-    QuadTree QTWaterGen;
+	QuadTreeSpecial QTWaterGen;
     QuadTree QTWaterRes;
 
     // Gestion de l'électricité
-    QuadTree QTElecGen;
+    QuadTreeSpecial QTElecGen;
     QuadTree QTElecRes;
 
     // Gestion des routes

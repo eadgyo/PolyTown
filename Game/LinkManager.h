@@ -3,6 +3,8 @@
 #include "../GameContent/Connector.h"
 #include "../Game/GameStruct.h"
 #include "../Quadtree/QTEntityBuild.h"
+#include "../GameContent/Resources/Resources.h"
+#include "../Quadtree/QuadTreeSpecial.h"
 
 class LinkManager
 {
@@ -23,6 +25,15 @@ public:
 	void addConnectedEntity(Road* road);
 	void removeConnectedRoad(QTEntityBuild* qtEntity);
 	void removeConnectedEntity(Road* road);
+
+	//Par type
+	void addGenerator(QTEntityBuild* gen);
+	void addGeneratorPower(PowerPlant* gen);
+	void addGeneratorWater(WaterTower* gen);
+	void addConsumer(QTEntityBuild * cons);
+	void addConsumerPower(QTEntityBuild* cons);
+	void addConsumerWater(QTEntityBuild* cons);
+
 
 	void remove(QTEntityBuild* qtEntity);
 	void removeRoad(Road* road); // Suppresion des connectors...
@@ -64,8 +75,9 @@ public:
 	void setConnexitude(Road* start, int connex);
 	bool stillConnected(Road* start, Road* end);
 
+	std::vector<QTEntity*> getEntityColliding(Resources* res, QuadTree& quadTree);
 	std::vector<QTEntity*> getEntityColliding(Form& form, QuadTree& quadTree);
-	std::vector<QTEntity*> getGenColliding(Form& form, QuadTree& quadTree);
+	std::vector<Resources*> getGenColliding(QTEntity* form, QuadTreeSpecial& quadTree);
 
 private:
 	GameStruct* gs;

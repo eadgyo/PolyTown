@@ -6,6 +6,7 @@
 
 #include "../Quadtree/QTEntity.h"
 #include "../Quadtree/QuadTree.h"
+#include "../Quadtree/QuadTreeSpecial.h"
 
 #include <iostream>
 #include <string>

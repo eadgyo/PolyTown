@@ -2,6 +2,7 @@
 #define ENERGY_H
 
 #include "../../Constant.h"
+class Energy;
 
 #include "PowerPlant.h"
 
@@ -14,6 +15,9 @@ public:
     // ----- GETTER ----- //
     virtual p_uint getEnergyNeeds() const = 0;
     bool hasEnergy() const;
+	
+	PowerPlant* getPowerPlant();
+	void setPowerPlant(PowerPlant* power_plant);
 
 protected:
     p_uint m_energy_needs;

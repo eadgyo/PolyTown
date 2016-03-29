@@ -28,24 +28,24 @@ private:
 	int actualI;
 
 
-	const int posImage[8] = { 4, 5, 2, 6, 3, 7, 8, 12};
-	const float color1[8] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
-	const float color2[8] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
-	const float color3[8] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+	const int posImage[9] = { 4, 5, 2, 6, 3, 7, 8, 9, 10};
+	const float color1[9] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+	const float color2[9] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+	const float color3[9] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
-	const int sizeTexts[8] = { 1, 5, 6, 4, 2, 4, 3, 1};
-	std::string textsP[8][6] = { {"Route"},
-								{"Maison", "Immeuble", "Zone industrielle", "Zone commerciale", "Zone agricole"},
-								{"Eolienne", "Hydrolienne", "Panneau solaire", "Usine à charbon", "Usine à pétrole", "Centrale nucléaire"},
-								{"Usine d'incinération", "Centre d'enfouissement", "Centre de méthanisation", "Centre de compostage"},
-								{"Stockage de l'eau potable", "Traitement des eaux usées"},
+	const int sizeTexts[9] = { 1, 4, 3, 4, 3, 6, 2, 4, 1};
+	std::string textsP[9][6] = { {"Route"},
+								{"Maison", "Maison à faible impact", "Immeuble", "Immeuble à faible impact"},
+								{"Zone industrielle", "Zone commerciale", "Zone agricole"},
 								{"Commissariat", "Caserne", "École", "Hôpital"},
 								{"Stade", "Cinéma", "Parc"},
+								{"Eolienne", "Hydrolienne", "Panneau solaire", "Usine à charbon", "Usine à pétrole", "Centrale nucléaire"},
+								{"Stockage de l'eau potable", "Traitement des eaux usées"},
+								{"Usine d'incinération", "Centre d'enfouissement", "Centre de méthanisation", "Centre de compostage"},
 								{"Démolition"} };
 
-
 	const int SIZE_CIRCLE_LL = 64;
-	const int NUMBER_OF_TYPES_LL = 8;
+	const int NUMBER_OF_TYPES_LL = 9;
 	const int STARTX_POPUP_LL = 105;
 	const int WIDTH_POPUP_LL = 240;
 	const int SIZE_PER_TEXT_POPUP_LL = 32;

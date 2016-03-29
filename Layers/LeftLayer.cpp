@@ -1,5 +1,5 @@
 #include "LeftLayer.h"
-
+ 
 LeftLayer::LeftLayer(Graphics* g) : Layer(g)
 {
 
@@ -14,7 +14,7 @@ void LeftLayer::initialize(int x, int y, int width, int height, GameStruct* gs)
 	gs->stateIn = 1;
 	
 	// Création des infrastructures
-	int addY = height / 8;
+	int addY = height / NUMBER_OF_TYPES_LL;
 	int posX = width / 2;
 	int posY = addY / 2;
 

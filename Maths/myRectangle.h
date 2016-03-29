@@ -15,6 +15,8 @@ public:
 	myRectangle(const Vector3D& center, float width, float height);
 	~myRectangle();
 
+	static myRectangle create2points(const Vector3D& A, const Vector3D& B, float width);
+
 	myRectangle clone() const;
 
 	// Setter
@@ -22,6 +24,7 @@ public:
 	void set(const Vector3D& center, float width, float height, float omega);
 	void set(const myRectangle& rec);
 	void set(const Form& form);
+	void set2points(const Vector3D& A, const Vector3D& B, float width);
 
 	// Getter
 	Vector3D getVecLocal() const;

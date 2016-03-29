@@ -39,16 +39,27 @@ void MapLayer::render(Graphics * g)
 
 	for (unsigned i = 0; i < entities.size(); i++)
 	{
-		g->setColor(myColor(0.2f, 0.2f, 0.2f));
-		g->render(*(entities[i]->getForm()));
-		g->setColor(myColor(0.0f, 0.0f, 0.0f));
-		g->drawForm(*(entities[i]->getForm()));
+		
 		
 		// On regarde si l'élément est une route
 		Road* cast = dynamic_cast<Road*>(entities[i]);
 		if (cast != NULL)
 		{
+			g->setColor(myColor(0.3f, 0.3f, 0.3f));
+			g->render(*(cast->getForm()));
 			
+			myRectangle line = myRectangle::create2points(cast->getStart(), cast->getEnd(), 5);
+			g->setColor(myColor::WHITE(0.4f));
+			g->render(line);
+
+			g->renderTextCenteredTTF("test", std::to_string(cast->getConnexitude()), myColor::BLACK(), cast->getCenter(), 20);
+		}
+		else
+		{
+			g->setColor(myColor(0.2f, 0.2f, 0.2f));
+			g->render(*(entities[i]->getForm()));
+			g->setColor(myColor(0.0f, 0.0f, 0.0f));
+			g->drawForm(*(entities[i]->getForm()));
 		}
 	}
 	
@@ -292,12 +303,10 @@ LayerNs::LayerEvent MapLayer::handleEvent(Input & input, const Vector3D& transla
 			{
 				if (gs->roadState == 0)
 				{
-					std::cout << "Premier point" << std::endl;
 					gs->roadState = 1;
 				}
 				else if (gs->roadState == 1)
 				{
-					std::cout << "Second point" << std::endl;
 					create();
 					gs->roadState = -1;
 				}

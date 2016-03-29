@@ -45,6 +45,15 @@ myRectangle::~myRectangle()
 {
 }
 
+myRectangle myRectangle::create2points(const Vector3D & A, const Vector3D & B, float width)
+{
+	Vector3D center = (A + B)*0.5f;
+	Vector3D vec = (B - A);
+	float height = vec.normalize();
+	float theta = Vector3D(0, 1, 0, false).getAngle2D(vec);
+	return myRectangle(center, width, height, theta);
+}
+
 myRectangle myRectangle::clone() const
 {
 	return myRectangle((*this));
@@ -96,6 +105,15 @@ void myRectangle::set(const Form& form)
 	height = side.getMagnitude();
 
 	setInit(form);
+}
+
+void myRectangle::set2points(const Vector3D & A, const Vector3D & B, float width)
+{
+	Vector3D center = (A + B)*0.5f;
+	Vector3D vec = (B - A);
+	float height = vec.normalize();
+	float theta = Vector3D(0, 1, 0, false).getAngle2D(vec);
+	set(center, width, height, theta);
 }
 
 Vector3D myRectangle::getVecLocal() const

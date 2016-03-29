@@ -192,9 +192,9 @@ public:
 	void getCollidingStop(QTEntity* qtEntity, std::vector<QTEntity*>& colliding, Vector3D& push);
 	QTEntity* getCollidingPushMax(QTEntity* qtEntity, std::vector<QTEntity*>& colliding, Vector3D& push, float& t_max);
 
-	float getMaxOfMin(const Vector3D& center, const Vector3D& director, const Form& form);
+	/*float getMaxOfMin(const Vector3D& center, const Vector3D& director, const Form& form);
 	float getMinOfMax(const Vector3D& center, const Vector3D& director, const Form& form);
-
+	*/
 	float scalarColl(const Vector3D& start, const Vector3D& director, Road* roadi);
 
 	bool isInside(QTEntity* qtEntity);

@@ -50,7 +50,7 @@ bool CreatorManager::addRoad(Road * road)
 		minIndex = linkManager->getConnexitude();
 	}
 
-	// Nous pourrions utilisé un modèle optimisé
+	// Nous pourrions utiliser un modèle optimisé
 	linkManager->setConnexitude(myRoad.begin()->second, minIndex);
 	return true;
 }
@@ -195,7 +195,7 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 			float l_t;
 			std::vector<QTEntity*> l_colliding;
 			// On calcule le vecteur de poussée avec la nouvelle rotation
-		
+			
 			getCollidingPushMax(qtEntity, l_colliding, l_push, l_t);
 			unsigned i = 0;
 			while (l_colliding.size() != 0 && i < MAX_TRY_SNAPP_QTENTITY)
@@ -222,7 +222,7 @@ bool CreatorManager::isMakableSnapp(QTEntity* qtEntity)
 			}
 		}
 
-		unsigned numberOfTry = 0;
+		int numberOfTry = 0;
 		while (colliding.size() != 0 && numberOfTry < MAX_TRY_SNAPP_QTENTITY)
 		{
 			qtEntity->translate(push*1.01f);
@@ -302,10 +302,9 @@ void CreatorManager::getCollidingStop(QTEntity* qtEntity, std::vector<QTEntity*>
 	{
 		Vector3D l_push(0, 0, 0, false);
 		float t = 0;
+
 		if (qtEntity->isColliding(*(possibleCollisions[i]), l_push, t))
 		{
-			
-
 			// Collision directe entre les deux formes
 			colliding.push_back(possibleCollisions[i]);
 
@@ -907,7 +906,9 @@ bool CreatorManager::analyseType(myRectangle& startColl, myRectangle& endColl, s
 	if (isStartColliding || isEndColliding)
 	{
 		// L'angle est il trop faible?
-
+		float theta = director.getAngle2D(director1);
+		float theta1 = theta + 2*PI;
+		float theta2 = theta - 2*PI;
 		if (abs(director.getAngle2D(director1)) < MIN_ANGLE2D*PI ||
 			abs(director.getAngle2D(director1) + 2*PI) < MIN_ANGLE2D*PI ||
 			abs(director.getAngle2D(director1) + PI) < MIN_ANGLE2D*PI ||

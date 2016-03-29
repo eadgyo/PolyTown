@@ -226,11 +226,13 @@ bool Road::getLastRoadPoint(Vector3D& p, Vector3D& director) const
 		{
 			p = last->getEnd();
 			director = -last->getDirectorVec();
+			return true;
 		}
 		else if (last->getLast() == this)
 		{
 			p = last->getStart();
 			director = last->getDirectorVec();
+			return true;
 		}
 		else
 		{
@@ -266,11 +268,13 @@ bool Road::getNextRoadPoint(Vector3D& p, Vector3D& director) const
 		{
 			p = next->getEnd();
 			director = -next->getDirectorVec();
+			return true;
 		}
 		else if (next->getLast() == this)
 		{
 			p = next->getStart();
 			director = next->getDirectorVec();
+			return true;
 		}
 		else
 		{

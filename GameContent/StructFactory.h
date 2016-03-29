@@ -21,6 +21,11 @@ public:
     static Building* newLowImpactBuilding(int x, int y);
 
     // SocialBuilding
+    static SocialBuilding* newStadium(int x, int y);
+    static SocialBuilding* newCinema(int x, int y);
+    static SocialBuilding* newPark(int x, int y);
+
+    // PoweredSocialBuilding
     static SocialBuilding* newSchool(int x, int y);
     static SocialBuilding* newHospital(int x, int y);
     static FireStation* newFireStation(int x, int y);

@@ -30,14 +30,31 @@ Building* StructFactory::newLowImpactBuilding(int x, int y)
 }
 
 // SocialBuilding
+
+SocialBuilding* StructFactory::newStadium(int x, int y)
+{
+    return new SocialBuilding(STADIUM_NAME, STADIUM_RECTANGLE(x, y), x, y, STADIUM_SCORE, STADIUM_RADIUS);
+}
+
+SocialBuilding* StructFactory::newCinema(int x, int y)
+{
+    return new SocialBuilding(CINEMA_NAME, CINEMA_RECTANGLE(x, y), x, y, CINEMA_SCORE, CINEMA_RADIUS);
+}
+
+SocialBuilding* StructFactory::newPark(int x, int y)
+{
+    return new SocialBuilding(PARK_NAME, PARK_RECTANGLE(x, y), x, y, PARK_SCORE, PARK_RADIUS);
+}
+
+// PoweredSocialBuilding
 SocialBuilding* StructFactory::newSchool(int x, int y)
 {
-    return new SocialBuilding(SCHOOL_NAME, SCHOOL_RECTANGLE(x, y), SCHOOL_FRAME_WIDTH, SCHOOL_FRAME_HEIGHT, SCHOOL_FRAME_NUMBER, SCHOOL_IMAGE_COLS, SCHOOL_IMAGE_NAME, x, y, SCHOOL_SCORE, SCHOOL_RATIO, SCHOOL_RADIUS);
+    return new PoweredSocialBuilding(SCHOOL_NAME, SCHOOL_RECTANGLE(x, y), x, y, SCHOOL_SCORE, SCHOOL_RADIUS);
 }
 
 SocialBuilding* StructFactory::newHospital(int x, int y)
 {
-    return new SocialBuilding(HOSPITAL_NAME, HOSPITAL_RECTANGLE(x, y), HOSPITAL_FRAME_WIDTH, HOSPITAL_FRAME_HEIGHT, HOSPITAL_FRAME_NUMBER, HOSPITAL_IMAGE_COLS, HOSPITAL_IMAGE_NAME, x, y, HOSPITAL_SCORE, HOSPITAL_RATIO, HOSPITAL_RADIUS);
+    return new PoweredSocialBuilding(HOSPITAL_NAME, HOSPITAL_RECTANGLE(x, y), x, y, HOSPITAL_SCORE, HOSPITAL_RADIUS);
 }
 
 FireStation* StructFactory::newFireStation(int x, int y)
@@ -47,7 +64,7 @@ FireStation* StructFactory::newFireStation(int x, int y)
 
 SocialBuilding* StructFactory::newPoliceStation(int x, int y)
 {
-    return new SocialBuilding(POLICE_STATION_NAME, POLICE_STATION_RECTANGLE(x, y), POLICE_STATION_FRAME_WIDTH, POLICE_STATION_FRAME_HEIGHT, POLICE_STATION_FRAME_NUMBER, POLICE_STATION_IMAGE_COLS, POLICE_STATION_IMAGE_NAME, x, y, POLICE_STATION_SCORE, POLICE_STATION_RATIO, POLICE_STATION_RADIUS);
+    return new PoweredSocialBuilding(POLICE_STATION_NAME, POLICE_STATION_RECTANGLE(x, y), x, y, POLICE_STATION_SCORE, POLICE_STATION_RADIUS);
 }
 
 // Resources

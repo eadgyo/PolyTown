@@ -1,10 +1,10 @@
 #ifndef FIRE_STATION_H
 #define FIRE_STATION_H
 
-#include "SocialBuilding.h"
+#include "PoweredSocialBuilding.h"
 #include "../Resources/Water.h"
 
-class FireStation : public virtual SocialBuilding, public virtual Water
+class FireStation : public virtual PoweredSocialBuilding, public virtual Water
 {
 public:
     FireStation(int x, int y);

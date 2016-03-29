@@ -420,32 +420,64 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
 			}
 			break;
 
-		// House
-		case 1:
-			switch (gs->stateIn)
-			{
-            case 0:
-                gs->tempEntity = StructFactory::newHouse((int) l_mousePos.x(), (int) l_mousePos.y());
-                break;
-            case 1:
-                gs->tempEntity = StructFactory::newBuilding((int) l_mousePos.x(), (int) l_mousePos.y());
-                break;
-            case 2:
-                gs->tempEntity = StructFactory::newManufactory((int) l_mousePos.x(), (int) l_mousePos.y());
-                break;
-            case 3:
-                gs->tempEntity = StructFactory::newShop((int) l_mousePos.x(), (int) l_mousePos.y());
-                break;
-            case 4:
-                gs->tempEntity = StructFactory::newFarm((int) l_mousePos.x(), (int) l_mousePos.y());
-                break;
-			}
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
+        // House
+        case 1:
+            switch (gs->stateIn) {
+                case 0:
+                    gs->tempEntity = StructFactory::newHouse((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+                case 1:
+                    gs->tempEntity = StructFactory::newLowImpactHouse((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+                case 2:
+                    gs->tempEntity = StructFactory::newBuilding((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+                case 3:
+                    gs->tempEntity = StructFactory::newLowImpactBuilding((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+            }
+            break;
+        case 2:
+            switch (gs->stateIn) {
+                case 0:
+                    gs->tempEntity = StructFactory::newManufactory((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+                case 1:
+                    gs->tempEntity = StructFactory::newShop((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+                case 2:
+                    gs->tempEntity = StructFactory::newFarm((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+            }
+            break;
+        case 3:
+            switch (gs->stateIn) {
+                case 0:
+                    gs->tempEntity = StructFactory::newPoliceStation((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+                case 1:
+                    gs->tempEntity = StructFactory::newFireStation((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+                case 2:
+                    gs->tempEntity = StructFactory::newSchool((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+                case 3:
+                    gs->tempEntity = StructFactory::newHospital((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+            }
+            break;
+        case 4:
+            switch (gs->stateIn) {
+                case 0:
+                    gs->tempEntity = StructFactory::newStadium((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+                case 1:
+                    gs->tempEntity = StructFactory::newCinema((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+                case 2:
+                    gs->tempEntity = StructFactory::newPark((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+            }
 			break;
 		case 5:
 			break;

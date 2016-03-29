@@ -37,16 +37,35 @@
 #define LOW_IMPACT_BUILDING_ENERGY_NEEDS 10
 
 // SocialBuilding
+
+#define STADIUM_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
+#define STADIUM_NAME "Stade"
+
+#define STADIUM_SCORE 0
+#define STADIUM_RADIUS 0.1f
+
+#define CINEMA_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
+#define CINEMA_NAME "Cinéma"
+
+#define CINEMA_SCORE 0
+#define CINEMA_RADIUS 0.1f
+
+#define PARK_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
+#define PARK_NAME "Parc"
+
+#define PARK_SCORE 0
+#define PARK_RADIUS 0.1f
+
+// PoweredSocialBuilding
 #define SCHOOL_IMAGE_NAME ""
 #define SCHOOL_IMAGE_COLS 10
 #define SCHOOL_FRAME_WIDTH 120
 #define SCHOOL_FRAME_HEIGHT 130
 #define SCHOOL_FRAME_NUMBER 0
 #define SCHOOL_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
-#define SCHOOL_NAME "Ecole"
+#define SCHOOL_NAME "École"
 
 #define SCHOOL_SCORE 0
-#define SCHOOL_RATIO 0.1f
 #define SCHOOL_RADIUS 0.1f
 
 #define HOSPITAL_IMAGE_NAME ""
@@ -58,7 +77,6 @@
 #define HOSPITAL_NAME "Hôpital"
 
 #define HOSPITAL_SCORE 0
-#define HOSPITAL_RATIO 0.1f
 #define HOSPITAL_RADIUS 0.1f
 
 
@@ -71,7 +89,6 @@
 #define FIRE_STATION_NAME "Caserne"
 
 #define FIRE_STATION_SCORE 0
-#define FIRE_STATION_RATIO 0.1f
 #define FIRE_STATION_RADIUS 0.1f
 
 #define POLICE_STATION_IMAGE_NAME ""
@@ -83,7 +100,6 @@
 #define POLICE_STATION_NAME "Commissariat"
 
 #define POLICE_STATION_SCORE 0
-#define POLICE_STATION_RATIO 0.1f
 #define POLICE_STATION_RADIUS 0.1f
 
 // Factory

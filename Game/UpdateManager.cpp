@@ -86,9 +86,7 @@ void UpdateManager::updateScoreSoc()
 {
     p_uint score = 0;
     for (unsigned i = 0; i < gs->social.size(); i++) {
-        if (gs->social[i]->isWorking()) {
-            score += gs->social[i]->getScore();
-        }
+        score += gs->social[i]->getScore();
     }
     gs->score_soc = (p_uint) ((score + gs->inhabitants) * gs->unemployment);
 }

@@ -48,7 +48,8 @@ protected:
 	int deltaSide;
 	bool isUpdating = true;
 	Vector3D lastMousePos;
-
+	
+	Image* round;
 	const float MAX_SCALE_SCREEN = 2.0f;
 };
 

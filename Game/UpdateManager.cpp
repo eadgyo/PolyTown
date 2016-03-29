@@ -201,7 +201,7 @@ void UpdateManager::housingBestWorst()
     p_uint score_min = -1; // Infini du pauvre
 
     for (unsigned i = 0; i < gs->housing.size(); i++) {
-        if (!gs->housing[i]->isFull() && gs->housing[i]->getScore() > score_max) {
+        if (!gs->housing[i]->isFull() && gs->housing[i]->getScore() >= score_max) {
             best = gs->housing[i];
             score_max = best->getScore();
         }
@@ -223,7 +223,7 @@ void UpdateManager::factoryBestWorst()
     p_uint score_min = -1; // Infini du pauvre
 
     for (unsigned i = 0; i < gs->factory.size(); i++) {
-        if (!gs->factory[i]->isFull() && gs->factory[i]->getFreeWorkers() > score_max) {
+        if (!gs->factory[i]->isFull() && gs->factory[i]->getFreeWorkers() >= score_max) {
             best = gs->factory[i];
             score_max = best->getFreeWorkers();
         }

@@ -20,7 +20,7 @@ public:
     bool addConsumer(QTEntity* entity, p_uint consumption);
 
 protected:
-    Resources(float radius);
+    Resources(p_uint production, float radius);
 
     std::vector<QTEntity*> m_connected; // Connected
     p_uint m_production;

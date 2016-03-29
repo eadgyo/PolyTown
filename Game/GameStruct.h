@@ -28,7 +28,7 @@ public:
         std::cout << "SE = " << score_env << " ";
         std::cout << "H = " << inhabitants << " ";
         std::cout << "W = " << workers << " ";
-        std::cout << "U% = " << unemployment << " ";
+        std::cout << "U = " << unemployment*100 << "% ";
         std::cout << "M = " << money << " " << std::endl;
     }
 

@@ -95,7 +95,7 @@ void UpdateManager::updateScoreSoc()
 
 void UpdateManager::updateScoreEco()
 {
-    gs->score_eco = (p_uint) (gs->money / gs->unemployment + gs->money_earned);
+    gs->score_eco = (p_uint) (gs->money_earned / gs->unemployment);
 }
 
 void UpdateManager::updateScoreEnv()
@@ -140,7 +140,7 @@ void UpdateManager::updateUnemployment()
     if (gs->inhabitants != 0) {
         gs->unemployment = (float) (gs->inhabitants - gs->workers) / (float) (gs->inhabitants);
     } else {
-        gs->unemployment = 100.0f;
+        gs->unemployment = 1.0f;
     }
 }
 

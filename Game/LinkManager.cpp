@@ -737,16 +737,17 @@ bool LinkManager::stillConnected(Road * start, Road * end)
 std::vector<QTEntity*> LinkManager::getEntityColliding(Form& form, QuadTree& quadTree)
 {
 	std::vector<QTEntity*> entities;
+	std::vector<QTEntity*> colliding;
 	quadTree.retrieve(form.getBound(), entities);
 
 	for (unsigned i = 0; i < entities.size(); i++)
 	{
 		if (form.isColliding(*(entities[i]->getForm())))
 		{
-			entities.push_back(entities[i]);
+			colliding.push_back(entities[i]);
 		}
 	}
-	return entities;
+	return colliding;
 }
 
 std::vector<QTEntity*> LinkManager::getGenColliding(Form& form, QuadTree& quadTree)

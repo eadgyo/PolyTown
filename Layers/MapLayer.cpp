@@ -292,11 +292,22 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
 		case 1:
 			switch (gs->stateIn)
 			{
-			case 0:
-				gs->tempEntity = StructFactory::newHouse((int) l_mousePos.x(), (int) l_mousePos.y());
-				break;
+            case 0:
+                gs->tempEntity = StructFactory::newHouse((int) l_mousePos.x(), (int) l_mousePos.y());
+                break;
+            case 1:
+                gs->tempEntity = StructFactory::newBuilding((int) l_mousePos.x(), (int) l_mousePos.y());
+                break;
+            case 2:
+                gs->tempEntity = StructFactory::newManufactory((int) l_mousePos.x(), (int) l_mousePos.y());
+                break;
+            case 3:
+                gs->tempEntity = StructFactory::newShop((int) l_mousePos.x(), (int) l_mousePos.y());
+                break;
+            case 4:
+                gs->tempEntity = StructFactory::newFarm((int) l_mousePos.x(), (int) l_mousePos.y());
+                break;
 			}
-
 			break;
 		case 2:
 			break;

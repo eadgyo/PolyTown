@@ -288,6 +288,15 @@ void LinkManager::setGameStruct(GameStruct* game_struct)
 void LinkManager::add(QTEntityBuild * qtEntity)
 {
 	gs->QTCollision.insert(qtEntity);
+    Housing* housing = dynamic_cast<Housing*>(qtEntity);
+    if (housing) {
+        gs->housing.push_back(housing);
+    } else {
+        Factory* factory = dynamic_cast<Factory*>(qtEntity);
+        if (factory) {
+            gs->factory.push_back(factory);
+        }
+    }
 }
 
 void LinkManager::addRoad(QTEntity * qtEntity)

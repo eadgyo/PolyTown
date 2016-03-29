@@ -27,7 +27,7 @@ unsigned int PollutionArea::getRadius() const
 void PollutionArea::increasePollution(unsigned int n)
 {
     m_quantity += n;
-    castCircle()->set(m_quantity);
+    castCircle()->set((float) (m_quantity));
 }
 
 void PollutionArea::decreasePollution()

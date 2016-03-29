@@ -34,10 +34,10 @@ void Game::initialize(int width, int height)
 
 	mapLayer.setCreatorManager(&creatorManager);
 
-	QTEntity* a = StructFactory::newHouse(600, 800);
-	a->setRadians((float) (PI / 3));
+	//QTEntity* a = StructFactory::newHouse(600, 800);
+	//a->setRadians((float) (PI / 3));
 	
-	gs->QTCollision.insert(a);
+	//gs->QTCollision.insert(a);
 	//gs->QTCollision.insert(StructFactory::newHouse(400, 850));
 	//gs->QTCollision.insert(StructFactory::newHouse(470, 350));
 

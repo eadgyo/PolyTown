@@ -4,9 +4,9 @@
 #include "../../Constant.h"
 #include "../GameContentConstant.h"
 
-#include "../QuadTree/QTEntity.h"
+#include "../QuadTree/QTEntityBuild.h"
 
-class Factory : public virtual QTEntity
+class Factory : public virtual QTEntityBuild
 {
 public:
     // ----- GETTER ----- //

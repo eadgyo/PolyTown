@@ -9,7 +9,7 @@
 #define HOUSE_FRAME_WIDTH 120
 #define HOUSE_FRAME_HEIGHT 130
 #define HOUSE_FRAME_NUMBER 0
-#define HOUSE_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
+#define HOUSE_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 100, 100)
 #define HOUSE_NAME "Maison"
 
 #define HOUSE_MAX_INHAB 5
@@ -24,7 +24,7 @@
 #define BUILDING_FRAME_WIDTH 120
 #define BUILDING_FRAME_HEIGHT 130
 #define BUILDING_FRAME_NUMBER 0
-#define BUILDING_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
+#define BUILDING_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 150, 150)
 #define BUILDING_NAME "Immeuble"
 
 #define BUILDING_MAX_INHAB_PER_FLOOR 1
@@ -92,7 +92,7 @@
 #define SHOP_FRAME_WIDTH 120
 #define SHOP_FRAME_HEIGHT 130
 #define SHOP_FRAME_NUMBER 10
-#define SHOP_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
+#define SHOP_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 300, 300) // !!!
 #define SHOP_NAME "Magasin"
 
 #define SHOP_MAX_WORKERS 0
@@ -104,7 +104,7 @@
 #define MANUFACTORY_FRAME_WIDTH 120
 #define MANUFACTORY_FRAME_HEIGHT 130
 #define MANUFACTORY_FRAME_NUMBER 11
-#define MANUFACTORY_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
+#define MANUFACTORY_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 200, 200) // !!!
 #define MANUFACTORY_NAME "Usine"
 
 #define MANUFACTORY_MAX_WORKERS 0
@@ -117,7 +117,7 @@
 #define FARM_FRAME_WIDTH 120
 #define FARM_FRAME_HEIGHT 130
 #define FARM_FRAME_NUMBER 12
-#define FARM_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
+#define FARM_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 400, 400) // !!!
 #define FARM_NAME "Exploitation agricole"
 
 #define FARM_MAX_WORKERS 5

@@ -90,12 +90,12 @@ void UpdateManager::updateScoreSoc()
             score += gs->social[i]->getScore();
         }
     }
-    gs->score_soc = (score + gs->inhabitants) * gs->unemployment;
+    gs->score_soc = (p_uint) ((score + gs->inhabitants) * gs->unemployment);
 }
 
 void UpdateManager::updateScoreEco()
 {
-    gs->score_eco = gs->money / gs->unemployment + gs->money_earned;
+    gs->score_eco = (p_uint) (gs->money / gs->unemployment + gs->money_earned);
 }
 
 void UpdateManager::updateScoreEnv()
@@ -146,7 +146,7 @@ void UpdateManager::updateUnemployment()
 
 void UpdateManager::updateMoney()
 {
-    p_uint money = gs->inhabitants * HOUSING_INCOME * gs->taxation_inhab;
+    p_uint money = (p_uint) (gs->inhabitants * HOUSING_INCOME * gs->taxation_inhab);
 
     p_uint tva = 0;
     for (unsigned i = 0; i < gs->factory.size(); i++) {
@@ -154,7 +154,7 @@ void UpdateManager::updateMoney()
             tva += gs->factory[i]->getIncome();
         }
     }
-    money += tva * gs->taxation_work;
+    money += (p_uint) (tva * gs->taxation_work);
 
     gs->money += money;
     gs->money_earned = money;
@@ -240,8 +240,7 @@ void UpdateManager::factoryBestWorst()
 void UpdateManager::inOutInhabitants()
 {
     p_uint incoming = gs->free_inhabitants / 2;
-    std::cout << incoming << std::endl;
-    p_uint outgoing = gs->inhabitants * gs->unemployment / 2;
+    p_uint outgoing = (p_uint) (gs->inhabitants * gs->unemployment / 2);
 
     if (gs->worst_housing) {
         gs->worst_housing->delInhabitants(outgoing);
@@ -253,7 +252,7 @@ void UpdateManager::inOutInhabitants()
 
 void UpdateManager::inOutWorkers()
 {
-    p_uint incoming = gs->inhabitants * gs->unemployment / 2;
+    p_uint incoming = (p_uint) (gs->inhabitants * gs->unemployment / 2);
 
     if (gs->worst_factory) {
         if (gs->worst_factory->isWorking()) {

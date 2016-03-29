@@ -162,13 +162,5 @@ void PolyTown::startGame()
 {
     cout << "Game started" << endl;
 
-    gs->housing.push_back(StructFactory::newHouse(10, 10));
-    gs->housing.push_back(StructFactory::newHouse(100, 100));
-
-    gs->factory.push_back(StructFactory::newFarm(0, 0));
-
-    gs->social.push_back(StructFactory::newSchool(0, 0));
-    gs->social.push_back(StructFactory::newFireStation(0, 0));
-
 	gs->isReady = true;
 }

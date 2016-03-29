@@ -33,9 +33,9 @@ private:
 	const float color2[8] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 	const float color3[8] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
-	const int sizeTexts[8] = { 1, 4, 6, 4, 2, 4, 3, 1};
+	const int sizeTexts[8] = { 1, 5, 6, 4, 2, 4, 3, 1};
 	std::string textsP[8][6] = { {"Route"},
-								{"Residentielle", "Industrielle", "Commerciale", "Agricole"},
+								{"Maison", "Immeuble", "Zone industrielle", "Zone commerciale", "Zone agricole"},
 								{"Eolienne", "Hydrolienne", "Panneau solaire", "Usine à charbon", "Usine à pétrole", "Centrale nucléaire"},
 								{"Usine d'incinération", "Centre d'enfouissement", "Centre de méthanisation", "Centre de compostage"},
 								{"Stockage de l'eau potable", "Traitement des eaux usées"},

@@ -407,10 +407,9 @@ void LinkManager::addGeneratorPower(PowerPlant * gen)
 	// On essaye de les ajouter au générateur
 	for (unsigned i = 0; i < needPower.size(); i++)
 	{
-		//-------------------------------------------> A Faire
-
-		//if ajout ok --> Suppression
-		gs->QTElecRes.erase(needPower[i]);
+		Energy* energy = dynamic_cast<Energy*>(needPower[i]);
+		if(gen->addConsumer(needPower[i], energy->getEnergyNeeds()))
+			gs->QTElecRes.erase(needPower[i]);
 	}
 
 }
@@ -423,11 +422,13 @@ void LinkManager::addGeneratorWater(WaterTower * gen)
 	// On essaye de les ajouter au générateur
 	for (unsigned i = 0; i < needWater.size(); i++)
 	{
-		//-------------------------------------------> A Faire
-
-		// if ajout Ok --> Suppression
-		gs->QTWaterRes.erase(needWater[i]);
+		Water* water = dynamic_cast<Water*>(needWater[i]);
+		if(gen->addConsumer(needWater[i], water->getWaterNeeds()))
+			gs->QTWaterRes.erase(needWater[i]);
 	}
+
+	// On finit par ajouter ce générateur au QT
+	gs->QTWaterGen.insert(gen);
 }
 
 void LinkManager::addConsumer(QTEntityBuild * cons)
@@ -448,7 +449,14 @@ void LinkManager::addConsumerPower(QTEntityBuild * cons)
 		while (i < genPower.size() && !cast->hasEnergy())
 		{
 			// Essayer de s'ajouter au générateur
+			genPower[i]->addConsumer(cons, cast->getEnergyNeeds());
 			i++;
+		}
+
+		// On a pas trouvé de générateur, il faut donc l'ajouter dans le bon QT
+		if (!cast->hasEnergy())
+		{
+			gs->QTElecRes.insert(cons);
 		}
 	}
 }
@@ -465,7 +473,14 @@ void LinkManager::addConsumerWater(QTEntityBuild * cons)
 		while (i < genWater.size() && !cast->hasWater())
 		{
 			// Essayer de s'ajouter au générateur
+			genWater[i]->addConsumer(cons, cast->getWaterNeeds());
 			i++;
+		}
+
+		// On a pas trouvé de générateur, il faut donc l'ajouter dans le bon QT
+		if (!cast->hasWater())
+		{
+			gs->QTWaterRes.insert(cons);
 		}
 	}
 }

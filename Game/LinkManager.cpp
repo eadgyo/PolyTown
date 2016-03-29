@@ -541,7 +541,7 @@ void LinkManager::setConnexitude(Road * start, int connex)
 		{
 			for (unsigned i = 0; i < cast->sizeConnectedRoad(); i++)
 			{
-				if (alreadyDone.find(cast->getConnectedRoad(i)) != alreadyDone.end())
+				if (alreadyDone.find(cast->getConnectedRoad(i)) == alreadyDone.end())
 				{
 					alreadyDone.insert(cast->getConnectedRoad(i));
 					toDo.insert(cast->getConnectedRoad(i));
@@ -550,13 +550,13 @@ void LinkManager::setConnexitude(Road * start, int connex)
 		}
 		else
 		{
-			if (current->getLast() != NULL && alreadyDone.find(current->getLast()) != alreadyDone.end())
+			if (current->getLast() != NULL && alreadyDone.find(current->getLast()) == alreadyDone.end())
 			{
 				alreadyDone.insert(current->getLast());
 				toDo.insert(current->getLast());
 			}
 
-			if (current->getNext() != NULL && alreadyDone.find(current->getNext()) != alreadyDone.end())
+			if (current->getNext() != NULL && alreadyDone.find(current->getNext()) == alreadyDone.end())
 			{
 				alreadyDone.insert(current->getNext());
 				toDo.insert(current->getNext());

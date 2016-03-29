@@ -691,8 +691,8 @@ void CreatorManager::handleDoubleDivision(Road* actualRoad, Road* colliding, Roa
 	{
 		linkManager->linkRoadLastNextOr(road1, last, colliding);
 	}
-		linkManager->linkRoadNext(road1, connector);
-		linkManager->linkRoadLast(road2, connector);
+	linkManager->linkRoadNext(road1, connector);
+	linkManager->linkRoadLast(road2, connector);
 	
 	if (next != NULL)
 	{

@@ -45,7 +45,8 @@ public:
 	virtual inline Road* getLast() const { return last; };
 	virtual inline Road* getNext() const { return next; };
 	inline int getConnexitude() const { return connex; };
-
+	virtual bool getLastRoadPoint(Vector3D& p, Vector3D& director) const;
+	virtual bool getNextRoadPoint(Vector3D& p, Vector3D& director) const;
 
 	// Setter
 	void setStart(const Vector3D& center, float minHeight);

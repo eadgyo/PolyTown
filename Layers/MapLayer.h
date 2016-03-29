@@ -12,6 +12,10 @@ public:
 	void initialize(int x, int y, int width, int height, int deltaSide, GameStruct* gs);
 	void update(float dt);
 	void render(Graphics* g);
+	
+	void renderConnexitude(Graphics* g, std::vector<QTEntity*> entities);
+	void renderLinkRoad(Graphics * g, std::vector<QTEntity*> entities);
+
 	LayerNs::LayerEvent handleEvent(Input& input, const Vector3D& translation);
 
 	void reset();

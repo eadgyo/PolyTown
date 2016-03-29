@@ -599,7 +599,7 @@ void Graphics::drawForm(const Form& form)
 	}
 }
 
-void Graphics::setSize(float a)
+void Graphics::setLineSize(float a)
 {
 	glLineWidth(a);
 }

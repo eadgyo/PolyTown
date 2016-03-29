@@ -73,6 +73,35 @@ public:
 		return copy;
 	};
 
+	bool guessPointFromConnected(unsigned i, Vector3D& p)
+	{
+		if (getConnectedRoad(i)->getLast() == this)
+		{
+			p = getConnectedRoad(i)->getStart();
+			return true;
+		}
+		else if (getConnectedRoad(i)->getNext() == this)
+		{
+			p = getConnectedRoad(i)->getEnd();
+			return true;
+		}
+		else
+		{
+			// On suppose le point le plus proche
+			float startDist = (getConnectedRoad(i)->getStart() - getCenter()).normalize();
+			float endDist = (getConnectedRoad(i)->getEnd() - getCenter()).getMagnitude();
+			if (startDist < endDist)
+			{
+				p = getConnectedRoad(i)->getStart();
+			}
+			else
+			{
+				p = getConnectedRoad(i)->getEnd();
+			}
+			return false;
+		}
+	}
+
 	Vector3D getNearestSideP(const Vector3D& p, float& min)
 	{
 		float l_tmp;

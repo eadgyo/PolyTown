@@ -52,7 +52,7 @@ void MapLayer::render(Graphics * g)
 			g->setColor(myColor::WHITE(0.4f));
 			g->render(line);
 
-			g->renderTextCenteredTTF("test", std::to_string(cast->getConnexitude()), myColor::BLACK(), cast->getCenter(), 20);
+			
 		}
 		else
 		{
@@ -92,11 +92,116 @@ void MapLayer::render(Graphics * g)
 
 	}
 
+	// Rendu debug
+	renderConnexitude(g, entities);
+	renderLinkRoad(g, entities);
+
 	gs->QTCollision.draw(g);
 
 	g->translate(gs->zoneToDisplay.getLeft());
 	
 	g->translate(-rec.getLeft());
+}
+
+void MapLayer::renderConnexitude(Graphics * g, std::vector<QTEntity*> entities)
+{
+	for (unsigned i = 0; i < entities.size(); i++)
+	{
+		// On regarde si l'élément est une route
+		Road* cast = dynamic_cast<Road*>(entities[i]);
+		if (cast != NULL)
+		{
+			g->renderTextCenteredTTF("test", std::to_string(cast->getConnexitude()), myColor::BLACK(), cast->getCenter(), 20);
+		}
+	}
+}
+
+void MapLayer::renderLinkRoad(Graphics * g, std::vector<QTEntity*> entities)
+{
+	myColor defaultColor = myColor(0.2f, 1.0f, 0.2f);
+	g->setColor(defaultColor);
+	g->setLineSize(3.0f);
+	float defDist = 10.0f;
+
+	for (unsigned i = 0; i < entities.size(); i++)
+	{
+		// On regarde si l'élément est une route
+		Road* cast = dynamic_cast<Road*>(entities[i]);
+		if (cast != NULL)
+		{
+			Connector* castCo = dynamic_cast<Connector*>(entities[i]);
+
+			if (castCo != NULL)
+			{
+				Vector3D center = castCo->getCenter();
+				for (unsigned i = 0; i < castCo->sizeConnectedRoad(); i++)
+				{
+					Vector3D otherPoint;
+					bool result = castCo->guessPointFromConnected(i, otherPoint);
+					Vector3D director = (otherPoint - center).getNormalize();
+					Vector3D p0 = otherPoint - director*min(defDist, castCo->getWidth()*0.2f);
+					Vector3D p1 = otherPoint + director*min(defDist, castCo->getConnectedRoad(i)->getHeight()*0.2f);
+					
+					if(result)
+						g->drawLine(p0, p1);
+					else
+					{
+						g->setColor(myColor::RED());
+						g->drawLine(p0, p1);
+						g->setColor(defaultColor);
+					}
+					
+				}
+			}
+			else
+			{
+				if (cast->getLast() != NULL && dynamic_cast<Connector*>(cast->getLast()) == NULL)
+				{
+					Vector3D start0 = cast->getStart();
+					Vector3D director0 = cast->getDirectorVec();
+					Vector3D otherPoint;
+					Vector3D director1;
+				
+					bool result = cast->getLastRoadPoint(otherPoint, director1);
+					Vector3D p0 = otherPoint + director0*min(defDist, cast->getHeight()*0.2f);
+					Vector3D p1 = otherPoint + director1*min(defDist, cast->getLast()->getHeight()*0.2f);
+
+					if (result)
+						g->drawLine(p0, p1);
+					else
+					{
+						g->setColor(myColor::RED());
+						g->drawLine(p0, p1);
+						g->setColor(defaultColor);
+					}
+
+				}
+				if (cast->getNext() != NULL && dynamic_cast<Connector*>(cast->getNext()) == NULL)
+				{
+					Vector3D end0 = cast->getEnd();
+					Vector3D director0 = -cast->getDirectorVec();
+					Vector3D otherPoint;
+					Vector3D director1;
+
+					bool result = cast->getNextRoadPoint(otherPoint, director1);
+					Vector3D p0 = otherPoint + director0*min(defDist, cast->getHeight()*0.2f);
+					Vector3D p1 = otherPoint + director1*min(defDist, cast->getNext()->getHeight()*0.2f);
+
+					if (result)
+						g->drawLine(p0, p1);
+					else
+					{
+						g->setColor(myColor::RED());
+						g->drawLine(p0, p1);
+						g->setColor(defaultColor);
+					}
+				}
+			}
+
+		}
+	}
+
+	g->setLineSize(1.0f);
 }
 
 

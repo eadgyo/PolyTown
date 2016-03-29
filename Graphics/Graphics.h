@@ -75,7 +75,7 @@ public:
 	void setColor(myColor color);
 	// Gestion de la transparence
 	void setColor(float r, float g, float b, float a);
-	void setSize(float a);
+	void setLineSize(float a);
 
 private:
 	SDL_Window *screen;

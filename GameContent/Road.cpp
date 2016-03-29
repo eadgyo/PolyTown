@@ -217,7 +217,85 @@ QTEntity* Road::getEnt(unsigned n) const
 	std::advance(it, n);
 	return *it;
 }
+bool Road::getLastRoadPoint(Vector3D& p, Vector3D& director) const
+{
+	// Verifier avant pour les connecteurs
+	if (last != NULL)
+	{
+		if (last->getNext() == this)
+		{
+			p = last->getEnd();
+			director = -last->getDirectorVec();
+		}
+		else if (last->getLast() == this)
+		{
+			p = last->getStart();
+			director = last->getDirectorVec();
+		}
+		else
+		{
+			// On prend le plus proche
+			Vector3D start = last->getStart();
+			Vector3D end = last->getStart();
+			Vector3D myStart = getStart();
+			float dist0 = (start - myStart).getMagnitude();
+			float dist1 = (end - myStart).getMagnitude();
+			if (dist0 < dist1)
+			{
+				p = start;
+				director = last->getDirectorVec();
+			}
+			else
+			{
+				p = end;
+				director = -last->getDirectorVec();
+			}
+			return false;
+		}
+	}
+	std::cout << "Ok mais y a pas de routes";
+	return true;
+}
 
+bool Road::getNextRoadPoint(Vector3D& p, Vector3D& director) const
+{
+	// Verifier avant pour les connecteurs
+	if (next != NULL)
+	{
+		if (next->getNext() == this)
+		{
+			p = next->getEnd();
+			director = -next->getDirectorVec();
+		}
+		else if (next->getLast() == this)
+		{
+			p = next->getStart();
+			director = next->getDirectorVec();
+		}
+		else
+		{
+			// On prend le plus proche
+			Vector3D start = next->getStart();
+			Vector3D end = next->getStart();
+			Vector3D myStart = getStart();
+			float dist0 = (start - myStart).getMagnitude();
+			float dist1 = (end - myStart).getMagnitude();
+			if (dist0 < dist1)
+			{
+				p = start;
+				director = next->getDirectorVec();
+			}
+			else
+			{
+				p = end;
+				director = -next->getDirectorVec();
+			}
+			return false;
+		}
+	}
+	std::cout << "Ok mais y a pas de routes";
+	return true;
+}
 
 
 

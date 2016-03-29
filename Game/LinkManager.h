@@ -30,6 +30,11 @@ public:
 	void linkRoadLastLast(Road* r1, Road* r2);
 	void linkRoadNextNext(Road* r1, Road* r2);
 	void linkRoadLastNext(Road* r1, Road* r2);
+	void linkRoadNextLastOr(Road* r1, Road* r2, Road* removing);
+	void linkRoadLastLastOr(Road* r1, Road* r2, Road* removing);
+	void linkRoadNextNextOr(Road* r1, Road* r2, Road* removing);
+	void linkRoadLastNextOr(Road* r1, Road* r2, Road* removing);
+
 	void linkMapRoad(std::map<float, Road*> myRoad);
 
 	void linkRoadCopyNext(Road* source, Road* dest);

@@ -232,7 +232,7 @@ void QuadTree::erase(QTEntity* qtEntity, const sRectangle& recEntity)
 	else
 	{	
 		unsigned i = 0;
-		while (qtEntity != entities[i] && i < entities.size())
+		while (i < entities.size() && qtEntity != entities[i])
 			i++;
 		
 		if (i == entities.size())

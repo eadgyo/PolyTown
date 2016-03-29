@@ -195,10 +195,12 @@ Vector3D QTEntity::getDirectorVec() const
 		return Vector3D(0, 1, 0, false);
 	
 }
+
+
 float QTEntity::getAngle2D() const
 {
 	Vector3D director = getDirectorVec();
-	return director.getAngle2D(Vector3D(0, 1, 0, false));
+	return Vector3D(0, 1, 0, false).getAngle2D(director);
 }
 
 sRectangle *QTEntity::castSRectangle() const

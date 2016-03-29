@@ -89,11 +89,7 @@ Vector3D Road::getRightCenter() const
 	return (get(2) + get(3))*0.5f;
 }
 
-float Road::getAngle2D() const
-{
-	Vector3D director = getDirectorVec();
-	return director.getAngle2D(Vector3D(1, 0, 0, false));
-}
+
 float Road::getWidth() const
 {
 	float width, height;
@@ -161,7 +157,7 @@ myRectangle Road::getRect() const
 myRectangle Road::getBigRectangle(float defWidth, float defHeight) const
 {
 	float width = getWidth() + defWidth;
-	float height = defHeight;
+	float height = getHeight() + defHeight;
 	return myRectangle(getCenter(), width, height, getAngle2D());
 }
 
@@ -181,8 +177,10 @@ std::vector<myRectangle> Road::getMidColl(float defHeight) const
 
 		// Un premier rectangle avec le center
 		float theta = getAngle2D();
-		midColl.push_back(myRectangle(center - director*defHeight, width, height-defHeight, theta));
-		midColl.push_back(myRectangle(center + director*defHeight, width, height-defHeight, theta));
+
+
+		midColl.push_back(myRectangle(center - director*height*0.1f, width, height*0.4f, theta));
+		midColl.push_back(myRectangle(center + director*height*0.1f, width, height*0.4f, theta));
 	}
 	else
 	{

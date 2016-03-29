@@ -83,6 +83,62 @@ void LinkManager::linkRoadLastNext(Road * r1, Road * r2)
 	r2->setNext(r1);
 }
 
+void LinkManager::linkRoadNextLastOr(Road * r1, Road * r2, Road * removing)
+{
+	Connector* cast = dynamic_cast<Connector*>(r2);
+	if (cast != NULL)
+	{
+		r1->setNext(r2);
+		cast->removeConnectedRoad(removing);
+	}
+	else
+	{
+		linkRoadNextLast(r1, r2);
+	}
+}
+
+void LinkManager::linkRoadLastLastOr(Road * r1, Road * r2, Road * removing)
+{
+	Connector* cast = dynamic_cast<Connector*>(r2);
+	if (cast != NULL)
+	{
+		r1->setLast(r2);
+		cast->removeConnectedRoad(removing);
+	}
+	else
+	{
+		linkRoadLastLast(r1, r2);
+	}
+}
+
+void LinkManager::linkRoadNextNextOr(Road * r1, Road * r2, Road * removing)
+{
+	Connector* cast = dynamic_cast<Connector*>(r2);
+	if (cast != NULL)
+	{
+		r1->setNext(r2);
+		cast->removeConnectedRoad(removing);
+	}
+	else
+	{
+		linkRoadNextNext(r1, r2);
+	}
+}
+
+void LinkManager::linkRoadLastNextOr(Road * r1, Road * r2, Road * removing)
+{
+	Connector* cast = dynamic_cast<Connector*>(r2);
+	if (cast != NULL)
+	{
+		r1->setLast(r2);
+		cast->removeConnectedRoad(removing);
+	}
+	else
+	{
+		linkRoadLastNext(r1, r2);
+	}
+}
+
 void LinkManager::linkMapRoad(std::map<float, Road*> myRoad)
 {
 	std::map<float, Road*>::iterator it, next;

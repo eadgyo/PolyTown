@@ -148,7 +148,7 @@ public:
 	void handleAllStart(CRoadStruct& cRoadStruct, Road* startR);
 	void handleAllEnd(CRoadStruct& cRoadStruct, Road* endR);
 	void handleAllMid(CRoadStruct& cRoadStruct, std::map<float, Road*>& myRoad, const Vector3D& start, const Vector3D& director, float width, float theta);
-	Road* createConnectorFromMap(Road* actualRoad, Road* roadi, std::map<float, Road*>& myRoad, const Vector3D& start, const Vector3D& director, float width, float theta);
+	Road* createConnectorFromMap(Road*& actualRoad, Road* roadi, std::map<float, Road*>& myRoad, const Vector3D& start, const Vector3D& director, float width, float theta);
 	bool verifyAfterCorrection(Road* road, std::set<Road*> roadsConnected);
 	Connector* createConnector(Road* r1, bool isLast);
 
@@ -156,7 +156,7 @@ public:
 	// Pour la création de la route finale
 	void handleStartDivision(Road* actualRoad, Road* colliding, Road* connector);
 	void handleEndDivision(Road* actualRoad, Road* colliding, Road* connector);
-	void handleDoubleDivision(Road* actualRoad, Road* colliding, Road* connector);
+	void handleDoubleDivision(Road* actualRoad, Road* colliding, Road* connector, bool removeAdd);
 	Road* divide(Road* actual, std::map<float, Road*>& myRoad, float scalar,
 		const Vector3D& start, const Vector3D& director, float width, float width2, float thetat);
 	
@@ -170,7 +170,7 @@ public:
 		std::vector<Road*> roads0, std::vector<Road*> roads1, std::vector<Road*> roads2, Vector3D& pToModified);
 
 	// IsMakableRoadSnapp function
-	bool isCorrect(Road* road, CRoadStruct cRoadStruct);
+	bool isCorrect(Road* road, CRoadStruct& cRoadStruct);
 	bool analyseType(myRectangle& startColl, myRectangle& endColl, std::vector<myRectangle> midColls,
 		Road* roadi, const Vector3D& director, const Vector3D& normalDirector, float scalarStartNormal, float scalarEndNormal, CRoadStruct& cRoadStruct);
 	bool setTypeStartColliding(Road* roadi, myRectangle& coll, CRoadStruct& cRoadStruct);
@@ -195,6 +195,8 @@ public:
 	float getMaxOfMin(const Vector3D& center, const Vector3D& director, const Form& form);
 	float getMinOfMax(const Vector3D& center, const Vector3D& director, const Form& form);
 
+	float scalarColl(const Vector3D& start, const Vector3D& director, Road* roadi);
+
 	bool isInside(QTEntity* qtEntity);
 
 private:
@@ -210,8 +212,8 @@ private:
 	// Angle Min entre 2 routes lors de la collision Debut/Fin
 	const float MIN_ANGLE2D = 0.25f;
 	// Angrandissement des rectangles Debut/Fin
-	const float DEF_WIDTH_ROAD = 10.0f;
-	const float DEF_HEIGHT_ROAD = 10.0f;
+	const float DEF_WIDTH_ROAD = 30.0f;
+	const float DEF_HEIGHT_ROAD = 50.0f;
 	// Taille à pupdateManagerartir de laquelle on considère que l'élément est trop petit
 	// Pour MidColls
 	const float LESS_HEIGHT_MID_ROAD = 40.0f;

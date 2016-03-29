@@ -20,6 +20,7 @@ public:
 	
 
 	// Getter
+
 	float getAngle2D() const;
 	Vector3D getDirectorVec() const;
 

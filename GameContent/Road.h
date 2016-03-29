@@ -30,7 +30,6 @@ public:
 	Vector3D getLeftCenter() const;
 	Vector3D getRightCenter() const;
 	Vector3D getCenter() const;
-	float getAngle2D() const;
 	float getWidth() const;
 	float getHeight() const;
 	Vector3D getLength() const;

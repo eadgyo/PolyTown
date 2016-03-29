@@ -41,12 +41,15 @@ void MapLayer::render(Graphics * g)
 	{
 		g->setColor(myColor(0.2f, 0.2f, 0.2f));
 		g->render(*(entities[i]->getForm()));
-		//g->drawForm(*(entities[i]->getForm()));
-		/*
-		g->setColor(myColor::RED());
-		sRectangle test = entities[i]->getBounds();
-		g->drawForm(test);
-		*/
+		g->setColor(myColor(0.0f, 0.0f, 0.0f));
+		g->drawForm(*(entities[i]->getForm()));
+		
+		// On regarde si l'élément est une route
+		Road* cast = dynamic_cast<Road*>(entities[i]);
+		if (cast != NULL)
+		{
+			
+		}
 	}
 	
 	// Affichage de l'élément qui peut être dessiner
@@ -74,6 +77,8 @@ void MapLayer::render(Graphics * g)
 		}
 
 		gs->tempEntity->setRadians(-gs->tempEntity->getAngle2D());
+
+
 	}
 
 	gs->QTCollision.draw(g);
@@ -193,8 +198,8 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
 		default:
 			break;
 		};
-
-		gs->isLastMakable = isMakable();
+		if(gs->tempEntity != NULL)
+			gs->isLastMakable = isMakable();
 	}
 	else
 	{

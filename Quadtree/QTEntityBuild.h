@@ -26,6 +26,7 @@ public:
 	unsigned sizeConnected() const;
 	Road* getConnected(unsigned n) const;
 	int getMinConnex();
+	std::set<int> getConnexes();
 
 private:
 	std::string name;

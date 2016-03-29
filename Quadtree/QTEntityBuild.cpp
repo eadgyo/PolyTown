@@ -59,6 +59,19 @@ int QTEntityBuild::getMinConnex()
 	return connex;
 }
 
+std::set<int> QTEntityBuild::getConnexes()
+{
+	std::set<int> connexes;
+	for (unsigned i = 0; i < connected.size(); i++)
+	{
+		if (connected[i]->getConnexitude() != -1 && connexes.find(connected[i]->getConnexitude()) == connexes.end())
+		{
+			connexes.insert(connected[i]->getConnexitude());
+		}
+	}
+	return connexes;
+}
+
 void QTEntityBuild::addRoad(Road * road)
 {
 	connected.push_back(road);

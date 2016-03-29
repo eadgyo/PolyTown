@@ -370,6 +370,8 @@ void CreatorManager::handleAllStart(CRoadStruct& cRoadStruct, Road* startR)
 		linkManager->removeRoad(road);
 
 		linkManager->linkMapRoad(l_road);
+
+		linkManager->linkRoadLast(startR, connector);
 	}
 
 	// Pour le moment pas de gestion de collision avec d'autres connecteurs
@@ -437,6 +439,7 @@ void CreatorManager::handleAllEnd(CRoadStruct& cRoadStruct, Road* endR)
 		linkManager->removeRoad(road);
 
 		linkManager->linkMapRoad(l_road);
+		linkManager->linkRoadNext(endR, connector);
 	}
 
 	// Pour le moment pas de gestion de collision avec d'autres connecteurs

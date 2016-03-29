@@ -230,6 +230,27 @@ const Circle *QTEntity::castCircleConst() const
 }
 
 
+myRectangle QTEntity::getBigRectangle(float defWidth, float defHeight) const
+{
+	myRectangle* rec = castMyRectangle();
+	if (rec != NULL)
+	{
+		float width = rec->getWidth() + defWidth;
+		float height = rec->getHeight() + defHeight;
+		return myRectangle(getCenter(), width, height, getAngle2D());
+	}
+	else
+	{
+		std::cout << "C'est pas un rectangle <- QTEntity bigRectangle";
+		assert(false);
+		return myRectangle();
+	} 
+}
+
+myRectangle QTEntity::getBigRectangle(float add) const
+{
+	return getBigRectangle(add, add);
+}
 
 bool QTEntity::isColliding(Form& form)
 {

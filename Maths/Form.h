@@ -81,7 +81,7 @@ public:
 	Vector3D handleEdgePoint(const Vector3D& PA, const Vector3D& PB, const Vector3D& PB2) const;
 	sRectangle getBound() const;
 	sRectangle getBoundMax() const;
-	Vector3D& operator[](int i);
+	Vector3D operator[](int i);
 	void updateCenter();
 	void updateOrientation();
 

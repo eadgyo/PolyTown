@@ -154,8 +154,6 @@ LayerNs::LayerEvent LeftLayer::handleEvent(Input & input, const Vector3D& transl
 	Vector3D mousePos = input.getMousePos();
 	mousePos -= trans;
 
-
-	
 	if (input.getMousePressed(0))
 	{
 		// Si y a une collision avec un popUp

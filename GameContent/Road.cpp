@@ -154,15 +154,6 @@ myRectangle Road::getRect() const
 	return (*rec);
 }
 
-myRectangle Road::getBigRectangle(float defWidth, float defHeight) const
-{
-	float width = getWidth() + defWidth;
-	float height = getHeight() + defHeight;
-	return myRectangle(getCenter(), width, height, getAngle2D());
-}
-
-
-
 std::vector<myRectangle> Road::getMidColl(float defHeight) const
 {
 	std::vector<myRectangle> midColl;
@@ -372,14 +363,17 @@ void Road::erase(QTEntity* entity)
 	}
 }
 
-void Road::erase(unsigned i)
+QTEntity* Road::erase(unsigned i)
 {
 	std::set<QTEntity*>::iterator it = entConnected.begin();
 	std::advance(it, i);
 	if (it != entConnected.end())
 	{
+		QTEntity* save = (*it);
 		entConnected.erase(it);
+		return save;
 	}
+	return NULL;
 }
 
 void Road::addEntity(QTEntity* entity)

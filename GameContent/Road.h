@@ -22,7 +22,6 @@ public:
 	static Road createLeft(const Vector3D& left, float width, float height);
 
 	// Getter
-	myRectangle getBigRectangle(float width, float height) const;
 	Vector3D getStart() const;
 	Vector3D getEnd() const;
 	Vector3D get(unsigned n) const;
@@ -56,7 +55,7 @@ public:
 	void setStartMove(const Vector3D& center);
 	void setEndMove(const Vector3D& center);
 	void erase(QTEntity* entity);
-	void erase(unsigned i);
+	QTEntity* erase(unsigned i);
 	void addEntity(QTEntity* entity);
 	void addAllEntities(std::vector<QTEntity*> entities);
 	virtual bool removeConnectedRoad(Road* road);

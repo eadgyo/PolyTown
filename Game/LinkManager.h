@@ -17,10 +17,17 @@ public:
 	
 	// Links automatiquement faits
 	void add(QTEntityBuild* qtEntity);
-	void addRoad(QTEntity* qtEntity);
+	void addRoad(Road* qtEntity);
+	
+	void addConnectedRoad(QTEntityBuild* qtEntity);
+	void addConnectedEntity(Road* road);
+	void removeConnectedRoad(QTEntityBuild* qtEntity);
+	void removeConnectedEntity(Road* road);
+
 	void remove(QTEntityBuild* qtEntity);
 	void removeRoad(Road* road); // Suppresion des connectors...
 	void removeRoadLight(Road* road);
+
 
 	void linkRoad(Road* r1, Road* r2, bool isLastR1, bool isLastR2);
 	void linkRoadGuess(Road* r1, Road* connector);
@@ -56,6 +63,11 @@ public:
 	void setConnexitude(Road* start, int connex);
 	bool stillConnected(Road* start, Road* end);
 
+	std::vector<QTEntity*> getEntityColliding(Form& form, QuadTree& quadTree);
+	std::vector<QTEntity*> getGenColliding(Form& form, QuadTree& quadTree);
+
 private:
 	GameStruct* gs;
+
+	const float ADD_RECTANGLE = 40.0f;
 };

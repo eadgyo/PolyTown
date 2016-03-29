@@ -287,6 +287,9 @@ void LinkManager::setGameStruct(GameStruct* game_struct)
 
 void LinkManager::add(QTEntityBuild * qtEntity)
 {
+	// Lien de la route à une habitation
+	addConnectedRoad(qtEntity);
+
 	gs->QTCollision.insert(qtEntity);
     Housing* housing = dynamic_cast<Housing*>(qtEntity);
     if (housing) {
@@ -299,10 +302,81 @@ void LinkManager::add(QTEntityBuild * qtEntity)
     }
 }
 
-void LinkManager::addRoad(QTEntity * qtEntity)
+void LinkManager::addRoad(Road * qtEntity)
 {
 	gs->QTCollision.insert(qtEntity);
 	gs->QTRoads.insert(qtEntity);
+
+	addConnectedEntity(qtEntity);
+}
+
+void LinkManager::addConnectedRoad(QTEntityBuild * qtEntity)
+{
+	// On crée un rectangle gonflé
+	myRectangle rec = qtEntity->getBigRectangle(ADD_RECTANGLE);
+	
+	// On récupère les éléments en collision
+	std::vector<QTEntity*> entities = getEntityColliding(rec, gs->QTRoads);
+
+	// On a juste à connecter, l'élément avec toutes les routes,
+	// Un jeu d'enfant
+	for (unsigned i = 0; i < entities.size(); i++)
+	{
+		Road* cast = dynamic_cast<Road*>(entities[i]);
+		cast->addEntity(qtEntity);
+		qtEntity->addRoad(cast);
+	}
+}
+
+void LinkManager::addConnectedEntity(Road * road)
+{
+	// On crée un rectangle gonflé
+	myRectangle rec = road->getBigRectangle(ADD_RECTANGLE);
+
+	// On récupère les éléments en collision
+	std::vector<QTEntity*> entities = getEntityColliding(rec, gs->QTCollision);
+
+	// On a juste à connecter, l'élément avec toutes les routes,
+	// Un jeu d'enfant
+	for (unsigned i = 0; i < entities.size(); i++)
+	{
+		QTEntityBuild* qtEntity = dynamic_cast<QTEntityBuild*>(entities[i]);
+		if (qtEntity != NULL)
+		{
+			qtEntity->addRoad(road);
+			road->addEntity(qtEntity);
+		}
+	}
+
+}
+
+void LinkManager::removeConnectedRoad(QTEntityBuild * qtEntity)
+{
+	// On enlève les liens
+	while (qtEntity->sizeConnected() != 0)
+	{
+		Road* qt = qtEntity->removeRoad((unsigned) 0);
+		qt->erase(qtEntity);
+	}
+}
+
+void LinkManager::removeConnectedEntity(Road * road)
+{
+	// On enlève les liens
+	while (road->sizeEnt() != 0)
+	{
+		QTEntity* qt = road->erase((unsigned)0);
+		QTEntityBuild* cast = dynamic_cast<QTEntityBuild*>(qt);
+		if (cast != NULL)
+		{
+			cast->removeRoad(road);
+		}
+		else
+		{
+			std::cout << "Un non QTEntityBuild";
+			assert(false);
+		}
+	}
 }
 
 int LinkManager::computeRoadIndex(std::map<float, Road*> myRoad)
@@ -403,11 +477,7 @@ void LinkManager::remove(QTEntityBuild * qtEntity)
 	gs->QTCollision.erase(qtEntity);
 
 	// On supprime aussi les avec les routes
-
-	for (unsigned i = 0; i < qtEntity->sizeConnected(); i++)
-	{
-		qtEntity->getConnected(i)->erase(qtEntity);
-	}
+	removeConnectedRoad(qtEntity);
 
 	// Après ...
 }
@@ -447,6 +517,8 @@ void LinkManager::removeRoadLight(Road * road)
 	// Suppression dans GameStruct
 	gs->QTCollision.erase(road);
 	gs->QTRoads.erase(road);
+
+	removeConnectedEntity(road);
 }
 
 
@@ -660,4 +732,24 @@ bool LinkManager::stillConnected(Road * start, Road * end)
 		}
 	}
 	return isFound;
+}
+
+std::vector<QTEntity*> LinkManager::getEntityColliding(Form& form, QuadTree& quadTree)
+{
+	std::vector<QTEntity*> entities;
+	quadTree.retrieve(form.getBound(), entities);
+
+	for (unsigned i = 0; i < entities.size(); i++)
+	{
+		if (form.isColliding(*(entities[i]->getForm())))
+		{
+			entities.push_back(entities[i]);
+		}
+	}
+	return entities;
+}
+
+std::vector<QTEntity*> LinkManager::getGenColliding(Form& form, QuadTree& quadTree)
+{
+	return std::vector<QTEntity*>();
 }

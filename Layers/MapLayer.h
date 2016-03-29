@@ -14,20 +14,24 @@ public:
 	void render(Graphics* g);
 	
 	void renderElements(Graphics* g, std::vector<QTEntity*> entities);
-	void renderSelected(Graphics* g, std::vector<QTEntity*> entities);
+	void renderSelected(Graphics* g);
 	void renderTempEntity(Graphics* h, std::vector<QTEntity*> entities);
 	void renderConnexitude(Graphics* g, std::vector<QTEntity*> entities);
 	void renderLinkRoad(Graphics * g, std::vector<QTEntity*> entities);
+	void renderConnexitudeBuilding(Graphics* g, std::vector<QTEntity*> entities);
 
 	LayerNs::LayerEvent handleEvent(Input& input, const Vector3D& translation);
 
 	bool back();
 	void reset();
 	bool create();
+	bool remove();
 	bool isMakable();
 	void updateEntity(const Vector3D& mousePos);
 	void updateRoad(const Vector3D& mousePos);
-	
+	void updateSelected(const Vector3D& mousePos);
+	void handleLeftClick();
+	void handleMouseWheel(int mouseWheelY, const Vector3D& mousePos);
 
 	void setCreatorManager(CreatorManager* cm) { this->cm = cm; };
 

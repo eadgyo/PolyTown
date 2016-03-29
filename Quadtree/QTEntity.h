@@ -17,15 +17,11 @@ public:
 	QTEntity(const QTEntity& qtEntity);
 	virtual ~QTEntity();
 
-	
-
 	// Getter
 
 	float getAngle2D() const;
 	Vector3D getDirectorVec() const;
 
-
-	
 	inline sRectangle getBounds() const { return form->getBound(); };
 	inline sRectangle getBoundsMax() const { return form->getBoundMax(); };
 	inline Form* getForm() const { return form; };
@@ -54,7 +50,8 @@ public:
 	void setRadians(float theta);
 	inline void translate(const Vector3D& vec) { form->translate(vec); };
 
-
+	virtual myRectangle getBigRectangle(float width, float height) const;
+	virtual myRectangle getBigRectangle(float add) const;
 	bool isColliding(Form& form);
 	bool isColliding(Form& form, Vector3D& push, float& t);
 	bool isColliding(QTEntity& qtEntity);

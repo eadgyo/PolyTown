@@ -46,14 +46,29 @@ Road * QTEntityBuild::getConnected(unsigned n) const
 	return connected[n];
 }
 
+int QTEntityBuild::getMinConnex()
+{
+	int connex = -1;
+	for (unsigned i = 0; i < connected.size(); i++)
+	{
+		if (connex == -1 || connected[i]->getConnexitude() < connex)
+		{
+			connex = connected[i]->getConnexitude();
+		}
+	}
+	return connex;
+}
+
 void QTEntityBuild::addRoad(Road * road)
 {
 	connected.push_back(road);
 }
 
-void QTEntityBuild::removeRoad(unsigned i)
+Road* QTEntityBuild::removeRoad(unsigned i)
 {
+	Road* save = connected[i];
 	connected.erase(connected.begin() + i);
+	return save;
 }
 
 bool QTEntityBuild::removeRoad(Road* road)

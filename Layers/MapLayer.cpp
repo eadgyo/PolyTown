@@ -16,7 +16,7 @@ void MapLayer::initialize(int x, int y, int width, int height, int deltaSide, Ga
 
 bool MapLayer::back()
 {
-	if (gs->roadState == 1)
+	if (gs->roadState == 1 && gs->state == 0)
 	{
 		gs->roadState = 0;
 		return false;
@@ -59,7 +59,7 @@ void MapLayer::render(Graphics * g)
 
 	renderElements(g, entities);
 	renderTempEntity(g, entities);
-
+	renderSelected(g);
 
 	// Rendu debug
 	if (gs->isDebugRoad)
@@ -70,6 +70,10 @@ void MapLayer::render(Graphics * g)
 	if (gs->isDebugQuadTree)
 	{
 		gs->QTCollision.draw(g);
+	}
+	if (gs->isDebugEntity)
+	{
+		renderConnexitudeBuilding(g, entities);
 	}
 
 	g->translate(gs->zoneToDisplay.getLeft());
@@ -104,7 +108,7 @@ void MapLayer::renderElements(Graphics * g, std::vector<QTEntity*> entities)
 	}
 }
 
-void MapLayer::renderSelected(Graphics * g, std::vector<QTEntity*> entities)
+void MapLayer::renderSelected(Graphics * g)
 {
 	if (gs->lastSelected != NULL)
 	{
@@ -241,6 +245,18 @@ void MapLayer::renderLinkRoad(Graphics * g, std::vector<QTEntity*> entities)
 	g->setLineSize(1.0f);
 }
 
+void MapLayer::renderConnexitudeBuilding(Graphics* g, std::vector<QTEntity*> entities)
+{
+	for (unsigned i = 0; i < entities.size(); i++)
+	{
+		// On regarde si l'élément est une route
+		QTEntityBuild* cast = dynamic_cast<QTEntityBuild*>(entities[i]);
+		if (cast != NULL)
+		{
+			g->renderTextCenteredTTF("test", std::to_string(cast->getMinConnex()), myColor::BLACK(), cast->getCenter(), 20);
+		}
+	}
+}
 
 bool MapLayer::create()
 {
@@ -257,6 +273,25 @@ bool MapLayer::create()
 			gs->tempEntity = NULL;
 	}
 
+	return true;
+}
+
+bool MapLayer::remove()
+{
+	if (gs->lastSelected == NULL)
+		return false;
+
+	QTEntityBuild* castBuild = dynamic_cast<QTEntityBuild*>(gs->lastSelected);
+	Road* castRoad = dynamic_cast<Road*>(gs->lastSelected);
+	if (castBuild != NULL)
+	{
+		cm->remove(castBuild);
+	}
+	else if (castRoad != NULL)
+	{
+		cm->removeRoad(castRoad);
+	}
+	gs->lastSelected = NULL;
 	return true;
 }
 
@@ -297,10 +332,67 @@ void MapLayer::updateRoad(const Vector3D& mousePos)
 	}
 }
 
+void MapLayer::updateSelected(const Vector3D & mousePos)
+{
+	sRectangle recMouse(mousePos.x() - 1.0f, mousePos.y() - 1.0f, 2.0f, 2.0f);
+	std::vector<QTEntity*> entities;
+	gs->QTCollision.retrieve(recMouse, entities);
+	unsigned i = 0;
+	
+	while(i < entities.size() && gs->lastSelected == NULL)
+	{
+		if ((*entities[i]->getForm()).isColliding(recMouse))
+			gs->lastSelected = entities[i];
+		i++;
+	}
+}
+
+void MapLayer::handleLeftClick()
+{
+	if (gs->state != -1 && gs->stateIn != -1)
+	{
+		if (gs->state == 0)
+		{
+			if (gs->roadState == 0)
+			{
+				gs->roadState = 1;
+			}
+			else if (gs->roadState == 1)
+			{
+				create();
+				gs->roadState = -1;
+			}
+		}
+		else if (gs->state == 7)
+		{
+			remove();
+		}
+		else
+		{
+			create();
+		}
+	}
+}
+
+void MapLayer::handleMouseWheel(int mouseWheelY, const Vector3D& mousePos)
+{
+	float factor;
+	if (mouseWheelY < 0)
+	{
+		factor = 1.5f*abs(mouseWheelY);
+	}
+	else
+	{
+		factor = 1.0f / 1.5f*abs(mouseWheelY);
+	}
+
+	scale(factor, mousePos);
+}
+
 void MapLayer::updateEntity(const Vector3D& mousePos)
 {
 	Vector3D l_mousePos;
-	
+	gs->lastSelected = NULL;
 	if(isUpdating)
 		l_mousePos.set(gs->zoneToDisplay.getLeft() + mousePos*(gs->zoneToDisplay.getWidth()/rec.getWidth()));
 	else
@@ -313,6 +405,7 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
 		if (gs->roadState == -1 && gs->tempEntity != NULL)
 		{
 			delete gs->tempEntity;
+			gs->tempEntity = NULL;
 		}
 		
 		switch (gs->state)
@@ -359,7 +452,7 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
 		case 6:
 			break;
 		case 7:
-			
+			updateSelected(l_mousePos);
 			break;
 
 		default:
@@ -476,51 +569,20 @@ LayerNs::LayerEvent MapLayer::handleEvent(Input & input, const Vector3D& transla
 	
 	if (input.getMouseWheelY() != 0)
 	{
-		float factor;
-		if (input.getMouseWheelY() < 0)
-		{
-			factor = 1.5f*abs(input.getMouseWheelY());
-		}
-		else
-		{
-			factor = 1.0f / 1.5f*abs(input.getMouseWheelY());
-		}
-
-		scale(factor, mousePos);
+		handleMouseWheel(input.getMouseWheelY(), mousePos);
 	}
-
-	
 
 	if (input.getKeyPressed(1))
 	{
 		lastMousePos.set(gs->zoneToDisplay.getLeft() + mousePos);
 		isUpdating = !isUpdating;
 	}
-	
 
 	handleMouseTranslation(mousePos);
 
 	if (input.getMousePressed(0))
 	{
-		if (gs->state != -1 && gs->stateIn != -1)
-		{
-			if (gs->state == 0)
-			{
-				if (gs->roadState == 0)
-				{
-					gs->roadState = 1;
-				}
-				else if (gs->roadState == 1)
-				{
-					create();
-					gs->roadState = -1;
-				}
-			}
-			else
-			{
-				create();
-			}
-		}
+		handleLeftClick();
 	}
 	
 	updateEntity(mousePos);

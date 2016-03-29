@@ -1,5 +1,6 @@
 #pragma once
 #include "QTEntity.h"
+#include "../GameContent/Road.h"
 
 class QTEntityBuild : public QTEntity
 {
@@ -18,12 +19,13 @@ public:
 	inline std::string getName() const { return name; };
 
 	void addRoad(Road* road);
-	void removeRoad(unsigned i);
+	Road* removeRoad(unsigned i);
 	bool removeRoad(Road* road);
 	inline void setName(std::string name) { this->name = name; };
 
 	unsigned sizeConnected() const;
 	Road* getConnected(unsigned n) const;
+	int getMinConnex();
 
 private:
 	std::string name;

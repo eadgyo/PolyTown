@@ -442,7 +442,7 @@ Vector3D Form::handleEdgePoint(const Vector3D& PA, const Vector3D& PB1,
 
 
 
-Vector3D& Form::operator [](int i)
+Vector3D Form::operator [](int i)
 {
 	return get(i);
 }

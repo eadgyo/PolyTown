@@ -478,10 +478,20 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
                     gs->tempEntity = StructFactory::newPark((int) l_mousePos.x(), (int) l_mousePos.y());
                     break;
             }
-			break;
-		case 5:
-			break;
-		case 6:
+            break;
+        case 5:
+            switch (gs->stateIn) {
+                case 0:
+                    gs->tempEntity = StructFactory::newPowerPlant((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+            }
+            break;
+        case 6:
+            switch (gs->stateIn) {
+                case 0:
+                    gs->tempEntity = StructFactory::newWaterTower((int) l_mousePos.x(), (int) l_mousePos.y());
+                    break;
+            }
 			break;
 		case 7:
 			break;

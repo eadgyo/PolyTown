@@ -30,7 +30,6 @@ Building* StructFactory::newLowImpactBuilding(int x, int y)
 }
 
 // SocialBuilding
-
 SocialBuilding* StructFactory::newStadium(int x, int y)
 {
     return new SocialBuilding(STADIUM_NAME, STADIUM_RECTANGLE(x, y), x, y, STADIUM_SCORE, STADIUM_RADIUS);

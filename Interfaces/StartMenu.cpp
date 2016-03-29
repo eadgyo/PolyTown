@@ -10,15 +10,18 @@ StartMenu::~StartMenu()
 
 void StartMenu::initialize(int width, int height)
 {
+	Interface::initialize(width, height);
+
 	if (isInitialized)
 		return;
 
 	// Initialisation des noms boutons
 	std::string boutonsTexte[] = { "Nouvelle Partie",
 		"Charger", "Score", "Crédit", "Exit", ""};
+	
 
 	int posX = width/2;
-	int startY = (int) (height*0.2f);
+	int startY = (int) (height*0.3f);
 
 	// Création des boutons
 	unsigned i = 0;
@@ -27,7 +30,7 @@ void StartMenu::initialize(int width, int height)
 		Bouton* bouton = new BoutonText(graphics, boutonsTexte[i], myColor(0.1f, 0.1f, 0.1f, 1.0f), 17, posX, startY, SIZE_BW, SIZE_BH);
 		bouton->setColor(0.7f, 0.7f, 0.7f, 1.0f);
 		boutons.push_back(bouton);
-		startY += (int) (SIZE_BH*1.2f);
+		startY += (int) (SIZE_BH*1.4f);
 		i += 1;
 	}
 
@@ -40,6 +43,8 @@ void StartMenu::reset()
 }
 void StartMenu::render(Graphics* g)
 {
+	g->renderTextCenteredTTF("test", "POLYPUTE 2016", myColor::WHITE(0.7f), Vector3D(width*0.5f, height*0.08f), 32);
+	g->renderTextCenteredTTF("test", "--- Billets Verts ---", myColor::WHITE(0.5f), Vector3D(width*0.5f, height*0.12f), 16);
 	// On affiche les boutons
 	for (unsigned i = 0; i < boutons.size(); i++)
 	{

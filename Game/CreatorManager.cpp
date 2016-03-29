@@ -142,6 +142,7 @@ bool CreatorManager::isMakableSnappRoad(Road * road, CRoadStruct& cRoadStrcut)
 		cRoadStrcut.set(cRoadStruct1);
 		start = road->getStart();
 	}
+	cRoadStruct1.clear();
 
 	// Copie
 	if (!moveEnd(road, director, width, start, cRoadStrcut) || !isCorrect(road, cRoadStruct1) || !verifyAfterCorrection(road, cRoadStrcut.getAll()))
@@ -155,6 +156,7 @@ bool CreatorManager::isMakableSnappRoad(Road * road, CRoadStruct& cRoadStrcut)
 		cRoadStrcut.set(cRoadStruct1);
 		start = road->getStart();
 	}
+	cRoadStruct1.clear();
 
 	// Snapp ou pas, on peut poser la route
 	return true;
@@ -367,7 +369,7 @@ void CreatorManager::handleAllStart(CRoadStruct& cRoadStruct, Road* startR)
 		// On copie les anciens liens
 		linkManager->linkRoadCopyLast(road, l_road.begin()->second);
 		linkManager->linkRoadCopyNext(road, (--l_road.end())->second);
-		linkManager->removeRoad(road);
+		linkManager->removeRoadLight(road);
 
 		linkManager->linkMapRoad(l_road);
 
@@ -436,7 +438,7 @@ void CreatorManager::handleAllEnd(CRoadStruct& cRoadStruct, Road* endR)
 		// On copie les anciens liens
 		linkManager->linkRoadCopyLast(road, l_road.begin()->second);
 		linkManager->linkRoadCopyNext(road, (--(l_road.end()))->second);
-		linkManager->removeRoad(road);
+		linkManager->removeRoadLight(road);
 
 		linkManager->linkMapRoad(l_road);
 		linkManager->linkRoadNext(endR, connector);
@@ -463,7 +465,7 @@ void CreatorManager::handleAllEnd(CRoadStruct& cRoadStruct, Road* endR)
 	for (unsigned i = 0; i < cRoadStruct.endRoads2.size(); i++)
 	{
 		// Connexion fin/fin
-		if (cRoadStruct.endRoads2[i]->getLast() != NULL)
+		if (cRoadStruct.endRoads2[i]->getNext() != NULL)
 		{
 			// Déjà connectée
 			// Creation d'un connecteur

@@ -14,8 +14,9 @@ public:
 	Interface(Graphics* g, int, int) : graphics(g) { isInitialized = false; };
 
 	// Détection des collisions
-	virtual void initialize(int width, int height) = 0;
+	virtual void initialize(int width, int height) { this->width = width; this->height = height; };
 	HudNs::HudEvent virtual update(float dt) = 0;
 	HudNs::HudEvent virtual handleEvent(Input& input) = 0;
 	Graphics *graphics;
+	int width, height;
 };

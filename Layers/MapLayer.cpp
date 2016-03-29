@@ -363,7 +363,7 @@ void MapLayer::handleLeftClick()
 				gs->roadState = -1;
 			}
 		}
-		else if (gs->state == 7)
+		else if (gs->state == 8)
 		{
 			remove();
 		}
@@ -452,6 +452,8 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
 		case 6:
 			break;
 		case 7:
+			break;
+		case 8:
 			updateSelected(l_mousePos);
 			break;
 

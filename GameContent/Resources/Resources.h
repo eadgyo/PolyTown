@@ -4,18 +4,20 @@
 #include "../../Constant.h"
 #include "../GameContentConstant.h"
 
-#include "../Quadtree/QTEntity.h"
+#include "../Quadtree/QTEntityBuild.h"
 
 #include <vector>
 
-class Resources : public virtual QTEntity
+class Resources : public virtual QTEntityBuild
 {
 public:
-
+	sRectangle getBoundsCover() const;
 protected:
-    Resources();
+    Resources(float radius);
+	
 
     std::vector<QTEntity*> m_connected; // Connected
+	float radius;
 };
 
 #endif // !RESOURCES_H

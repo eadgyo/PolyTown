@@ -302,11 +302,13 @@ void LinkManager::add(QTEntityBuild * qtEntity)
     }
 }
 
+
+
 void LinkManager::addRoad(Road * qtEntity)
 {
 	gs->QTCollision.insert(qtEntity);
 	gs->QTRoads.insert(qtEntity);
-
+	 
 	addConnectedEntity(qtEntity);
 }
 

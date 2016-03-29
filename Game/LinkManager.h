@@ -28,6 +28,7 @@ public:
 	void removeRoad(Road* road); // Suppresion des connectors...
 	void removeRoadLight(Road* road);
 
+	//void addElec(PowePlant)
 
 	void linkRoad(Road* r1, Road* r2, bool isLastR1, bool isLastR2);
 	void linkRoadGuess(Road* r1, Road* connector);

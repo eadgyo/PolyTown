@@ -134,6 +134,7 @@
 #define POWER_PLANT_FRAME_NUMBER 13
 #define POWER_PLANT_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define POWER_PLANT_NAME "Centrale"
+#define POWER_PLANT_RADIUS 150.0f
 
 #define WATER_TOWER_IMAGE_NAME ""
 #define WATER_TOWER_IMAGE_COLS 10
@@ -142,6 +143,7 @@
 #define WATER_TOWER_FRAME_NUMBER 13
 #define WATER_TOWER_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 250, 250) // !!!
 #define WATER_TOWER_NAME "Château d'eau"
+#define WATER_TOWER_RADIUS 150.0f
 
 // Polution
 

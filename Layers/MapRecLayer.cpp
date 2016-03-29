@@ -44,7 +44,7 @@ void MapRecLayer::render(Graphics * g)
 
 
 	// sRectangle l_zoneToDisplay = gs->zoneToDisplay;
-	sRectangle l_zoneToDisplay = sRectangle::createSRectangleCenter(Vector3D(gs->zoneToDisplay.getCenterX()*factor, gs->zoneToDisplay.getCenterY()*factor),
+	sRectangle l_zoneToDisplay = sRectangle::createSRectangleCenter(Vector3D(gs->zoneToDisplay.getCenterX()*factor, gs->zoneToDisplay.getCenterY()*factorY),
 		gs->zoneToDisplay.getWidth()*factor, gs->zoneToDisplay.getHeight()*factorY);
 
 	Vector3D translate2 = Vector3D(deltaSide*factor, deltaSide*factorY);

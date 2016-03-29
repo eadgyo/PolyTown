@@ -26,13 +26,19 @@ public:
 
 	void setCreatorManager(CreatorManager* cm) { this->cm = cm; };
 
+	void scale(float scale, const Vector3D& center);
 	void setPos(const Vector3D& pos);
 	void translate(const Vector3D& trans);
+	Vector3D transformMouse(const Vector3D& mousePos);
+
+	void handleMouseTranslation(const Vector3D& mousePos);
 
 protected:
 	CreatorManager* cm;
 	int deltaSide;
 	bool isUpdating = true;
 	Vector3D lastMousePos;
+
+	const float MAX_SCALE_SCREEN = 2.0f;
 };
 

@@ -31,6 +31,8 @@ public:
     bool isMousePressed() const;
     bool getMouseDown(unsigned int n) const;
     bool getMousePressed(unsigned int n) const;
+	int getMouseWheelX() const;
+	int getMouseWheelY() const;
 
 	// ----- SETTER ----- //
     void clear();
@@ -64,6 +66,7 @@ private:
     bool mouseButtonsDown[2] = {false};
     bool mousePressed;
     bool mouseButtonsPressed[2] = {false};
+	int mouseWheelX, mouseWheelY;
 
     // Keyboard state
     int keysCode[NUMBER_OF_KEYS] = {0};

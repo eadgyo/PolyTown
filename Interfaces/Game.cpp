@@ -71,6 +71,7 @@ HudNs::HudEvent Game::handleEvent(Input & input)
 {
 	Vector3D mouse = input.getMousePos();
 	LayerNs::LayerEvent leftLayRed = LayerNs::NOCOLLISION;
+	LayerNs::LayerEvent mapLayRec = LayerNs::NOCOLLISION;
 
 	if (input.getMousePressed(1))
 	{
@@ -84,9 +85,9 @@ HudNs::HudEvent Game::handleEvent(Input & input)
 	}
 	else if (mapRecLayer.isColliding(mouse))
 	{
-		mapRecLayer.handleEvent(input, Vector3D(false));
+		mapLayRec = mapRecLayer.handleEvent(input, Vector3D(false));
 	}
-	if(leftLayRed % LayerNs::NOCOLLISION)
+	if(leftLayRed % LayerNs::NOCOLLISION && mapLayRec % LayerNs::NOCOLLISION)
 		mapLayer.handleEvent(input, Vector3D(false));
 	
 

@@ -96,21 +96,21 @@ public:
 	// Transformations
 	Vector3D transformLocalToWorld(const Vector3D& point) const;
 	Vector3D transformWorldToLocal(const Vector3D& point) const;
-	void translate(const Vector3D& v);
-	void translateX(float x);
-	void translateY(float y);
-	void rotateDegrees(float omega, const Vector3D& center);
-	void rotateRadians(float omega, const Vector3D& center);
-	void scaleF(float factor, const Vector3D& center);
-	void flipHF(const Vector3D& center);
-	void flipVF(const Vector3D& center);
-	void flipHFree(const Vector3D& center);
-	void flipVFree(const Vector3D& center);
-	void setPos(const Vector3D& v);
-	void setRadians(float omega);
-	void setScale(float scale);
-	void setFlipH(bool flipH);
-	void setFlipV(bool flipV);
+	virtual void translate(const Vector3D& v);
+	virtual void translateX(float x);
+	virtual void translateY(float y);
+	virtual void rotateDegrees(float omega, const Vector3D& center);
+	virtual void rotateRadians(float omega, const Vector3D& center);
+	virtual void scaleF(float factor, const Vector3D& center);
+	virtual void flipHF(const Vector3D& center);
+	virtual void flipVF(const Vector3D& center);
+	virtual void flipHFree(const Vector3D& center);
+	virtual void flipVFree(const Vector3D& center);
+	virtual void setPos(const Vector3D& v);
+	virtual void setRadians(float omega);
+	virtual void setScale(float scale);
+	virtual void setFlipH(bool flipH);
+	virtual void setFlipV(bool flipV);
 	void calculateSurface();
 
 	// Collisions detection

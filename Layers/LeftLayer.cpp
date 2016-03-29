@@ -173,7 +173,7 @@ LayerNs::LayerEvent LeftLayer::handleEvent(Input & input, const Vector3D& transl
 				// On update l'élément
 				gs->state = actualI;
 				gs->stateIn = popUps[actualI]->getState();
-				
+				gs->roadState = -1;
 			}
 
 			if (res % LayerNs::CLOSE)

@@ -18,12 +18,17 @@ Input::Input()
     keyPressed = false;
     keysCode[0] = KEY_CODE_1;
     keysCode[1] = KEY_CODE_2;
+	
+	mouseWheelX = 0;
+	mouseWheelY = 0;
 }
 
 void Input::update()
 {
     SDL_Event event;
 
+	mouseWheelX = 0;
+	mouseWheelY = 0;
     mouseMoves = false;
     clearMousePressed();
     clearKeysPressed();
@@ -77,7 +82,10 @@ void Input::update()
                     }
                 }
                 break;
-
+			case SDL_MOUSEWHEEL:
+				mouseWheelY = event.wheel.y;
+				mouseWheelX = event.wheel.x;
+				break;
             default:
                 break;
         }
@@ -158,6 +166,16 @@ bool Input::getMousePressed(unsigned int n) const
     return mouseButtonsPressed[n];
 }
 
+int Input::getMouseWheelX() const
+{
+	return mouseWheelX;
+}
+
+int Input::getMouseWheelY() const
+{
+	return mouseWheelY;
+}
+
 // ----- SETTER ----- //
 
 void Input::clear()
@@ -212,6 +230,8 @@ void Input::clearMouse()
 {
     clearMousePressed();
     clearMouseDown();
+	mouseWheelX = 0;
+	mouseWheelY = 0;
 }
 void Input::clearMouse(unsigned int n)
 {

@@ -36,7 +36,7 @@ public:
 
 	float getAngle(const Vector3D& vec) const;
 	float getAngle() const;
-	void scaleF(float factor, const Vector3D& center);
+	virtual void scaleF(float factor, const Vector3D& center);
 
 
 	inline virtual unsigned getType() { return 2; };

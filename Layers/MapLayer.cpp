@@ -29,7 +29,13 @@ void MapLayer::render(Graphics * g)
 	g->render(rec);
 
 	g->translate(rec.getLeft());
+
+	// Scale
+	float scale = rec.getWidth() / gs->zoneToDisplay.getWidth();
 	
+	g->scale(scale);
+	
+
 	// Rendu des images
 	std::vector<QTEntity*> entities;
 
@@ -99,6 +105,8 @@ void MapLayer::render(Graphics * g)
 	gs->QTCollision.draw(g);
 
 	g->translate(gs->zoneToDisplay.getLeft());
+
+	g->scale(1/scale);
 	
 	g->translate(-rec.getLeft());
 }
@@ -265,9 +273,11 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
 	Vector3D l_mousePos;
 	
 	if(isUpdating)
-		l_mousePos.set(gs->zoneToDisplay.getLeft() + mousePos);
+		l_mousePos.set(gs->zoneToDisplay.getLeft() + mousePos*(gs->zoneToDisplay.getWidth()/rec.getWidth()));
 	else
 		l_mousePos.set(lastMousePos);
+
+
 	if (gs->state != -1 && gs->stateIn != -1)
 	{
 
@@ -320,6 +330,7 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
 		case 6:
 			break;
 		case 7:
+			
 			break;
 
 		default:
@@ -331,6 +342,65 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
 	else
 	{
 		gs->tempEntity = NULL;
+	}
+}
+
+void MapLayer::scale(float scale, const Vector3D& mousePos)
+{
+	float widthFac = gs->mapRec.getWidth() / (scale*gs->zoneToDisplay.getWidth());
+	float heightFac = gs->mapRec.getHeight() / (scale*gs->zoneToDisplay.getHeight());
+	
+	float widthFacScreen = rec.getWidth() / (scale*gs->zoneToDisplay.getWidth());
+	float heightFacScreen = rec.getHeight() / (scale*gs->zoneToDisplay.getHeight());
+
+	if (widthFacScreen >= MAX_SCALE_SCREEN || heightFacScreen >= MAX_SCALE_SCREEN)
+	{
+		gs->zoneToDisplay.scaleF(scale*min(widthFacScreen, heightFacScreen)/MAX_SCALE_SCREEN, transformMouse(mousePos));
+	}
+	if (widthFac >= 1.0f && heightFac >= 1.0f)
+	{
+		gs->zoneToDisplay.scaleF(scale, transformMouse(mousePos));
+	}
+	else
+	{
+		gs->zoneToDisplay.scaleF(scale*min(widthFac, heightFac), transformMouse(mousePos));
+	}
+	setPos(gs->zoneToDisplay.getCenter());
+}
+
+Vector3D MapLayer::transformMouse(const Vector3D& mousePos)
+{
+	return gs->zoneToDisplay.getLeft() + mousePos*(gs->zoneToDisplay.getWidth() / rec.getWidth());
+}
+
+void MapLayer::handleMouseTranslation(const Vector3D & mousePos)
+{
+	float facX = 0.10f;
+	float facY = 0.10f;
+
+	float deltaX = 0;
+	float deltaY = 0;
+	if (mousePos.x() < rec.getWidth() * facX)
+	{
+		deltaX = mousePos.x() - rec.getWidth() * facX;
+	}
+	else if (mousePos.x() > rec.getWidth() * (1.0f - facX))
+	{
+		deltaX = mousePos.x() - rec.getWidth() * (1.0f - facX);
+	}
+
+	if (mousePos.y() < rec.getHeight() * facX)
+	{
+		deltaY = mousePos.y() - rec.getHeight() * facX;
+	}
+	else if (mousePos.y() > rec.getHeight() * (1.0f - facY))
+	{
+		deltaY = mousePos.y() - rec.getHeight() * (1.0f - facY);
+	}
+
+	if (deltaX != 0 || deltaY != 0)
+	{
+		translate(Vector3D(deltaX, deltaY, 0, false));
 	}
 }
 
@@ -372,10 +442,26 @@ LayerNs::LayerEvent MapLayer::handleEvent(Input & input, const Vector3D& transla
 {
 	Vector3D trans = rec.getLeft() + translation;
 	Vector3D mousePos = input.getMousePos();
-	mousePos -= trans;
-
-	updateEntity(mousePos);
 	
+	mousePos -= trans;
+	
+	if (input.getMouseWheelY() != 0)
+	{
+		float factor;
+		if (input.getMouseWheelY() < 0)
+		{
+			factor = 1.5f*abs(input.getMouseWheelY());
+		}
+		else
+		{
+			factor = 1.0f / 1.5f*abs(input.getMouseWheelY());
+		}
+
+		scale(factor, mousePos);
+	}
+
+	
+
 	if (input.getKeyPressed(1))
 	{
 		lastMousePos.set(gs->zoneToDisplay.getLeft() + mousePos);
@@ -383,33 +469,7 @@ LayerNs::LayerEvent MapLayer::handleEvent(Input & input, const Vector3D& transla
 	}
 	
 
-	float facX = 0.10f;
-	float facY = 0.10f;
-
-	float deltaX = 0;
-	float deltaY = 0;
-	if (mousePos.x() < rec.getWidth() * facX)
-	{
-		deltaX = mousePos.x() - rec.getWidth() * facX;
-	}
-	else if (mousePos.x() > rec.getWidth() * (1.0f - facX))
-	{
-		deltaX = mousePos.x() - rec.getWidth() * (1.0f - facX);
-	}
-
-	if (mousePos.y() < rec.getHeight() * facX)
-	{
-		deltaY = mousePos.y() - rec.getHeight() * facX;
-	}
-	else if (mousePos.y() > rec.getHeight() * (1.0f - facY))
-	{
-		deltaY = mousePos.y() - rec.getHeight() * (1.0f - facY);
-	}
-
-	if (deltaX != 0 || deltaY != 0)
-	{
-		translate(Vector3D(deltaX, deltaY, 0, false));
-	}
+	handleMouseTranslation(mousePos);
 
 	if (input.getMousePressed(0))
 	{
@@ -434,6 +494,7 @@ LayerNs::LayerEvent MapLayer::handleEvent(Input & input, const Vector3D& transla
 		}
 	}
 	
+	updateEntity(mousePos);
 
 	return LayerNs::NOCOLLISION;
 }

@@ -203,3 +203,10 @@ SDL_Rect sRectangle::getSDLRectDest()
 	src.h = (int) getHeight();
 	return src;
 }
+
+void sRectangle::scaleF(float factor, const Vector3D & center)
+{
+	Form::scaleF(factor, center);
+	width *= factor;
+	height *= factor;
+}

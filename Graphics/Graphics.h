@@ -53,6 +53,7 @@ public:
 	void freeTexture(std::string name);
 	void freeAllSurfaces();
 	void translate(Vector3D translate) { glTranslatef(translate.x(), translate.y(), translate.z()); };
+	void scale(float scale) { glScalef(scale, scale, scale); };
 
 	// Fonts
 	void renderText(std::string path, std::string text, const Vector3D & pos, unsigned size);

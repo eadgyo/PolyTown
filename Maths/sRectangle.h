@@ -58,6 +58,10 @@ public:
 
 
 	inline virtual unsigned getType() { return 3; };
+
+	// Transformation
+	virtual void scaleF(float factor, const Vector3D& center);
+
 private:
 	float width, height;
 

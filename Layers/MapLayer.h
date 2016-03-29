@@ -13,6 +13,9 @@ public:
 	void update(float dt);
 	void render(Graphics* g);
 	
+	void renderElements(Graphics* g, std::vector<QTEntity*> entities);
+	void renderSelected(Graphics* g, std::vector<QTEntity*> entities);
+	void renderTempEntity(Graphics* h, std::vector<QTEntity*> entities);
 	void renderConnexitude(Graphics* g, std::vector<QTEntity*> entities);
 	void renderLinkRoad(Graphics * g, std::vector<QTEntity*> entities);
 

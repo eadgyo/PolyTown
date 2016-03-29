@@ -160,4 +160,7 @@ public:
     sRectangle zoneToDisplay;
 
     bool isReady = false;
+
+	bool isDebugQuadTree = true;
+	bool isDebugRoad = true;
 };

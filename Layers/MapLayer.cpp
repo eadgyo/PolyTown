@@ -43,22 +43,42 @@ void MapLayer::render(Graphics * g)
 	
 	g->translate(-gs->zoneToDisplay.getLeft());
 
+	renderElements(g, entities);
+	renderTempEntity(g, entities);
+
+
+	// Rendu debug
+	if (gs->isDebugRoad)
+	{
+		renderConnexitude(g, entities);
+		renderLinkRoad(g, entities);
+	}
+	if (gs->isDebugQuadTree)
+	{
+		gs->QTCollision.draw(g);
+	}
+
+	g->translate(gs->zoneToDisplay.getLeft());
+
+	g->scale(1/scale);
+	
+	g->translate(-rec.getLeft());
+}
+
+void MapLayer::renderElements(Graphics * g, std::vector<QTEntity*> entities)
+{
 	for (unsigned i = 0; i < entities.size(); i++)
 	{
-		
-		
 		// On regarde si l'élément est une route
 		Road* cast = dynamic_cast<Road*>(entities[i]);
 		if (cast != NULL)
 		{
 			g->setColor(myColor(0.3f, 0.3f, 0.3f));
 			g->render(*(cast->getForm()));
-			
+
 			myRectangle line = myRectangle::create2points(cast->getStart(), cast->getEnd(), 5);
 			g->setColor(myColor::WHITE(0.4f));
 			g->render(line);
-
-			
 		}
 		else
 		{
@@ -68,7 +88,19 @@ void MapLayer::render(Graphics * g)
 			g->drawForm(*(entities[i]->getForm()));
 		}
 	}
-	
+}
+
+void MapLayer::renderSelected(Graphics * g, std::vector<QTEntity*> entities)
+{
+	if (gs->lastSelected != NULL)
+	{
+		g->setColor(myColor(0.45f, 0.5f, 0.38f, 0.5f));
+		g->render(*(gs->lastSelected->getForm()));
+	}
+}
+
+void MapLayer::renderTempEntity(Graphics * g, std::vector<QTEntity*> entities)
+{
 	// Affichage de l'élément qui peut être dessiner
 	if (gs->tempEntity != NULL)
 	{
@@ -82,8 +114,7 @@ void MapLayer::render(Graphics * g)
 		}
 		g->render(*(gs->tempEntity->getForm()));
 		g->drawForm(*(gs->tempEntity->getForm()));
-		
-		gs->tempEntity->setRadians(-gs->tempEntity->getAngle2D());
+
 		for (unsigned i = 0; i < entities.size(); i++)
 		{
 			if (entities[i]->isColliding(*(gs->tempEntity->getForm())))
@@ -92,23 +123,7 @@ void MapLayer::render(Graphics * g)
 				g->render(*(entities[i]->getForm()));
 			}
 		}
-
-		gs->tempEntity->setRadians(-gs->tempEntity->getAngle2D());
-
-
 	}
-
-	// Rendu debug
-	renderConnexitude(g, entities);
-	renderLinkRoad(g, entities);
-
-	gs->QTCollision.draw(g);
-
-	g->translate(gs->zoneToDisplay.getLeft());
-
-	g->scale(1/scale);
-	
-	g->translate(-rec.getLeft());
 }
 
 void MapLayer::renderConnexitude(Graphics * g, std::vector<QTEntity*> entities)

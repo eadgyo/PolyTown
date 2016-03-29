@@ -138,8 +138,8 @@
 
 #define FARM_MAX_WORKERS 5
 #define FARM_INCOME_RATE 1000
-#define FARM_ENERGY_NEEDS 0
-#define FARM_OUTPUT_RATE 0
+#define FARM_WATER_NEEDS 0
+#define FARM_OUTPUT_RATE 100
 
 // Resources
 

@@ -85,8 +85,6 @@ public:
     p_uint free_inhabitants = 0;
     p_uint workers = 0;
     p_uint free_workers = 0;
-    p_uint food_production = 0;
-    p_uint food_needs = 0;
 
     // Ratio
     float unemployment = 0.0f;

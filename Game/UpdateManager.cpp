@@ -52,6 +52,8 @@ void UpdateManager::updateFast(unsigned int dt)
         inOutWorkers();
         updateWorkers();
         updateUnemployment();
+
+        updateFood();
     }
 }
 
@@ -176,9 +178,10 @@ void UpdateManager::updateFood()
 {
     p_uint food_needs = 0;
     for (unsigned i = 0; i < gs->housing.size(); i++) {
-        food_needs += gs->housing[i]->getFoodNeeds();
+        if (gs->housing[i]->hasFood()) {
+            food_needs += gs->housing[i]->getFoodNeeds();
+        }
     }
-    gs->food_needs = food_needs;
 
     p_uint food_production = 0;
     Farm* farm;
@@ -187,7 +190,24 @@ void UpdateManager::updateFood()
             food_production += farm->getProdution();
         }
     }
-    gs->food_production = food_production;
+
+    unsigned i = 0;
+    while (food_production < food_needs && i < gs->housing.size()) {
+        if (gs->housing[i]->hasFood()) {
+            gs->housing[i]->noFood();
+            food_needs -= gs->housing[i]->getFoodNeeds();
+        }
+        i++;
+    }
+
+    i = 0;
+    while (food_production > food_needs && i < gs->housing.size()) {
+        if (!gs->housing[i]->hasFood() && food_needs + gs->housing[i]->getFoodNeeds() <= food_production) {
+            gs->housing[i]->food();
+            food_needs += gs->housing[i]->getFoodNeeds();
+        }
+        i++;
+    }
 }
 
 // ----- In - Out ----- //

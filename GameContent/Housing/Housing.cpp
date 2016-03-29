@@ -86,6 +86,16 @@ p_uint Housing::delInhabitants(p_uint n)
     }
 }
 
+void Housing::food()
+{
+    m_hasFood = true;
+}
+
+void Housing::noFood()
+{
+    m_hasFood = false;
+}
+
 void Housing::upgrade(p_uint water_needs, p_uint energy_needs)
 {
     m_water_needs = water_needs;

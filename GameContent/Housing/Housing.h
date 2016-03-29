@@ -27,6 +27,9 @@ public:
     p_uint addInhabitants(p_uint n);
     p_uint delInhabitants(p_uint n);
 
+    void food();
+    void noFood();
+
     void upgrade(p_uint water_needs, p_uint energy_needs);
 
 protected:

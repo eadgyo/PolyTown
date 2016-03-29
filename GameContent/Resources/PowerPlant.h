@@ -7,7 +7,6 @@ class PowerPlant : public Resources
 {
 public:
     PowerPlant(std::string name, int x, int y);
-	
 
 private:
 

@@ -11,13 +11,21 @@
 class Resources : public virtual QTEntityBuild
 {
 public:
-	sRectangle getBoundsCover() const;
+    sRectangle getBoundsCover() const;
+
+    // ----- GETTER ----- //
+    float getRadius() const;
+
+    // ----- SETTER ----- //
+    bool addConsumer(QTEntity* entity, p_uint consumption);
+
 protected:
     Resources(float radius);
-	
 
     std::vector<QTEntity*> m_connected; // Connected
-	float radius;
+    p_uint m_production;
+    p_uint m_consumption;
+    float radius;
 };
 
 #endif // !RESOURCES_H

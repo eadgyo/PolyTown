@@ -2,6 +2,7 @@
 #define ENERGY_H
 
 #include "../../Constant.h"
+
 #include "PowerPlant.h"
 
 class Energy

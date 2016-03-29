@@ -14,6 +14,20 @@ void MapLayer::initialize(int x, int y, int width, int height, int deltaSide, Ga
 	this->deltaSide = deltaSide;
 }
 
+bool MapLayer::back()
+{
+	if (gs->roadState == 1)
+	{
+		gs->roadState = 0;
+		return false;
+	}
+	else
+	{
+		gs->roadState = -1;
+		return true;
+	}
+}
+
 void MapLayer::reset()
 {
 	gs->roadState = -1;

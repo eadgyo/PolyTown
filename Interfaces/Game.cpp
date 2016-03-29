@@ -75,8 +75,9 @@ HudNs::HudEvent Game::handleEvent(Input & input)
 
 	if (input.getMousePressed(1))
 	{
-		leftLayer.reset();
-		mapLayer.reset();
+		if(mapLayer.back())
+			leftLayer.reset();
+		
 	}
 
 	if (leftLayer.isColliding(mouse))

@@ -21,11 +21,13 @@ public:
 
 	LayerNs::LayerEvent handleEvent(Input& input, const Vector3D& translation);
 
+	bool back();
 	void reset();
 	bool create();
 	bool isMakable();
 	void updateEntity(const Vector3D& mousePos);
 	void updateRoad(const Vector3D& mousePos);
+	
 
 	void setCreatorManager(CreatorManager* cm) { this->cm = cm; };
 

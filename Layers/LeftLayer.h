@@ -33,14 +33,14 @@ private:
 	const float color2[9] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 	const float color3[9] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
-    const int sizeTexts[9] = {1, 4, 3, 4, 3, 1, 2, 1, 1};
+    const int sizeTexts[9] = {1, 4, 3, 4, 3, 3, 2, 1, 1};
 	//const int sizeTexts[9] = { 1, 4, 3, 4, 3, 6, 2, 4, 1};
 	std::string textsP[9][6] = { {"Route"},
 								{"Maison", "Maison à faible impact", "Immeuble", "Immeuble à faible impact"},
 								{"Zone industrielle", "Zone commerciale", "Zone agricole"},
 								{"Commissariat", "Caserne", "École", "Hôpital"},
 								{"Stade", "Cinéma", "Parc"},
-                                {"Centrale électrique"},
+                                {"Centrale électrique", "Eolienne", "Panneau solaire"},
 								//{"Eolienne", "Hydrolienne", "Panneau solaire", "Usine à charbon", "Usine à pétrole", "Centrale nucléaire"},
 								{"Stockage de l'eau potable", "Indisponible"},//"Traitement des eaux usées"},
                                 {"Indisponible"},

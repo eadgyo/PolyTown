@@ -16,6 +16,7 @@ Building::Building(int x, int y, p_uint floor) :
     Energy(BUILDING_ENERGY_NEEDS),
     Water(BUILDING_WATER_NEEDS)
 {
+	setName(BUILDING_NAME);
 }
 
 Building::Building(int x, int y, p_uint water_needs, p_uint energy_needs) :

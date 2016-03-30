@@ -50,6 +50,8 @@ void ScoresLayer::render(Graphics * g)
 
 	g->render((*round));
 
+	g->renderTextCenteredTTF("test", gs->getScore(), myColor::WHITE(), Vector3D(rec.getWidth()*0.5f, rec.getHeight()*0.5f), 14);
+
 	g->translate(-rec.getLeft());
 }
 

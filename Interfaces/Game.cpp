@@ -27,7 +27,7 @@ void Game::initialize(int width, int height)
 		(int)(width*SIZE_FACTOR_REC_MAP),
 		200,
 		gs);
-	scoresLayer.initialize((int)(0.83f*width), 0, (int)(0.17f*width), 35, "test",
+	scoresLayer.initialize((int)(0.75f*width), 0, (int)(0.25f*width), 35, "test",
 		20, myColor(1.0f, 1.0f, 1.0f), myColor(0.4f, 0.4f, 0.4f, 0.6f), gs);
 	timeLayer.initialize((int)(0.5f*width - 35), 0, (int)(0.08f*width), 35, "test",
 		20, myColor(1.0f, 1.0f, 1.0f), myColor(0.4f, 0.4f, 0.4f, 0.6f), gs);

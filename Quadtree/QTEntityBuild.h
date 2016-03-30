@@ -5,8 +5,8 @@
 class QTEntityBuild : public QTEntity
 {
 public:
-	QTEntityBuild() { form = NULL; name = ""; };
-	QTEntityBuild(std::string name) { form = NULL; this->name = name; };
+	QTEntityBuild() { form = NULL; m_name = ""; };
+	QTEntityBuild(std::string name) { form = NULL; this->m_name = name; };
 	QTEntityBuild(std::string name, const Form& form);
 	QTEntityBuild(const Form& form);
 	QTEntityBuild(const myRectangle& rectangle);
@@ -16,12 +16,12 @@ public:
 	QTEntityBuild(const Vector3D& center, float radius);
 	~QTEntityBuild() {};
 
-	inline std::string getName() const { return name; };
+	inline std::string getName() const { return m_name; };
 
 	void addRoad(Road* road);
 	Road* removeRoad(unsigned i);
 	bool removeRoad(Road* road);
-	inline void setName(std::string name) { this->name = name; };
+	inline void setName(std::string name) { this->m_name = name; };
 
 	unsigned sizeConnected() const;
 	Road* getConnected(unsigned n) const;
@@ -30,7 +30,7 @@ public:
 	bool isConnected(QTEntityBuild* qtEntity);
 
 private:
-	std::string name;
+	std::string m_name;
 	std::vector<Road*> connected;
 };
 

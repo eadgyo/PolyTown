@@ -294,13 +294,19 @@ void LinkManager::add(QTEntityBuild * qtEntity)
 
 	gs->QTCollision.insert(qtEntity);
     Housing* housing = dynamic_cast<Housing*>(qtEntity);
-    if (housing) {
-        gs->housing.push_back(housing);
-    } else {
-        Factory* factory = dynamic_cast<Factory*>(qtEntity);
-        if (factory) {
-            gs->factory.push_back(factory);
-        }
+	SocialBuilding* social = dynamic_cast<SocialBuilding*>(qtEntity);
+	Factory* factory = dynamic_cast<Factory*>(qtEntity);
+    if (housing)
+	{
+		gs->housing.push_back(housing);
+    }
+	else if (social)
+	{
+		gs->social.push_back(social);
+	}
+	else if (factory)
+	{
+        gs->factory.push_back(factory);
     }
 }
 
@@ -542,6 +548,7 @@ void LinkManager::removeGenerator(QTEntityBuild * gen)
 
 	if (powerPlant != NULL)
 	{
+		gs->QTElecGen.erase(powerPlant);
 		while(powerPlant->sizeConnectedCons() != 0)
 		{
 			Energy* energy = dynamic_cast<Energy*>(powerPlant->getConnectedCons(0));
@@ -552,6 +559,7 @@ void LinkManager::removeGenerator(QTEntityBuild * gen)
 	}
 	if (waterTower != NULL)
 	{
+		gs->QTWaterGen.erase(waterTower);
 		while (waterTower->sizeConnectedCons() != 0)
 		{
 			Water* water = dynamic_cast<Water*>(waterTower->getConnectedCons(0));
@@ -664,6 +672,40 @@ void LinkManager::remove(QTEntityBuild * qtEntity)
 
 	removeConsumer(qtEntity);
 	removeGenerator(qtEntity);
+
+	Housing* housing = dynamic_cast<Housing*>(qtEntity);
+	SocialBuilding* social = dynamic_cast<SocialBuilding*>(qtEntity);
+	Factory* factory = dynamic_cast<Factory*>(qtEntity);
+	if (housing)
+	{
+		unsigned i = 0;
+		while (i < gs->housing.size() && gs->housing[i] != housing)
+		{
+			i++;
+		}
+		if(i < gs->housing.size())
+			gs->housing.erase(gs->housing.begin() + i);
+	}
+	else if (social)
+	{
+		unsigned i = 0;
+		while (i < gs->social.size() && gs->social[i] != social)
+		{
+			i++;
+		}
+		if (i < gs->social.size())
+			gs->social.erase(gs->social.begin() + i);
+	}
+	else if (factory)
+	{
+		unsigned i = 0;
+		while (i < gs->factory.size() && gs->factory[i] != factory)
+		{
+			i++;
+		}
+		if (i < gs->factory.size())
+			gs->factory.erase(gs->factory.begin() + i);
+	}
 }
 
 void LinkManager::removeRoad(Road * road)

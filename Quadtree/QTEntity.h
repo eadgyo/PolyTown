@@ -26,7 +26,6 @@ public:
 	inline sRectangle getBoundsMax() const { return form->getBoundMax(); };
 	inline Form* getForm() const { return form; };
 	inline Vector3D getCenter() const { assert(form != NULL);  return form->getCenter(); };
-	inline std::string getName() const { return m_name; };
 
 	sRectangle* castSRectangle() const;
 	myRectangle* castMyRectangle() const;
@@ -44,7 +43,6 @@ public:
 	void set(const Vector3D& center, float witdh, float height);
 	void set(const Vector3D& center, float radius);
 	
-    void setName(std::string name);
 
 	// Transformations
 	void setRadians(float theta);
@@ -64,6 +62,4 @@ protected:
 	void initCircle(const Vector3D& center, float radius);
 
 	Form* form;
-    std::string m_name;
-	
 };

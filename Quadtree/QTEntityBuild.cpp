@@ -2,37 +2,43 @@
 
 QTEntityBuild::QTEntityBuild(std::string name, const Form& form) : QTEntity(form)
 {
-	this->name = name;
+	this->m_name = name;
 }
 QTEntityBuild::QTEntityBuild(const Form& form)
 {
 	this->form = new Form(form);
+	this->m_name = "";
 }
 QTEntityBuild::QTEntityBuild(const Vector3D& center, float width, float height)
 {
 	form = NULL;
 	initRectangle(center, width, height);
+	this->m_name = "";
 }
 QTEntityBuild::QTEntityBuild(const Vector3D& center, float width, float height, float theta)
 {
 	form = NULL;
 	initRectangle(center, width, height, theta);
+	this->m_name = "";
 }
 QTEntityBuild::QTEntityBuild(const Vector3D& center, float radius)
 {
 	form = NULL;
 	initCircle(center, radius);
+	this->m_name = "";
 }
 
 QTEntityBuild::QTEntityBuild(const myRectangle& rectangle)
 {
 	form = NULL;
 	form = new myRectangle(rectangle);
+	this->m_name = "";
 }
 QTEntityBuild::QTEntityBuild(const Circle& circle)
 {
 	form = NULL;
 	form = new Circle(circle);
+	this->m_name = "";
 }
 
 

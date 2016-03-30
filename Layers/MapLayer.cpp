@@ -82,10 +82,10 @@ void MapLayer::render(Graphics * g)
 		renderGenResLink(g, entities);
 	}
 	
-	g->translate(gs->zoneToDisplay.getLeft());
-
 	g->setColor(myColor::RED());
 	g->drawForm(gs->QTCollision.getRec());
+
+	g->translate(gs->zoneToDisplay.getLeft());
 
 	g->scale(1/scale);
 	
@@ -109,7 +109,21 @@ void MapLayer::renderElements(Graphics * g, std::vector<QTEntity*> entities)
 		}
 		else
 		{
-			g->setColor(myColor(0.2f, 0.2f, 0.2f));
+			QTEntityBuild* cast = dynamic_cast<QTEntityBuild*>(entities[i]);
+			if (cast != NULL && cast->getName().size() > 5)
+			{
+				g->setColor((float)(cast->getName()[2] + cast->getName()[3] - 128) / 128,
+					(float)(cast->getName()[0] + cast->getName()[4] - 128) / 128,
+					(float)(cast->getName()[5] + cast->getName()[1] - 128) / 128);
+			}
+			else if (cast != NULL && cast->getName().size() > 2)
+			{
+				g->setColor((float)(cast->getName()[0] - 64) / 64,
+					(float)(cast->getName()[1] - 64) / 64,
+					(float)(cast->getName()[2] - 64) / 64);
+			}
+			else
+				g->setColor(myColor(0.2f, 0.2f, 0.2f));
 			g->render(*(entities[i]->getForm()));
 			g->setColor(myColor(0.0f, 0.0f, 0.0f));
 			g->drawForm(*(entities[i]->getForm()));
@@ -269,8 +283,8 @@ void MapLayer::renderConnexitudeBuilding(Graphics* g, std::vector<QTEntity*> ent
 
 void MapLayer::renderGenResLink(Graphics * g, std::vector<QTEntity*> entities)
 {
-	myColor waterColor(0.2f, 0.4f, 1.0f, 0.5f);
-	myColor EnergyColor(0.7f, 0.7f, 0.1f, 0.5f);
+	myColor waterColor(0.2f, 0.4f, 1.0f, 0.8f);
+	myColor EnergyColor(0.7f, 0.7f, 0.1f, 0.8f);
 
 	// Rendu des liens entre générateurs et consommateurs
 	for (unsigned i = 0; i < entities.size(); i++)
@@ -511,15 +525,16 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
 		case 0:
 			switch (gs->stateIn)
 			{
-			case 0:
-				updateRoad(l_mousePos);
-				break;
+				case 0:
+					updateRoad(l_mousePos);
+					break;
 			}
 			break;
 
         // House
         case 1:
-            switch (gs->stateIn) {
+            switch (gs->stateIn) 
+			{
                 case 0:
                     gs->tempEntity = StructFactory::newHouse((int) l_mousePos.x(), (int) l_mousePos.y());
                     break;
@@ -535,7 +550,8 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
             }
             break;
         case 2:
-            switch (gs->stateIn) {
+            switch (gs->stateIn) 
+			{
                 case 0:
                     gs->tempEntity = StructFactory::newManufactory((int) l_mousePos.x(), (int) l_mousePos.y());
                     break;
@@ -548,7 +564,8 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
             }
             break;
         case 3:
-            switch (gs->stateIn) {
+            switch (gs->stateIn)
+			{
                 case 0:
                     gs->tempEntity = StructFactory::newPoliceStation((int) l_mousePos.x(), (int) l_mousePos.y());
                     break;
@@ -564,7 +581,8 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
             }
             break;
         case 4:
-            switch (gs->stateIn) {
+            switch (gs->stateIn) 
+			{
                 case 0:
                     gs->tempEntity = StructFactory::newStadium((int) l_mousePos.x(), (int) l_mousePos.y());
                     break;
@@ -577,14 +595,22 @@ void MapLayer::updateEntity(const Vector3D& mousePos)
             }
             break;
         case 5:
-            switch (gs->stateIn) {
+            switch (gs->stateIn) 
+			{
                 case 0:
                     gs->tempEntity = StructFactory::newPowerPlant((int) l_mousePos.x(), (int) l_mousePos.y());
                     break;
+				case 1:
+					gs->tempEntity = StructFactory::newPowerPlant((int)l_mousePos.x(), (int)l_mousePos.y());
+					break;
+				case 2:
+					gs->tempEntity = StructFactory::newPowerPlant((int)l_mousePos.x(), (int)l_mousePos.y());
+					break;
             }
             break;
         case 6:
-            switch (gs->stateIn) {
+            switch (gs->stateIn) 
+			{
                 case 0:
                     gs->tempEntity = StructFactory::newWaterTower((int) l_mousePos.x(), (int) l_mousePos.y());
                     break;

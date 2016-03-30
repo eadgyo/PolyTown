@@ -33,6 +33,17 @@ public:
         std::cout << "M = " << money << " " << std::endl;
     }
 
+	std::string getScore()
+	{
+		std::string a = "";
+		a += "DD = " + std::to_string(score_dd) + " ";
+		a += "SS = " + std::to_string(score_soc) + " ";
+		a += "SM = " + std::to_string(score_eco) + " ";
+		a += "SE = " + std::to_string(score_env) + " ";
+		a += "M = " + std::to_string(money) + " " ;
+		return a;
+	}
+
     std::string getDate() const
     {
         std::string date = "";

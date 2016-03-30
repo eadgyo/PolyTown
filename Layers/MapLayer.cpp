@@ -77,6 +77,10 @@ void MapLayer::render(Graphics * g)
 	{
 		renderConnexitudeBuilding(g, entities);
 	}
+	if (gs->isDebugGenResLink)
+	{
+		renderGenResLink(g, entities);
+	}
 
 	g->translate(gs->zoneToDisplay.getLeft());
 
@@ -279,15 +283,70 @@ void MapLayer::renderGenResLink(Graphics * g, std::vector<QTEntity*> entities)
 			Vector3D director = entities[i]->getDirectorVec();
 			round->setColor(waterColor);
 			round->setPos(entities[i]->getCenter() + director*round->getWidth() * 1.2f);
-			//g->render(round);
-		}
-		if (water != NULL)
-		{
+			round->draw(g);
 
+			round->setColor(EnergyColor);
+			round->setPos(entities[i]->getCenter() - director*round->getWidth() * 1.2f);
+			round->draw(g);
 		}
-		else if (res != NULL)
+		else
 		{
-
+			if (water != NULL)
+			{
+				if (!water->hasWater())
+				{
+					round->setColor(waterColor);
+					round->setPos(entities[i]->getCenter());
+					round->draw(g);
+				}
+				else
+				{
+					g->setColor(waterColor);
+					g->setLineSize(2.0f);
+					Vector3D p0 = entities[i]->getCenter();
+					Vector3D p1 = water->getWaterTower()->getCenter();
+					g->drawLine(p0, p1);
+					g->setLineSize(1.0f);
+				}
+			}
+			if (energy != NULL)
+			{
+				if (!energy->hasEnergy())
+				{
+					round->setColor(EnergyColor);
+					round->setPos(entities[i]->getCenter());
+					round->draw(g);
+				}
+				else
+				{
+					g->setColor(EnergyColor);
+					g->setLineSize(2.0f);
+					Vector3D p0 = entities[i]->getCenter();
+					Vector3D p1 = energy->getPowerPlant()->getCenter();
+					g->drawLine(p0, p1);
+					g->setLineSize(1.0f);
+				}
+			}
+			
+			if (res != NULL)
+			{
+				if (dynamic_cast<PowerPlant*>(res) != NULL)
+				{
+					g->setColor(EnergyColor);
+				}
+				else
+				{
+					g->setColor(waterColor);
+				}
+				g->setLineSize(2.0f);
+				for (unsigned i = 0; i < res->sizeConnectedCons(); i++)
+				{
+					Vector3D p0 = entities[i]->getCenter();
+					Vector3D p1 = res->getConnectedCons(i)->getCenter();
+					g->drawLine(p0, p1);
+				}
+				g->setLineSize(1.0f);
+			}
 		}
 	}
 }

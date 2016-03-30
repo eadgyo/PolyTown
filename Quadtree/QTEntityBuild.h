@@ -27,6 +27,7 @@ public:
 	Road* getConnected(unsigned n) const;
 	int getMinConnex();
 	std::set<int> getConnexes();
+	bool isConnected(QTEntityBuild* qtEntity);
 
 private:
 	std::string name;

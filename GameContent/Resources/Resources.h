@@ -15,9 +15,13 @@ public:
 
     // ----- GETTER ----- //
     float getRadius() const;
+	unsigned sizeConnectedCons();
+	QTEntity* getConnectedCons(unsigned i);
 
     // ----- SETTER ----- //
     bool addConsumer(QTEntity* entity, p_uint consumption);
+	QTEntity* eraseCons(unsigned i);
+	bool eraseCons(QTEntity* qtEntity);
 
 protected:
     Resources(p_uint production, float radius);

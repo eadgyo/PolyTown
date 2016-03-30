@@ -72,6 +72,20 @@ std::set<int> QTEntityBuild::getConnexes()
 	return connexes;
 }
 
+bool QTEntityBuild::isConnected(QTEntityBuild * qtEntity)
+{
+	std::set<int> connexes = qtEntity->getConnexes();
+	for (unsigned i = 0; i < connected.size(); i++)
+	{
+		if (connected[i]->getConnexitude() != -1 &&
+			connexes.find(connected[i]->getConnexitude()) != connexes.end())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void QTEntityBuild::addRoad(Road * road)
 {
 	connected.push_back(road);

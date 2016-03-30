@@ -4,7 +4,7 @@
 #include "../../Constant.h"
 #include "../GameContentConstant.h"
 
-#include "../Quadtree/QTEntityBuild.h"
+#include "../../Quadtree/QTEntityBuild.h"
 
 #include <vector>
 

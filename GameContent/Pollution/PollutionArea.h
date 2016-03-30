@@ -1,10 +1,10 @@
 #ifndef POLLUTION_AREA_H
 #define POLLUTION_AREA_H
 
-#include "../Constant.h"
+#include "../../Constant.h"
 #include "../GameContentConstant.h"
 
-#include "../Quadtree/QTEntity.h"
+#include "../../Quadtree/QTEntity.h"
 
 class PollutionArea : public virtual QTEntity
 {

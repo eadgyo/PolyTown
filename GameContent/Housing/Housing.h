@@ -3,7 +3,7 @@
 
 #include "../GameContentConstant.h"
 
-#include "../Quadtree/QTEntityBuild.h"
+#include "../../Quadtree/QTEntityBuild.h"
 
 #include "../Resources/Energy.h"
 #include "../Resources/Water.h"

@@ -4,7 +4,7 @@
 #include "../../Constant.h"
 #include "../GameContentConstant.h"
 
-#include "../QuadTree/QTEntityBuild.h"
+//#include "../../QuadTree/QTEntityBuild.h"
 
 class Factory : public virtual QTEntityBuild
 {

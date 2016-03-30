@@ -4,7 +4,7 @@
 #include "../../Constant.h"
 #include "../GameContentConstant.h"
 
-#include "../Quadtree/QTEntityBuild.h"
+#include "../../Quadtree/QTEntityBuild.h"
 
 class SocialBuilding : public virtual QTEntityBuild
 {
@@ -21,4 +21,4 @@ protected:
     float m_radius;
 };
 
-#endif !SOCIAL_BUILDING_H
+#endif // !SOCIAL_BUILDING_H

@@ -1,7 +1,16 @@
 #pragma once
 class FileManager;
 
+#if defined _WIN32 || defined _WIN64
+#include <windows.h>
 #include <Windows.h>
+
+#else
+
+#include <unistd.h>
+#include <stdlib.h>
+#endif
+
 #include <GL/glew.h>
 #include "../Graphics/Image.h"
 #include <string>
@@ -12,7 +21,6 @@ class FileManager;
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <windows.h>
 #include <SDL2/SDL_image.h>
 
 class FileManager

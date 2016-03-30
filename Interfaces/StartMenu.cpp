@@ -43,8 +43,8 @@ void StartMenu::reset()
 }
 void StartMenu::render(Graphics* g)
 {
-	g->renderTextCenteredTTF("test", "POLYPUTE 2016", myColor::WHITE(0.7f), Vector3D(width*0.5f, height*0.08f), 32);
-	g->renderTextCenteredTTF("test", "--- Billets Verts ---", myColor::WHITE(0.5f), Vector3D(width*0.5f, height*0.12f), 16);
+	g->renderTextCenteredTTF("test", "POLYTOWN", myColor::WHITE(0.7f), Vector3D(width*0.5f, height*0.08f), 32);
+	g->renderTextCenteredTTF("test", "--- DEVELOPPEMENT DURABLE ---", myColor::WHITE(0.5f), Vector3D(width*0.5f, height*0.12f), 16);
 	// On affiche les boutons
 	for (unsigned i = 0; i < boutons.size(); i++)
 	{

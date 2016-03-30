@@ -57,11 +57,16 @@ public:
 
     void initialize(float width, float height)
     {
+		// Il faut des rec plus grands pour y stocker les grands cercles
+		sRectangle bigRec = sRectangle::createSRectangleCenter(Vector3D(width*0.5f, height*0.5f), width*5.0f, height*5.0f);
+		QTWaterGen.setRect(bigRec);
+		QTElecGen.setRect(bigRec);
+
         sRectangle rec(0.0f, 0.0f, width, height);
         QTCollision.setRect(rec);
-        QTWaterGen.setRect(rec);
+        
         QTWaterRes.setRect(rec);
-        QTElecGen.setRect(rec);
+       
         QTElecRes.setRect(rec);
         QTRoads.setRect(rec);
         QTHabitations.setRect(rec);

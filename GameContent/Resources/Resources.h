@@ -19,6 +19,7 @@ public:
 	QTEntity* getConnectedCons(unsigned i);
 
     // ----- SETTER ----- //
+	bool virtual addConsumer(QTEntity* entity) = 0;
     bool addConsumer(QTEntity* entity, p_uint consumption);
 	QTEntity* eraseCons(unsigned i);
 	bool eraseCons(QTEntity* qtEntity);

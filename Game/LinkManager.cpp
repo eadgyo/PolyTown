@@ -310,7 +310,7 @@ void LinkManager::addRoad(Road * qtEntity)
 {
 	gs->QTCollision.insert(qtEntity);
 	gs->QTRoads.insert(qtEntity);
-	 
+	
 	addConnectedEntity(qtEntity);
 }
 
@@ -373,7 +373,11 @@ void LinkManager::removeConnectedEntity(Road * road)
 		QTEntityBuild* cast = dynamic_cast<QTEntityBuild*>(qt);
 		if (cast != NULL)
 		{
+			removeConsumer(cast); // Temporaire
+			removeGenerator(cast);
 			cast->removeRoad(road);
+			addConsumer(cast); // Temporaire
+			addGenerator(cast);
 		}
 		else
 		{
@@ -445,6 +449,7 @@ void LinkManager::addConsumer(QTEntityBuild * cons)
 	addConsumerWater(cons);
 }
 
+
 void LinkManager::addConsumerPower(QTEntityBuild * cons)
 {
 	Energy * cast = dynamic_cast<Energy*>(cons);
@@ -459,7 +464,7 @@ void LinkManager::addConsumerPower(QTEntityBuild * cons)
 			// Essayer de s'ajouter au générateur
 			if (genPower[i]->isConnected(cons))
 			{
-				genPower[i]->addConsumer(cons, cast->getEnergyNeeds());
+				genPower[i]->addConsumer(cons);
 			}
 			i++;
 		}
@@ -486,7 +491,7 @@ void LinkManager::addConsumerWater(QTEntityBuild * cons)
 			// Essayer de s'ajouter au générateur
 			if (genWater[i]->isConnected(cons))
 			{
-				genWater[i]->addConsumer(cons, cast->getWaterNeeds());
+				genWater[i]->addConsumer(cons);
 			}
 			i++;
 		}
@@ -495,6 +500,64 @@ void LinkManager::addConsumerWater(QTEntityBuild * cons)
 		if (!cast->hasWater())
 		{
 			gs->QTWaterRes.insert(cons);
+		}
+	}
+}
+
+void LinkManager::removeConsumer(QTEntityBuild * cons)
+{
+	Energy * energy = dynamic_cast<Energy*>(cons);
+	Water* water = dynamic_cast<Water*>(cons);
+
+	if (energy != NULL)
+	{
+		if (!energy->hasEnergy())
+		{
+			gs->QTElecRes.erase(cons);
+		}
+		else
+		{
+			energy->getPowerPlant()->eraseCons(cons);
+		}
+	}
+
+	if (water != NULL)
+	{
+		if (!water->hasWater())
+		{
+			gs->QTElecRes.erase(cons);
+		}
+		else
+		{
+			water->getWaterTower()->eraseCons(cons);
+		}
+	}
+}
+
+void LinkManager::removeGenerator(QTEntityBuild * gen)
+{
+	// On doit déterminer si c'est un générateur eau ou elec
+	PowerPlant* powerPlant = dynamic_cast<PowerPlant*>(gen);
+	WaterTower* waterTower = dynamic_cast<WaterTower*>(gen);
+
+	if (powerPlant != NULL)
+	{
+		while(powerPlant->sizeConnectedCons() != 0)
+		{
+			Energy* energy = dynamic_cast<Energy*>(powerPlant->getConnectedCons(0));
+			energy->setPowerPlant(NULL);
+			addConsumerPower(dynamic_cast<QTEntityBuild*>(powerPlant->getConnectedCons(0)));
+			powerPlant->eraseCons((unsigned) 0);
+		}
+	}
+	if (waterTower != NULL)
+	{
+		while (waterTower->sizeConnectedCons() != 0)
+		{
+			Water* water = dynamic_cast<Water*>(waterTower->getConnectedCons(0));
+			water->setWaterTower(NULL);
+			addConsumerPower(dynamic_cast<QTEntityBuild*>(waterTower->getConnectedCons(0)));
+			waterTower->eraseCons((unsigned)0);
 		}
 	}
 }
@@ -599,12 +662,13 @@ void LinkManager::remove(QTEntityBuild * qtEntity)
 	// On supprime aussi les avec les routes
 	removeConnectedRoad(qtEntity);
 
-	// Après ...
+	removeConsumer(qtEntity);
+	removeGenerator(qtEntity);
 }
 
 void LinkManager::removeRoad(Road * road)
 {
-	removeRoadLight(road);
+	
 	
 	// Enlève les liens
 	Connector* cast = dynamic_cast<Connector*>(road);
@@ -630,6 +694,8 @@ void LinkManager::removeRoad(Road * road)
 			unlinkRoad(cast, cast->getConnectedRoad(i));
 		}
 	}
+
+	removeRoadLight(road);
 }
 
 void LinkManager::removeRoadLight(Road * road)
@@ -726,6 +792,9 @@ void LinkManager::setConnexitude(Road * start, int connex)
 	std::set<Road*> alreadyDone;
 	std::set<Road*> toDo;
 
+	//Temp
+	std::set<QTEntity*> add;
+
 	alreadyDone.insert(start);
 	toDo.insert(start);
 
@@ -733,7 +802,7 @@ void LinkManager::setConnexitude(Road * start, int connex)
 	{
 		Road* current = (*toDo.begin());
 		toDo.erase(toDo.begin());
-
+		current->fillEntConnected(add);
 		current->setConnexitude(connex);
 		// On ajoute les éléments encore à faire
 
@@ -763,6 +832,18 @@ void LinkManager::setConnexitude(Road * start, int connex)
 				toDo.insert(current->getNext());
 			}
 		}
+	}
+
+	// temp
+	std::set<QTEntity*>::iterator it = add.begin();
+	while (it != add.end())
+	{
+		QTEntityBuild* cast = dynamic_cast<QTEntityBuild*>(*it);
+		removeConsumer(cast);
+		removeGenerator(cast);
+		addConsumer(cast);
+		addGenerator(cast);
+		it++;
 	}
 }
 

@@ -1,7 +1,7 @@
 #include "Resources.h"
 
 Resources::Resources(p_uint production, float radius) :
-    m_production(production)
+    m_production(production), m_consumption(0)
 {
 	this->radius = radius;
 }

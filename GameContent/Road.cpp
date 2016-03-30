@@ -182,6 +182,11 @@ std::vector<myRectangle> Road::getMidColl(float defHeight) const
 	return midColl;
 }
 
+void Road::fillEntConnected(std::set<QTEntity*>& qt) const
+{
+	qt.insert(entConnected.begin(), entConnected.end());
+}
+
 std::set<QTEntity*> Road::getEntConnected() const
 {
 	return entConnected;

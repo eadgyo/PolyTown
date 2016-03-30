@@ -34,6 +34,8 @@ public:
 	void addConsumerPower(QTEntityBuild* cons);
 	void addConsumerWater(QTEntityBuild* cons);
 
+	void removeConsumer(QTEntityBuild * cons);
+	void removeGenerator(QTEntityBuild* gen);
 
 	void remove(QTEntityBuild* qtEntity);
 	void removeRoad(Road* road); // Suppresion des connectors...

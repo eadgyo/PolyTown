@@ -21,6 +21,7 @@ public:
 	static Road* create2pointsP(const Vector3D& A, const Vector3D& B, float width);
 	static Road createLeft(const Vector3D& left, float width, float height);
 
+	
 	// Getter
 	Vector3D getStart() const;
 	Vector3D getEnd() const;
@@ -37,6 +38,7 @@ public:
 	myRectangle getEndColl(float width, float height) const;
 	myRectangle getRect() const;
 	std::vector<myRectangle> getMidColl(float defHeight) const;
+	void fillEntConnected(std::set<QTEntity*>& qt) const;
 	std::set<QTEntity*> getEntConnected() const;
 	std::vector<QTEntity*> getEntConnectedVec() const;
 	inline unsigned sizeEnt() const { return entConnected.size(); };

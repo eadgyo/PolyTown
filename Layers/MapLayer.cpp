@@ -282,11 +282,11 @@ void MapLayer::renderGenResLink(Graphics * g, std::vector<QTEntity*> entities)
 			// Faut afficher différement les éléments
 			Vector3D director = entities[i]->getDirectorVec();
 			round->setColor(waterColor);
-			round->setPos(entities[i]->getCenter() + director*round->getWidth() * 1.2f);
+			round->setPos(entities[i]->getCenter() + director*round->getWidth() * 0.8f);
 			round->draw(g);
 
 			round->setColor(EnergyColor);
-			round->setPos(entities[i]->getCenter() - director*round->getWidth() * 1.2f);
+			round->setPos(entities[i]->getCenter() - director*round->getWidth() * 0.8f);
 			round->draw(g);
 		}
 		else
@@ -339,16 +339,17 @@ void MapLayer::renderGenResLink(Graphics * g, std::vector<QTEntity*> entities)
 					g->setColor(waterColor);
 				}
 				g->setLineSize(2.0f);
-				for (unsigned i = 0; i < res->sizeConnectedCons(); i++)
+				for (unsigned j = 0; j < res->sizeConnectedCons(); j++)
 				{
 					Vector3D p0 = entities[i]->getCenter();
-					Vector3D p1 = res->getConnectedCons(i)->getCenter();
+					Vector3D p1 = res->getConnectedCons(j)->getCenter();
 					g->drawLine(p0, p1);
 				}
 				g->setLineSize(1.0f);
 			}
 		}
 	}
+	g->setColor(myColor::BLACK());
 }
 
 bool MapLayer::create()

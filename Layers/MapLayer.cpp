@@ -2,6 +2,8 @@
 
 MapLayer::MapLayer(Graphics* g) : Layer(g)
 {
+	round = new Image(g, 128, 128, 0, "LeftLayer.png");
+	round->setSize(32);
 }
 
 MapLayer::~MapLayer()
@@ -260,6 +262,9 @@ void MapLayer::renderConnexitudeBuilding(Graphics* g, std::vector<QTEntity*> ent
 
 void MapLayer::renderGenResLink(Graphics * g, std::vector<QTEntity*> entities)
 {
+	myColor waterColor(0.2f, 0.4f, 1.0f, 0.5f);
+	myColor EnergyColor(0.7f, 0.7f, 0.1f, 0.5f);
+
 	// Rendu des liens entre générateurs et consommateurs
 	for (unsigned i = 0; i < entities.size(); i++)
 	{
@@ -268,11 +273,15 @@ void MapLayer::renderGenResLink(Graphics * g, std::vector<QTEntity*> entities)
 		Water* water = dynamic_cast<Water*>(entities[i]);
 		Resources* res = dynamic_cast<Resources*>(entities[i]);
 
-		if (energy != NULL)
+		if (energy != NULL && water != NULL && !energy->hasEnergy() && !water->hasWater())
 		{
-
+			// Faut afficher différement les éléments
+			Vector3D director = entities[i]->getDirectorVec();
+			round->setColor(waterColor);
+			round->setPos(entities[i]->getCenter() + director*round->getWidth() * 1.2f);
+			//g->render(round);
 		}
-		else if (water != NULL)
+		if (water != NULL)
 		{
 
 		}

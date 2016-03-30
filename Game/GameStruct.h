@@ -163,4 +163,5 @@ public:
 	bool isDebugQuadTree = true;
 	bool isDebugRoad = true;
 	bool isDebugEntity = true;
+	bool isDebugGenResLink = true;
 };

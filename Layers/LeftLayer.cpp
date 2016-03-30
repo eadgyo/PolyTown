@@ -1,5 +1,5 @@
 #include "LeftLayer.h"
- 
+
 LeftLayer::LeftLayer(Graphics* g) : Layer(g)
 {
 

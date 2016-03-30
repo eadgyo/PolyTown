@@ -42,14 +42,14 @@
 
 // SocialBuilding
 
-#define STADIUM_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 200, 300)
+#define STADIUM_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 300, 200)
 #define STADIUM_NAME "Stade"
 
 #define STADIUM_COST 10000
 #define STADIUM_SCORE 10
 #define STADIUM_RADIUS 200.0f
 
-#define CINEMA_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 100, 150)
+#define CINEMA_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 150, 100)
 #define CINEMA_NAME "Cinéma"
 
 #define CINEMA_COST 2000

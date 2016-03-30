@@ -39,7 +39,11 @@ p_uint Housing::getEnergyNeeds() const
 p_uint Housing::getScore() const
 {
     if (m_power_plant && m_water_tower) {
-        return getFreeInhabitants();
+        if (m_hasFood) {
+            return getFreeInhabitants();
+        } else {
+            return getFreeInhabitants() / 2;
+        }
     } else {
         return 0;
     }

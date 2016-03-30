@@ -27,6 +27,7 @@ public:
 	void erase(QTEntity* qtEntity, const sRectangle& sRectangle);
 	void draw(Graphics* g);
 	bool isValid(const sRectangle& rec) const;
+	sRectangle getRec() { return rect; };
 
 private:
 	static const int MAX_OBJECTS = 5;

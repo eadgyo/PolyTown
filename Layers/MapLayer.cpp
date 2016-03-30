@@ -81,8 +81,11 @@ void MapLayer::render(Graphics * g)
 	{
 		renderGenResLink(g, entities);
 	}
-
+	
 	g->translate(gs->zoneToDisplay.getLeft());
+
+	g->setColor(myColor::RED());
+	g->drawForm(gs->QTCollision.getRec());
 
 	g->scale(1/scale);
 	

@@ -76,7 +76,7 @@ public:
 
 
     // Time
-    unsigned int time;
+    unsigned int time = 0;
 
     // Scores
     p_uint score_dd = 0;
@@ -165,7 +165,7 @@ public:
 
     bool isReady = false;
 
-	bool isDebugQuadTree = true;
+	bool isDebugQuadTree = false;
 	bool isDebugRoad = true;
 	bool isDebugEntity = true;
 	bool isDebugGenResLink = true;

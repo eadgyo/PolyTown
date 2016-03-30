@@ -124,9 +124,24 @@ void MapLayer::renderElements(Graphics * g, std::vector<QTEntity*> entities)
 			}
 			else
 				g->setColor(myColor(0.2f, 0.2f, 0.2f));
+
 			g->render(*(entities[i]->getForm()));
 			g->setColor(myColor(0.0f, 0.0f, 0.0f));
+			g->setLineSize(1.5f);
 			g->drawForm(*(entities[i]->getForm()));
+			g->setLineSize(1.0f);
+			
+			if (cast != NULL)
+			{
+				
+				Vector3D director = cast->getDirectorVec();
+				Image* image = g->createImageFromFont("test", 15, cast->getName());
+				image->setPos(cast->getCenter() + director*cast->castMyRectangle()->getWidth()*0.3f);
+				image->setColor(myColor(0.0f, 0.0f, 0.0f, 1.0f));
+				image->setRadians(-cast->getAngle2D());
+				image->draw(g);
+				delete image;
+			}
 		}
 	}
 }
@@ -293,78 +308,65 @@ void MapLayer::renderGenResLink(Graphics * g, std::vector<QTEntity*> entities)
 		Energy* energy = dynamic_cast<Energy*>(entities[i]);
 		Water* water = dynamic_cast<Water*>(entities[i]);
 		Resources* res = dynamic_cast<Resources*>(entities[i]);
-
-		if (energy != NULL && water != NULL && !energy->hasEnergy() && !water->hasWater())
+		if (water != NULL)
 		{
-			// Faut afficher différement les éléments
-			Vector3D director = entities[i]->getDirectorVec();
-			round->setColor(waterColor);
-			round->setPos(entities[i]->getCenter() + director*round->getWidth() * 0.8f);
-			round->draw(g);
-
-			round->setColor(EnergyColor);
-			round->setPos(entities[i]->getCenter() - director*round->getWidth() * 0.8f);
-			round->draw(g);
-		}
-		else
-		{
-			if (water != NULL)
+			if (!water->hasWater())
 			{
-				if (!water->hasWater())
-				{
-					round->setColor(waterColor);
-					round->setPos(entities[i]->getCenter());
-					round->draw(g);
-				}
-				else
-				{
-					g->setColor(waterColor);
-					g->setLineSize(2.0f);
-					Vector3D p0 = entities[i]->getCenter();
-					Vector3D p1 = water->getWaterTower()->getCenter();
-					g->drawLine(p0, p1);
-					g->setLineSize(1.0f);
-				}
+				Vector3D director = entities[i]->getDirectorVec().getPerpendicular2D();
+				round->setColor(waterColor);
+				round->setPos(entities[i]->getCenter() + director*round->getWidth() * 0.8f);
+				round->draw(g);
 			}
-			if (energy != NULL)
+			else
 			{
-				if (!energy->hasEnergy())
-				{
-					round->setColor(EnergyColor);
-					round->setPos(entities[i]->getCenter());
-					round->draw(g);
-				}
-				else
-				{
-					g->setColor(EnergyColor);
-					g->setLineSize(2.0f);
-					Vector3D p0 = entities[i]->getCenter();
-					Vector3D p1 = energy->getPowerPlant()->getCenter();
-					g->drawLine(p0, p1);
-					g->setLineSize(1.0f);
-				}
-			}
-			
-			if (res != NULL)
-			{
-				if (dynamic_cast<PowerPlant*>(res) != NULL)
-				{
-					g->setColor(EnergyColor);
-				}
-				else
-				{
-					g->setColor(waterColor);
-				}
+				g->setColor(waterColor);
 				g->setLineSize(2.0f);
-				for (unsigned j = 0; j < res->sizeConnectedCons(); j++)
-				{
-					Vector3D p0 = entities[i]->getCenter();
-					Vector3D p1 = res->getConnectedCons(j)->getCenter();
-					g->drawLine(p0, p1);
-				}
+				Vector3D p0 = entities[i]->getCenter();
+				Vector3D p1 = water->getWaterTower()->getCenter();
+				g->drawLine(p0, p1);
 				g->setLineSize(1.0f);
 			}
 		}
+		if (energy != NULL)
+		{
+			if (!energy->hasEnergy())
+			{
+				Vector3D director = entities[i]->getDirectorVec().getPerpendicular2D();
+				round->setColor(EnergyColor);
+				round->setPos(entities[i]->getCenter() - director*round->getWidth() * 0.8f);
+				round->draw(g);
+			}
+			else
+			{
+				g->setColor(EnergyColor);
+				g->setLineSize(2.0f);
+				Vector3D p0 = entities[i]->getCenter();
+				Vector3D p1 = energy->getPowerPlant()->getCenter();
+				g->drawLine(p0, p1);
+				g->setLineSize(1.0f);
+			}
+		}
+			
+		if (res != NULL)
+		{
+			if (dynamic_cast<PowerPlant*>(res) != NULL)
+			{
+				g->setColor(EnergyColor);
+			}
+			else
+			{
+				g->setColor(waterColor);
+			}
+			g->setLineSize(2.0f);
+			for (unsigned j = 0; j < res->sizeConnectedCons(); j++)
+			{
+				Vector3D p0 = entities[i]->getCenter();
+				Vector3D p1 = res->getConnectedCons(j)->getCenter();
+				g->drawLine(p0, p1);
+			}
+			g->setLineSize(1.0f);
+		}
+		
 	}
 	g->setColor(myColor::BLACK());
 }

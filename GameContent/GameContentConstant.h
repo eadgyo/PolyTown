@@ -161,7 +161,7 @@
 #define POWER_PLANT_FRAME_HEIGHT 130
 #define POWER_PLANT_FRAME_NUMBER 13
 #define POWER_PLANT_RECTANGLE(x, y) myRectangle(Vector3D(x, y), 200, 200)
-#define POWER_PLANT_NAME "Centrale"
+#define POWER_PLANT_NAME "Elect Gen"
 
 #define POWER_PLANT_COST 10000
 #define POWER_PLANT_OUTPUT 10000

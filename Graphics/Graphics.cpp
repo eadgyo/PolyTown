@@ -155,7 +155,7 @@ void Graphics::render(Image& image)
 
 	float rot = -rec.getAngle(); //+ ((spriteData->flipH)?PI:0);
 	if(std::abs(rot) > 0.001f && std::abs(rot - PI*2) > 0.001f)
-		glRotatef(rot, 0, 0, 1.0f);
+		glRotatef((rot*180)/PI, 0, 0, 1.0f);
 
 	glTranslatef(-spriteData->rect->getWidth()*(0.5f - ((spriteData->flipH)?1.0f:0.0f)),
 				-spriteData->rect->getHeight()*(0.5f - ((spriteData->flipV)?1.0f:0.0f)),

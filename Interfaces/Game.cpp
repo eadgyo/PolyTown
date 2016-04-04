@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(Graphics* g, GameStruct* gs) : Interface(g), leftLayer(g), mapLayer(g), scoresLayer(g), mapRecLayer(g), timeLayer(g)
+Game::Game(Graphics* g, GameStruct* gs) : Interface(g), leftLayer(g), mapLayer(g), scoresLayer(g), mapRecLayer(g), timeLayer(g), debugLayer(g)
 {
 	this->gs = gs;
 }
@@ -31,6 +31,8 @@ void Game::initialize(int width, int height)
 		20, myColor(1.0f, 1.0f, 1.0f), myColor(0.4f, 0.4f, 0.4f, 0.6f), gs);
 	timeLayer.initialize((int)(0.5f*width - 35), 0, (int)(0.08f*width), 35, "test",
 		20, myColor(1.0f, 1.0f, 1.0f), myColor(0.4f, 0.4f, 0.4f, 0.6f), gs);
+	debugLayer.initialize((int)(0.07f*width), 0, (int)(0.25f*width), 70, "test",
+		12, myColor(1.0f, 1.0f, 1.0f), myColor(0.4f, 0.4f, 0.4f, 0.8f), gs);
 
 	mapLayer.setCreatorManager(&creatorManager);
 
@@ -60,6 +62,7 @@ void Game::render(Graphics * g)
 	mapRecLayer.render(g);
 	scoresLayer.render(g);
 	timeLayer.render(g);
+	debugLayer.render(g);
 }
 
 HudNs::HudEvent Game::update(float dt)
@@ -72,24 +75,30 @@ HudNs::HudEvent Game::handleEvent(Input & input)
 	Vector3D mouse = input.getMousePos();
 	LayerNs::LayerEvent leftLayRed = LayerNs::NOCOLLISION;
 	LayerNs::LayerEvent mapLayRec = LayerNs::NOCOLLISION;
+	LayerNs::LayerEvent debugLayRec = LayerNs::NOCOLLISION;;
 
 	if (input.getMousePressed(1))
 	{
-		if(mapLayer.back())
+		if (mapLayer.back())
 			leftLayer.reset();
-		
 	}
-
+	
+	if (debugLayer.isColliding(mouse))
+	{
+		mapLayer.setCanTranslate(false);
+		debugLayRec = debugLayer.handleEvent(input, Vector3D(true));
+	}
 	if (leftLayer.isColliding(mouse))
 	{
 		leftLayRed = leftLayer.handleEvent(input, Vector3D(false));
 	}
 	else if (mapRecLayer.isColliding(mouse))
 	{
+		mapLayer.setCanTranslate(false);
 		mapLayRec = mapRecLayer.handleEvent(input, Vector3D(false));
 	}
-	if(leftLayRed % LayerNs::NOCOLLISION && mapLayRec % LayerNs::NOCOLLISION)
-		mapLayer.handleEvent(input, Vector3D(false));
+
+	mapLayer.handleEvent(input, Vector3D(false));
 	
 
 	return HudNs::OK;

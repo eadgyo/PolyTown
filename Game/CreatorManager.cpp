@@ -361,16 +361,16 @@ void CreatorManager::handleAllStart(CRoadStruct& cRoadStruct, Road* startR)
 		float width = road->getWidth();
 		Vector3D l_director = road->getDirectorVec();
 		l_road[FLT_MAX] = road;
+		linkManager->removeRoadLight(road);
 
 		Road* actualRoad = NULL;
 		Road* connector = createConnectorFromMap(actualRoad, startR, l_road, l_start, -l_director, width, theta);
-		handleDoubleDivision(road, startR, connector, false);
+		handleStartDivision(startR, actualRoad, connector, false);
 
 		// On copie les anciens liens
-		linkManager->linkRoadCopyLast(road, l_road.begin()->second);
-		linkManager->linkRoadCopyNext(road, (--l_road.end())->second);
-		linkManager->removeRoadLight(road);
-
+		linkManager->linkRoadReplaceLast(road, l_road.begin()->second);
+		linkManager->linkRoadReplaceNext(road, (--l_road.end())->second);
+		
 		linkManager->linkMapRoad(l_road);
 
 		linkManager->linkRoadLast(startR, connector);
@@ -387,6 +387,12 @@ void CreatorManager::handleAllStart(CRoadStruct& cRoadStruct, Road* startR)
 			Connector* connector = createConnector(cRoadStruct.startRoads1[i], true);
 			// Puis connexion
 			linkManager->linkRoadLast(startR, connector);
+
+			Vector3D director1 = startR->getDirectorVec()*1.0f;
+			Vector3D start1 = startR->getEnd();
+			float scalar1 = scalarColl(start1, director1, connector);
+			Vector3D l_p1 = director1*(scalar1 - connector->getWidth()*0.5f) + start1;
+			//startR->setStart(l_p1);
 		}
 		else
 		{
@@ -397,13 +403,19 @@ void CreatorManager::handleAllStart(CRoadStruct& cRoadStruct, Road* startR)
 	for (unsigned i = 0; i < cRoadStruct.startRoads2.size(); i++)
 	{
 		// Connexion debut/fin
-		if (cRoadStruct.startRoads2[i]->getLast() != NULL)
+		if (cRoadStruct.startRoads2[i]->getNext() != NULL)
 		{
 			// Déjà connectée
 			// Creation d'un connecteur
-			Connector* connector = createConnector(cRoadStruct.startRoads2[i], true);
+			Connector* connector = createConnector(cRoadStruct.startRoads2[i], false);
 			// Puis connexion
 			linkManager->linkRoadLast(startR, connector);
+
+			Vector3D director1 = startR->getDirectorVec()*1.0f;
+			Vector3D start1 = startR->getEnd();
+			float scalar1 = scalarColl(start1, director1, connector);
+			Vector3D l_p1 = director1*(scalar1 - connector->getWidth()*0.5f) + start1;
+			//startR->setStart(l_p1);
 		}
 		else
 		{
@@ -431,17 +443,18 @@ void CreatorManager::handleAllEnd(CRoadStruct& cRoadStruct, Road* endR)
 		Vector3D director = road->getDirectorVec();
 		l_road[FLT_MAX] = road;
 
-		Road* actualRoad = NULL;
-		Road* connector = createConnectorFromMap(actualRoad, endR, l_road, l_start, -director, width, theta);
-		handleDoubleDivision(actualRoad, endR, connector, false);
-
-		// On copie les anciens liens
-		linkManager->linkRoadCopyLast(road, l_road.begin()->second);
-		linkManager->linkRoadCopyNext(road, (--(l_road.end()))->second);
 		linkManager->removeRoadLight(road);
 
+		Road* actualRoad = NULL;
+		Road* connector = createConnectorFromMap(actualRoad, endR, l_road, l_start, -director, width, theta);
+		handleEndDivision(endR, actualRoad, connector, false);
+
+		// On copie les anciens liens		
 		linkManager->linkMapRoad(l_road);
 		linkManager->linkRoadNext(endR, connector);
+
+		linkManager->linkRoadReplaceLast(road, l_road.begin()->second);
+		linkManager->linkRoadReplaceNext(road, (--(l_road.end()))->second);
 	}
 
 	// Pour le moment pas de gestion de collision avec d'autres connecteurs
@@ -452,9 +465,15 @@ void CreatorManager::handleAllEnd(CRoadStruct& cRoadStruct, Road* endR)
 		{
 			// Déjà connectée
 			// Creation d'un connecteur
-			Connector* connector = createConnector(cRoadStruct.endRoads1[i], false);
+			Connector* connector = createConnector(cRoadStruct.endRoads1[i], true);
 			// Puis connexion
 			linkManager->linkRoadNext(endR, connector);
+
+			Vector3D director1 = endR->getDirectorVec()*-1.0f;
+			Vector3D start1 = endR->getStart();
+			float scalar1 = scalarColl(start1, director1, connector);
+			Vector3D l_p1 = director1*(scalar1 - connector->getWidth()*0.5f) + start1;
+			//endR->setEnd(l_p1);
 		}
 		else
 		{
@@ -472,6 +491,12 @@ void CreatorManager::handleAllEnd(CRoadStruct& cRoadStruct, Road* endR)
 			Connector* connector = createConnector(cRoadStruct.endRoads2[i], false);
 			// Puis connexion
 			linkManager->linkRoadNext(endR, connector);
+
+			Vector3D director1 = endR->getDirectorVec()*-1.0f;
+			Vector3D start1 = endR->getStart();
+			float scalar1 = scalarColl(start1, director1, connector);
+			Vector3D l_p1 = director1*(scalar1 - connector->getWidth()*0.5f) + start1;
+			//endR->setEnd(l_p1);
 		}
 		else
 		{
@@ -482,7 +507,7 @@ void CreatorManager::handleAllEnd(CRoadStruct& cRoadStruct, Road* endR)
 	for (unsigned i = 0; i < cRoadStruct.endConnector.size(); i++)
 	{
 		// Connexion debut
-		linkManager->linkRoadLast(endR, cRoadStruct.endConnector[i]);
+		linkManager->linkRoadNext(endR, cRoadStruct.endConnector[i]);
 	}
 }
 
@@ -501,13 +526,13 @@ void CreatorManager::handleAllMid(CRoadStruct& cRoadStruct, std::map<float, Road
 	{
 		Road* actualRoad = NULL;
 		Road* connector = createConnectorFromMap(actualRoad, cRoadStruct.midRoads1[i], myRoad, start, director, width, theta);
-		handleEndDivision(actualRoad, cRoadStruct.midRoads1[i], connector);
+		handleEndDivision(actualRoad, cRoadStruct.midRoads1[i], connector, true);
 	}
 	for (unsigned i = 0; i < cRoadStruct.midRoads2.size(); i++)
 	{
 		Road* actualRoad = NULL;
 		Road* connector = createConnectorFromMap(actualRoad, cRoadStruct.midRoads2[i], myRoad, start, director, width, theta);
-		handleStartDivision(actualRoad, cRoadStruct.midRoads2[i], connector);
+		handleStartDivision(actualRoad, cRoadStruct.midRoads2[i], connector, true);
 	}
 }
 
@@ -568,14 +593,14 @@ Connector* CreatorManager::createConnector(Road* r1, bool isLast)
 	Connector* connector = new Connector(center, width, width);
 
 	// On raccourcit les deux routes
-	Vector3D director1 = r1->getDirectorVec() * (isLast ? -1.0f : 1.0f);
-	Vector3D director2 = r2->getDirectorVec() * (isLastR2 ? -1.0f : 1.0f);
-	Vector3D start1 = r1->getStart();
-	Vector3D start2 = r2->getCenter();
+	Vector3D director1 = r1->getDirectorVec() * (isLast ? 1.0f : -1.0f);
+	Vector3D director2 = r2->getDirectorVec() * (isLastR2 ? 1.0f : -1.0f);
+	Vector3D start1 = (!isLast ? r1->getStart() : r1->getEnd());
+	Vector3D start2 = (!isLastR2 ? r2->getStart() : r2->getEnd());
 	float scalar1 = scalarColl(start1, director1, connector);
 	float scalar2 = scalarColl(start2, director2, connector);
-	Vector3D l_p1 = director1*scalar1 + start1;
-	Vector3D l_p2 = director1*scalar2 + start2;
+	Vector3D l_p1 = director1*(scalar1 - width*0.5f) + start1;
+	Vector3D l_p2 = director2*(scalar2 - width*0.5f) + start2;
 
 	// Et on déconnecte puis connecte avec le connecteur
 	linkManager->unlinkRoad(r1, r2);
@@ -600,6 +625,7 @@ Connector* CreatorManager::createConnector(Road* r1, bool isLast)
 		r2->setEnd(l_p2);
 		linkManager->linkRoadNext(r2, connector);
 	}
+
 	// On ajoute le connecteur
 	connector->setConnexitude(r1->getConnexitude());
 	linkManager->addRoad(connector);
@@ -608,7 +634,7 @@ Connector* CreatorManager::createConnector(Road* r1, bool isLast)
 }
 
 // Add road functions
-void CreatorManager::handleStartDivision(Road* actualRoad, Road* colliding, Road* connector)
+void CreatorManager::handleStartDivision(Road* actualRoad, Road* colliding, Road* connector, bool link)
 {
 	Vector3D director = -colliding->getDirectorVec();
 	Vector3D l_start = colliding->getCenter();
@@ -621,11 +647,11 @@ void CreatorManager::handleStartDivision(Road* actualRoad, Road* colliding, Road
 
 	colliding->set2points(start, end, width);
 
-	linkManager->linkRoadGuess(colliding, connector);
-	
+	if (link)
+		linkManager->linkRoadGuess(colliding, connector);
 }
 
-void CreatorManager::handleEndDivision(Road* actualRoad, Road* colliding, Road* connector)
+void CreatorManager::handleEndDivision(Road* actualRoad, Road* colliding, Road* connector, bool link)
 {
 	Vector3D director = colliding->getDirectorVec();
 	Vector3D l_end = colliding->getCenter();
@@ -638,7 +664,8 @@ void CreatorManager::handleEndDivision(Road* actualRoad, Road* colliding, Road* 
 
 	colliding->set2points(start, end, width);
 
-	linkManager->linkRoadGuess(colliding, connector);
+	if (link)
+		linkManager->linkRoadGuess(colliding, connector);
 }
 
 void CreatorManager::handleDoubleDivision(Road* actualRoad, Road* colliding, Road* connector, bool removeAdd)
@@ -726,7 +753,7 @@ bool CreatorManager::moveStart(Road * road, const Vector3D& director, float widt
 		road->set2points(l_start, end, width);
 		return true;
 	}
-	return false;
+	return true;
 }
 
 bool CreatorManager::moveEnd(Road* road, const Vector3D& director, float width, const Vector3D& start, CRoadStruct& cRoadStruct)
@@ -741,11 +768,11 @@ bool CreatorManager::moveEnd(Road* road, const Vector3D& director, float width, 
 		road->set2points(start, l_end, width);
 		return true;
 	}
-	return false;
+	return true;
 }
 
-bool CreatorManager::cleanAndGetBest(Road * road, const Vector3D& director, const Vector3D& otherSideP, std::vector<Connector*> connectors,
-	std::vector<Road*> roads0, std::vector<Road*> roads1, std::vector<Road*> roads2, Vector3D& pToModified)
+bool CreatorManager::cleanAndGetBest(Road * road, const Vector3D& director, const Vector3D& otherSideP, std::vector<Connector*>& connectors,
+	std::vector<Road*>& roads0, std::vector<Road*>& roads1, std::vector<Road*>& roads2, Vector3D& pToModified)
 {
 	// On cherche juste le point qui serait le plus proche du point de l'autre coté
 	int list = -1;
@@ -971,13 +998,7 @@ bool CreatorManager::setTypeStartColliding(Road* roadi, myRectangle& coll, CRoad
 		{
 			if (cast != NULL)
 			{
-				alreadyInAndDelete(cast, cRoadStruct.startRoads1);
-				cRoadStruct.startRoads1.push_back(roadi);
-			}
-			if (roadi->getLast() != NULL)
-			{
-				if(alreadyIn(roadi->getLast(), cRoadStruct.startRoads1) != -1)
-					cRoadStruct.startRoads1.push_back(roadi);
+				cRoadStruct.startConnector.push_back(cast);
 			}
 			else
 			{
@@ -986,25 +1007,46 @@ bool CreatorManager::setTypeStartColliding(Road* roadi, myRectangle& coll, CRoad
 		}
 		else
 		{
-			if (roadi->getIsConnector() || roadi->getNext() != NULL)
-				return false;
+			/*if (roadi->getIsConnector() || roadi->getNext() != NULL)
+				return false;*/
 
-			cRoadStruct.startRoads2.push_back(roadi);
+			if (cast != NULL)
+			{
+				cRoadStruct.startConnector.push_back(cast);
+			}
+			else
+			{
+				cRoadStruct.startRoads2.push_back(roadi);
+			}
 		}
 	}
 	else if (isLinkingStart1)
 	{
-		if (roadi->getIsConnector() || roadi->getLast() != NULL)
-			return false;
+		/*if (roadi->getIsConnector() || roadi->getLast() != NULL)
+			return false;*/
 
-		cRoadStruct.startRoads1.push_back(roadi);	
+		if (cast != NULL)
+		{
+			cRoadStruct.startConnector.push_back(cast);
+		}
+		else
+		{
+			cRoadStruct.startRoads1.push_back(roadi);
+		}
 	}
 	else if (isLinkingStart2)
 	{
-		if (roadi->getIsConnector() || roadi->getNext() != NULL)
-			return false;
+		/*if (roadi->getIsConnector() || roadi->getNext() != NULL)
+			return false;*/
 
-		cRoadStruct.startRoads2.push_back(roadi);
+		if (cast != NULL)
+		{
+			cRoadStruct.startConnector.push_back(cast);
+		}
+		else
+		{
+			cRoadStruct.startRoads2.push_back(roadi);
+		}
 	}
 	else
 	{
@@ -1021,6 +1063,7 @@ bool CreatorManager::setTypeEndColliding(Road* roadi, myRectangle& coll, CRoadSt
 	bool isLinkingEnd1 = l_startColl.isColliding(coll);
 	bool isLinkingEnd2 = l_endColl.isColliding(coll);
 
+	Connector* cast = dynamic_cast<Connector*>(roadi);
 
 	if (isLinkingEnd1 && isLinkingEnd2)
 	{
@@ -1033,32 +1076,68 @@ bool CreatorManager::setTypeEndColliding(Road* roadi, myRectangle& coll, CRoadSt
 			// ----
 			// Pour le moment
 			// ----
-			if (roadi->getIsConnector() || roadi->getLast() != NULL)
-				return false;
+			/*if (roadi->getIsConnector() || roadi->getLast() != NULL)
+				return false;*/
 
-			cRoadStruct.endRoads1.push_back(roadi);
+			if (cast != NULL)
+			{
+				cRoadStruct.endConnector.push_back(cast);
+			}
+			else
+			{
+				cRoadStruct.endRoads1.push_back(roadi);
+			}
+
+			//cRoadStruct.endRoads1.push_back(roadi);
 		}
 		else
 		{
-			if (roadi->getIsConnector() || roadi->getNext() != NULL)
-				return false;
+			/*if (roadi->getIsConnector() || roadi->getNext() != NULL)
+				return false;*/
 
-			cRoadStruct.endRoads2.push_back(roadi);
+			if (cast != NULL)
+			{
+				cRoadStruct.endConnector.push_back(cast);
+			}
+			else
+			{
+				cRoadStruct.endRoads2.push_back(roadi);
+			}
+
+			//cRoadStruct.endRoads2.push_back(roadi);
 		}
 	}
 	else if (isLinkingEnd1)
 	{
-		if (roadi->getIsConnector() || roadi->getLast() != NULL)
-			return false;
+		/*if (roadi->getIsConnector() || roadi->getLast() != NULL)
+			return false;*/
 
-		cRoadStruct.endRoads1.push_back(roadi);
+		if (cast != NULL)
+		{
+			cRoadStruct.endConnector.push_back(cast);
+		}
+		else
+		{
+			cRoadStruct.endRoads1.push_back(roadi);
+		}
+
+		//cRoadStruct.endRoads1.push_back(roadi);
 	}
 	else if (isLinkingEnd2)
 	{
-		if (roadi->getIsConnector() || roadi->getNext() != NULL)
-			return false;
+		/*if (roadi->getIsConnector() || roadi->getNext() != NULL)
+			return false;*/
 
-		cRoadStruct.endRoads2.push_back(roadi);
+		if (cast != NULL)
+		{
+			cRoadStruct.endConnector.push_back(cast);
+		}
+		else
+		{
+			cRoadStruct.endRoads2.push_back(roadi);
+		}
+
+		//cRoadStruct.endRoads2.push_back(roadi);
 	}
 	else
 	{

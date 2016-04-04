@@ -58,8 +58,8 @@ public:
 
 	void linkMapRoad(std::map<float, Road*> myRoad);
 
-	void linkRoadCopyNext(Road* source, Road* dest);
-	void linkRoadCopyLast(Road* source, Road* dest);
+	void linkRoadReplaceNext(Road* source, Road* dest);
+	void linkRoadReplaceLast(Road* source, Road* dest);
 
 	// Unlink
 	void unlinkWCleaning(Road* road, Road* connected);

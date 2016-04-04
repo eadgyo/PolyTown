@@ -118,6 +118,7 @@ void LinkManager::linkRoadNextNextOr(Road * r1, Road * r2, Road * removing)
 	{
 		r1->setNext(r2);
 		cast->removeConnectedRoad(removing);
+		cast->addConnectedRoad(r1);
 	}
 	else
 	{
@@ -132,6 +133,7 @@ void LinkManager::linkRoadLastNextOr(Road * r1, Road * r2, Road * removing)
 	{
 		r1->setLast(r2);
 		cast->removeConnectedRoad(removing);
+		cast->addConnectedRoad(r1);
 	}
 	else
 	{
@@ -160,14 +162,52 @@ void LinkManager::linkMapRoad(std::map<float, Road*> myRoad)
 }
 
 
-void LinkManager::linkRoadCopyNext(Road * source, Road * dest)
+void LinkManager::linkRoadReplaceNext(Road * source, Road * dest)
 {
-	dest->setNext(source->getNext());
+	if (source->getNext() != NULL)
+	{
+		// Si le dernier élément est un connector, c'est plus compliqué
+		Connector* cast = dynamic_cast<Connector*>(source->getNext());
+		dest->setNext(source->getNext());
+		if (cast)
+		{
+			cast->removeConnectedRoad(source);
+			cast->addConnectedRoad(dest);
+		}
+		else
+		{
+			if (source->getNext()->getLast() == source)
+				source->getNext()->setLast(dest);
+			else if (source->getNext()->getNext() == source)
+				source->getNext()->setNext(dest);
+			else
+				assert(0); // Non double lien
+		}
+	}
 }
 
-void LinkManager::linkRoadCopyLast(Road * source, Road * dest)
+void LinkManager::linkRoadReplaceLast(Road * source, Road * dest)
 {
-	dest->setLast(source->getLast());
+	if (source->getLast() != NULL)
+	{
+		// Si le dernier élément est un connector, c'est plus compliqué
+		Connector* cast = dynamic_cast<Connector*>(source->getLast());
+		dest->setLast(source->getLast());
+		if (cast)
+		{
+			cast->removeConnectedRoad(source);
+			cast->addConnectedRoad(dest);
+		}
+		else
+		{
+			if (source->getLast()->getLast() == source)
+				source->getLast()->setLast(dest);
+			else if (source->getLast()->getNext() == source)
+				source->getLast()->setNext(dest);
+			else
+				assert(0); // Non double lien
+		}
+	}
 }
 
 void LinkManager::unlinkWCleaning(Road * road, Road * connected)
@@ -189,7 +229,7 @@ void LinkManager::cleanNearConnector(std::set<Road*>& alreadyDone, Road * connec
 	Connector* cast = dynamic_cast<Connector*>(connected);
 	if (cast != NULL)
 	{
-		if (cast->sizeConnectedRoad() < 3)
+		if (cast->sizeConnectedRoad() < 4)
 		{
 			// On doit supprimer le connecteur
 			// Car après la deletion de l'autre route
@@ -205,7 +245,7 @@ void LinkManager::cleanNearConnector(std::set<Road*>& alreadyDone, Road * connec
 				cleanNearConnector(alreadyDone, copy[i]);
 			}
 		
-			if (cast->sizeConnectedRoad() == 2)
+			if (cast->sizeConnectedRoad() == 3)
 			{
 				
 				Road* r1 = cast->getConnectedRoad(0);
@@ -228,13 +268,13 @@ void LinkManager::cleanNearConnector(std::set<Road*>& alreadyDone, Road * connec
 
 					// On libère les deux routes en récupérant les liens
 					bool isLastR1 = unlinkRoad1(r1, cast);
-					bool isLastR2 = unlinkRoad1(r1, cast);
+					bool isLastR2 = unlinkRoad1(r2, cast);
 
 					// On lie les 2 routes en fonction des liens précédents
 					linkRoad(r1, r2, isLastR1, isLastR2);
 				}
 			}
-			else if (cast->sizeConnectedRoad() == 1)
+			else if (cast->sizeConnectedRoad() == 2)
 			{
 				// On doit juste supprimer le lien
 				Road* r1 = cast->getConnectedRoad(0);
@@ -710,8 +750,6 @@ void LinkManager::remove(QTEntityBuild * qtEntity)
 
 void LinkManager::removeRoad(Road * road)
 {
-	
-	
 	// Enlève les liens
 	Connector* cast = dynamic_cast<Connector*>(road);
 	if (cast == NULL)
@@ -720,20 +758,27 @@ void LinkManager::removeRoad(Road * road)
 		if (road->getLast() != NULL)
 		{
 			unlinkWCleaning(road, road->getLast());
-			unlinkRoad(road, road->getLast());
+			if (road->getLast() != NULL)
+			{
+				unlinkRoad(road, road->getLast());
+			}
 		}
 		if (road->getNext() != NULL)
 		{
 			unlinkWCleaning(road, road->getNext());
-			unlinkRoad(road, road->getNext());
+			if (road->getNext() != NULL)
+			{
+				unlinkRoad(road, road->getNext());
+			}
 		}
 	}
 	else
 	{
 		for (unsigned i = 0; i < cast->sizeConnectedRoad(); i++)
 		{
+			Road *road = cast->getConnectedRoad(i);
 			unlinkWCleaning(cast, cast->getConnectedRoad(i));
-			unlinkRoad(cast, cast->getConnectedRoad(i));
+			unlinkRoad(cast, road);
 		}
 	}
 

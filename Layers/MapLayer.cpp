@@ -71,6 +71,7 @@ void MapLayer::render(Graphics * g)
 	}
 	if (gs->isDebugQuadTree)
 	{
+		g->setColor(myColor::RED());
 		gs->QTCollision.draw(g);
 	}
 	if (gs->isDebugEntity)
@@ -666,6 +667,9 @@ Vector3D MapLayer::transformMouse(const Vector3D& mousePos)
 
 void MapLayer::handleMouseTranslation(const Vector3D & mousePos)
 {
+	if (!canTranslate)
+		return;
+
 	float facX = 0.10f;
 	float facY = 0.10f;
 
@@ -755,6 +759,6 @@ LayerNs::LayerEvent MapLayer::handleEvent(Input & input, const Vector3D& transla
 	}
 	
 	updateEntity(mousePos);
-
+	canTranslate = true;
 	return LayerNs::NOCOLLISION;
 }

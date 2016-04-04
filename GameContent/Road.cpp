@@ -310,13 +310,11 @@ void Road::setStart(const Vector3D& start, float minHeight)
 	Vector3D end = getEnd();
 	Vector3D newDirector = end - start;
 	float scalar = newDirector*director;
-	if (scalar > minHeight) // sens > 0 && scalar > minHeight
-	{
-		// On peut bouger
-		myRectangle* rec = castMyRectangle();
-		assert(rec != NULL); // Pas de form
-		set2points(start, end, getWidth());
-	}
+
+	myRectangle* rec = castMyRectangle();
+	assert(rec != NULL); // Pas de form
+	set2points(start, end, getWidth());
+	
 }
 
 // Setter
@@ -334,13 +332,12 @@ void Road::setEnd(const Vector3D& end, float minHeight)
 	Vector3D start = getStart();
 	Vector3D newDirector = end - start;
 	float scalar = newDirector*director;
-	if (scalar > minHeight) // sens > 0 && scalar > minHeight
-	{
-		// On peut bouger
-		myRectangle* rec = castMyRectangle();
-		assert(rec != NULL); // Pas de form
-		set2points(start, end, getWidth());
-	}
+
+	// On peut bouger
+	myRectangle* rec = castMyRectangle();
+	assert(rec != NULL); // Pas de form
+	set2points(start, end, getWidth());
+	
 }
 void Road::setEnd(const Vector3D& end)
 {
@@ -406,7 +403,5 @@ bool Road::removeConnectedRoad(Road* road)
 		next = NULL;
 		return false;
 	}
-	// Probleme ?
-	std::cout << "No road found";
 	return false;
 }

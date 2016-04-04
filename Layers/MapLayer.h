@@ -23,6 +23,7 @@ public:
 
 	LayerNs::LayerEvent handleEvent(Input& input, const Vector3D& translation);
 
+	void setCanTranslate(bool a) { canTranslate = a; };
 	bool back();
 	void reset();
 	bool create();
@@ -44,6 +45,7 @@ public:
 	void handleMouseTranslation(const Vector3D& mousePos);
 
 protected:
+	bool canTranslate = true;
 	CreatorManager* cm;
 	int deltaSide;
 	bool isUpdating = true;

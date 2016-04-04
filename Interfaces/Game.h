@@ -6,6 +6,7 @@
 #include "../Layers/MapLayer.h"
 #include "../Layers/scoresLayer.h"
 #include "../Layers/TimeLayer.h"
+#include "../Layers/DebugLayer.h"
 
 class Game :
 	public Interface
@@ -30,6 +31,7 @@ protected:
 	ScoresLayer scoresLayer;
 	MapRecLayer mapRecLayer;
 	TimeLayer timeLayer;
+	DebugLayer debugLayer;
 
 	/* Test Début */
 	GameStruct* gs;

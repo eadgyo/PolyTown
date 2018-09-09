@@ -1,23 +1,4 @@
-GameContent Constructors
+# City builder game oriented for Sustainable Development
+![alt Game presentation](https://raw.githubusercontent.com/eadgyo/PolyTown/master/img/Example.png)
 
-Road
-
-House
-Building
-
-SocialBuilding : School, Hospital, FireStation, PoliceStation
-
-PowerPlant
-WaterTower
-
-Farm
-Shop
-Manufactory
-
-PollutionArea
-
-// Time
-20 ans = 20 minutes
-1 an = 1 minutes
-360 jours = 60 secondes
-6 jours = 1 secondes
+Video presentation can be find [here](https://youtu.be/B6XC0ib2Ru4).
